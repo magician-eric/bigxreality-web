@@ -1,0 +1,14 @@
+# design-source
+
+新官網的設計與需求來源檔。Claude Code 以這裡的檔案為唯一依據，不得修改。
+
+| 檔案 | 用途 |
+|---|---|
+| BXR_Web_Tokens_v1.0.css | 網站顏色、字型、間距、動態數值（樣式唯一依據） |
+| BXR_Web_Design_System_v1.0.pdf | 網站設計系統說明（依 CIS v3.2 整理） |
+| cis-v3.2/BXR_Brand_Assets_v3.1/ | 官方 Logo（01_Logo/SVG）、圖形、主視覺 |
+| cis-v3.2/BXR_Brand_Assets_v3.2_Update/ | v3.2 更新的色彩檔、圖示、領域圖形、主視覺 |
+| cis-v3.2/BXR_CIS_Brand_Guidelines_v3_2.pdf | CIS 品牌手冊 v3.2 |
+| requirements-2.0.md | 官網 2.0 需求文件 |
+
+Logo 一律使用 cis-v3.2/BXR_Brand_Assets_v3.1/01_Logo/SVG/ 內的官方 SVG。
