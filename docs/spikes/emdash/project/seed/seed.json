@@ -1,0 +1,915 @@
+{
+ "version": "1",
+ "defaultLocale": "en",
+ "meta": {
+  "name": "BXR spike",
+  "description": "K2 spike model"
+ },
+ "settings": {
+  "title": "Big x Reality",
+  "tagline": "Turn every drill into real."
+ },
+ "collections": [
+  {
+   "slug": "products",
+   "label": "產品 Products",
+   "labelSingular": "產品",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "urlPattern": "/{locale}/products/{slug}/",
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "產品名稱",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態 Translation status",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     },
+     "translatable": true
+    },
+    {
+     "slug": "english_name",
+     "label": "英文名",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "code",
+     "label": "代號",
+     "type": "string",
+     "required": true,
+     "translatable": false
+    },
+    {
+     "slug": "tagline",
+     "label": "一句話定位",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "hero_image",
+     "label": "主圖（各語言 alt 文字各自填寫）",
+     "type": "image",
+     "translatable": true
+    },
+    {
+     "slug": "summary",
+     "label": "卡片短描述",
+     "type": "text"
+    },
+    {
+     "slug": "overview",
+     "label": "產品概述",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "capabilities",
+     "label": "核心能力",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "how_it_works",
+     "label": "運作方式",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "scenarios",
+     "label": "訓練情境",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "components",
+     "label": "系統組成",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "name",
+        "label": "名稱",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "deploy_personnel",
+     "label": "人數（例：1-4）或 [待提供]",
+     "type": "string",
+     "translatable": false,
+     "validation": {
+      "pattern": "^(\\d+(-\\d+)?|\\[待提供\\])$"
+     }
+    },
+    {
+     "slug": "deploy_personnel_approx",
+     "label": "人數前加「約」",
+     "type": "boolean",
+     "translatable": false,
+     "defaultValue": false
+    },
+    {
+     "slug": "deploy_area",
+     "label": "空間（m²）或 [待提供]",
+     "type": "string",
+     "validation": {
+      "pattern": "^(\\d+(\\.\\d+)?|\\[待提供\\])$"
+     },
+     "translatable": false
+    },
+    {
+     "slug": "deploy_setup_time",
+     "label": "時間（分鐘）或 [待提供]",
+     "type": "string",
+     "validation": {
+      "pattern": "^(\\d+(\\.\\d+)?|\\[待提供\\])$"
+     },
+     "translatable": false
+    },
+    {
+     "slug": "integrated_ops_description",
+     "label": "整合作戰說明",
+     "type": "text"
+    },
+    {
+     "slug": "integrated_products",
+     "label": "可整合的產品",
+     "type": "reference",
+     "validation": {
+      "relation": "product_integrations",
+      "relationSide": "parent"
+     }
+    },
+    {
+     "slug": "related_solutions",
+     "label": "關聯解決方案",
+     "type": "reference",
+     "validation": {
+      "relation": "product_solutions"
+     }
+    },
+    {
+     "slug": "integrated_scenarios",
+     "label": "整合訓練情境",
+     "type": "reference",
+     "validation": {
+      "relation": "product_scenarios"
+     }
+    },
+    {
+     "slug": "domains",
+     "label": "領域",
+     "type": "multiSelect",
+     "required": true,
+     "validation": {
+      "options": [
+       "military",
+       "police",
+       "fire-rescue",
+       "smart-city"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "sort_order",
+     "label": "排序",
+     "type": "integer",
+     "required": true,
+     "translatable": false
+    },
+    {
+     "slug": "cta_title",
+     "label": "CTA 標題",
+     "type": "string"
+    },
+    {
+     "slug": "cta_description",
+     "label": "CTA 說明",
+     "type": "text"
+    },
+    {
+     "slug": "cta_brochure",
+     "label": "顯示型錄按鈕",
+     "type": "boolean",
+     "defaultValue": true,
+     "translatable": false
+    },
+    {
+     "slug": "cta_demo",
+     "label": "顯示 Demo 按鈕",
+     "type": "boolean",
+     "defaultValue": true,
+     "translatable": false
+    },
+    {
+     "slug": "integrated_by",
+     "label": "被下列產品整合（反向）",
+     "type": "reference",
+     "validation": {
+      "relation": "product_integrations",
+      "relationSide": "child"
+     }
+    }
+   ]
+  },
+  {
+   "slug": "solutions",
+   "label": "解決方案 Solutions",
+   "labelSingular": "解決方案",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "urlPattern": "/{locale}/solutions/{slug}/",
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "名稱",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態 Translation status",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     },
+     "translatable": true
+    },
+    {
+     "slug": "english_name",
+     "label": "英文名",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "domain",
+     "label": "領域",
+     "type": "select",
+     "required": true,
+     "validation": {
+      "options": [
+       "military",
+       "police",
+       "fire-rescue",
+       "smart-city"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "summary",
+     "label": "說明",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "hero_image",
+     "label": "主圖",
+     "type": "image",
+     "translatable": false
+    },
+    {
+     "slug": "overview",
+     "label": "概述",
+     "type": "portableText"
+    },
+    {
+     "slug": "challenges",
+     "label": "挑戰",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "capabilities",
+     "label": "能力",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "sort_order",
+     "label": "排序",
+     "type": "integer",
+     "required": true,
+     "translatable": false
+    },
+    {
+     "slug": "related_products",
+     "label": "相關產品（反向）",
+     "type": "reference",
+     "validation": {
+      "relation": "product_solutions"
+     }
+    }
+   ]
+  },
+  {
+   "slug": "scenarios",
+   "label": "整合訓練情境 Scenarios",
+   "labelSingular": "整合訓練情境",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "routable": false,
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "名稱",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態 Translation status",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     },
+     "translatable": true
+    },
+    {
+     "slug": "code",
+     "label": "代號",
+     "type": "string",
+     "required": true,
+     "translatable": false
+    },
+    {
+     "slug": "english_name",
+     "label": "英文名",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "說明",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "sort_order",
+     "label": "排序",
+     "type": "integer",
+     "required": true,
+     "translatable": false
+    },
+    {
+     "slug": "products",
+     "label": "參與產品（反向）",
+     "type": "reference",
+     "validation": {
+      "relation": "product_scenarios"
+     }
+    }
+   ]
+  },
+  {
+   "slug": "news",
+   "label": "消息 News",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "urlPattern": "/{locale}/news/{slug}/",
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "標題",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態 Translation status",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     },
+     "translatable": true
+    },
+    {
+     "slug": "summary",
+     "label": "摘要",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "cover",
+     "label": "封面",
+     "type": "image",
+     "translatable": false
+    },
+    {
+     "slug": "body",
+     "label": "正文",
+     "type": "portableText",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "updated_on",
+     "label": "更新日期",
+     "type": "datetime",
+     "translatable": false
+    },
+    {
+     "slug": "related_products",
+     "label": "相關產品",
+     "type": "reference",
+     "validation": {
+      "relation": "news_products"
+     }
+    },
+    {
+     "slug": "related_solutions",
+     "label": "相關解決方案",
+     "type": "reference",
+     "validation": {
+      "relation": "news_solutions"
+     }
+    },
+    {
+     "slug": "related_insights",
+     "label": "相關技術文章",
+     "type": "reference",
+     "validation": {
+      "relation": "news_insights"
+     }
+    },
+    {
+     "slug": "category",
+     "label": "類型",
+     "type": "select",
+     "required": true,
+     "validation": {
+      "options": [
+       "company",
+       "exhibition",
+       "award",
+       "product-launch",
+       "partnership",
+       "media"
+      ]
+     },
+     "translatable": false
+    }
+   ]
+  },
+  {
+   "slug": "insights",
+   "label": "技術文章 Insights",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "urlPattern": "/{locale}/insights/{slug}/",
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "標題",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態 Translation status",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     },
+     "translatable": true
+    },
+    {
+     "slug": "summary",
+     "label": "摘要",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "cover",
+     "label": "封面",
+     "type": "image",
+     "translatable": false
+    },
+    {
+     "slug": "body",
+     "label": "正文",
+     "type": "portableText",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "updated_on",
+     "label": "更新日期",
+     "type": "datetime",
+     "translatable": false
+    },
+    {
+     "slug": "related_products",
+     "label": "相關產品",
+     "type": "reference",
+     "validation": {
+      "relation": "insights_products"
+     }
+    },
+    {
+     "slug": "related_solutions",
+     "label": "相關解決方案",
+     "type": "reference",
+     "validation": {
+      "relation": "insights_solutions"
+     }
+    },
+    {
+     "slug": "author",
+     "label": "作者",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "case_studies",
+   "label": "案例 Case Studies",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "urlPattern": "/{locale}/case-studies/{slug}/",
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "標題",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態 Translation status",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     },
+     "translatable": true
+    },
+    {
+     "slug": "summary",
+     "label": "摘要",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "cover",
+     "label": "封面",
+     "type": "image",
+     "translatable": false
+    },
+    {
+     "slug": "body",
+     "label": "正文",
+     "type": "portableText",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "updated_on",
+     "label": "更新日期",
+     "type": "datetime",
+     "translatable": false
+    },
+    {
+     "slug": "related_products",
+     "label": "相關產品",
+     "type": "reference",
+     "validation": {
+      "relation": "case_studies_products"
+     }
+    },
+    {
+     "slug": "related_solutions",
+     "label": "相關解決方案",
+     "type": "reference",
+     "validation": {
+      "relation": "case_studies_solutions"
+     }
+    },
+    {
+     "slug": "client_name",
+     "label": "客戶名稱",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "client_disclosure",
+     "label": "客戶揭露方式",
+     "type": "select",
+     "required": true,
+     "validation": {
+      "options": [
+       "public",
+       "anonymized"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "approved",
+     "label": "已取得公開授權",
+     "type": "boolean",
+     "defaultValue": false,
+     "translatable": false
+    },
+    {
+     "slug": "challenge",
+     "label": "挑戰",
+     "type": "text"
+    },
+    {
+     "slug": "solution",
+     "label": "方案",
+     "type": "text"
+    },
+    {
+     "slug": "outcomes",
+     "label": "成果",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "label",
+        "label": "項目",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "value",
+        "label": "數值",
+        "type": "string",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "domains",
+     "label": "領域",
+     "type": "multiSelect",
+     "validation": {
+      "options": [
+       "military",
+       "police",
+       "fire-rescue",
+       "smart-city"
+      ]
+     },
+     "translatable": false
+    }
+   ]
+  }
+ ],
+ "relations": [
+  {
+   "slug": "product_integrations",
+   "parentCollection": "products",
+   "childCollection": "products",
+   "parentLabel": "被整合於",
+   "childLabel": "可整合的產品"
+  },
+  {
+   "slug": "product_solutions",
+   "parentCollection": "products",
+   "childCollection": "solutions",
+   "parentLabel": "相關產品",
+   "childLabel": "關聯解決方案"
+  },
+  {
+   "slug": "product_scenarios",
+   "parentCollection": "products",
+   "childCollection": "scenarios",
+   "parentLabel": "參與產品",
+   "childLabel": "整合訓練情境"
+  },
+  {
+   "slug": "news_products",
+   "parentCollection": "news",
+   "childCollection": "products",
+   "parentLabel": "相關文章（news）",
+   "childLabel": "相關產品"
+  },
+  {
+   "slug": "news_solutions",
+   "parentCollection": "news",
+   "childCollection": "solutions",
+   "parentLabel": "相關文章（news）",
+   "childLabel": "相關解決方案"
+  },
+  {
+   "slug": "insights_products",
+   "parentCollection": "insights",
+   "childCollection": "products",
+   "parentLabel": "相關文章（insights）",
+   "childLabel": "相關產品"
+  },
+  {
+   "slug": "insights_solutions",
+   "parentCollection": "insights",
+   "childCollection": "solutions",
+   "parentLabel": "相關文章（insights）",
+   "childLabel": "相關解決方案"
+  },
+  {
+   "slug": "case_studies_products",
+   "parentCollection": "case_studies",
+   "childCollection": "products",
+   "parentLabel": "相關文章（case_studies）",
+   "childLabel": "相關產品"
+  },
+  {
+   "slug": "case_studies_solutions",
+   "parentCollection": "case_studies",
+   "childCollection": "solutions",
+   "parentLabel": "相關文章（case_studies）",
+   "childLabel": "相關解決方案"
+  },
+  {
+   "slug": "news_insights",
+   "parentCollection": "news",
+   "childCollection": "insights",
+   "parentLabel": "相關消息",
+   "childLabel": "相關技術文章"
+  }
+ ],
+ "taxonomies": [
+  {
+   "name": "tag",
+   "label": "標籤 Tags",
+   "labelSingular": "標籤",
+   "hierarchical": false,
+   "collections": [
+    "news",
+    "insights",
+    "case_studies"
+   ]
+  }
+ ]
+}

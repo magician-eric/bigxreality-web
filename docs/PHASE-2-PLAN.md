@@ -1,8 +1,9 @@
 # Big x Reality 官網 2.0 — 第二階段技術規劃
 
-> 狀態：**CMS 架構變更評估中（2026-10-19）**。原本的 Decap CMS＋GitHub 架構已被新決策取代，見 **§13**。§3.6、§11.1、§8 的 T27–T30（Decap）不再執行；其餘頁面、搜尋、測試規劃保留，工時已併入 §13.9。等新架構核准後才開始開發。
+> 狀態：**K2 本機技術驗證完成（2026-10-19），結果見 §14；等待下一次核准（K1、K3～K6 尚未核准）**。原本的 Decap CMS＋GitHub 架構已被新決策取代，見 **§13**。§3.6、§11.1、§8 的 T27–T30（Decap）不再執行；其餘頁面、搜尋、測試規劃保留，工時已併入 §13.9。等新架構核准後才開始開發。
 > 基準：`main` @ `df47220`（PR #1 合併後）。
-> 範圍：Solutions、Resources、News、Insights、Case Studies、共用標籤、內容關聯、站內搜尋。
+> 範圍：Solutions、Resources 下拉選單、News、Insights、Case Studies、共用標籤、內容關聯、站內搜尋。
+> **規則修正（2026-10-19）**：Resources 只有下拉選單，**不建立 `/[lang]/resources/` 頁面**；Pagefind 已確定採用，不重新選型（§12 只作為品質驗證紀錄）。
 > 原則：能共用就共用；沿用第一階段的 Astro 7.3.8、Design Tokens、元件、三語架構、SEO 系統；不導入 Tailwind，不建第二套設計系統或第二套關聯系統。
 
 ---
@@ -37,7 +38,7 @@ Decap 的處理方式見 §3.6，需要你決定（§9 D1）。
 **目前沒有任何真實的 News、Insights、Case Studies。** 依「不虛構內容」原則，我不會寫範例文章。
 如果沒有真實內容，這些列表頁上線時會是空的。處理方式：
 - **測試**：用 `tests/fixtures/content/` 的測試內容（明顯標示 TEST FIXTURE、永遠不會進正式 build）驗證所有模板，見 §10。
-- **正式 build**：列表為空時顯示空狀態訊息並 `noindex`，Resources Hub 隱藏空的區塊。
+- **正式 build**：列表為空時顯示空狀態訊息並 `noindex`。
 - **需要你提供**：至少幾篇真實文章，才能做最終視覺驗收（§9 資料清單）。
 
 Solutions 詳細頁也只有第一階段那一句說明。舊 repo 的 `src/data/solutions-rich.ts` 有**官方英文原文**（Military、Police、Smart City，當時由業主提供）
@@ -53,7 +54,7 @@ Solutions 詳細頁也只有第一階段那一句說明。舊 repo 的 `src/data
 | `SeoHead` | canonical、hreflang、OG、JSON-LD | 所有新頁 | `product` 參數泛化為 `structuredData`（加 Article / NewsArticle / CollectionPage）；文章加 `article:published_time` 等 OG 欄位 |
 | `Header` | 五個主選單、語言、搜尋、手機選單 | 不變 | 「資源」改成可展開的子選單（§5.3） |
 | `Footer` | 選單、聯絡資訊 | 不變 | 「資源」下列三個子項目連結 |
-| `PageHero` | 深色 Hero、麵包屑、最多兩個按鈕 | Solutions 總覽與詳細頁、Resources、三個列表頁 | 無（圖片可省略的情況已支援） |
+| `PageHero` | 深色 Hero、麵包屑、最多兩個按鈕 | Solutions 總覽與詳細頁、三個列表頁 | 無（圖片可省略的情況已支援） |
 | `SectionHead` | 小標＋H2＋說明＋查看全部 | 所有區塊標題、相關內容區 | 無 |
 | `CtaBand` | 深色 CTA | Solutions、文章頁結尾 | 無 |
 | `CardProduct` | 產品卡 | Solution 頁「相關產品」 | 無 |
@@ -78,7 +79,6 @@ Solutions 詳細頁也只有第一階段那一句說明。舊 repo 的 `src/data
 |---|---|---|
 | `/[lang]/solutions/` | Solutions 總覽 | 可索引 |
 | `/[lang]/solutions/{military,police,fire-rescue,smart-city}/` | 領域詳細頁 | 可索引（待翻譯則 noindex） |
-| `/[lang]/resources/` | Resources Hub | 三類都沒有內容時 noindex |
 | `/[lang]/news/`、`/[lang]/news/page/[n]/` | 消息列表＋分頁 | 0 篇時 noindex |
 | `/[lang]/news/[slug]/` | 消息內頁 | 可索引（待翻譯則 noindex） |
 | `/[lang]/insights/`、`/[lang]/insights/page/[n]/` | 技術文章列表＋分頁 | 同上 |
@@ -102,7 +102,7 @@ Solutions 詳細頁也只有第一階段那一句說明。舊 repo 的 `src/data
 Solutions ── 總覽、Military、Police、Fire & Disaster Response、Smart City   （第一層照舊連到總覽）
 Products
 Technologies
-Resources ── 資源總覽、News、Insights、Case Studies                         （第一層改為可展開子選單）
+Resources ── News、Insights、Case Studies（第一層是展開按鈕，沒有總覽頁）
 Company
 ```
 
@@ -188,7 +188,6 @@ Solutions 是否也做子選單：建議**先不做**（總覽頁已經列出四
 |---|---|---|---|
 | Solutions 總覽 | PageHero → 四張解決方案卡 → CtaBand | `PageHero`、`CardSolution`、`CtaBand` | — |
 | Solution 詳細頁 | PageHero → 頁內導覽 → Overview → Challenges → Capabilities → 相關產品 → 相關案例 → 相關技術文章 → 相關消息 → CTA | `PageHero`、`SectionHead`、`CardProduct`、`CardArticle`、`CtaBand`、頁內導覽 | `TileGrid`、`Prose`、`InPageNav`（從產品頁抽出） |
-| Resources Hub | PageHero → 最新消息（3）→ 技術文章（3）→ 案例（3），每區「查看全部」→ 標籤列 | `PageHero`、`SectionHead`（viewAll）、`CardArticle` | `TagList` |
 | News / Insights 列表 | PageHero（無圖）→ 分類／標籤連結 → 卡片網格 → 分頁 | `PageHero`、`CardArticle` | `Pagination`、`EmptyState` |
 | Case Studies 列表 | PageHero → 領域篩選 → 卡片網格 | `PageHero`、`FilterBar`（參數化後）、`CardArticle` | — |
 | 文章內頁（三種共用） | ArticleHeader（麵包屑、類型・日期、H1、摘要、封面）→ 專屬欄位區 → 正文 → 標籤 → 相關產品／解決方案／文章 → CtaBand | `Breadcrumb`、`SectionHead`、`CardProduct`、`CardSolution`、`CardArticle`、`CtaBand` | `ArticleLayout`、`ArticleHeader`、`CaseFacts`（案例：客戶、領域、使用產品、挑戰、方案、成果）、`NewsMeta`（展覽／媒體資訊） |
@@ -237,8 +236,8 @@ Pagefind 的 JS 只在 `/search/` 頁載入，不影響其他頁效能。
 
 採 **disclosure 導覽模式**（不是 ARIA `menu`，網站導覽不適合用 menu role）：
 - 「資源」是 `<button aria-expanded aria-controls>`，Enter／Space 開合，Esc 關閉並把焦點回到按鈕，焦點移出子選單時自動關閉。
-- 子選單第一項是「資源總覽」連結，所以不需要讓按鈕本身也當連結。
-- 目前所在頁（資源總覽、三個列表、文章頁）時，「資源」顯示底線且子選單對應項目加 `aria-current`。
+- 「資源」只是展開按鈕，子選單三項分別連到 News、Insights、Case Studies，沒有資源總覽頁。
+- 目前所在頁（三個列表、文章頁）時，「資源」顯示底線且子選單對應項目加 `aria-current`。
 - 手機版：同一個按鈕在漢堡選單中展開成巢狀清單，沿用第一階段的焦點鎖定。
 - 不靠 hover 開啟（觸控與鍵盤一致），沒有 JS 時子選單直接展開顯示。
 
@@ -268,7 +267,6 @@ Pagefind 的 JS 只在 `/search/` 頁載入，不影響其他頁效能。
 ```
 src/pages/[lang]/solutions/index.astro
 src/pages/[lang]/solutions/[slug].astro
-src/pages/[lang]/resources/index.astro
 src/pages/[lang]/news/[...page].astro          列表＋分頁（Astro paginate）
 src/pages/[lang]/news/[slug].astro
 src/pages/[lang]/insights/[...page].astro
@@ -283,7 +281,7 @@ src/components/ArticleHeader.astro、CaseFacts.astro、NewsMeta.astro
 src/components/TileGrid.astro、Prose.astro、InPageNav.astro（從產品頁抽出）
 src/components/Pagination.astro、EmptyState.astro、TagList.astro、SearchResults.astro
 src/content/tags/{tw,en,jp}/                    標籤清單（內容待提供）
-src/content/pages/{tw,en,jp}/{solutions,resources,news,insights,case-studies,tags,search}.md   各列表頁文案
+src/content/pages/{tw,en,jp}/{solutions,news,insights,case-studies,tags,search}.md   各列表頁文案
 tests/fixtures/content/                          測試用內容（標示 TEST FIXTURE，不進正式 build）
 tests/relations.test.ts、tests/sections.test.ts
 scripts/qa-search.mjs                            Pagefind 索引檢查
@@ -353,7 +351,7 @@ docs/PLAN.md                   標示第一階段 §5 哪些項目移到第三�
 | T19 | 三種文章內頁路由（都用 `ArticleLayout`） | ♻️ | 1.5 |
 | T20 | **`ArticleListPage`＋`Pagination`＋`EmptyState`**：所有列表頁共用一個元件，篇數讀 T6 設定 | 🆕 | 3 |
 | T21 | News / Insights / Case Studies 列表路由（都用 `ArticleListPage`；Case Studies 用同一個分頁路由，設定為不分頁） | ♻️ | 1 |
-| T22 | Resources Hub（`PageHero`、`SectionHead`、`CardArticle`）＋`TagList` | ♻️🆕 | 2 |
+| T22 | ~~Resources Hub~~（已取消：Resources 只有下拉選單）；`TagList` 併入 T23 | — | 0 |
 | T23 | 標籤總覽與標籤頁（`ArticleListPage`）、<3 篇 noindex | ♻️ | 2 |
 | T24 | Sitemap 改為頁型登記 | 🔧 | 1.5 |
 | **搜尋** | | | |
@@ -372,7 +370,7 @@ docs/PLAN.md                   標示第一階段 §5 哪些項目移到第三�
 | T35 | 最小 CI（GitHub Actions）＋部署環境相容性（§11.2） | 🔗🧪 | 3 |
 | T36 | 除錯與整合（跨頁問題、三語邊界情況、修正測試發現的問題） | 🔗 | 6 |
 | T37 | 文件（README、PLAN 更新、後台操作說明） | 🔗 | 1 |
-| | **合計** | | **約 87 h** |
+| | **合計** | | **約 85 h**（T22 取消後） |
 
 ### 8.2 分類小計
 
@@ -432,7 +430,7 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 - 案例：客戶名稱或匿名方式、公開授權、經確認的成果數據。
 - 標籤清單（中文名稱與 slug）。
 - 四個領域的 Hero 文案、Overview、Challenges、Capabilities、主圖。
-- 各列表頁的標題與說明文字（Resources、News、Insights、Case Studies、Tags、Search）。
+- 各列表頁的標題與說明文字（News、Insights、Case Studies、Tags、Search）。
 - 第一階段尚未補的 `[待提供]` 項目（表單網址、聯絡資訊等）仍然有效。
 
 ### 9.3 待決策事項
@@ -512,6 +510,7 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 - 舊站原文的段落結構和新模板（Overview / Challenges / Capabilities）不完全對應時，只放進意思明確對應的欄位，其餘保留 `[待提供]`，不改寫原文。
 
 ### 11.4 Resources
+- **Resources 只有下拉選單（News、Insights、Case Studies），不建立 `/[lang]/resources/` 頁面。**（2026-10-19 修正）
 - News、Insights 每頁 12 篇，寫在 `site.json` 的 `listing.pageSize`，可調整。
 - Case Studies 初期不分頁，但和其他列表用**同一個分頁路由與元件**，只要把設定改成數字就會開始分頁。
 - 文章詳細頁採淺色 Hero（`ArticleHeader`）。
@@ -531,6 +530,8 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 ---
 
 ## 12. Pagefind 技術驗證結果（T0，2026-10-19）
+
+> **Pagefind 已確定採用**（業主決定，不重新選型）。本節保留作為三語搜尋品質的驗證紀錄；K2 期間重跑結果相同（§14.2）。
 
 ### 12.1 測試方式
 
@@ -750,7 +751,7 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 | 5 | 後台登入與權限 | Access 原則、角色對應、送審／發布權限 | 2 | | 2 | 1 | 5 |
 | 6 | CMS 管理介面 | 欄位中文標籤與說明、審核流程設定、預覽改用我們的模板 | 6 | | 4 | | 10 |
 | 7 | Astro 內容讀取整合 | D1 loader（保留 Zod 與關聯驗證）、Portable Text 渲染、adapter 混合式設定、現有 Markdown 匯入 D1 的一次性腳本 | 8 | 2 | 4 | | 14 |
-| 8 | Solutions、Resources、News、Insights、Case Studies、標籤頁 | §8 的 T7–T24（共用元件抽出、`ArticleLayout`、`ArticleListPage` 等） | 13 | 9 | 7.5 | 3 | 32.5 |
+| 8 | Solutions、News、Insights、Case Studies、標籤頁（不含 Resources 總覽頁） | §8 的 T7–T24（共用元件抽出、`ArticleLayout`、`ArticleListPage` 等） | 13 | 9 | 7.5 | 3 | 32.5 |
 | 9 | 搜尋 | Pagefind＋雙字詞編碼（§12.4）、搜尋頁 | 4 | 1 | 1.5 | | 6.5 |
 | 10 | 自動化測試 | 測試資料（本機 D1 種子資料）、單元、搜尋、sitemap、行為、a11y、截圖、Lighthouse、**CMS E2E**（新增／編輯／圖片／三語／關聯／草稿／審核／排程／版本還原／權限）、build 觸發測試 | | | | 23.5 | 23.5 |
 | 11 | 備份與還原驗證 | D1 匯出、R2 同步、本機 Linux 腳本、本機還原演練＋一次雲端還原演練 | 3 | | 1 | 2 | 6 |
@@ -841,3 +842,125 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 - Payload 需要 Workers Paid：<https://github.com/payloadcms/payload/blob/main/templates/with-cloudflare-d1/README.md>
 
 > 註：這個開發環境無法直接開啟 Cloudflare 官網，以上額度是透過搜尋取得官方文件內容（2026-10 查詢）。實作前會在 Cloudflare 後台再確認一次。
+
+---
+
+## 14. K2：EmDash 本機技術驗證結果（2026-10-19）
+
+> 只做本機驗證：D1／R2 為 wrangler 本機模擬；**沒有建立任何 Cloudflare 資源、沒有部署、沒有使用付費服務、沒有變更正式網站或 DNS**。
+> 測試在正式 repo 之外的隔離副本中進行，正式程式碼未修改。重現方式、測試腳本與設定檔：`docs/spikes/emdash/`。
+
+### 14.1 每個測試項目的結果
+
+| # | 項目 | 結果 | 說明 |
+|---|---|---|---|
+| 1 | 安裝並啟動 EmDash；與 Astro 7.3.8 相容 | ✅ 通過（需 2 項設定調整） | `emdash` 1.3.1 以 Astro `^7.3.2` 開發，npm 解析後全部共用 7.3.8。`@astrojs/cloudflare` 必須用 **14.3.4**（14.4.0 要求 Astro 7.4）。需要的調整：① `trailingSlash` 由 `"always"` 改為 `"ignore"`，否則後台 API 大量 404（已驗證對公開頁面輸出沒有影響）；② Astro `i18n` 用 `routing: "manual"`＋一個直接放行的 middleware，才能保留 `/en/` `/tw/` `/jp/` 三語前綴，同時讓後台 `/_emdash/admin` 正常 |
+| 2 | 建立 Products、Solutions、News、Insights、Case Studies、Tags 資料模型 | ✅ 通過 | 用版本控管的 seed 檔建立 6 個 collection＋10 個關聯；Tags 直接用 EmDash 內建的分類法（每種語言各自的標籤名稱）。collection 名稱只能用底線，所以 `case-studies` 在 CMS 內叫 `case_studies`，loader 對應回原本的網址 |
+| 3 | 三語、翻譯狀態、單向關聯、重複欄位、圖片上傳 | ✅ 通過（14/14） | 三語各一筆並互相連結；`translatable: false` 的欄位（代號、排序、領域、部署數字）**自動同步到其他語言**，等於第一階段「結構欄位以 tw 為準」的規則；翻譯狀態各語言獨立；**關聯只存一份**，三種語言共用，並可從另一端反查（UAV 頁查得到 SUT、軍事頁查得到 SUT）；重複欄位的必填子欄位、`[待提供]` 數值格式、指向不存在內容的關聯都會被拒絕；圖片上傳到本機 R2 並可取回。語言代碼改用 `zh-TW`、`ja`（用 `tw` 時後台會顯示成「Akan」語），由 loader 對應到網址的 `/tw/` `/jp/` |
+| 4 | 草稿、審核、發布、排程、版本還原、角色權限 | ✅ 通過（18/18），**審核流程需客製化** | 新增即草稿、草稿不出現在已發布清單；發布後修改會存成草稿、線上版不變、可比較差異；版本紀錄與還原（還原成草稿，需再發布）；排程到時自動發布；下架；刪除進垃圾桶並可還原。角色：Contributor 只能存草稿、不能發布、不能改別人的；Author 只能發布自己的；Editor 能發布全部但不能改資料模型或永久刪除。**EmDash 沒有「送審／退回」狀態**，審核只能靠角色分工 |
+| 4a | 無法在本機完整測試的部分 | ⚠️ 需雲端驗證（K3） | Cloudflare Access 登入；正式環境的排程發布（本機用開發模式計時器，正式環境靠 Cron Trigger）；免費方案每次請求 10 ms CPU 限制；D1 Time Travel |
+| 5 | EmDash 資料經 Content Layer Loader 提供給現有 Content Collections | ✅ 通過 | 自訂 loader 用唯讀 token（只有 `content:read`）讀已發布內容，轉成第一階段原本的資料形狀，**第一階段的 Zod schema 與關聯驗證完全沒改**。確認：清單 API 回傳的是線上版（有未發布草稿時不會讀到草稿）；loader 失敗時 build 以代碼 1 結束（不會發布舊資料）；Zod 擋下了 EmDash 回傳的 `1`／`0` 布林值（loader 已轉換）；圖片在 build 時下載到本機快取，照常轉成 AVIF／WebP |
+| 6 | 產品頁資料來源替換：HTML、路由、SEO、畫面 | ✅ 通過（1 項預期差異） | 把第一階段 Markdown（3 產品＋4 解決方案＋2 整合情境 × 3 語＝27 筆）匯入 EmDash 後重新 build：12 頁的**路由、canonical、hreflang、OG、JSON-LD 全部相同**；USV 頁 HTML 與畫面 **0 像素差異**；其他頁唯一差異是 Counter-UAS「參與產品」順序由「UAV、SUT」變成「SUT、UAV」（關聯改為只存一份後，反查方向沒有自己的順序；建議一律依產品排序）。根目錄 `/` 改由 adapter 產生的 `_redirects` 做真正的 301。第一階段原有測試對新 build：單元 5/5、axe 0 個嚴重問題、手機選單通過、壞連結 0、行為測試 26/27（唯一失敗是根目錄轉址的檢查方式要改寫） |
+| 7 | EmDash 更新後以正式支援的方式觸發 Workers Builds | ✅ 機制通過（本機），⚠️ 實際呼叫需 K3 | 兩端都是官方機制：Cloudflare Workers Builds 自 2026-04 提供 **Deploy Hook**（POST 一個網址即觸發 build，build 還在初始化時重複的 POST 會被忽略）；EmDash 原生外掛宣告 `network:request` 能力與允許主機，在 `content:afterPublish`／`afterUnpublish`／`afterDelete` 時呼叫（排程發布也會觸發 `afterPublish`）。本機 5/5：存草稿不觸發，發布、下架、排程發布、刪除都觸發。EmDash 的 SSRF 防護禁止外掛連到內網位址，所以本機用「記錄模式」驗證；對 `api.cloudflare.com` 的真正 POST 要在 K3 驗證 |
+| 8 | 內建功能能否滿足需求（避免重複開發） | ✅ 大部分內建 | 見 §14.3 |
+| — | Pagefind 三語搜尋品質（不重新選型） | ✅ 通過 | 重跑 `docs/spikes/pagefind`：採用的雙字詞方式繁中 20/20、英文 10/10、日文 14/14；原生斷詞 38/44（結論與 §12 相同） |
+
+**其他量測**：Worker 程式包未壓縮 17.7 MiB、gzip 4.7 MiB（`wrangler deploy --dry-run`，未連線帳號），低於 64 MiB 上限；build 時間由約 5 秒增加到約 50 秒（多了後台與伺服器程式）；後台介面有繁體中文翻譯（約 92% 字串已翻譯）。
+
+### 14.2 實際版本與測試指令
+
+見 `docs/spikes/emdash/README.md`（版本表、安裝與執行步驟、每支腳本的結果）。主要指令：
+
+```bash
+npx emdash seed --validate seed/seed.json
+spike-tests/reset.sh && node spike-tests/01-model.mjs && node spike-tests/02-reverse.mjs \
+  && node spike-tests/03-lifecycle.mjs && node spike-tests/04-admin.mjs
+node spike-tests/05-import.mjs
+BXR_CONTENT_SOURCE=emdash EMDASH_TOKEN=<唯讀 token> npx astro build
+python3 spike-tests/06-compare.py <第一階段 dist> dist/client
+node spike-tests/07-visual.mjs <第一階段 dist> dist/client <輸出資料夾>
+node spike-tests/08-deploy-hook.mjs && node spike-tests/09-builtins.mjs
+```
+
+### 14.3 內建功能與必須客製化的功能
+
+**內建可直接用（不要重寫）**：資料模型與欄位驗證、三語與翻譯連結、不可翻譯欄位同步、雙向可讀的單一關聯、重複欄位、媒體庫（R2）、草稿／發布／發布後修改／比較／版本還原、排程發布、下架、垃圾桶、五種角色與擁有者權限、每篇內容的 SEO 欄位（title、description、OG 圖、canonical、noindex）、標籤（分類法）、整站匯出（備份與搬家）、唯讀 API token、繁中後台介面。
+
+**必須客製化**：
+
+| # | 功能 | 原因 | 工時 |
+|---|---|---|---|
+| C1 | Content Layer loader 正式版 | 原型已完成；正式版需要：透過 Cloudflare Access 的服務 token 存取、完整的 Portable Text 轉 HTML（標題、清單、連結、圖片）、News／Insights／Case Studies 對應、媒體快取 | 8 |
+| C2 | 重建觸發外掛正式版 | 原型已完成；加上合併觸發（用 EmDash 的 `cron` hook 每分鐘最多觸發一次）、失敗重試、後台顯示「上線中」狀態 | 4 |
+| C3 | 審核流程 | EmDash 沒有「送審／退回」狀態：加「審核狀態」欄位＋`content:beforePublish` 政策 hook（未核准不得發布）＋後台清單篩選 | 6 |
+| C3a | 審核通知 Email（選擇性） | 需要設定 Email 服務 | 2 |
+| C4 | 全站內容操作紀錄（選擇性） | 內建稽核紀錄只記錄安全相關操作，不記錄內容新增／修改／發布；各篇內容有版本紀錄可追查 | 5 |
+| C5 | 用網站模板預覽草稿 | 公開頁是靜態檔；需要一條動態預覽路由，用 EmDash 的預覽 token 讀草稿並套我們的模板 | 8 |
+| C6 | 資料模型定稿與後台中文標籤 | 全部 collection 的欄位、說明文字、清單欄位、後台分組 | 6 |
+| C7 | 遷移腳本正式版 | 原型已匯入 27 筆；加上文章類型、頁面文案、圖片與比對檢查 | 4 |
+| C8 | 第一階段配合調整 | `trailingSlash`、`dist/client`、QA 腳本、根目錄轉址測試、「參與產品依產品排序」 | 2.5 |
+| C9 | Cloudflare Access 設定（K3 之後） | 本機無法測試 | 3 |
+| | **合計** | | **48.5 h**（不做 C3a、C4 則 41.5 h） |
+
+### 14.4 第一階段需要修改的實際檔案
+
+在測試環境中實際修改並驗證過（正式 repo 尚未修改）：
+
+| 檔案 | 修改 |
+|---|---|
+| `astro.config.mjs` | 加 `@astrojs/cloudflare`（14.3.4）、`@astrojs/react`、`emdash` integration（含重建外掛）；`i18n`（`defaultLocale: "en"`、`locales: ["en","zh-TW","ja"]`、`routing: "manual"`）；`trailingSlash: "always"` → `"ignore"` |
+| `src/content.config.ts` | products、solutions、scenarios（之後加 news、insights、case-studies）的 loader 由 `glob()` 換成 `emdashLoader()`；`DOMAINS` 改由 `src/lib/domains.ts` 匯入。**Zod schema 不變** |
+| `src/pages/[lang]/products/index.astro` | `DOMAINS` 的匯入路徑（1 行）。原因：頁面不可在執行環境匯入 `content.config.ts`，否則 Cloudflare 預先產生頁面時失敗 |
+| `scripts/lib/serve.mjs` | 輸出資料夾 `dist` → `dist/client` |
+| `scripts/qa-behaviour.mjs` | 根目錄轉址檢查改為檢查 `_redirects` |
+| `package.json`、`.gitignore` | 新套件、`emdash.seed`；忽略 `.wrangler/`、`.env`、`src/assets/.emdash-media/` |
+| 新增 | `src/lib/domains.ts`、`src/lib/emdash-loader.ts`、`src/middleware.ts`、`src/live.config.ts`、`src/worker.ts`、`wrangler.jsonc`、`seed/seed.json`、`plugins/deploy-hook/` |
+| **不需修改** | 所有元件、版型、Design Tokens、Logo、`[slug].astro` 產品頁、`lib/content.ts`、SEO、sitemap、樣式、介面文字 |
+
+### 14.5 148 小時估算是否仍合理
+
+| §13.9 項目 | 原估 | 驗證後 | 原因 |
+|---|---|---|---|
+| 1 CMS 技術驗證 | 10 | 3 | 本機驗證已完成，只剩 K3 雲端驗證 |
+| 2 D1 資料模型 | 10 | 6 | seed 已涵蓋主要 collection |
+| 3 R2 媒體 | 5 | 4 | build 時下載媒體的方式已驗證 |
+| 4 Workers API | 8 | 4 | 重建外掛原型已完成；剩合併觸發與舊站參數型轉址 |
+| 5 登入與權限 | 5 | 5 | Access 本機無法驗證 |
+| 6 後台介面 | 10 | 22 | 加入 C3 審核流程、C4 操作紀錄、C5 模板預覽（原估低估） |
+| 7 Astro 內容讀取整合 | 14 | 14 | C1＋C7＋C8 |
+| 8 頁面 | 32.5 | 30.5 | Resources 總覽頁取消 |
+| 9 搜尋 | 6.5 | 6.5 | — |
+| 10 自動化測試 | 23.5 | 20.5 | K2 腳本可直接改成正式測試 |
+| 11 備份與還原 | 6 | 6 | — |
+| 12 CI 與部署相容性 | 3 | 3 | — |
+| 13 除錯與整合 | 10 | 10 | — |
+| 14 文件 | 4 | 4 | — |
+| **合計** | **148** | **138.5** | |
+
+**結論：148 小時仍然合理，驗證後約 138.5 小時。** 驗證省下的時間被審核流程、操作紀錄、模板預覽抵銷。若 C4（操作紀錄）不做、預覽先用 EmDash 內建方式，可降到約 125 小時。
+
+### 14.6 是否建議正式採用 EmDash
+
+**建議採用，但以 K3 雲端驗證通過為前提。**
+
+理由：
+- 這次需要的功能（三語、單一關聯、權限、草稿、版本、排程、媒體、SEO 欄位、匯出）**大部分已內建且實測通過**，自己開發至少要多 70 小時，之後的維護與安全修補也要自己負責。
+- 第一階段的元件、頁面、SEO、Zod 驗證**幾乎不用改**；換資料來源後頁面輸出與原本一致（唯一差異是一行的排列順序）。
+- 公開網站維持靜態，就算 CMS 或 D1 故障，網站照常運作。
+
+仍有的風險：
+- EmDash 1.0 才發布半年：鎖定精確版本；只用公開的 REST API 與外掛 API；頁面只透過我們自己的 loader 讀資料，未來要換 CMS 只需改 loader。
+- **免費方案能否運作還沒確定**（10 ms CPU 限制）：只能在 K3 實測，不行時需要 Workers Paid（US$5／月）。
+- 審核流程不是內建：需要客製化（C3）。
+- build 時要從已部署的 CMS 讀資料，所以要先部署 CMS、再做第一次網站 build；Cloudflare Access 需要另外設定服務 token 讓 build 通過。
+
+### 14.7 下一步（需要你核准）
+
+| # | 事項 | 費用 |
+|---|---|---|
+| K1 | 採用 EmDash＋混合式架構 | — |
+| K3 | 雲端驗證：測試用 D1＋Worker（免費方案），實測 CPU 限制、Deploy Hook、Cron Trigger、Access；測完刪除 | $0；需要只有 Workers、D1、Workers Builds 權限的 API token |
+| K4 | 啟用 R2（綁定付款方式） | 免費額度內 $0 |
+| K5 | 若 K3 顯示免費方案不夠：Workers Paid | US$5／月 |
+| K6 | 內容匯入 D1 後，Markdown 移到測試資料夾 | — |
+| 新 | 確認 Counter-UAS 等「參與產品」改為依產品排序 | — |
