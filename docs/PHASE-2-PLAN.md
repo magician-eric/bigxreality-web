@@ -1,6 +1,6 @@
 # Big x Reality 官網 2.0 — 第二階段技術規劃
 
-> 狀態：**待審**。審核通過前不開始開發、不開 PR、不部署。
+> 狀態：**原則核准，依 §11 決策修訂（2026-10-19）**。執行順序：先做 Pagefind 技術驗證並回報 → 確認可行後依 §8 分階段實作。不部署。
 > 基準：`main` @ `df47220`（PR #1 合併後）。
 > 範圍：Solutions、Resources、News、Insights、Case Studies、共用標籤、內容關聯、站內搜尋。
 > 原則：能共用就共用；沿用第一階段的 Astro 7.3.8、Design Tokens、元件、三語架構、SEO 系統；不導入 Tailwind，不建第二套設計系統或第二套關聯系統。
@@ -315,31 +315,100 @@ docs/PLAN.md                   標示第一階段 §5 哪些項目移到第三�
 
 ---
 
-## 8. 工作拆分與預估時間
+## 8. 工作拆分與預估時間（修訂版）
 
-時數是開發與自我測試的時間，不含等待資料與審核。
+時數是開發與自我測試的時間，不含等待資料與審核。分類標記：
 
-| # | 工作 | 內容 | 預估 |
+- 🆕 新增功能　♻️ 沿用既有元件（只組裝，不改元件）　🔧 修改既有元件
+- 🗂 CMS 設定　🔍 搜尋　🧪 自動化測試　🔗 除錯與整合
+
+### 8.1 任務與工時
+
+| # | 任務 | 分類 | 工時 |
 |---|---|---|---|
-| W0 | 技術驗證 | Pagefind 中日文斷詞實測（tw/jp 測試內容）、Astro 分頁＋三語路由實測 | 3 h |
-| W1 | Schema 與關聯 | §3 擴充、驗證擴充、反查函式、單元測試、測試內容 | 6 h |
-| W2 | 共用元件抽出 | `TileGrid`、`Prose`、`InPageNav` 從產品頁抽出；產品頁截圖前後比對 | 3 h |
-| W3 | Solutions | 總覽＋詳細頁、反查區塊 | 5 h |
-| W4 | 文章模板 | `ArticleLayout`、三種內頁、專屬欄位區 | 7 h |
-| W5 | 列表與 Resources | News / Insights 分頁列表、Case Studies 篩選、Resources Hub、空狀態 | 6 h |
-| W6 | 標籤 | 標籤總覽與標籤頁、noindex 規則 | 3 h |
-| W7 | 導覽 | Header Resources 子選單（桌機＋手機＋鍵盤）、Footer | 4 h |
-| W8 | 搜尋 | Pagefind 整合、搜尋頁、類型篩選、索引檢查腳本 | 6 h |
-| W9 | SEO | SeoHead 泛化、JSON-LD、sitemap 頁型登記與比對測試 | 4 h |
-| W10 | QA | axe、Lighthouse、行為測試擴充、截圖、連結檢查、第一階段回歸 | 6 h |
-| W11 | Decap（選擇性） | `config.yml`、本機 `decap-server` 測試、schema 一致性測試 | 6 h |
-| | **合計** | 不含 W11 | **約 53 h** |
-| | | 含 W11 | **約 59 h** |
+| **T0** | **Pagefind 三語技術驗證**（§12），回報後才繼續 | 🔍🧪 | 4 |
+| **基礎** | | | |
+| T1 | 測試資料隔離機制：`BXR_CONTENT=fixtures` 切換內容目錄、輸出到 `dist-fixtures/`、正式 build 防呆檢查（§11.5） | 🆕🧪 | 3 |
+| T2 | 測試資料內容：三語、News ≥ 13 篇（測分頁）、Insights、Case Studies、標籤（≥3 篇與 <3 篇各一）、待翻譯／草稿／未來日期／未授權各一 | 🧪 | 3 |
+| T3 | Schema 擴充（§3）：文章共用欄位、各類專屬欄位、Solutions、`tags` collection | 🔧 | 3 |
+| T4 | 關聯驗證與反查擴充（`lib/content.ts`），不另建系統 | 🔧 | 3 |
+| T5 | 單元測試：關聯驗證、反查、區塊顯示規則 | 🧪 | 2 |
+| T6 | 共用設定：`site.json` 加 `listing.pageSize`（News / Insights 12、Case Studies 不分頁＝`null`） | 🆕 | 0.5 |
+| **共用元件** | | | |
+| T7 | 從產品頁抽出 `TileGrid`、`Prose`、`InPageNav`，產品頁改用 | 🔧 | 2 |
+| T8 | 產品頁回歸：抽出前後截圖逐像素比對＋原 27 項行為測試 | 🧪 | 1 |
+| T9 | `BaseLayout`：`fallbackPath`、`searchable` 參數 | 🔧 | 1 |
+| T10 | `SeoHead`：`structuredData` 泛化、文章 OG | 🔧 | 2 |
+| T11 | `CardArticle`：`headingLevel`、標籤連結 | 🔧 | 0.5 |
+| T12 | `FilterBar`：選項與網址參數參數化（產品總覽行為不變） | 🔧 | 1 |
+| T13 | `Header` Resources 子選單（disclosure，桌機＋手機＋鍵盤）、`Footer` 子連結 | 🔧 | 3.5 |
+| **頁面** | | | |
+| T14 | Solutions 內容匯入：舊站官方原文，逐欄標示來源與語言（§11.3） | 🆕 | 2 |
+| T15 | Solutions 總覽（`PageHero`＋`CardSolution`＋`CtaBand`） | ♻️ | 1 |
+| T16 | Solution 詳細頁（`PageHero`、`InPageNav`、`TileGrid`、`Prose`、`CardProduct`、`CardArticle`、`CtaBand`） | ♻️ | 2.5 |
+| T17 | **`ArticleLayout`＋`ArticleHeader`（淺色 Hero）**：三種文章內頁共用一個版型 | 🆕 | 3 |
+| T18 | `CaseFacts`（案例）、`NewsMeta`（展覽／媒體） | 🆕 | 2 |
+| T19 | 三種文章內頁路由（都用 `ArticleLayout`） | ♻️ | 1.5 |
+| T20 | **`ArticleListPage`＋`Pagination`＋`EmptyState`**：所有列表頁共用一個元件，篇數讀 T6 設定 | 🆕 | 3 |
+| T21 | News / Insights / Case Studies 列表路由（都用 `ArticleListPage`；Case Studies 用同一個分頁路由，設定為不分頁） | ♻️ | 1 |
+| T22 | Resources Hub（`PageHero`、`SectionHead`、`CardArticle`）＋`TagList` | ♻️🆕 | 2 |
+| T23 | 標籤總覽與標籤頁（`ArticleListPage`）、<3 篇 noindex | ♻️ | 2 |
+| T24 | Sitemap 改為頁型登記 | 🔧 | 1.5 |
+| **搜尋** | | | |
+| T25 | Pagefind 接入 build（只標記可公開詳細頁） | 🔍 | 1.5 |
+| T26 | 搜尋頁：Pagefind JS API＋自繪結果（沿用卡片樣式）、類型篩選、只載入目前語言 | 🔍🆕 | 3.5 |
+| **CMS** | | | |
+| T27 | `public/admin/config.yml`：products、solutions、scenarios、pages、news、insights、case-studies、tags；三語、relation、media | 🗂 | 4 |
+| T28 | 本機 `decap-server` 設定與操作說明 | 🗂 | 1 |
+| T29 | 後台設定與 zod schema 一致性測試 | 🗂🧪 | 2 |
+| T30 | 後台 E2E 測試（Playwright 操作 `/admin/`，§11.1 的每一項） | 🗂🧪 | 5 |
+| **測試與整合** | | | |
+| T31 | `qa:search`：索引隔離、待翻譯／列表／測試資料不進索引 | 🔍🧪 | 2 |
+| T32 | `check:sitemap`：sitemap ＝可索引頁面 | 🧪 | 1 |
+| T33 | `qa:behaviour` 擴充（子選單、分頁、語言退回、標籤 noindex、篩選、反查） | 🧪 | 3 |
+| T34 | `qa:a11y`、`qa:shots`、Lighthouse 涵蓋所有新頁型 | 🧪 | 2.5 |
+| T35 | 最小 CI（GitHub Actions）＋部署環境相容性（§11.2） | 🔗🧪 | 3 |
+| T36 | 除錯與整合（跨頁問題、三語邊界情況、修正測試發現的問題） | 🔗 | 6 |
+| T37 | 文件（README、PLAN 更新、後台操作說明） | 🔗 | 1 |
+| | **合計** | | **約 85.5 h** |
 
-建議順序：W0 → W1 → W2 → W3 → W4 → W5 → W6 → W7 → W8 → W9 → W10（W11 可與 W8 之後平行）。
-**W0 完成後會先回報**；如果 Pagefind 的中日文搜尋品質不夠，搜尋方案要先跟你討論再繼續。
+### 8.2 分類小計
 
----
+| 分類 | 工時 | 說明 |
+|---|---|---|
+| 🆕 新增功能 | 約 18 | `ArticleLayout`、`ArticleListPage`、`CaseFacts`、`NewsMeta`、搜尋頁、測試資料機制、Solutions 內容匯入 |
+| ♻️ 沿用既有元件 | 約 9 | 頁面只組裝既有元件，不重寫 |
+| 🔧 修改既有元件 | 約 18 | 都是加參數或抽出，原本的頁面行為不變 |
+| 🗂 CMS 設定 | 12 | 含 E2E |
+| 🔍 搜尋 | 約 11 | 含技術驗證 |
+| 🧪 自動化測試 | 約 32 | 含與其他分類重疊的測試任務 |
+| 🔗 除錯與整合 | 10 | 含 CI 與部署相容性 |
+
+（分類有重疊，小計加總會大於合計。）
+
+### 8.3 為什麼比原估 53～59 小時多
+
+| 增加項目 | 原因 | 增加 |
+|---|---|---|
+| CMS 由「設定＋一致性測試」擴大成 E2E 驗證五種內容的新增、編輯、圖片、三語、關聯、發布狀態 | §11.1 決策 | +6 |
+| 隔離的測試資料（目錄切換、獨立輸出、防呆檢查、資料本身） | §11.5 決策 | +6 |
+| CI 與部署環境相容性提前到第二階段 | §11.2 決策 | +3 |
+| 除錯與整合原本含在 QA 裡，現在單獨列出 | §11.7 要求分開標示 | +6 |
+| Pagefind 驗證加入日文假名、英文部分字詞、跨語言隔離 | §11.6 決策 | +1 |
+| Solutions 原文逐欄標示來源、語言、待確認 | §11.3 決策 | +2 |
+| 其他拆細後的差異（共用設定、Footer） | — | +2.5 |
+
+### 8.4 共用原則（避免每頁重做一套）
+
+- **所有文章內頁**只用 `ArticleLayout`；三種文章的差異只在 `CaseFacts` / `NewsMeta` 兩個插槽元件。
+- **所有列表頁**（News、Insights、Case Studies、標籤頁）只用 `ArticleListPage`；差異只有資料來源、篇數設定、篩選選項。
+- **詳細頁的區塊**（Solution、產品、文章）共用 `TileGrid`、`Prose`、`InPageNav`、`SectionHead`、卡片元件。
+- 不新增任何顏色、字級或間距數值；全部用既有 tokens。
+
+### 8.5 執行順序
+
+T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30 → T31–T37。
+每完成一組會跑完整測試；第一階段的測試一直保持通過。
 
 ## 9. 風險、待提供資料與待決策事項
 
@@ -364,6 +433,8 @@ docs/PLAN.md                   標示第一階段 §5 哪些項目移到第三�
 - 第一階段尚未補的 `[待提供]` 項目（表單網址、聯絡資訊等）仍然有效。
 
 ### 9.3 待決策事項
+
+> D1、D2、D4–D7 已於 2026-10-19 決定，見 §11。D3、D8 照建議執行。
 
 | # | 問題 | 建議 |
 |---|---|---|
@@ -404,3 +475,52 @@ docs/PLAN.md                   標示第一階段 §5 哪些項目移到第三�
 | `qa:shots` 擴充 | 每種新頁型截圖；產品頁回歸比對 |
 | `qa:links` | 照舊，更新「未建立頁面」清單 |
 | `tests/decap-config.test.ts`（D1） | `config.yml` 欄位與 zod schema 一致 |
+
+---
+
+## 11. 審核決策（2026-10-19）
+
+### 11.1 Decap CMS
+本階段建立 `config.yml` 並完成**本機測試**。E2E 測試要驗證 Products、Solutions、News、Insights、Case Studies 各自的：
+新增、編輯、圖片上傳（寫入正確的 media 資料夾、Markdown 路徑可被 Astro 讀取）、三語內容（tw / en / jp 三個檔案）、關聯欄位（只能選既有 slug）、發布狀態（`draft`、`publishDate`、`translationStatus`）。
+每個 E2E 案例最後都跑一次 build，確認後台存出來的檔案能通過 schema 與關聯驗證。測試結束後還原所有檔案。
+正式 GitHub 登入（Cloudflare Worker OAuth 代理）放第三階段。
+
+### 11.2 部署環境與 CI
+**目前沒有任何 CI**（沒有 `.github/workflows/`），也沒有鎖定 Node 版本的檔案。第二階段補上：
+- `.node-version`（`22`）：Cloudflare Pages 與本機、CI 用同一個 Node 主版本。
+- 最小 CI（GitHub Actions，每個 PR 與 push 到 `main`）：`npm ci` → `npm run build` → `npm test` → `check:sitemap` → `qa:links` → `qa:search` → `qa:behaviour` → `qa:a11y`。Lighthouse 與截圖仍手動跑（結果不穩定，不適合當 CI 關卡）。
+- 部署相容性檢查：在乾淨環境用 `npm ci && npm run build` 驗證；確認 build 不依賴開發機才有的東西（例如 `/opt/pw-browsers` 只用在 QA，不用在 build）；確認輸出是純靜態檔，`/` 轉址在沒有伺服器設定時也能運作；Pagefind 二進位檔在 Linux x64 可執行。
+- Cloudflare 正式部署、GA、301、正式備份放第三階段。
+
+### 11.3 Solutions 內容來源
+沿用舊 repo `src/data/solutions-rich.ts` 中業主當時提供的官方原文：
+
+| 領域 | 英文 | 繁中 | 日文 |
+|---|---|---|---|
+| Military | 官方原文 | `[待提供]` | `[待翻譯]` |
+| Police | 官方原文 | 官方原文 | `[待翻譯]` |
+| Fire & Disaster Response | `[待提供]`（舊站沒有此頁） | `[待提供]` | `[待翻譯]` |
+| Smart City | 官方原文 | 官方原文 | `[待翻譯]` |
+
+- 每個 Markdown 檔的 frontmatter 加 `source` 註記（來源檔、提供日期、語言），頁面不顯示。
+- 舊站原文寫於改版前，內容（例如提到的產品名稱）要請你重新確認；會在 PR 列出每一段需要確認的句子。
+- **不使用舊 repo 的日文**（當時是 AI 翻譯，未經審核）。
+- 舊站原文的段落結構和新模板（Overview / Challenges / Capabilities）不完全對應時，只放進意思明確對應的欄位，其餘保留 `[待提供]`，不改寫原文。
+
+### 11.4 Resources
+- News、Insights 每頁 12 篇，寫在 `site.json` 的 `listing.pageSize`，可調整。
+- Case Studies 初期不分頁，但和其他列表用**同一個分頁路由與元件**，只要把設定改成數字就會開始分頁。
+- 文章詳細頁採淺色 Hero（`ArticleHeader`）。
+
+### 11.5 測試資料隔離
+- 位置：`tests/fixtures/content/`，結構和 `src/content/` 相同；每個檔案標題前綴 `TEST FIXTURE`。
+- 只有設定 `BXR_CONTENT=fixtures` 時才會使用，輸出到 `dist-fixtures/`，永遠不寫進 `dist/`。
+- 防呆：正式 build 結束時檢查 `dist/`（含 sitemap 與 Pagefind 索引）不得出現 `TEST FIXTURE` 字樣或測試資料的 slug，出現就讓 build 失敗。
+- 測試資料 build 的每一頁都加 `noindex`，`robots.txt` 改為全部禁止，避免被誤部署時被索引。
+
+### 11.6 Pagefind 技術驗證
+見 §12。品質不符時先回報測試結果與替代方案，不自行導入大型搜尋服務。
+
+### 11.7 工時拆分
+見 §8（修訂版）。
