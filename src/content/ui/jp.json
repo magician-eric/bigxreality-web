@@ -1,0 +1,123 @@
+{
+  "translationStatus": "pending",
+  "skipToContent": "[待翻譯] 跳到主要內容",
+  "nav": {
+    "label": "[待翻譯] 主選單",
+    "solutions": "[待翻譯] 解決方案",
+    "products": "[待翻譯] 產品",
+    "technologies": "[待翻譯] 技術",
+    "resources": "[待翻譯] 資源",
+    "company": "[待翻譯] 公司"
+  },
+  "contact": "[待翻譯] 聯絡我們",
+  "search": "[待翻譯] 搜尋",
+  "menuOpen": "[待翻譯] 開啟選單",
+  "menuClose": "[待翻譯] 關閉選單",
+  "languageLabel": "[待翻譯] 切換語言",
+  "home": "[待翻譯] 首頁",
+  "logoHome": "[待翻譯] Big x Reality 首頁",
+  "breadcrumbLabel": "[待翻譯] 麵包屑",
+  "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
+  "imagePending": "[待翻譯] [產品圖・待提供]",
+  "solutionImagePending": "[待翻譯] [解決方案圖・待提供]",
+  "syntheticImage": "[待翻譯] 合成示意",
+  "buttons": {
+    "brochure": "[待翻譯] 型錄申請 Request brochure",
+    "demo": "[待翻譯] 預約展示 Book a demo",
+    "viewAll": "[待翻譯] 查看全部",
+    "explore": "[待翻譯] 了解產品",
+    "formPending": "[待翻譯] 表單網址待提供",
+    "opensInNewTab": "[待翻譯] （另開新視窗）"
+  },
+  "filter": {
+    "groupLabel": "[待翻譯] 依領域篩選",
+    "all": "[待翻譯] 全部",
+    "searchLabel": "[待翻譯] 搜尋產品",
+    "searchPlaceholder": "[待翻譯] 輸入產品名稱或關鍵字",
+    "results": "[待翻譯] 共 {n} 項產品",
+    "empty": "[待翻譯] 沒有符合條件的產品。",
+    "reset": "[待翻譯] 清除篩選"
+  },
+  "domains": {
+    "military": "[待翻譯] 軍事",
+    "police": "[待翻譯] 警勤",
+    "fire-rescue": "[待翻譯] 消防與防救災",
+    "smart-city": "[待翻譯] 智慧城市"
+  },
+  "domainCodes": {
+    "military": "MILITARY",
+    "police": "POLICE",
+    "fire-rescue": "FIRE & RESCUE",
+    "smart-city": "SMART CITY"
+  },
+  "product": {
+    "onThisPage": "[待翻譯] 頁內導覽",
+    "sections": {
+      "overview": {
+        "eyebrow": "Overview",
+        "title": "[待翻譯] 產品概述"
+      },
+      "capabilities": {
+        "eyebrow": "Key Capabilities",
+        "title": "[待翻譯] 核心能力"
+      },
+      "howItWorks": {
+        "eyebrow": "How It Works",
+        "title": "[待翻譯] 運作方式"
+      },
+      "scenarios": {
+        "eyebrow": "Training Scenarios",
+        "title": "[待翻譯] 訓練情境"
+      },
+      "components": {
+        "eyebrow": "System Components",
+        "title": "[待翻譯] 系統組成"
+      },
+      "deployment": {
+        "eyebrow": "Deployment / Configuration",
+        "title": "[待翻譯] 部署方式"
+      },
+      "integratedOps": {
+        "eyebrow": "Integrated Operations",
+        "title": "[待翻譯] 整合作戰"
+      },
+      "relatedSolutions": {
+        "eyebrow": "Related Solutions",
+        "title": "[待翻譯] 關聯解決方案"
+      },
+      "relatedArticles": {
+        "eyebrow": "Related Insights / News",
+        "title": "[待翻譯] 相關文章"
+      }
+    },
+    "deployment": {
+      "personnel": "[待翻譯] 人數",
+      "area": "[待翻譯] 空間",
+      "setupTime": "[待翻譯] 時間",
+      "notes": "[待翻譯] 說明",
+      "personUnit": "[待翻譯] 人",
+      "areaUnit": "m²",
+      "minuteUnit": "[待翻譯] 分鐘",
+      "approx": "[待翻譯] 約"
+    },
+    "integratedScenario": "[待翻譯] 整合訓練情境",
+    "integratesWith": "[待翻譯] 可整合的產品",
+    "participants": "[待翻譯] 參與產品"
+  },
+  "articleTypes": {
+    "insights": "[待翻譯] 技術文章",
+    "news": "[待翻譯] 消息",
+    "case-studies": "[待翻譯] 案例"
+  },
+  "footer": {
+    "navLabel": "[待翻譯] 頁尾選單",
+    "contactHeading": "[待翻譯] 聯絡資訊",
+    "address": "[待翻譯] 地址",
+    "phone": "[待翻譯] 電話",
+    "email": "[待翻譯] Email",
+    "social": "[待翻譯] 社群",
+    "careers": "[待翻譯] 人才招募",
+    "privacy": "[待翻譯] 隱私權政策",
+    "rights": "[待翻譯] 版權所有"
+  }
+}

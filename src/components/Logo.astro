@@ -1,0 +1,12 @@
+---
+/**
+ * Official CIS logo, referenced straight from design-source (never copied,
+ * recoloured or inlined). Color version on light surfaces, Reverse on dark (DS P.04).
+ */
+import color from "../../design-source/01_Logo/SVG/BXR_Logo_H_Color.svg?url";
+import reverse from "../../design-source/01_Logo/SVG/BXR_Logo_H_Reverse.svg?url";
+interface Props { theme: "light" | "dark"; height?: string }
+const { theme, height = "var(--logo-h)" } = Astro.props;
+// viewBox of the horizontal logo files is 807 × 200
+---
+<img src={theme === "dark" ? reverse : color} alt="Big x Reality" width="807" height="200" style={`height:${height};width:auto`} />

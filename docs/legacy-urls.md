@@ -15,6 +15,7 @@
 | `/tw/solutions` | `/tw/solutions/` | 舊 repo docs/solutions-copy-source.md | 只差結尾斜線，第二階段確認 |
 | `/en/solutions` | `/en/solutions/` | 同上 | 同上 |
 | `/en/home`、`/jp/home` | `/en/`、`/jp/` | 比照 `/tw/home` 推測 | **待確認舊站是否存在** |
+| 消息頁 `news_content?param=…`、`?uuid=…`、`?id=…` | 對應的 `/[lang]/news/[slug]/` | 業主告知（2026-10-19） | **參數型**，`_redirects` 無法處理，改用 Pages Functions（見 PLAN §5）；需要逐筆的參數值清單 |
 | 其他所有舊頁面 | — | — | **待提供**：需要舊站 sitemap.xml 或 Google Search Console「網頁」報表匯出 |
 
 ## B. 舊 repo 的開發預覽網址（不需要 301）

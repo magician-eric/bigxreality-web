@@ -1,6 +1,6 @@
 # Big x Reality 官網 2.0 — 第一階段技術規劃
 
-> 狀態：**待審**。審過之後才開始寫程式。
+> 狀態：**已核准（2026-10-19）**，決定紀錄見 §6.0。
 > 範圍：基礎建設＋產品總覽頁＋產品頁（`/[lang]/products/`、`/[lang]/products/[slug]/`）。
 > 依據：`design-source/`（tokens、Web Design System v1.0、CIS v3.2 素材、requirements-2.0.md）、
 > 第一階段任務書、舊 repo `bigxreality/bigxreality-website`（只讀）。
@@ -283,7 +283,9 @@ UAV、USV 的「關聯解決方案」設為 Military，依據是 §6「Military�
 | **Cloudflare Pages** | build `npm run build`、輸出 `dist`、Node 22；`_redirects`（301）；`_headers`（安全標頭、`/_astro/*` 長期快取）；分支預覽用 Cloudflare Access 保護。**正式網域 DNS 切換不在範圍內**，要另外同意 |
 | **Pagefind** | build 後執行 `pagefind --site dist`；依 `<html lang>` 自動分語言索引；`/[lang]/search/` 頁面延遲載入搜尋介面；草稿和 noindex 頁不建索引 |
 | **Cookie 同意＋GA** | Google Consent Mode v2 預設拒絕；自製輕量橫幅（接受／拒絕／設定），使用者同意後才載入 `gtag.js`（`G-CSKFKPZTTE`）；可隨時從頁尾修改；連到隱私權政策 |
-| **301 轉址** | 依 `docs/legacy-urls.md` 寫 `_redirects`，加自動測試逐條驗證 |
+| **301 轉址** | 路徑型舊網址：依 `docs/legacy-urls.md` 寫 `_redirects`。**參數型舊網址**（舊站消息 `news_content?param=…`、`?uuid=…`、`?id=…`）：Cloudflare `_redirects` 不比對問號後的參數，改用 Pages Functions `functions/_middleware.ts` 處理——讀一份「舊參數值 → 新網址」對照表（JSON，build 時一起部署），命中就回 301，沒命中就 `next()` 交給靜態檔。每一條對照（路徑型與參數型）都要有自動測試：用 `wrangler pages dev` 起本機服務，逐條發請求驗證狀態碼 301 和 `Location`，放進 PR 的 CI |
+| **標籤頁** | `/[lang]/tags/` 與 `/[lang]/tags/[slug]/`：技術文章、消息、案例共用同一套標籤；標籤是後台固定清單（獨立的 `tags` collection，文章用 relation 選取，不能自由新增）；文章少於 3 篇的標籤頁 `noindex` 且不進 sitemap |
+| **全站搜尋** | `/[lang]/search/`（Pagefind，見上）；搜尋結果頁 `noindex` |
 | **每月備份到地端 Linux** | Linux 主機上的 systemd timer（每月）：`git clone --mirror` / `git remote update --prune` 取得**所有分支**（Decap 草稿存在 `cms/*` 分支和對應 PR）→ `git bundle --all` 打包 → 另用 GitHub API 匯出開啟中的 PR 與標籤（草稿狀態存在這裡）→ 保留 12 份、產生 checksum。用唯讀 deploy key。每季做一次還原測試 |
 | **Lighthouse / axe 自動檢查** | GitHub Actions 在每個 PR 執行：build → preview → axe（serious/critical 為 0 才通過）→ Lighthouse CI（四項 ≥ 90）→ 內部連結檢查 → 結果留言在 PR |
 | 表單後端（建議） | 見 §6 第 8 題 |
@@ -291,6 +293,25 @@ UAV、USV 的「關聯解決方案」設為 Military，依據是 §6「Military�
 ---
 
 ## 6. 風險與需要你決定的事
+
+### 6.0 業主決定（2026-10-19）
+
+| 題號 | 決定 |
+|---|---|
+| 1 領域色 | 照建議：淺底 Deep、深底 Light；智慧城市文字淺底 Slate、深底 Mist |
+| 2 紅色按鈕 | Header「聯絡我們」改外框按鈕；紅色只留給頁面主要動作（產品頁 Hero 的型錄按鈕） |
+| 3 導覽 | 照任務書 |
+| 4 按鈕文字 | 照建議，放在 `ui` 檔 |
+| 5 日文字型 | `/jp/` 加 Noto Sans JP（unicode-range 分割） |
+| 6 翻譯未完成 | `pending` 頁面 `noindex`、不進 sitemap、顯示「[待翻譯]」提示 |
+| 7 解決方案 slug | 照建議 |
+| 8 表單 | 維持 Google 表單（刻意決定，交接單純），不做後端；產品欄位被改的風險由人工審核處理。**requirements-2.0 §18–20 的後端驗證（鎖定產品、E.164、MX、Turnstile、頻率限制、受控文件流程）已由業主決定不採用** |
+| 9 Decap 登入 | GitHub 後端＋Cloudflare Worker OAuth 代理，編輯各自開 GitHub 帳號 |
+| 13 搜尋框 | 做成產品卡片即時文字篩選 |
+| 14 Astro | 鎖定 7.3.8 |
+| 15 分支 | 用目前分支，完成後開 PR 到 `main` |
+
+以下為原始提案內容（保留紀錄）。
 
 每題都附上我的建議。**粗體**是會影響第一階段實作的題目，其他可以晚點決定。
 

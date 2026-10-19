@@ -1,0 +1,96 @@
+{
+  "translationStatus": "source",
+  "skipToContent": "跳到主要內容",
+  "nav": {
+    "label": "主選單",
+    "solutions": "解決方案",
+    "products": "產品",
+    "technologies": "技術",
+    "resources": "資源",
+    "company": "公司"
+  },
+  "contact": "聯絡我們",
+  "search": "搜尋",
+  "menuOpen": "開啟選單",
+  "menuClose": "關閉選單",
+  "languageLabel": "切換語言",
+  "home": "首頁",
+  "logoHome": "Big x Reality 首頁",
+  "breadcrumbLabel": "麵包屑",
+  "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
+  "imagePending": "[產品圖・待提供]",
+  "solutionImagePending": "[解決方案圖・待提供]",
+  "syntheticImage": "合成示意",
+  "buttons": {
+    "brochure": "型錄申請 Request brochure",
+    "demo": "預約展示 Book a demo",
+    "viewAll": "查看全部",
+    "explore": "了解產品",
+    "formPending": "表單網址待提供",
+    "opensInNewTab": "（另開新視窗）"
+  },
+  "filter": {
+    "groupLabel": "依領域篩選",
+    "all": "全部",
+    "searchLabel": "搜尋產品",
+    "searchPlaceholder": "輸入產品名稱或關鍵字",
+    "results": "共 {n} 項產品",
+    "empty": "沒有符合條件的產品。",
+    "reset": "清除篩選"
+  },
+  "domains": {
+    "military": "軍事",
+    "police": "警勤",
+    "fire-rescue": "消防與防救災",
+    "smart-city": "智慧城市"
+  },
+  "domainCodes": {
+    "military": "MILITARY",
+    "police": "POLICE",
+    "fire-rescue": "FIRE & RESCUE",
+    "smart-city": "SMART CITY"
+  },
+  "product": {
+    "onThisPage": "頁內導覽",
+    "sections": {
+      "overview": { "eyebrow": "Overview", "title": "產品概述" },
+      "capabilities": { "eyebrow": "Key Capabilities", "title": "核心能力" },
+      "howItWorks": { "eyebrow": "How It Works", "title": "運作方式" },
+      "scenarios": { "eyebrow": "Training Scenarios", "title": "訓練情境" },
+      "components": { "eyebrow": "System Components", "title": "系統組成" },
+      "deployment": { "eyebrow": "Deployment / Configuration", "title": "部署方式" },
+      "integratedOps": { "eyebrow": "Integrated Operations", "title": "整合作戰" },
+      "relatedSolutions": { "eyebrow": "Related Solutions", "title": "關聯解決方案" },
+      "relatedArticles": { "eyebrow": "Related Insights / News", "title": "相關文章" }
+    },
+    "deployment": {
+      "personnel": "人數",
+      "area": "空間",
+      "setupTime": "時間",
+      "notes": "說明",
+      "personUnit": "人",
+      "areaUnit": "m²",
+      "minuteUnit": "分鐘",
+      "approx": "約"
+    },
+    "integratedScenario": "整合訓練情境",
+    "integratesWith": "可整合的產品",
+    "participants": "參與產品"
+  },
+  "articleTypes": {
+    "insights": "技術文章",
+    "news": "消息",
+    "case-studies": "案例"
+  },
+  "footer": {
+    "navLabel": "頁尾選單",
+    "contactHeading": "聯絡資訊",
+    "address": "地址",
+    "phone": "電話",
+    "email": "Email",
+    "social": "社群",
+    "careers": "人才招募",
+    "privacy": "隱私權政策",
+    "rights": "版權所有"
+  }
+}
