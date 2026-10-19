@@ -1,0 +1,175 @@
+---
+/**
+ * Site header (DS P.12): 72 px, logo 32 px (28 px ≤ 1023 px), current item marked
+ * with a 2 px BxR Red underline. ≤ 1023 px collapses into a menu button.
+ * "Contact" is an outline button: red is reserved for the page's main action
+ * (owner decision 2026-10-19).
+ */
+import { LANGS, LANG_LABEL, HREFLANG, localePath, type Lang } from "../i18n";
+import { getUi } from "../lib/ui";
+import Logo from "./Logo.astro";
+import Text from "./Text.astro";
+
+export type NavKey = "solutions" | "products" | "technologies" | "resources" | "company";
+interface Props {
+  lang: Lang;
+  theme: "light" | "dark";
+  current?: NavKey;
+  /** URL of this page in each language; languages without the page fall back to their products overview. */
+  langLinks: Record<Lang, string>;
+}
+const { lang, theme, current, langLinks } = Astro.props;
+const ui = getUi(lang);
+const nav: { key: NavKey; href: string }[] = [
+  { key: "solutions", href: localePath(lang, "solutions") },
+  { key: "products", href: localePath(lang, "products") },
+  { key: "technologies", href: localePath(lang, "technologies") },
+  { key: "resources", href: localePath(lang, "insights") },
+  { key: "company", href: localePath(lang, "company") },
+];
+const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp: "日本語" };
+---
+<header class="site-header" data-theme={theme}>
+  <div class="container bar">
+    <a class="logo" href={localePath(lang)} aria-label={ui.logoHome}><Logo theme={theme} /></a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-open-label={ui.menuOpen} data-close-label={ui.menuClose}>
+      <svg class="i-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+      <svg class="i-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+      <span class="visually-hidden menu-label">{ui.menuOpen}</span>
+    </button>
+
+    <div class="menu" id="site-menu">
+      <nav aria-label={ui.nav.label}>
+        <ul role="list" class="nav-list">
+          {nav.map((item) => (
+            <li>
+              <a class="nav-link" href={item.href} aria-current={item.key === current ? "page" : undefined}>
+                <Text value={ui.nav[item.key]} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="tools">
+        <a class="icon-link" href={localePath(lang, "search")}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5L21 21" /></svg>
+          <span class="visually-hidden"><Text value={ui.search} /></span>
+        </a>
+        <ul role="list" class="langs" aria-label={ui.languageLabel}>
+          {LANGS.map((l) => (
+            <li>
+              <a href={langLinks[l]} hreflang={HREFLANG[l]} lang={HREFLANG[l]} aria-current={l === lang ? "true" : undefined}>{LANG_LABEL[l]}<span class="visually-hidden"> {langNames[l]}</span></a>
+            </li>
+          ))}
+        </ul>
+        <a class="btn btn--secondary btn--sm contact" href={localePath(lang, "contact")}><Text value={ui.contact} /></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".site-header");
+  const toggle = header?.querySelector<HTMLButtonElement>(".menu-toggle");
+  const menu = header?.querySelector<HTMLElement>("#site-menu");
+  const label = toggle?.querySelector<HTMLElement>(".menu-label");
+  const mobile = window.matchMedia("(max-width: 1023px)");
+
+  if (header && toggle && menu && label) {
+    const focusables = () =>
+      [toggle, ...menu.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((el) => el.offsetParent !== null);
+
+    const setOpen = (open: boolean, returnFocus = false) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      label.textContent = open ? toggle.dataset.closeLabel! : toggle.dataset.openLabel!;
+      header.classList.toggle("is-open", open);
+      document.documentElement.classList.toggle("menu-open", open);
+      if (!open && returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+
+    header.addEventListener("keydown", (e) => {
+      if (!header.classList.contains("is-open")) return;
+      if (e.key === "Escape") {
+        setOpen(false, true);
+      } else if (e.key === "Tab") {
+        // keep focus inside the open menu
+        const items = focusables();
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    menu.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a")) setOpen(false);
+    });
+    mobile.addEventListener("change", () => setOpen(false));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--surface); color: var(--ink);
+    border-bottom: 1px solid var(--divider);
+  }
+  .bar { display: flex; align-items: center; gap: var(--space-5); height: var(--header-h); }
+  .logo { display: inline-flex; flex: none; }
+  .logo:focus-visible { outline-offset: 4px; }
+  .menu { display: flex; align-items: center; flex: 1; gap: var(--space-4); }
+  .nav-list { display: flex; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+  .nav-link {
+    display: inline-flex; align-items: center; min-height: 44px;
+    color: var(--ink); text-decoration: none; font-size: var(--fs-nav); font-weight: 500; line-height: 1;
+    border-bottom: 2px solid transparent; padding-top: 2px;
+    transition: border-color var(--dur-micro) var(--ease-precise);
+  }
+  .nav-link:hover { border-bottom-color: var(--divider); }
+  .nav-link[aria-current="page"] { border-bottom-color: var(--bxr-red); }
+  .tools { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
+  .icon-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--ink); }
+  .langs { display: flex; gap: 0; margin: 0; padding: 0; list-style: none; font-family: var(--font-mono); font-size: 13px; }
+  .langs li + li::before { content: "/"; color: var(--ink-muted); padding-inline: 2px; }
+  .langs a {
+    display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 44px;
+    color: var(--ink-muted); text-decoration: none;
+  }
+  .langs a:hover { color: var(--ink); }
+  .langs a[aria-current="true"] { color: var(--ink); text-decoration: underline; text-underline-offset: 0.3em; }
+  .menu-toggle {
+    display: none; margin-left: auto; width: 44px; height: 44px; align-items: center; justify-content: center;
+    background: none; border: 0; color: var(--ink); cursor: pointer;
+  }
+  .i-close { display: none; }
+
+  @media (max-width: 1023px) {
+    .menu-toggle { display: inline-flex; }
+    .menu {
+      display: none;
+      position: fixed; inset: var(--header-h) 0 0 0; z-index: 49;
+      flex-direction: column; align-items: stretch; gap: var(--space-4);
+      padding: var(--space-4) var(--margin) var(--space-8);
+      background: var(--surface); overflow-y: auto;
+    }
+    .is-open .menu { display: flex; }
+    .is-open .i-open { display: none; }
+    .is-open .i-close { display: block; }
+    .nav-list { flex-direction: column; gap: 0; }
+    .nav-link { width: 100%; min-height: 56px; border-bottom: 1px solid var(--divider); }
+    .nav-link[aria-current="page"] { border-bottom: 2px solid var(--bxr-red); }
+    .tools { flex-wrap: wrap; margin-left: 0; }
+    .contact { flex-basis: 100%; min-height: var(--btn-h); }
+  }
+  /* Without JavaScript the menu stays reachable as a plain list under the bar. */
+  :global(.no-js) .menu-toggle { display: none; }
+  @media (max-width: 1023px) {
+    :global(.no-js) .site-header { position: static; }
+    :global(.no-js) .bar { height: auto; flex-wrap: wrap; padding-block: var(--space-2); }
+    :global(.no-js) .menu { display: flex; position: static; padding: 0; }
+  }
+  :global(html.menu-open) { overflow: hidden; }
+</style>

@@ -1,0 +1,150 @@
+/* Design tokens: the only source for color, spacing, layout and motion values. */
+@import "../../design-source/BXR_Web_Tokens_v1.0.css";
+
+/*
+ * Type scale and component sizes from BXR Web Design System v1.0
+ * (P.09 type scale, P.10 Chinese setting and web extensions, P.11 grid,
+ * P.12 header/buttons/forms, P.13 cards, P.14 section padding).
+ * Values marked 提案 in the PDF are used as written there.
+ */
+:root {
+  --fs-display: 64px; --lh-display: 1.05; --ls-display: -0.015em;
+  --fs-h1: 40px; --lh-h1: 1.15; --ls-h1: -0.01em;
+  --fs-h2: 26px; --lh-h2: 1.3;
+  --fs-h3: 20px; --lh-h3: 1.4;
+  --fs-h4: 18px; --lh-h4: 1.4;
+  --fs-body: 16px; --lh-body: 1.7; --ls-body: 0.01em;
+  --fs-small: 14px; --lh-small: 1.6;
+  --fs-caption: 13px; --lh-caption: 1.6; --ls-caption: 0.03em;
+  --fs-label: 11px; --lh-label: 1.4; --ls-label: 0.14em;
+  --fs-tech: 11px; --lh-tech: 1.5; --ls-tech: 0.04em;
+  --fs-nav: 15px;
+  --fs-cta: 16px;
+  --btn-h: 48px; --btn-px: var(--space-4);
+  --btn-sm-h: 40px; --btn-sm-px: 20px;
+  --logo-h: 32px;
+  --section-py: var(--space-16);
+  --gutter: 24px;
+}
+@media (max-width: 1023px) {
+  :root { --section-py: var(--space-12); --gutter: 20px; --logo-h: 28px; --fs-nav: 17px; }
+}
+@media (max-width: 767px) {
+  :root {
+    --fs-display: 40px; --fs-h1: 30px; --fs-h2: 22px; --fs-h3: 18px; --fs-h4: 17px;
+    --section-py: var(--space-8); --gutter: 16px;
+  }
+}
+
+/* Chinese headings: English size × 0.92, leading 1.25, tracking +1% (P.10) */
+:lang(zh), :lang(ja) {
+  --fs-h1-cjk: calc(var(--fs-h1) * 0.92);
+  --fs-h2-cjk: calc(var(--fs-h2) * 0.92);
+  --fs-display-cjk: calc(var(--fs-display) * 0.92);
+}
+
+/* Japanese pages use Noto Sans JP first (owner decision 2026-10-19). */
+:lang(ja) { --font-sans: "Noto Sans JP", "Noto Sans TC", "Hiragino Sans", "Yu Gothic", sans-serif; }
+
+/* Sector colors: Deep on light surfaces, Light on dark surfaces.
+   Smart City has no sector color: Slate on light, Mist on dark. */
+.sector--military { --sector-on-light: var(--sector-army-deep); --sector-on-dark: var(--sector-army-light); }
+.sector--police { --sector-on-light: var(--sector-police-deep); --sector-on-dark: var(--sector-police-light); }
+.sector--fire-rescue { --sector-on-light: var(--sector-fire-deep); --sector-on-dark: var(--sector-fire-light); }
+.sector--smart-city { --sector-on-light: var(--bxr-slate); --sector-on-dark: var(--bxr-mist); }
+[class*="sector--"] { --sector-color: var(--sector-on-light); }
+[data-theme="dark"] [class*="sector--"], [data-theme="dark"][class*="sector--"] { --sector-color: var(--sector-on-dark); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + var(--space-2)); }
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+:lang(zh) body, body:lang(zh) { line-height: 1.75; letter-spacing: 0.03em; }
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+button, input { font: inherit; letter-spacing: inherit; }
+
+h1, h2, h3, h4 { font-weight: 500; color: var(--ink); }
+.t-display { font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: var(--ls-display); font-weight: 500; }
+.t-h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: var(--ls-h1); font-weight: 500; }
+.t-h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: 500; }
+:lang(zh) .t-h1, :lang(ja) .t-h1 { font-size: var(--fs-h1-cjk); line-height: 1.25; letter-spacing: 0.01em; }
+:lang(zh) .t-h2, :lang(ja) .t-h2 { font-size: var(--fs-h2-cjk); line-height: 1.25; letter-spacing: 0.01em; }
+.t-h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); font-weight: 500; }
+.t-h4 { font-size: var(--fs-h4); line-height: var(--lh-h4); font-weight: 500; }
+.t-small { font-size: var(--fs-small); line-height: var(--lh-small); }
+.t-caption { font-size: var(--fs-caption); line-height: var(--lh-caption); letter-spacing: var(--ls-caption); }
+.t-label {
+  font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label);
+  font-weight: 500; text-transform: uppercase;
+}
+.t-tech { font-family: var(--font-mono); font-size: var(--fs-tech); line-height: var(--lh-tech); letter-spacing: var(--ls-tech); }
+.t-muted { color: var(--ink-muted); }
+
+/* Links: light = Text Red + underline; dark = white + underline; hover removes underline (P.12) */
+a { color: var(--link); text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration: none; }
+
+/* Focus: 2px ring, 2px offset (P.06, P.20) */
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--margin));
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+.section { padding-block: var(--section-py); background: var(--surface); color: var(--ink); }
+.section--alt { background: var(--surface-alt); }
+[data-theme="dark"] { background: var(--surface); color: var(--ink); }
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4 { color: var(--ink); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Buttons (P.06 states, P.12 sizes) */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
+  min-height: var(--btn-h); padding: 0 var(--btn-px);
+  font-size: var(--fs-cta); line-height: 1; font-weight: 600; letter-spacing: 0;
+  text-decoration: none; border-radius: var(--radius-sm); border: 1px solid transparent;
+  cursor: pointer; white-space: nowrap;
+  transition: background-color var(--dur-micro) var(--ease-precise), color var(--dur-micro) var(--ease-precise), border-color var(--dur-micro) var(--ease-precise);
+}
+.btn--sm { min-height: var(--btn-sm-h); padding: 0 var(--btn-sm-px); font-size: var(--fs-small); }
+.btn--primary { background: var(--bxr-red); color: var(--bxr-white); }
+.btn--primary:hover { background: var(--bxr-red-hover); }
+.btn--primary:active { background: var(--bxr-red-pressed); }
+.btn--secondary { background: transparent; color: var(--bxr-black); border-color: var(--bxr-black); }
+.btn--secondary:hover { background: var(--bxr-black); color: var(--bxr-white); }
+[data-theme="dark"] .btn--secondary { color: var(--bxr-white); border-color: var(--bxr-ash); }
+[data-theme="dark"] .btn--secondary:hover { background: transparent; border-color: var(--bxr-white); }
+.btn[aria-disabled="true"], .btn:disabled {
+  background: var(--bxr-mist); color: var(--bxr-slate); border-color: var(--bxr-mist); cursor: not-allowed;
+}
+
+/* [待提供] / [待翻譯] markers. Signal Amber is a functional status color;
+   the marker text stays ink-colored so it never reads as a second red focus. */
+.pending {
+  display: inline-block; padding: 0 0.35em;
+  font-family: var(--font-mono); font-size: 0.85em; line-height: 1.5; letter-spacing: 0;
+  color: inherit; background: transparent;
+  border: 1px dashed var(--bxr-signal-amber); border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; scroll-behavior: auto !important; }
+}

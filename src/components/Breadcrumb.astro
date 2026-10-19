@@ -1,0 +1,22 @@
+---
+import type { Crumb } from "./SeoHead.astro";
+import Text from "./Text.astro";
+interface Props { items: Crumb[]; label: string }
+const { items, label } = Astro.props;
+---
+<nav aria-label={label} class="breadcrumb t-caption">
+  <ol role="list">
+    {items.map((c, i) => (
+      <li>
+        {i < items.length - 1
+          ? <a href={c.path}><Text value={c.name} /></a>
+          : <span aria-current="page"><Text value={c.name} /></span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+<style>
+  ol { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; list-style: none; color: var(--ink-muted); }
+  li + li::before { content: "/"; margin-right: var(--space-1); color: var(--ink-muted); }
+  a { color: var(--ink); min-height: 24px; display: inline-flex; align-items: center; }
+</style>

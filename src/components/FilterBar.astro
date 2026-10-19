@@ -1,0 +1,100 @@
+---
+/**
+ * Domain filter + text filter for a card grid. Items opt in with
+ * `data-filter-item`, `data-domains="a b"` and `data-text="..."`.
+ * State is mirrored in the URL (?domain=…&q=…) so a filtered view can be shared.
+ * Without JavaScript the bar is hidden and every card stays visible.
+ * Borders use Ash instead of the Mist given in DS P.12: Mist on white is 1.62:1,
+ * below the 3:1 WCAG 1.4.11 minimum for input and button boundaries.
+ */
+import type { Lang } from "../i18n";
+import { getUi } from "../lib/ui";
+import Text from "./Text.astro";
+
+type Domain = "military" | "police" | "fire-rescue" | "smart-city";
+interface Props { lang: Lang; domains: readonly Domain[]; target: string }
+const { lang, domains, target } = Astro.props;
+const ui = getUi(lang);
+---
+<div class="filter-bar" data-filter-bar data-target={target} data-results={ui.filter.results}>
+  <div class="group" role="group" aria-label={ui.filter.groupLabel}>
+    <button type="button" class="chip" data-domain="" aria-pressed="true"><Text value={ui.filter.all} /></button>
+    {domains.map((d) => (
+      <button type="button" class={`chip sector--${d}`} data-domain={d} aria-pressed="false">
+        <span class="dot" aria-hidden="true"></span><Text value={ui.domains[d]} />
+      </button>
+    ))}
+  </div>
+  <div class="search">
+    <label for="filter-q" class="visually-hidden"><Text value={ui.filter.searchLabel} /></label>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5L21 21" /></svg>
+    <input id="filter-q" type="search" autocomplete="off" placeholder={ui.filter.searchPlaceholder} />
+  </div>
+  <p class="status t-small" aria-live="polite" data-status></p>
+</div>
+
+<script>
+  for (const bar of document.querySelectorAll<HTMLElement>("[data-filter-bar]")) {
+    const grid = document.getElementById(bar.dataset.target!);
+    if (!grid) continue;
+    const items = [...grid.querySelectorAll<HTMLElement>("[data-filter-item]")];
+    const chips = [...bar.querySelectorAll<HTMLButtonElement>("button[data-domain]")];
+    const input = bar.querySelector<HTMLInputElement>("input[type=search]")!;
+    const status = bar.querySelector<HTMLElement>("[data-status]")!;
+    const empty = document.querySelector<HTMLElement>(`[data-filter-empty="${grid.id}"]`);
+    const norm = (s: string) => s.normalize("NFKC").toLowerCase().trim();
+
+    const params = new URLSearchParams(location.search);
+    let domain = chips.some((c) => c.dataset.domain === params.get("domain")) ? params.get("domain")! : "";
+    input.value = params.get("q") ?? "";
+
+    const apply = (announce: boolean) => {
+      const q = norm(input.value);
+      let shown = 0;
+      for (const item of items) {
+        const okDomain = !domain || (item.dataset.domains ?? "").split(" ").includes(domain);
+        const okText = !q || norm(item.dataset.text ?? "").includes(q);
+        item.hidden = !(okDomain && okText);
+        if (!item.hidden) shown++;
+      }
+      for (const c of chips) c.setAttribute("aria-pressed", String(c.dataset.domain === domain));
+      if (empty) empty.hidden = shown > 0;
+      if (announce) status.textContent = bar.dataset.results!.replace("{n}", String(shown));
+      const url = new URL(location.href);
+      domain ? url.searchParams.set("domain", domain) : url.searchParams.delete("domain");
+      q ? url.searchParams.set("q", input.value.trim()) : url.searchParams.delete("q");
+      history.replaceState(null, "", url);
+    };
+
+    for (const c of chips) c.addEventListener("click", () => { domain = c.dataset.domain ?? ""; apply(true); });
+    input.addEventListener("input", () => apply(true));
+    apply(false);
+  }
+</script>
+
+<style>
+  .filter-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-5); }
+  :global(.no-js) .filter-bar { display: none; }
+  .group { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .chip {
+    display: inline-flex; align-items: center; gap: var(--space-1);
+    min-height: var(--btn-sm-h); padding: 0 var(--space-2);
+    background: var(--surface); color: var(--ink); border: 1px solid var(--bxr-ash); border-radius: var(--radius-sm);
+    font-size: var(--fs-small); font-weight: 500; cursor: pointer;
+    transition: border-color var(--dur-micro) var(--ease-precise), background-color var(--dur-micro) var(--ease-precise);
+  }
+  .chip:hover { border-color: var(--bxr-black); }
+  .chip[aria-pressed="true"] { background: var(--bxr-black); color: var(--bxr-white); border-color: var(--bxr-black); }
+  .dot { width: 8px; height: 8px; background: var(--sector-color); }
+  .chip[aria-pressed="true"] .dot { background: var(--sector-on-dark); }
+  .search { position: relative; display: flex; align-items: center; flex: 0 1 320px; }
+  .search svg { position: absolute; left: 12px; color: var(--bxr-slate); pointer-events: none; }
+  input {
+    width: 100%; height: var(--btn-h); padding: 0 var(--space-2) 0 40px;
+    border: 1px solid var(--bxr-ash); border-radius: var(--radius-sm); background: var(--bxr-white); color: var(--bxr-black);
+  }
+  input::placeholder { color: var(--bxr-slate); }
+  input:focus { outline: none; border: 2px solid var(--bxr-black); padding-left: 39px; }
+  .status { flex-basis: 100%; color: var(--ink-muted); min-height: 1lh; }
+  @media (max-width: 767px) { .search { flex-basis: 100%; } }
+</style>

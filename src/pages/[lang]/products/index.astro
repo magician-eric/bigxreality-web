@@ -1,0 +1,140 @@
+---
+/**
+ * /[lang]/products/ — PageHero → FilterBar → product grid → integrated training
+ * scenarios → CtaBand. Every product comes from the products collection.
+ */
+import { getEntry } from "astro:content";
+import { LANGS, SOURCE_LANG, localePath, type Lang } from "../../../i18n";
+import { DOMAINS } from "../../../content.config";
+import { getLocalized, validateRelations } from "../../../lib/content";
+import { getUi } from "../../../lib/ui";
+import { plain } from "../../../lib/text";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import SectionHead from "../../../components/SectionHead.astro";
+import FilterBar from "../../../components/FilterBar.astro";
+import CardProduct from "../../../components/CardProduct.astro";
+import CtaBand from "../../../components/CtaBand.astro";
+import FormButton from "../../../components/FormButton.astro";
+import Text from "../../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+await validateRelations();
+const ui = getUi(lang);
+const page = await getEntry("pages", `${lang}/products`);
+const pageBase = await getEntry("pages", `${SOURCE_LANG}/products`);
+if (!page || !pageBase) throw new Error(`src/content/pages/${lang}/products.md is missing`);
+const copy = page.data;
+// image file from the tw source, alt text from this language
+const heroImage = pageBase.data.hero.image && { src: pageBase.data.hero.image.src, alt: copy.hero.image?.alt ?? pageBase.data.hero.image.alt };
+
+const products = await getLocalized("products", lang);
+const productNames = new Map(products.map((p) => [p.slug, p.loc.data.hero.name]));
+const scenarios = await getLocalized("scenarios", lang);
+
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.products, path: localePath(lang, "products") },
+];
+const pending = copy.translationStatus === "pending";
+---
+<BaseLayout
+  lang={lang}
+  title={copy.seo.title}
+  description={copy.seo.description}
+  pathTemplate="/{lang}/products/"
+  alternates={[...LANGS]}
+  pendingTranslation={pending}
+  headerTheme="dark"
+  current="products"
+  breadcrumbs={breadcrumbs}
+  ogImage={heroImage?.src}
+  ogImageAlt={heroImage?.alt}
+>
+  <PageHero
+    breadcrumbs={breadcrumbs}
+    breadcrumbLabel={ui.breadcrumbLabel}
+    eyebrow={copy.hero.eyebrow}
+    title={copy.hero.title}
+    description={copy.hero.description}
+    image={heroImage}
+    imageCaption={copy.hero.imageCaption}
+  />
+
+  <section class="section" aria-labelledby="all-products">
+    <div class="container">
+      <h2 id="all-products" class="visually-hidden"><Text value={copy.hero.title} /></h2>
+      <FilterBar lang={lang} domains={DOMAINS} target="product-grid" />
+      <ul role="list" class="grid" id="product-grid">
+        {products.map((p) => {
+          const d = p.loc.data;
+          const img = p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: d.hero.image?.alt ?? p.base.data.hero.image.alt };
+          return (
+            <li data-filter-item data-domains={p.base.data.domains.join(" ")} data-text={plain([d.hero.name, d.hero.englishName, d.hero.code, d.summary ?? d.hero.tagline].join(" "))}>
+              <CardProduct
+                lang={lang}
+                href={localePath(lang, "products", p.slug)}
+                name={d.hero.name}
+                englishName={d.hero.englishName}
+                summary={d.summary ?? d.hero.tagline}
+                domains={p.base.data.domains}
+                image={img}
+              />
+            </li>
+          );
+        })}
+      </ul>
+      <p class="empty" data-filter-empty="product-grid" hidden><Text value={ui.filter.empty} /></p>
+    </div>
+  </section>
+
+  {copy.integrated && scenarios.length > 0 && (
+    <section class="section section--alt" aria-labelledby="integrated">
+      <div class="container">
+        <SectionHead id="integrated" eyebrow={copy.integrated.eyebrow} title={copy.integrated.title} description={copy.integrated.description} />
+        <ul role="list" class="scenarios">
+          {scenarios.map((s) => (
+            <li class="scenario">
+              <p class="t-tech code">{s.base.data.code}</p>
+              <h3 class="t-h3"><Text value={s.loc.data.name} /></h3>
+              {s.loc.data.englishName && <p class="t-tech english"><Text value={s.loc.data.englishName} /></p>}
+              <p class="summary"><Text value={s.loc.data.summary} /></p>
+              <p class="t-label participants-label"><Text value={ui.product.participants} /></p>
+              <ul role="list" class="participants">
+                {s.base.data.products.filter((slug) => productNames.has(slug)).map((slug) => (
+                  <li><a href={localePath(lang, "products", slug)}><Text value={productNames.get(slug)!} /></a></li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {copy.cta && (
+    <CtaBand id="products-cta" title={copy.cta.title} description={copy.cta.description}>
+      <a class="btn btn--primary" href={localePath(lang, "contact")}><Text value={ui.contact} /></a>
+      <FormButton kind="brochure" lang={lang} variant="secondary" />
+    </CtaBand>
+  )}
+</BaseLayout>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .grid > li[hidden] { display: none; }
+  .empty { padding-block: var(--space-6); color: var(--ink-muted); }
+  .scenarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .scenario { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-4); background: var(--bxr-white); border-top: 2px solid var(--bxr-black); }
+  .code, .english { color: var(--ink-muted); }
+  .summary { margin-top: var(--space-1); }
+  .participants-label { margin-top: var(--space-2); color: var(--ink-muted); }
+  .participants { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .participants a { min-height: 24px; display: inline-flex; align-items: center; }
+  @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .grid, .scenarios { grid-template-columns: 1fr; } }
+</style>

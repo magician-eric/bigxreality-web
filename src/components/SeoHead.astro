@@ -1,0 +1,93 @@
+---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { DEFAULT_LANG, HREFLANG, LANGS, OG_LOCALE, type Lang } from "../i18n";
+import { site, companyName } from "../lib/site";
+import { isPending } from "../lib/pending";
+import { plain } from "../lib/text";
+
+export interface Crumb { name: string; path: string }
+export interface ProductLd { name: string; description: string; code: string; image?: string }
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Path of this page with the language segment replaced by `{lang}`, e.g. `/{lang}/products/sut/` */
+  pathTemplate: string;
+  /** Languages in which this page exists. */
+  alternates: Lang[];
+  noindex?: boolean;
+  ogImage?: ImageMetadata;
+  ogImageAlt?: string;
+  breadcrumbs: Crumb[];
+  product?: ProductLd;
+}
+
+const { lang, title, description, pathTemplate, alternates, noindex = false, ogImage, ogImageAlt, breadcrumbs, product } = Astro.props;
+const abs = (path: string) => new URL(path, site.url).toString();
+const pathFor = (l: Lang) => pathTemplate.replace("{lang}", l);
+const canonical = abs(pathFor(lang));
+const fullTitle = `${plain(title)} | ${site.brand}`;
+const desc = plain(description);
+
+const og = ogImage
+  ? abs((await getImage({ src: ogImage, width: 1200, height: 630, fit: "cover", format: "jpg" })).src)
+  : abs("/icon-512.png");
+
+const org: Record<string, unknown> = {
+  "@type": "Organization",
+  "@id": `${site.url}/#organization`,
+  name: site.brand,
+  url: `${site.url}/`,
+  logo: abs("/icon-512.png"),
+  slogan: site.tagline,
+};
+if (!isPending(companyName(lang))) org.legalName = companyName(lang);
+if (!isPending(site.contact.email)) org.email = site.contact.email;
+if (Array.isArray(site.social)) org.sameAs = site.social.map((s) => s.url);
+
+const graph: Record<string, unknown>[] = [
+  org,
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: plain(c.name), item: abs(c.path) })),
+  },
+];
+if (product) {
+  const p: Record<string, unknown> = {
+    "@type": "Product",
+    name: plain(product.name),
+    sku: product.code,
+    brand: { "@id": `${site.url}/#organization` },
+    url: canonical,
+  };
+  // JSON-LD never carries placeholder text.
+  if (!product.description.includes("[待")) p.description = plain(product.description);
+  if (product.image) p.image = abs(product.image);
+  graph.push(p);
+}
+const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
+---
+<title>{fullTitle}</title>
+<meta name="description" content={desc} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+{alternates.map((l) => <link rel="alternate" hreflang={HREFLANG[l]} href={abs(pathFor(l))} />)}
+{alternates.includes(DEFAULT_LANG) && <link rel="alternate" hreflang="x-default" href={abs(pathFor(DEFAULT_LANG))} />}
+<meta property="og:type" content={product ? "product" : "website"} />
+<meta property="og:site_name" content={site.brand} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={desc} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={OG_LOCALE[lang]} />
+{LANGS.filter((l) => l !== lang && alternates.includes(l)).map((l) => <meta property="og:locale:alternate" content={OG_LOCALE[l]} />)}
+<meta property="og:image" content={og} />
+{ogImage && <meta property="og:image:width" content="1200" />}
+{ogImage && <meta property="og:image:height" content="630" />}
+{ogImageAlt && <meta property="og:image:alt" content={plain(ogImageAlt)} />}
+<meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={og} />
+<script type="application/ld+json" set:html={jsonLd} />

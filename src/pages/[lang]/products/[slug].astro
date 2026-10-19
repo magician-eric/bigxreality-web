@@ -1,0 +1,373 @@
+---
+/**
+ * /[lang]/products/[slug]/ — the fixed 12-block product template (task brief §5.2).
+ * A block whose field is left out is not rendered; a field holding [待提供] is
+ * rendered with the marker visible.
+ */
+import { getImage } from "astro:assets";
+import { LANGS, localePath, type Lang } from "../../../i18n";
+import { getLocalized, availableLangs, integratedProducts, relatedArticles, validateRelations } from "../../../lib/content";
+import { visibleProductSections, isPending, type ProductSection } from "../../../lib/pending";
+import { getUi } from "../../../lib/ui";
+import { markPendingHtml } from "../../../lib/text";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import SectionHead from "../../../components/SectionHead.astro";
+import CardProduct from "../../../components/CardProduct.astro";
+import CardSolution from "../../../components/CardSolution.astro";
+import CardArticle from "../../../components/CardArticle.astro";
+import CtaBand from "../../../components/CtaBand.astro";
+import FormButton from "../../../components/FormButton.astro";
+import Text from "../../../components/Text.astro";
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of LANGS) {
+    for (const p of await getLocalized("products", lang)) paths.push({ params: { lang, slug: p.slug } });
+  }
+  return paths;
+}
+
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug!;
+await validateRelations();
+const ui = getUi(lang);
+const product = (await getLocalized("products", lang)).find((p) => p.slug === slug)!;
+const base = product.base.data; // structural fields (tw)
+const d = product.loc.data; // wording in this language
+const overview = product.loc.body?.trim();
+const overviewHtml = markPendingHtml(product.loc.rendered?.html ?? "");
+
+const heroImage = base.hero.image && { src: base.hero.image.src, alt: d.hero.image?.alt ?? base.hero.image.alt };
+const integrated = await integratedProducts(slug, lang);
+const solutions = (await getLocalized("solutions", lang)).filter((s) => (base.relatedSolutions ?? []).includes(s.slug));
+const scenarioEntries = (await getLocalized("scenarios", lang)).filter((s) => (base.integratedScenarios ?? []).includes(s.slug));
+const articles = await relatedArticles(slug, lang);
+const productNames = new Map((await getLocalized("products", lang)).map((p) => [p.slug, p.loc.data.hero.name]));
+
+const deployment = d.deployment && {
+  personnel: base.deployment?.personnel,
+  area: base.deployment?.area,
+  setupTime: base.deployment?.setupTime,
+  notes: d.deployment.notes,
+};
+
+const sections = visibleProductSections({
+  overview,
+  capabilities: d.capabilities,
+  howItWorks: d.howItWorks,
+  scenarios: d.scenarios,
+  integratedScenarios: scenarioEntries.map((s) => s.slug),
+  components: d.components,
+  deployment,
+  integratedOps: { description: d.integratedOps?.description, products: integrated.map((p) => p.slug) },
+  relatedSolutions: solutions.map((s) => s.slug),
+  relatedArticles: articles.map((a) => a.entry.slug),
+});
+const has = (s: ProductSection) => sections.includes(s);
+const head = (s: ProductSection) => ui.product.sections[s];
+
+const alternates = await availableLangs("products", slug);
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.products, path: localePath(lang, "products") },
+  { name: d.hero.name, path: localePath(lang, "products", slug) },
+];
+const jsonLdImage = heroImage ? (await getImage({ src: heroImage.src, width: 1280, format: "jpg" })).src : undefined;
+const t = ui.product.deployment;
+const amount = (v: number | string | undefined, unit: string) => (v === undefined ? undefined : isPending(v) ? v : `${v} ${unit}`);
+const personnel =
+  deployment?.personnel === undefined
+    ? undefined
+    : isPending(deployment.personnel)
+      ? deployment.personnel
+      : `${deployment.personnel.approx ? t.approx + " " : ""}${deployment.personnel.min}–${deployment.personnel.max} ${t.personUnit}`;
+const deploymentRows = [
+  [t.personnel, personnel],
+  [t.area, amount(deployment?.area, t.areaUnit)],
+  [t.setupTime, amount(deployment?.setupTime, t.minuteUnit)],
+  [t.notes, deployment?.notes],
+].filter((r): r is [string, string] => r[1] !== undefined);
+---
+<BaseLayout
+  lang={lang}
+  title={d.seo?.title ?? d.hero.name}
+  description={d.seo?.description ?? d.hero.tagline}
+  pathTemplate={`/{lang}/products/${slug}/`}
+  alternates={alternates}
+  pendingTranslation={product.pendingTranslation}
+  headerTheme="dark"
+  current="products"
+  breadcrumbs={breadcrumbs}
+  ogImage={base.seo?.ogImage ?? heroImage?.src}
+  ogImageAlt={heroImage?.alt}
+  product={{ name: d.hero.name, description: d.seo?.description ?? d.hero.tagline, code: base.hero.code, image: jsonLdImage }}
+>
+  <!-- 1 Hero -->
+  <PageHero
+    breadcrumbs={breadcrumbs}
+    breadcrumbLabel={ui.breadcrumbLabel}
+    eyebrow={`Product · ${base.hero.code}`}
+    title={d.hero.name}
+    subtitle={d.hero.englishName}
+    description={d.hero.tagline}
+    image={heroImage}
+    imagePending={ui.imagePending}
+  >
+    {(base.cta?.brochure ?? true) && <FormButton slot="actions" kind="brochure" lang={lang} productCode={base.hero.code} variant="primary" />}
+    {(base.cta?.demo ?? true) && <FormButton slot="actions" kind="demo" lang={lang} productCode={base.hero.code} variant="secondary" />}
+  </PageHero>
+
+  <!-- 2 In-page navigation, generated from the sections that have data -->
+  {sections.length > 1 && (
+    <nav class="toc" aria-label={ui.product.onThisPage} data-toc>
+      <div class="container">
+        <ul role="list">
+          {sections.map((s) => <li><a href={`#${s}`}><Text value={head(s).title} /></a></li>)}
+        </ul>
+      </div>
+    </nav>
+  )}
+
+  <!-- 3 Overview -->
+  {has("overview") && (
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <div class="container two-col">
+        <SectionHead id="h-overview" eyebrow={head("overview").eyebrow} title={head("overview").title} />
+        <div class="prose" set:html={overviewHtml} />
+      </div>
+    </section>
+  )}
+
+  <!-- 4 Capabilities -->
+  {has("capabilities") && (
+    <section class="section section--alt" id="capabilities" aria-labelledby="h-capabilities">
+      <div class="container">
+        <SectionHead id="h-capabilities" eyebrow={head("capabilities").eyebrow} title={head("capabilities").title} />
+        <ul role="list" class="tiles">
+          {d.capabilities!.map((c) => (
+            <li class="tile"><h3 class="t-h4"><Text value={c.title} /></h3><p class="t-muted"><Text value={c.description} /></p></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- 5 How it works -->
+  {has("howItWorks") && (
+    <section class="section" id="howItWorks" aria-labelledby="h-howItWorks">
+      <div class="container">
+        <SectionHead id="h-howItWorks" eyebrow={head("howItWorks").eyebrow} title={head("howItWorks").title} />
+        <ol role="list" class="steps">
+          {d.howItWorks!.map((s, i) => (
+            <li class="step">
+              <span class="t-tech num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <h3 class="t-h4"><Text value={s.title} /></h3>
+              <p class="t-muted"><Text value={s.description} /></p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <!-- 6 Training scenarios (product's own + integrated scenarios it takes part in) -->
+  {has("scenarios") && (
+    <section class="section section--alt" id="scenarios" aria-labelledby="h-scenarios">
+      <div class="container">
+        <SectionHead id="h-scenarios" eyebrow={head("scenarios").eyebrow} title={head("scenarios").title} />
+        {d.scenarios && d.scenarios.length > 0 && (
+          <ul role="list" class="tiles">
+            {d.scenarios.map((s) => (
+              <li class="tile"><h3 class="t-h4"><Text value={s.title} /></h3><p class="t-muted"><Text value={s.description} /></p></li>
+            ))}
+          </ul>
+        )}
+        {scenarioEntries.length > 0 && (
+          <ul role="list" class="integrated-scenarios">
+            {scenarioEntries.map((s) => (
+              <li class="scenario">
+                <p class="t-label label"><Text value={ui.product.integratedScenario} /> · {s.base.data.code}</p>
+                <h3 class="t-h4"><Text value={s.loc.data.name} /></h3>
+                <p><Text value={s.loc.data.summary} /></p>
+                <p class="t-small participants">
+                  <span class="t-muted"><Text value={ui.product.participants} />：</span>
+                  {s.base.data.products.filter((p) => productNames.has(p)).map((p, i) => (
+                    <>{i > 0 && "、"}{p === slug ? <Text value={productNames.get(p)!} /> : <a href={localePath(lang, "products", p)}><Text value={productNames.get(p)!} /></a>}</>
+                  ))}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- 7 System components -->
+  {has("components") && (
+    <section class="section" id="components" aria-labelledby="h-components">
+      <div class="container">
+        <SectionHead id="h-components" eyebrow={head("components").eyebrow} title={head("components").title} />
+        <dl class="spec">
+          {d.components!.map((c) => (<div><dt><Text value={c.name} /></dt><dd><Text value={c.description} /></dd></div>))}
+        </dl>
+      </div>
+    </section>
+  )}
+
+  <!-- 8 Deployment -->
+  {has("deployment") && (
+    <section class="section section--alt" id="deployment" aria-labelledby="h-deployment">
+      <div class="container">
+        <SectionHead id="h-deployment" eyebrow={head("deployment").eyebrow} title={head("deployment").title} />
+        <dl class="figures">
+          {deploymentRows.map(([k, v]) => (<div><dt class="t-label"><Text value={k} /></dt><dd><Text value={v} /></dd></div>))}
+        </dl>
+      </div>
+    </section>
+  )}
+
+  <!-- 9 Integrated operations -->
+  {has("integratedOps") && (
+    <section class="section" id="integratedOps" aria-labelledby="h-integratedOps">
+      <div class="container">
+        <SectionHead id="h-integratedOps" eyebrow={head("integratedOps").eyebrow} title={head("integratedOps").title} description={d.integratedOps?.description} />
+        {integrated.length > 0 && (
+          <>
+            <p class="t-label sublabel"><Text value={ui.product.integratesWith} /></p>
+            <ul role="list" class="cards">
+              {integrated.map((p) => (
+                <li>
+                  <CardProduct
+                    lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
+                    englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                    domains={p.base.data.domains}
+                    image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- 10 Related solutions -->
+  {has("relatedSolutions") && (
+    <section class="section section--alt" id="relatedSolutions" aria-labelledby="h-relatedSolutions">
+      <div class="container">
+        <SectionHead id="h-relatedSolutions" eyebrow={head("relatedSolutions").eyebrow} title={head("relatedSolutions").title} />
+        <ul role="list" class="cards">
+          {solutions.map((s) => (
+            <li>
+              <CardSolution
+                lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
+                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary}
+                image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- 11 Related articles (reverse lookup of relatedProducts) -->
+  {has("relatedArticles") && (
+    <section class="section" id="relatedArticles" aria-labelledby="h-relatedArticles">
+      <div class="container">
+        <SectionHead id="h-relatedArticles" eyebrow={head("relatedArticles").eyebrow} title={head("relatedArticles").title} />
+        <ul role="list" class="cards">
+          {articles.map(({ collection, entry }) => (
+            <li>
+              <CardArticle
+                lang={lang} href={localePath(lang, collection, entry.slug)} type={ui.articleTypes[collection]}
+                date={entry.base.data.publishDate} title={entry.loc.data.title} summary={entry.loc.data.summary}
+                tags={entry.base.data.tags}
+                cover={entry.base.data.cover && { src: entry.base.data.cover.src, alt: entry.loc.data.cover?.alt ?? entry.base.data.cover.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- 12 CTA -->
+  {d.cta && (
+    <CtaBand id="product-cta" title={d.cta.title} description={d.cta.description}>
+      {(base.cta?.brochure ?? true) && <FormButton kind="brochure" lang={lang} productCode={base.hero.code} variant="primary" />}
+      {(base.cta?.demo ?? true) && <FormButton kind="demo" lang={lang} productCode={base.hero.code} variant="secondary" />}
+    </CtaBand>
+  )}
+</BaseLayout>
+
+<script>
+  // Marks the in-page navigation item for the section currently in view.
+  const toc = document.querySelector<HTMLElement>("[data-toc]");
+  if (toc && "IntersectionObserver" in window) {
+    const links = new Map([...toc.querySelectorAll<HTMLAnchorElement>("a")].map((a) => [a.hash.slice(1), a]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          for (const a of links.values()) a.removeAttribute("aria-current");
+          links.get(e.target.id)?.setAttribute("aria-current", "location");
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    for (const id of links.keys()) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+  }
+</script>
+
+<style>
+  .toc { position: sticky; top: var(--header-h); z-index: 40; background: var(--bxr-white); border-bottom: 1px solid var(--bxr-line); }
+  .toc ul { display: flex; gap: var(--space-4); margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: thin; }
+  .toc a {
+    display: inline-flex; align-items: center; min-height: 48px; white-space: nowrap;
+    color: var(--bxr-slate); text-decoration: none; font-size: var(--fs-small); font-weight: 500;
+    border-bottom: 2px solid transparent;
+  }
+  .toc a:hover { color: var(--bxr-black); }
+  .toc a[aria-current="location"] { color: var(--bxr-black); border-bottom-color: var(--bxr-black); }
+  .toc a:focus-visible { outline-offset: -2px; }
+  :global(html) { scroll-padding-top: calc(var(--header-h) + 48px + var(--space-2)); }
+
+  .two-col { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
+  .two-col :global(.section-head) { margin-bottom: 0; }
+  .prose { display: grid; gap: var(--space-2); max-width: 44rem; }
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .tile { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-3); background: var(--surface); border-top: 2px solid var(--bxr-black); }
+  .section--alt .tile { background: var(--bxr-white); }
+  .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; counter-reset: none; }
+  .step { display: grid; gap: var(--space-1); align-content: start; padding-top: var(--space-2); border-top: 1px solid var(--bxr-line); }
+  .num { color: var(--ink-muted); }
+  .integrated-scenarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+  .scenario { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-3); background: var(--bxr-white); border: 1px solid var(--bxr-line); }
+  .scenario .label { color: var(--ink-muted); }
+  .participants a { min-height: 24px; }
+  .spec { display: grid; margin: 0; border-top: 1px solid var(--bxr-black); }
+  .spec div { display: grid; grid-template-columns: 4fr 8fr; gap: var(--space-3); padding-block: var(--space-2); border-bottom: 1px solid var(--bxr-line); }
+  .spec dt { font-weight: 500; }
+  .spec dd { margin: 0; color: var(--ink-muted); }
+  .figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); margin: 0; }
+  .figures div { display: grid; gap: var(--space-1); padding-top: var(--space-2); border-top: 1px solid var(--bxr-black); }
+  .figures dt { color: var(--ink-muted); }
+  .figures dd { margin: 0; font-size: var(--fs-h3); font-weight: 500; }
+  .sublabel { color: var(--ink-muted); margin-bottom: var(--space-2); }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) {
+    .two-col { grid-template-columns: 1fr; gap: var(--space-3); }
+    .tiles, .cards, .steps, .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .tiles, .cards, .steps, .figures, .integrated-scenarios { grid-template-columns: 1fr; }
+    .spec div { grid-template-columns: 1fr; gap: var(--space-1); }
+  }
+</style>

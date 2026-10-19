@@ -1,0 +1,17 @@
+---
+/** Shown where an approved image has not been supplied yet. Keeps the 16:9 box so nothing shifts. */
+import Text from "./Text.astro";
+interface Props { label: string; ratio?: string }
+const { label, ratio = "16 / 9" } = Astro.props;
+---
+<div class="placeholder" style={`aspect-ratio:${ratio}`} role="img" aria-label={label}>
+  <span class="t-tech" aria-hidden="true"><Text value={label} /></span>
+</div>
+<style>
+  .placeholder {
+    display: grid; place-items: center; width: 100%;
+    background: var(--bxr-paper); color: var(--bxr-slate);
+    border: 1px dashed var(--bxr-mist);
+  }
+  [data-theme="dark"] .placeholder { background: var(--bxr-graphite); color: var(--bxr-mist); border-color: var(--bxr-slate); }
+</style>
