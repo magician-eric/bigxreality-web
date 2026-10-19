@@ -1,6 +1,6 @@
 # Big x Reality 官網 2.0 — 第二階段技術規劃
 
-> 狀態：**原則核准，依 §11 決策修訂（2026-10-19）**。執行順序：先做 Pagefind 技術驗證並回報 → 確認可行後依 §8 分階段實作。不部署。
+> 狀態：**CMS 架構變更評估中（2026-10-19）**。原本的 Decap CMS＋GitHub 架構已被新決策取代，見 **§13**。§3.6、§11.1、§8 的 T27–T30（Decap）不再執行；其餘頁面、搜尋、測試規劃保留，工時已併入 §13.9。等新架構核准後才開始開發。
 > 基準：`main` @ `df47220`（PR #1 合併後）。
 > 範圍：Solutions、Resources、News、Insights、Case Studies、共用標籤、內容關聯、站內搜尋。
 > 原則：能共用就共用；沿用第一階段的 Astro 7.3.8、Design Tokens、元件、三語架構、SEO 系統；不導入 Tailwind，不建第二套設計系統或第二套關聯系統。
@@ -167,7 +167,7 @@ Solutions 是否也做子選單：建議**先不做**（總覽頁已經列出四
 `src/content/tags/<lang>/<slug>.md`：`translationStatus`、`name`、`description?`。
 文章只能選既有標籤（Decap relation widget），build 驗證不存在的標籤會失敗。
 
-### 3.6 與 Decap CMS 的整合
+### 3.6 與 Decap CMS 的整合（⚠️ 已被 §13 取代，不執行）
 
 | 項目 | 規劃 |
 |---|---|
@@ -316,6 +316,8 @@ docs/PLAN.md                   標示第一階段 §5 哪些項目移到第三�
 ---
 
 ## 8. 工作拆分與預估時間（修訂版）
+
+> ⚠️ CMS 架構變更後，本節的 T27–T30（Decap）取消，其餘任務的工時併入 §13.9 的新估算。
 
 時數是開發與自我測試的時間，不含等待資料與審核。分類標記：
 
@@ -481,7 +483,7 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 
 ## 11. 審核決策（2026-10-19）
 
-### 11.1 Decap CMS
+### 11.1 Decap CMS（⚠️ 已被 §13 取代，不執行）
 本階段建立 `config.yml` 並完成**本機測試**。E2E 測試要驗證 Products、Solutions、News、Insights、Case Studies 各自的：
 新增、編輯、圖片上傳（寫入正確的 media 資料夾、Markdown 路徑可被 Astro 讀取）、三語內容（tw / en / jp 三個檔案）、關聯欄位（只能選既有 slug）、發布狀態（`draft`、`publishDate`、`translationStatus`）。
 每個 E2E 案例最後都跑一次 build，確認後台存出來的檔案能通過 schema 與關聯驗證。測試結束後還原所有檔案。
@@ -585,3 +587,257 @@ T0（回報）→ T1–T6 → T7–T13 → T14–T24 → T25–T26 → T27–T30
 | Algolia 等託管服務 | 品質最好 | 月費、外部依賴、資料同步；不符合「不導入大型服務」 |
 
 **請確認是否採用 §12.4 方案。確認後才開始 T1 以後的實作。**
+
+---
+
+## 13. CMS 架構變更：Cloudflare 管內容（2026-10-19，待核准）
+
+> 新決策：GitHub 只管程式碼；文章、產品、解決方案、案例、標籤、三語內容與媒體都存在 Cloudflare；
+> 五位編輯不需要 GitHub 帳號，透過後台登入編輯、審核、發布；改內容不需要 commit、PR 或人工部署；初期目標每月 US$0。
+> 本節只做評估與規劃：**沒有修改程式、沒有建立 D1／R2、沒有部署、沒有啟用付費、沒有動 DNS、沒有刪除 Markdown。**
+
+### 13.1 結論先講
+
+**建議：方案 A —— EmDash（Cloudflare 官方的開源 CMS，以 Astro 為基礎）＋「混合式」輸出。**
+
+- 公開頁面維持**靜態建置**（和第一階段一樣），由 Cloudflare 的靜態檔服務直接回應——不吃 Worker 請求額度，造訪量再大也是 $0。
+- 後台（`/_emdash/admin`）、內容 API、草稿預覽是**同一個 Astro 專案裡的動態路由**，跑在 Worker 上，只有編輯人員會用到。
+- 編輯按「發布」或排程時間到了 → 自動觸發 Cloudflare 重新建置（約 3～5 分鐘後上線）→ 頁面、Sitemap、hreflang、搜尋索引一起更新。
+- 第一階段的元件、路由、SEO、Zod schema、關聯驗證**全部保留**；主要改的是「內容從哪裡讀」（Markdown 檔 → D1）。
+
+**但有兩件事必須先驗證或取得核准**，見 §13.11：
+1. EmDash 在 **Workers 免費方案**（每次請求 CPU 上限 10 ms）能不能穩定運作——第三方資料說法互相矛盾，必須實測。不行的話需要 Workers Paid（**US$5／月**）。
+2. **R2 啟用時 Cloudflare 會要求綁定付款方式**（免費額度內不收費，但超過會自動計費）。這需要你核准。
+
+### 13.2 三個方案比較
+
+| | **A. EmDash（建議）** | B. 自建輕量 CMS（Workers＋D1＋R2） | C. 外部 SaaS Headless CMS（Sanity、Storyblok、Contentful 等） |
+|---|---|---|---|
+| 是什麼 | Cloudflare 官方開源（MIT）CMS，Astro integration；npm `emdash` 1.3.1（2026-10-18），1.0 於 2026-04-27 發布 | 自己寫後台介面、API、權限、版本、排程 | 內容存在廠商雲端，網站 build 時抓 |
+| 內容存放 | D1＋R2（自己的 Cloudflare 帳號） | D1＋R2 | **廠商雲端**（違反「內容存在 Cloudflare」原則） |
+| 第二階段總工時 | **約 148 h**（§13.9） | 約 220 h | 約 110 h |
+| 固定費用 | $0（若免費方案 CPU 不夠：$5／月） | $0 | 免費方案常限制角色、審核流程、版本保留天數；需要時月費 US$15～100+ |
+| 五位編輯權限 | 內建角色：admin／editor／author／contributor；登入可接 **Cloudflare Access** 或 passkey | 要自己做 | 廠商提供，免費方案常限使用人數或角色 |
+| 三語編輯 | 內建 i18n（每語言一筆、互相連結）、hreflang 模組 | 要自己做 | 多數支援 |
+| 圖片／PDF | 媒體庫（R2）、簽名網址上傳、焦點裁切 | 要自己做 | 廠商 CDN |
+| 草稿／審核／排程 | 內建：草稿、審核（approvals）、排程發布、預覽 | 要自己做 | 多數支援，排程常需付費 |
+| 版本與還原 | 內建 revisions、稽核紀錄（audit）、匯出／匯入 | 要自己做 | 付費方案較完整 |
+| 備份 | D1 Time Travel（免費 7 天）＋ `wrangler d1 export`＋R2 同步 | 同左 | 依廠商；資料不在自己手上 |
+| 安全性 | Access 擋在後台前；後台程式由 Cloudflare 團隊維護、開源可審 | 安全責任全在我們 | 廠商負責，但多一個外部依賴 |
+| 未來擴充 | 外掛系統、表單、留言、重新導向、全文搜尋都有 | 每項都要自己寫 | 依廠商功能 |
+| 對第一階段影響 | 中：換內容來源與圖片來源，元件與頁面不變 | 中：同左 | 中：同左 |
+| 主要風險 | 專案只有半年歷史；資料模型偏 WordPress；免費方案 CPU 限制未確認 | 開發與長期維護成本最高；權限、版本等容易出安全問題 | 違反新原則；廠商鎖定與漲價 |
+
+**不選 B 的原因**：本專案需要的權限、三語、審核、排程、版本、媒體庫、稽核紀錄，EmDash 都已經有，自己寫要多約 70 小時，之後所有維護與安全修補也都要自己負責。
+**不選 C 的原因**：內容不在自己的 Cloudflare 帳號，和這次的決策直接衝突。
+
+**也評估過但排除**：Payload CMS（官方 Cloudflare 範本明確要求 Workers Paid，且以 Next.js 為主，和 Astro 不同框架）；SonicJS（v3 仍是 beta）；Keystatic／TinaCMS／Decap（都以 Git 儲存內容，違反新原則）。
+
+### 13.3 靜態、SSR、混合式比較
+
+| | 全靜態（現況） | 全 SSR（每個頁面由 Worker 即時產生） | **混合式（建議）** |
+|---|---|---|---|
+| 公開頁面 | 靜態檔 | 每次造訪都跑 Worker＋查 D1 | 靜態檔 |
+| 內容更新 | 要重新 build（目前要 commit） | 立即 | 自動重新 build，約 3～5 分鐘 |
+| 速度（LCP） | 最快 | 每頁多一次 Worker 執行與資料庫查詢 | 最快 |
+| 費用 | $0 | 大型情境每月約 150 萬次 Worker 請求，尖峰日會超過免費的 10 萬次／日 → 需 $5／月；免費方案每次 10 ms CPU 對 SSR 很吃緊 | $0（只有編輯操作用到 Worker） |
+| 搜尋／Sitemap | build 時產生 | 要另外設計即時更新 | build 時產生，永遠同步 |
+| 維護 | 簡單 | 要處理快取、失效、錯誤頁 | 簡單；多一個 build 觸發機制 |
+
+### 13.4 回答你的七個問題
+
+1. **Astro 還適合靜態架構嗎？** 適合。公開頁面維持靜態輸出；只把後台、API、預覽設為動態路由（Astro 的 on-demand route＋`@astrojs/cloudflare` adapter）。用 Workers 靜態檔的 `run_worker_first` 只讓 `/_emdash/*`、`/preview/*` 和舊站參數型網址進 Worker，其他請求直接由靜態檔回應。
+2. **D1 內容怎麼給 Astro 頁面？** build 時先把 D1 匯出成 SQLite 檔（`wrangler d1 export`），再由**自訂的 Content Layer loader** 讀取已發布的內容交給 Astro Content Collections。頁面程式和現在一樣用 `getCollection()`，不需要知道內容來自 D1。（另一個做法是 build 時直接連遠端 D1；哪個較穩定是技術驗證項目。）
+3. **編輯發布後網站怎麼更新？** 發布或排程觸發一個 Worker 動作：標記「需要重建」。一個每 5 分鐘執行的 Cron Trigger 檢查標記與到期的排程內容，有需要才呼叫 Cloudflare 的 deploy hook 重新建置。短時間內多次發布會合併成一次 build。
+4. **需要 Cloudflare 重新建置嗎？** 需要，但全自動，不經過 GitHub。預估每月約 150 次 build × 約 4 分鐘＝ 600 分鐘，在 Workers Builds 免費的 3,000 分鐘／月內。
+5. **能只更新異動內容嗎？** Astro 靜態建置不支援只重建單頁。全站約 500～1,000 頁，build 只要幾分鐘，現階段不值得為此增加複雜度；圖片轉檔用 build 快取避免每次重做。未來若 build 超過 10 分鐘，可把 News 等頻繁更新的頁面改為動態＋快取（屆時另提方案）。
+6. **Zod schema 與關聯驗證怎麼延續？** 完全保留。`content.config.ts` 的 schema 照用，只把 `glob()` loader 換成 D1 loader；`validateRelations()` 照常在 build 時檢查，關聯錯誤會讓 build 失敗並保留目前的網站版本（不會發布壞掉的網站）。後台另外用 EmDash 的必填、reference 欄位擋住大部分錯誤，Zod 是最後一道關卡。關聯仍然**只存一邊**，反向由程式查出。
+7. **搜尋、Sitemap、SEO 怎麼同步？** 它們都在同一次 build 產生（Pagefind 索引、`sitemap.xml`、每頁 meta 與 hreflang），所以一定一致。待翻譯、草稿、未來日期的內容不會被 build 出來，也就不會進索引。
+
+### 13.5 第一階段哪些保留、哪些要改
+
+| 項目 | 處理 |
+|---|---|
+| 元件、版型、Design Tokens、Logo、CIS | **保留，不改** |
+| 三語路由、hreflang、canonical、Sitemap、SEO 元件 | **保留** |
+| `content.config.ts` 的 Zod schema、`lib/content.ts` 關聯驗證與反查 | **保留**；loader 換成 D1 |
+| 產品頁、產品總覽頁 | **保留**；只改資料來源與圖片來源（R2 遠端圖片＋Astro 圖片轉檔） |
+| Markdown 正文 | EmDash 正文是 Portable Text（結構化富文字）→ 新增一個渲染元件；第一階段的 `[待提供]` 標記規則照用 |
+| `src/content/**/*.md` | **不刪除**。內容匯入 D1 後，正式資料來源改為 D1；Markdown 移到 `tests/fixtures/content/` 當測試資料（需要你另外核准這一步） |
+| `src/data/site.json`、`src/content/ui/*.json` | 站點設定移到 CMS 的 Site Settings；介面文字（按鈕、選單）屬於程式的一部分，**建議留在 GitHub** |
+| Astro 輸出模式 | `static` → 加 adapter 的混合式（公開頁面仍全部預先產生） |
+| 部署 | Cloudflare Workers（含靜態檔）＋ Workers Builds 自動建置 |
+| 新增套件 | `emdash`、`@emdash-cms/cloudflare`、`@astrojs/cloudflare`、`@astrojs/react`、React——**只在後台路由載入**，公開頁面不會多任何 JS |
+
+### 13.6 CMS 必要功能對照（EmDash）
+
+| 需求 | EmDash 是否內建 | 需要我們做的 |
+|---|---|---|
+| Products、Solutions、News、Insights、Case Studies、Tags、Site Settings、SEO 欄位 | 自訂 collection＋欄位（文字、數字、選單、重複欄位、reference、圖片、檔案、日期） | 依 §3 的 schema 建立 collection |
+| 三語、各語言獨立編輯 | 內建 i18n（每語言一筆，互相連結） | 設定 `en`／`tw`／`jp`（`tw` 對應 `zh-Hant-TW`） |
+| 翻譯完成狀態、未完成不得索引 | 未內建這個欄位 | 加 `translationStatus` 欄位；build 時沿用第一階段的 noindex／sitemap 排除規則 |
+| 新增、編輯、刪除、草稿 | 內建（刪除先進垃圾桶） | — |
+| 預覽 | 內建預覽機制 | 預覽路由改用**我們自己的頁面模板**呈現 |
+| 審核與發布 | 內建 approvals＋角色 | 設定：contributor 只能送審，editor 才能發布 |
+| 排程發布 | 內建 scheduled publish | 接上「觸發重新建置」 |
+| 版本紀錄與還原 | 內建 revisions | — |
+| 圖片上傳 | 媒體庫（R2，簽名網址上傳） | 設定公開媒體網域、圖片尺寸規則 |
+| 權限控管 | 內建角色；登入可接 Cloudflare Access | Access 原則（只允許指定 Email）＋角色對應 |
+| 關聯驗證 | reference 欄位只能選既有內容 | build 時 `validateRelations()` 再驗證一次 |
+
+### 13.7 Cloudflare 免費額度（官方文件，2026-10 查詢）
+
+| 服務 | 免費方案 | 超過後 |
+|---|---|---|
+| **Workers** | 每日 10 萬次請求（UTC 0 點重置），每次請求 CPU 10 ms；Worker 大小上限 64 MiB（舊的 3 MB 限制已取消） | 免費方案超過額度回傳錯誤（不會計費）。Workers Paid：**US$5／月**起，含每月 1,000 萬次請求、3,000 萬 CPU 毫秒，超過每百萬次 $0.30、每百萬 CPU 毫秒 $0.02 |
+| **靜態檔（Workers static assets／Pages）** | **請求免費且不限量**；每個版本最多 2 萬個檔案，單檔 25 MiB | — |
+| **Pages** | 每月 500 次 build、同時 1 個、單次 20 分鐘；每站 2 萬個檔案 | 付費方案提高上限 |
+| **Workers Builds** | 每月 3,000 build 分鐘、同時 1 個、單次 20 分鐘 | 付費方案 6,000 分鐘，超過每分鐘 $0.005 |
+| **D1** | 每日讀 500 萬列、寫 10 萬列；帳號總容量 5 GB、單一資料庫 500 MB；10 個資料庫；Time Travel 7 天 | 免費方案超過額度直接查詢失敗（不會計費）。Paid 方案：每月含讀 250 億列、寫 5,000 萬列、5 GB；超過讀 $0.001／百萬列、寫 $1.00／百萬列、儲存 $0.75／GB-月；Time Travel 30 天 |
+| **R2** | 每月 10 GB-月儲存、100 萬次 Class A（寫入、列表）、1,000 萬次 Class B（讀取）；**對外流量免費** | 儲存 $0.015／GB-月、Class A $4.50／百萬次、Class B $0.36／百萬次。**R2 免費額度不會自動停用，超過就計費** |
+| **Access（Zero Trust）** | 50 人以內免費 | 第 51 人起全部人數改為付費方案（約 $7／人／月） |
+
+**信用卡**：Workers、D1、Pages、Access 免費方案不需要；**R2 啟用時需要綁定付款方式**（多數來源一致；Cloudflare 說明是因為 R2 用量不設上限）。Cloudflare **沒有可設定的花費上限**，只能設用量通知。
+
+**必須付費的情況**：Worker 每次 CPU 超過 10 ms 或每日超過 10 萬次請求、D1 單一資料庫超過 500 MB、Access 超過 50 人、R2 超過免費額度。
+
+### 13.8 費用估算
+
+**共同假設**：5 位編輯、三語、100 篇文章、30 個產品與解決方案頁、5 GB 圖片與 PDF。
+
+| 計算假設 | 數值 |
+|---|---|
+| 每次造訪平均瀏覽頁數 | 3 頁 |
+| 每頁的 HTML、CSS、JS、字型、圖片 | 全部是靜態檔（圖片在 build 時轉成 AVIF／WebP 放進靜態檔）→ **免費、不計 Worker 請求** |
+| 會進 Worker 的公開請求 | 舊站參數型網址轉址＋找不到的網址，抓 2%／造訪 |
+| 使用站內搜尋 | 10% 造訪；Pagefind 索引是靜態檔 → 免費 |
+| PDF 下載（從 R2） | 5%／造訪，每次 1 次 Class B |
+| 編輯後台 | 5 人 × 22 個工作天 × 每人每天 300 次 API 請求 ≈ 33,000 次／月 |
+| 排程檢查 Cron | 每 5 分鐘 1 次 ≈ 8,640 次／月 |
+| 重新建置 | 約 150 次／月，每次約 4 分鐘；每次讀 D1 約 2 萬列、從 R2 讀約 300 張原圖 |
+| D1 編輯操作 | 每次 API 平均讀 50 列；每月寫入約 3,000 列 |
+
+| 項目 | 小型（5,000 造訪／月） | 中型（50,000） | 大型（500,000） | 免費額度 |
+|---|---|---|---|---|
+| 公開頁面瀏覽 | 15,000（靜態） | 150,000（靜態） | 1,500,000（靜態） | 不限 |
+| Worker 請求／月 | 約 41,700 | 約 42,600 | 約 51,600 | 每日 10 萬（約 300 萬／月） |
+| 每日平均 Worker 請求 | 約 1,400 | 約 1,400 | 約 1,700 | 100,000 |
+| D1 讀取／月 | 約 465 萬列 | 約 465 萬列 | 約 465 萬列 | 每日 500 萬列 |
+| D1 寫入／月 | 約 3,000 列 | 約 3,000 列 | 約 3,000 列 | 每日 10 萬列 |
+| D1 容量 | < 100 MB | < 100 MB | < 100 MB | 單庫 500 MB |
+| R2 儲存 | 5 GB | 5 GB | 5 GB | 10 GB |
+| R2 Class B／月 | 約 45,250 | 約 47,500 | 約 70,000 | 1,000 萬 |
+| R2 Class A／月 | 約 2,000 | 約 2,000 | 約 2,000 | 100 萬 |
+| Build 分鐘／月 | 約 600 | 約 600 | 約 600 | 3,000 |
+| Access 使用者 | 7（5 編輯＋2 管理員） | 7 | 7 | 50 |
+| **每月費用** | **US$0** | **US$0** | **US$0** | |
+
+- 三種情境的差異幾乎只在靜態頁面，而靜態頁面不計費，所以都在免費額度內。**最大的不確定因素不是流量，而是 EmDash 後台在免費方案的 10 ms CPU 限制下能否運作**；若不行，固定成本變成 **US$5／月**（三種情境相同，額度遠用不完）。
+- 若改用全 SSR：大型情境每月約 150 萬次 Worker 請求，尖峰日會超過 10 萬次 → 至少 US$5／月。這也是建議混合式的原因。
+- 圖片若改用 Cloudflare Images 即時轉檔會另外計費，**不建議**；沿用 build 時轉檔。
+- R2 公開媒體網域前面加快取，避免 PDF 被大量盜連時 Class B 次數暴增。
+
+### 13.9 第二階段工時（新架構）
+
+分類：🆕 新增功能　♻️ 沿用既有元件　🔗 整合　🧪 測試
+
+| # | 項目 | 內容 | 🆕 | ♻️ | 🔗 | 🧪 | 小計 |
+|---|---|---|---|---|---|---|---|
+| 1 | CMS 技術驗證 | 本機：EmDash＋本機 D1／R2 模擬、三語、重複欄位、reference、Access 登入流程、匯出；雲端：免費方案 CPU 實測（需核准，§13.11） | 6 | | 2 | 2 | 10 |
+| 2 | D1 資料模型 | 依 §3 建立 collections（products、solutions、scenarios、pages、news、insights、case-studies、tags、site settings）、translationStatus | 8 | | | 2 | 10 |
+| 3 | R2 媒體管理 | 媒體設定、公開媒體網域與快取、Astro 遠端圖片轉檔、PDF | 3 | | 2 | | 5 |
+| 4 | Workers API | build 用的匯出、重建標記、Cron 排程檢查與合併觸發、舊站參數型轉址路由 | 6 | | 1 | 1 | 8 |
+| 5 | 後台登入與權限 | Access 原則、角色對應、送審／發布權限 | 2 | | 2 | 1 | 5 |
+| 6 | CMS 管理介面 | 欄位中文標籤與說明、審核流程設定、預覽改用我們的模板 | 6 | | 4 | | 10 |
+| 7 | Astro 內容讀取整合 | D1 loader（保留 Zod 與關聯驗證）、Portable Text 渲染、adapter 混合式設定、現有 Markdown 匯入 D1 的一次性腳本 | 8 | 2 | 4 | | 14 |
+| 8 | Solutions、Resources、News、Insights、Case Studies、標籤頁 | §8 的 T7–T24（共用元件抽出、`ArticleLayout`、`ArticleListPage` 等） | 13 | 9 | 7.5 | 3 | 32.5 |
+| 9 | 搜尋 | Pagefind＋雙字詞編碼（§12.4）、搜尋頁 | 4 | 1 | 1.5 | | 6.5 |
+| 10 | 自動化測試 | 測試資料（本機 D1 種子資料）、單元、搜尋、sitemap、行為、a11y、截圖、Lighthouse、**CMS E2E**（新增／編輯／圖片／三語／關聯／草稿／審核／排程／版本還原／權限）、build 觸發測試 | | | | 23.5 | 23.5 |
+| 11 | 備份與還原驗證 | D1 匯出、R2 同步、本機 Linux 腳本、本機還原演練＋一次雲端還原演練 | 3 | | 1 | 2 | 6 |
+| 12 | CI 與部署相容性 | GitHub Actions（只跑程式測試）、Workers Builds 設定 | | | 2 | 1 | 3 |
+| 13 | 除錯與整合 | 跨系統問題、三語邊界、build 失敗處理 | | | 10 | | 10 |
+| 14 | 文件 | 編輯操作手冊、管理員手冊、還原手冊 | 4 | | | | 4 |
+| | **合計** | | **63** | **12** | **38** | **35.5** | **約 148 h** |
+
+**和舊估算的差異**：舊架構約 87 h（含 Decap 12 h）。新架構拿掉 Decap 12 h，增加 CMS 相關工作（項目 1～7、11）約 68 h，以及多一層系統的整合與除錯約 5 h。
+
+**更省時的選項（可以只選其中幾項）**：
+
+| 簡化 | 省下 | 代價 |
+|---|---|---|
+| 預覽先用 EmDash 內建預覽，不套我們的模板 | 4 h | 編輯看不到最終版面，要發布後才看得到 |
+| 審核流程先只用角色（contributor 只能存草稿，editor 發布），不設多階段審核 | 2 h | 沒有「送審→退回」紀錄 |
+| 第一版不做排程發布，改為發布即重建 | 2 h | 無法預約時間發布 |
+| 本階段只上 Solutions＋News＋Case Studies，Insights 與標籤頁延後 | 約 8 h | 內容類型較少 |
+
+### 13.10 資料安全與備份
+
+| 層級 | 做法 | 涵蓋 |
+|---|---|---|
+| 單篇內容 | EmDash 版本紀錄（revisions）＋刪除先進垃圾桶 | 誤改、誤刪單篇 |
+| 整個資料庫（短期） | D1 Time Travel：免費方案可還原到 **7 天內**任一時間點 | 大量誤刪、錯誤匯入 |
+| 每日自動備份 | Cron Worker 每日把 D1 匯出 SQL 存到 R2 的私有備份 bucket，保留 30 天 | 超過 7 天的問題 |
+| **每月本機 Linux 備份（沿用原規劃）** | 地端 Linux 的 systemd timer：用**唯讀** API token 執行 `wrangler d1 export`（SQL）＋ EmDash 匯出（JSON，可讀的完整內容）；用唯讀 S3 金鑰以 `rclone sync` 同步 R2 媒體；保留 12 個月份、產生 checksum。**建議改為每週** | Cloudflare 帳號或平台故障、帳號被誤刪 |
+| 程式碼 | GitHub（含每月 `git bundle`，沿用原規劃） | — |
+| 操作紀錄 | EmDash 稽核紀錄（誰在何時改了什麼） | 追查問題 |
+| 權限分級 | Cloudflare Access 只允許名單內 Email 登入後台；CMS 內角色：管理員（2 人）、編輯（可發布）、作者（只能送審）；Cloudflare 帳號本身只給管理員並開啟兩步驟驗證；build 與備份用的 API token 只給最小權限 | 帳號外洩、誤操作 |
+| 資料匯出 | 內容 JSON、D1 SQL、R2 原始檔，三者都能在不依賴 EmDash 的情況下讀取 | 未來換 CMS |
+| 還原演練 | 每季在本機把備份還原成一個新的 D1＋R2，跑一次 build 確認網站正常 | 確認備份真的能用 |
+
+**平台故障時的復原流程**：
+1. 網站本身是靜態檔，Cloudflare 後台或 D1 故障時**公開網站照常運作**，只是暫時無法編輯。
+2. 若 Cloudflare 帳號無法使用：用本機備份的 D1 SQL 建立新資料庫、R2 原始檔上傳到新 bucket、從 GitHub 部署程式，約半天可恢復。
+3. 必要時可把 D1 SQL 轉成 SQLite 檔，在任何 Node.js 主機用 EmDash 的 SQLite 模式暫時運作。
+
+### 13.11 需要你核准的事（核准前不會執行）
+
+| # | 事項 | 費用影響 |
+|---|---|---|
+| K1 | 採用 §13.1 的建議架構（EmDash＋混合式） | — |
+| K2 | **技術驗證第一階段（本機）**：在本機用 D1／R2 模擬器測試 EmDash，不建立任何 Cloudflare 資源 | $0，不需要任何 Cloudflare 操作 |
+| K3 | **技術驗證第二階段（雲端）**：在你的 Cloudflare 帳號建立一個測試用 D1 與一個測試用 Worker（免費方案），實測 10 ms CPU 限制；結束後刪除 | $0；需要 Cloudflare API token（建議只給 Workers、D1 權限） |
+| K4 | **R2 啟用（綁定付款方式）**：媒體與備份需要 R2 | 免費額度內 $0；超過會自動計費。建議同時設定用量通知 |
+| K5 | 若 K3 結果顯示免費方案不夠：升級 Workers Paid | **US$5／月** |
+| K6 | 內容匯入 D1 後，`src/content/**/*.md` 移到 `tests/fixtures/content/` 當測試資料（不刪除） | — |
+| K7 | 備份頻率：本機 Linux 每週（建議）或每月 | — |
+
+### 13.12 遷移計畫
+
+| 步驟 | 內容 | 是否需要 Cloudflare 資源 |
+|---|---|---|
+| M1 | 本機技術驗證（K2），回報結果 | 否 |
+| M2 | 雲端技術驗證（K3），回報免費方案是否足夠 | 是（測試用，結束後刪除） |
+| M3 | 在 repo 中加入 EmDash、adapter、collections 設定；第一階段頁面改由 D1 loader 讀取，**用本機 D1 確認第一階段頁面輸出和現在完全相同**（截圖比對＋原有 27 項行為測試） | 否 |
+| M4 | 一次性匯入腳本：把現有 Markdown 內容與圖片匯入本機 D1／R2，比對匯入前後 build 結果一致 | 否 |
+| M5 | 第二階段頁面、搜尋、測試（§13.9 項目 8～10） | 否 |
+| M6 | 建立正式 D1、R2、Access、Workers Builds（K4 核准後）；匯入內容；在 `*.workers.dev` 預覽網址驗收 | 是 |
+| M7 | 編輯人員帳號與操作訓練；備份與還原演練 | 是 |
+| M8 | 正式網域、DNS、GA、301（第三階段） | 是 |
+
+### 13.13 新增風險
+
+| 風險 | 處理 |
+|---|---|
+| EmDash 只有約半年的穩定版歷史，API 可能變動 | 鎖定精確版本；只用官方公開的 API；網站頁面透過我們自己的 loader 讀資料，未來換 CMS 只要改 loader |
+| EmDash 的資料模型偏 WordPress（文章、頁面、區塊） | 技術驗證先確認能表達 §3 的結構化欄位（重複欄位、reference、三語） |
+| 免費方案 10 ms CPU | K3 實測；不夠時 $5／月 |
+| R2 沒有花費上限 | 用量通知；公開媒體加快取；備份 bucket 不公開 |
+| 每次發布要等約 3～5 分鐘才上線 | 後台顯示「發布中／已上線」狀態；需要立即看到的用預覽 |
+| build 失敗（例如關聯錯誤） | 網站維持上一個正常版本；後台與 Email 通知管理員 |
+
+### 13.14 資料來源
+
+- Workers 價格與限制：<https://developers.cloudflare.com/workers/platform/pricing/>、<https://developers.cloudflare.com/workers/platform/limits/>
+- 靜態檔計費：<https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/>
+- `run_worker_first`：<https://developers.cloudflare.com/workers/static-assets/routing/worker-script/>
+- Workers Builds：<https://developers.cloudflare.com/workers/ci-cd/builds/limits-and-pricing/>
+- Pages 限制：<https://developers.cloudflare.com/pages/platform/limits/>
+- D1 價格、限制、Time Travel：<https://developers.cloudflare.com/d1/platform/pricing/>、<https://developers.cloudflare.com/d1/platform/limits/>、<https://developers.cloudflare.com/d1/reference/time-travel/>
+- R2 價格：<https://developers.cloudflare.com/r2/pricing/>
+- Access 價格：<https://www.cloudflare.com/sase/products/access/>
+- R2 需要付款方式：<https://community.cloudflare.com/t/why-using-r2-free-tier-involves-giving-card-info/945179>
+- EmDash：npm `emdash` 1.3.1、`@emdash-cms/cloudflare` 1.3.1（套件內容已檢查）；<https://github.com/emdash-cms/emdash>
+- EmDash 免費方案的不同說法：<https://www.bitdoze.com/deploy-emdash-cloudflare-workers/>、<https://emdash-labs.com/blog/deploying-emdash-to-cloudflare-what-we-learned>
+- Payload 需要 Workers Paid：<https://github.com/payloadcms/payload/blob/main/templates/with-cloudflare-d1/README.md>
+
+> 註：這個開發環境無法直接開啟 Cloudflare 官網，以上額度是透過搜尋取得官方文件內容（2026-10 查詢）。實作前會在 Cloudflare 後台再確認一次。
