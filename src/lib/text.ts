@@ -12,3 +12,11 @@ export function markPending(s: string): string {
 export function plain(s: string): string {
   return s.replace(/\s+/g, " ").trim();
 }
+
+/**
+ * Marks [待提供] / [待翻譯] inside already-rendered Markdown HTML. Only text
+ * between tags is touched, never attribute values.
+ */
+export function markPendingHtml(html: string): string {
+  return html.replace(/>([^<]*)</g, (_, text: string) => `>${text.replace(/(\[待提供\]|\[待翻譯\])/g, '<mark class="pending">$1</mark>')}<`);
+}

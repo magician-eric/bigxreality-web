@@ -1,0 +1,48 @@
+---
+/** Article card: cover, type · date (B612 Mono), title, summary, #tags. ≤ 767 px: image left, text right. */
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { INTL_LOCALE, type Lang } from "../i18n";
+import { getUi } from "../lib/ui";
+import ImagePlaceholder from "./ImagePlaceholder.astro";
+import Text from "./Text.astro";
+
+interface Props { lang: Lang; href: string; type: string; date: Date; title: string; summary: string; tags: string[]; cover?: { src: ImageMetadata; alt: string } }
+const { lang, href, type, date, title, summary, tags, cover } = Astro.props;
+const ui = getUi(lang);
+const iso = date.toISOString().slice(0, 10);
+const shown = new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+---
+<article class="card">
+  <div class="media">
+    {cover
+      ? <Picture src={cover.src} alt={cover.alt} formats={["avif", "webp"]} widths={[320, 640, 960]} sizes="(max-width: 767px) 40vw, 400px" width={640} height={360} fit="cover" />
+      : <ImagePlaceholder label={ui.coverPending} />}
+  </div>
+  <div class="body">
+    <p class="t-tech meta"><Text value={type} /> · <time datetime={iso}>{shown}</time></p>
+    <h3 class="t-h4 title"><a href={href}><Text value={title} /></a></h3>
+    <p class="t-small summary"><Text value={summary} /></p>
+    {tags.length > 0 && <ul role="list" class="tags t-caption">{tags.map((t) => <li>#{t}</li>)}</ul>}
+  </div>
+</article>
+<style>
+  .card { position: relative; display: flex; flex-direction: column; border: 1px solid var(--divider); background: var(--surface); }
+  .media { overflow: hidden; aspect-ratio: 16 / 9; }
+  .media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-standard) var(--ease-precise); }
+  .card:hover .media :global(img) { transform: scale(1.02); }
+  .body { display: grid; gap: var(--space-1); padding: var(--space-3); }
+  .meta, .summary, .tags { color: var(--ink-muted); }
+  .title a { color: var(--ink); text-decoration: none; }
+  .title a::after { content: ""; position: absolute; inset: 0; }
+  .card:hover .title a { color: var(--bxr-text-red); }
+  .title a:focus-visible { outline: none; }
+  .card:has(.title a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; }
+  @media (max-width: 767px) {
+    .card { display: grid; grid-template-columns: 40% 1fr; }
+    .media { aspect-ratio: auto; height: 100%; }
+    .body { padding: var(--space-2); }
+    .summary { display: none; }
+  }
+</style>

@@ -372,3 +372,19 @@ UAV、USV 的「關聯解決方案」設為 Military，依據是 §6「Military�
 `/[lang]/`（首頁，麵包屑和 Logo 會連到這裡）、`/[lang]/solutions/…`、`/[lang]/technologies/`、
 `/[lang]/insights/`、`/[lang]/news/`、`/[lang]/case-studies/`、`/[lang]/company/`、`/[lang]/contact/`、
 `/[lang]/privacy/`、`/[lang]/search/`。
+
+---
+
+## 8. 第一階段實作紀錄（與計畫不同或需要知道的地方）
+
+| 項目 | 說明 |
+|---|---|
+| Markdown 中的 `[待提供]` | Astro 7 改用新的 Markdown 處理器，不支援 rehype 外掛。改在模板對渲染後的 HTML 標記（`markPendingHtml`，只處理標籤之間的文字），不多裝套件 |
+| 字型 | 改用 `@fontsource-variable` 的可變字型版本：同一組分割檔涵蓋 400/500/600，字型 CSS 只有靜態字重版的三分之一。字族名稱在產生時改成 tokens 用的 `Noto Sans TC` / `Noto Sans JP`，tokens 檔不動。字型 CSS 以非阻塞方式載入。Noto Sans JP 只在 `/jp/` 載入 |
+| 篩選按鈕與搜尋框框線 | 設計系統 P.12 寫 Mist，但 Mist 在白底只有 1.62:1，未達 WCAG 1.4.11 的 3:1；改用 Ash（3.01:1） |
+| 新增的介面圖示 | 搜尋、選單、關閉三個圖示 CIS 圖庫沒有，依 CIS 圖示網格（24px、2px 線、方形端點）繪製，**需品牌窗口審核** |
+| 「資源」選單 | 第一階段網址規劃沒有資源總覽頁，暫時連到 `/[lang]/insights/`，之後要決定是否建 `/[lang]/resources/` 或改成下拉選單 |
+| 表單按鈕 | 表單網址還是 `[待提供]`，型錄／Demo 按鈕目前是停用狀態（灰色），所以頁面上暫時沒有紅色按鈕；提供網址後自動變成紅色主按鈕＋外框次按鈕 |
+| 預覽伺服器 | Astro 7 的 `astro preview` 會常駐背景，QA 腳本改用自己的小型靜態伺服器直接讀 `dist/` |
+| 型別檢查 | `@astrojs/check` 只支援 TypeScript 5/6，因此開發相依鎖 TypeScript 5 |
+| Build 警告 | `insights`、`news`、`case-studies` 沒有內容檔，Astro 會印出「collection 為空」警告，屬預期 |

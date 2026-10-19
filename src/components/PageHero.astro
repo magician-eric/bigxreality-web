@@ -1,0 +1,61 @@
+---
+/**
+ * Dark page hero (DS P.16): breadcrumb, English label, H1, description, image on
+ * the right, at most two buttons (passed in the "actions" slot).
+ */
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { Crumb } from "./SeoHead.astro";
+import Breadcrumb from "./Breadcrumb.astro";
+import ImagePlaceholder from "./ImagePlaceholder.astro";
+import Text from "./Text.astro";
+
+interface Props {
+  breadcrumbs: Crumb[];
+  breadcrumbLabel: string;
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  description: string;
+  image?: { src: ImageMetadata; alt: string };
+  imageCaption?: string;
+  imagePending?: string;
+}
+const { breadcrumbs, breadcrumbLabel, eyebrow, title, subtitle, description, image, imageCaption, imagePending } = Astro.props;
+---
+<section class="page-hero" data-theme="dark">
+  <div class="container grid">
+    <div class="copy">
+      <Breadcrumb items={breadcrumbs} label={breadcrumbLabel} />
+      <p class="t-label eyebrow">{eyebrow}</p>
+      <h1 class="t-h1"><Text value={title} /></h1>
+      {subtitle && <p class="subtitle"><Text value={subtitle} /></p>}
+      <p class="desc"><Text value={description} /></p>
+      {Astro.slots.has("actions") && <div class="actions"><slot name="actions" /></div>}
+    </div>
+    <figure class="media">
+      {image ? (
+        <Picture
+          src={image.src} alt={image.alt} formats={["avif", "webp"]}
+          widths={[640, 960, 1280, 1920, 2560].filter((w) => w <= image.src.width)}
+          sizes="(max-width: 1023px) calc(100vw - 2 * var(--margin)), 50vw"
+          width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
+        />
+      ) : imagePending && <ImagePlaceholder label={imagePending} />}
+      {image && imageCaption && <figcaption class="t-tech"><Text value={imageCaption} /></figcaption>}
+    </figure>
+  </div>
+</section>
+<style>
+  .page-hero { padding-block: var(--space-10) var(--space-12); }
+  .grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: center; }
+  .copy { display: grid; gap: var(--space-3); align-content: start; }
+  .eyebrow { color: var(--bxr-mist); margin-top: var(--space-3); }
+  .subtitle { color: var(--bxr-mist); font-size: var(--fs-h4); }
+  .desc { color: var(--ink-muted); max-width: 36rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+  .media { position: relative; margin: 0; }
+  .media :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  figcaption { position: absolute; right: var(--space-2); bottom: var(--space-1); color: var(--bxr-mist); }
+  @media (max-width: 1023px) { .grid { grid-template-columns: 1fr; } .page-hero { padding-block: var(--space-6) var(--space-8); } }
+</style>

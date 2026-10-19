@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import i18nCoverage from "./src/integrations/i18n-coverage.mjs";
-import rehypePending from "./src/integrations/rehype-pending.mjs";
 
 export default defineConfig({
   site: "https://www.bigxreality.com",
@@ -10,6 +9,5 @@ export default defineConfig({
   // Static output writes a meta-refresh page; Cloudflare `_redirects` turns it into a 301 in phase 2.
   redirects: { "/": "/en/" },
   integrations: [i18nCoverage()],
-  markdown: { rehypePlugins: [rehypePending] },
   devToolbar: { enabled: false },
 });

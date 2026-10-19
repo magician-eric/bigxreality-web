@@ -59,7 +59,7 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
         <ul role="list" class="langs" aria-label={ui.languageLabel}>
           {LANGS.map((l) => (
             <li>
-              <a href={langLinks[l]} hreflang={HREFLANG[l]} lang={HREFLANG[l]} aria-label={langNames[l]} aria-current={l === lang ? "true" : undefined}>{LANG_LABEL[l]}</a>
+              <a href={langLinks[l]} hreflang={HREFLANG[l]} lang={HREFLANG[l]} aria-current={l === lang ? "true" : undefined}>{LANG_LABEL[l]}<span class="visually-hidden"> {langNames[l]}</span></a>
             </li>
           ))}
         </ul>

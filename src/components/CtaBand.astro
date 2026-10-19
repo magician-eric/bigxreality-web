@@ -1,0 +1,22 @@
+---
+/** Dark call-to-action band: title, description, red primary + outline secondary (passed as slot content). */
+import Text from "./Text.astro";
+interface Props { title: string; description: string; id?: string }
+const { title, description, id } = Astro.props;
+---
+<section class="cta-band" data-theme="dark" aria-labelledby={id}>
+  <div class="container inner">
+    <div class="copy">
+      <h2 class="t-h2" id={id}><Text value={title} /></h2>
+      <p class="desc"><Text value={description} /></p>
+    </div>
+    <div class="actions"><slot /></div>
+  </div>
+</section>
+<style>
+  .cta-band { background: var(--bxr-graphite); color: var(--bxr-white); padding-block: var(--space-12); }
+  .inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5); }
+  .copy { max-width: 40rem; display: grid; gap: var(--space-2); }
+  .desc { color: var(--bxr-ash); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: flex-start; }
+</style>

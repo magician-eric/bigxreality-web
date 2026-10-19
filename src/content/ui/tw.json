@@ -53,15 +53,42 @@
   "product": {
     "onThisPage": "頁內導覽",
     "sections": {
-      "overview": { "eyebrow": "Overview", "title": "產品概述" },
-      "capabilities": { "eyebrow": "Key Capabilities", "title": "核心能力" },
-      "howItWorks": { "eyebrow": "How It Works", "title": "運作方式" },
-      "scenarios": { "eyebrow": "Training Scenarios", "title": "訓練情境" },
-      "components": { "eyebrow": "System Components", "title": "系統組成" },
-      "deployment": { "eyebrow": "Deployment / Configuration", "title": "部署方式" },
-      "integratedOps": { "eyebrow": "Integrated Operations", "title": "整合作戰" },
-      "relatedSolutions": { "eyebrow": "Related Solutions", "title": "關聯解決方案" },
-      "relatedArticles": { "eyebrow": "Related Insights / News", "title": "相關文章" }
+      "overview": {
+        "eyebrow": "Overview",
+        "title": "產品概述"
+      },
+      "capabilities": {
+        "eyebrow": "Key Capabilities",
+        "title": "核心能力"
+      },
+      "howItWorks": {
+        "eyebrow": "How It Works",
+        "title": "運作方式"
+      },
+      "scenarios": {
+        "eyebrow": "Training Scenarios",
+        "title": "訓練情境"
+      },
+      "components": {
+        "eyebrow": "System Components",
+        "title": "系統組成"
+      },
+      "deployment": {
+        "eyebrow": "Deployment / Configuration",
+        "title": "部署方式"
+      },
+      "integratedOps": {
+        "eyebrow": "Integrated Operations",
+        "title": "整合作戰"
+      },
+      "relatedSolutions": {
+        "eyebrow": "Related Solutions",
+        "title": "關聯解決方案"
+      },
+      "relatedArticles": {
+        "eyebrow": "Related Insights / News",
+        "title": "相關文章"
+      }
     },
     "deployment": {
       "personnel": "人數",
@@ -92,5 +119,6 @@
     "careers": "人才招募",
     "privacy": "隱私權政策",
     "rights": "版權所有"
-  }
+  },
+  "coverPending": "[封面・待提供]"
 }
