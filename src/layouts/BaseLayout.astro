@@ -4,7 +4,7 @@ import { HTML_LANG, LANGS, localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
 import SeoHead, { type Crumb, type ProductLd, type ArticleMeta } from "../components/SeoHead.astro";
 import Header, { type NavKey, type ResourceKey } from "../components/Header.astro";
-import { isFixtureBuild } from "../lib/content-source";
+import { isNoIndexBuild } from "../lib/content-source";
 import Footer from "../components/Footer.astro";
 import Text from "../components/Text.astro";
 import type { ImageMetadata } from "astro";
@@ -34,8 +34,8 @@ interface Props {
   search?: { type: "products" | "solutions" | "news" | "insights" | "case-studies"; date?: Date };
 }
 const p = Astro.props;
-// TEST FIXTURE builds are never indexable, whatever the page says.
-const noindex = !!(p.pendingTranslation || p.noindex || isFixtureBuild());
+// TEST FIXTURE and bootstrap builds are never indexable, whatever the page says.
+const noindex = !!(p.pendingTranslation || p.noindex || isNoIndexBuild());
 // Search follows the content rules only, so TEST FIXTURE builds can exercise search.
 const searchable = !!p.search && !p.pendingTranslation && !p.noindex;
 const ui = getUi(p.lang);

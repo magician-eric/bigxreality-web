@@ -69,7 +69,7 @@ export function createPlugin(options = {}) {
         deployHookUrl: {
           type: "secret",
           label: "Workers Builds Deploy Hook URL",
-          description: "Cloudflare → Workers → bxr-web → Settings → Builds → Deploy Hooks 產生的網址。空白時不會自動重建網站。",
+          description: "Cloudflare → Workers → bigxreality-web → Settings → Builds → Deploy Hooks 產生的網址。空白時不會自動重建網站。",
         },
         delayMinutes: { type: "number", label: "發布後幾分鐘重建", default: 2, min: 1, max: 30 },
         maxDelayMinutes: { type: "number", label: "連續編輯時最多延後幾分鐘", default: 10, min: 2, max: 60 },

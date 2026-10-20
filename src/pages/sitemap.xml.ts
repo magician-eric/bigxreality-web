@@ -3,7 +3,7 @@ import { getEntry } from "astro:content";
 import { HREFLANG, LANGS, DEFAULT_LANG, type Lang } from "../i18n";
 import { ARTICLE_COLLECTIONS, getLocalized } from "../lib/content";
 import { articlesWithTag, getArticles, pageSize, paginate, TAG_INDEX_MIN } from "../lib/articles";
-import { isFixtureBuild } from "../lib/content-source";
+import { isNoIndexBuild } from "../lib/content-source";
 import { site } from "../lib/site";
 
 /*
@@ -11,7 +11,7 @@ import { site } from "../lib/site";
  * type applies the same rule its template uses for `noindex`:
  * - translation pending → out (owner decision 2026-10-19)
  * - list with no articles → out; tag page with fewer than TAG_INDEX_MIN articles → out
- * - search page → never; TEST FIXTURE builds → empty sitemap
+ * - search page → never; TEST FIXTURE and bootstrap builds → empty sitemap
  * tests/ (qa:sitemap) checks that this list equals the built pages without noindex.
  */
 interface Page { lang: Lang; path: string; alternates: Lang[] }
@@ -28,7 +28,7 @@ export const GET: APIRoute = async () => {
     return LANGS.filter((_, i) => ok[i]);
   };
 
-  if (!isFixtureBuild()) {
+  if (!isNoIndexBuild()) {
     add("/{lang}/products/", await filter((l) => copyOk("products", l)));
     add("/{lang}/solutions/", await filter((l) => copyOk("solutions", l)));
 
