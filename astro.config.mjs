@@ -42,6 +42,7 @@ export default defineConfig({
     define: {
       __BXR_CONTENT_SOURCE__: JSON.stringify(process.env.BXR_CONTENT_SOURCE ?? "markdown"),
       __BXR_WORKERS_CI__: JSON.stringify(!!process.env.WORKERS_CI),
+      __BXR_PREVIEW__: JSON.stringify(process.env.BXR_PREVIEW === "1"),
     },
   },
   devToolbar: { enabled: false },

@@ -74,9 +74,12 @@ const types = ["all", "products", "solutions", "news", "insights", "case-studies
     const list = document.querySelector<HTMLOListElement>("[data-list]")!;
     const typeNames: Record<string, string> = JSON.parse(d.types!);
     const fmt = new Intl.DateTimeFormat(d.locale, { year: "numeric", month: "2-digit", day: "2-digit" });
+    // The site may be served under a sub-path (GitHub Pages preview: /bigxreality-web/);
+    // the form's own action tells us where the site root is.
+    const root = new URL(form.action).pathname.replace(new RegExp(`${d.lang}/search/?$`), "");
     let pf: Promise<Pagefind> | undefined;
     const load = () =>
-      (pf ??= import(/* @vite-ignore */ `${location.origin}/pagefind/pagefind.js`).then(async (m: Pagefind) => {
+      (pf ??= import(/* @vite-ignore */ `${location.origin}${root}pagefind/pagefind.js`).then(async (m: Pagefind) => {
         await m.init();
         return m;
       }));
@@ -110,7 +113,10 @@ const types = ["all", "products", "solutions", "news", "insights", "case-studies
         const query = d.lang === "en" || !/qz[a-z]{4}/.test(tokens) ? tokens : `"${tokens}"`;
         const res = await engine.search(query, type ? { filters: { type } } : undefined);
         // A language without its own index falls back to another one; keep this language only.
-        const items = (await Promise.all(res.results.slice(0, 50).map((r) => r.data()))).filter((x) => x.url.startsWith(`/${d.lang}/`));
+        // Pagefind prefixes result URLs with the folder it was loaded from (the sub-path, if any).
+        const items = (await Promise.all(res.results.slice(0, 50).map((r) => r.data())))
+          .map((x) => ({ ...x, url: x.url.startsWith(root) ? "/" + x.url.slice(root.length) : x.url }))
+          .filter((x) => x.url.startsWith(`/${d.lang}/`));
         if (mine !== run) return;
         status.textContent = items.length ? d.results!.replace("{n}", String(items.length)) : d.empty!.replace("{q}", q);
         for (const item of items) {
@@ -119,7 +125,7 @@ const types = ["all", "products", "solutions", "news", "insights", "case-studies
           if (item.meta.date) meta.append(" · ", Object.assign(el("time", "", fmt.format(new Date(item.meta.date))), { dateTime: item.meta.date }));
           const h = el("h2", "t-h4 title");
           const a = el("a", "", item.meta.title) as HTMLAnchorElement;
-          a.href = item.url;
+          a.href = root + item.url.slice(1);
           h.append(a);
           li.append(meta, h);
           if (item.meta.summary) li.append(el("p", "t-small summary", item.meta.summary));

@@ -18,3 +18,4 @@ src/assets/.emdash-media/
 public/media/
 src/data/.cms-site.json
 dist-fixtures/
+dist-preview/

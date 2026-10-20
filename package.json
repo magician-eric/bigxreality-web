@@ -28,7 +28,9 @@
     "postbuild": "node scripts/build-search.mjs",
     "qa:search": "QA_DIST=dist-fixtures/client node scripts/qa-search.mjs",
     "check:sitemap": "node scripts/check-sitemap.mjs",
-    "qa:phase2": "QA_DIST=dist-fixtures/client node scripts/qa-phase2.mjs"
+    "qa:phase2": "QA_DIST=dist-fixtures/client node scripts/qa-phase2.mjs",
+    "preview:build": "BXR_PREVIEW=1 npm run build && node scripts/preview/rebase.mjs",
+    "preview:check": "node scripts/preview/check.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",

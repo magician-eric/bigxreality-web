@@ -17,6 +17,7 @@ const PRODUCTION_SOURCES: readonly string[] = ["emdash", "bootstrap"];
 
 declare const __BXR_CONTENT_SOURCE__: string | undefined;
 declare const __BXR_WORKERS_CI__: boolean | undefined;
+declare const __BXR_PREVIEW__: boolean | undefined;
 
 /** Pure rule, exported for tests. */
 export function resolveContentSource(value: string | undefined, ci: boolean): ContentSource {
@@ -34,8 +35,10 @@ export function contentSource(): ContentSource {
   return resolveContentSource(v, ci);
 }
 
-/** Builds that must never be indexed: test fixtures and the temporary bootstrap site. */
-export const isNoIndexBuild = () => ["fixtures", "bootstrap"].includes(contentSource());
+/** BXR_PREVIEW=1: the GitHub Pages review site (docs/PREVIEW.md), never indexed. */
+export const isPreviewBuild = () => (typeof __BXR_PREVIEW__ === "boolean" ? __BXR_PREVIEW__ : process.env.BXR_PREVIEW === "1");
+/** Builds that must never be indexed: test fixtures, the temporary bootstrap site and the preview site. */
+export const isNoIndexBuild = () => isPreviewBuild() || ["fixtures", "bootstrap"].includes(contentSource());
 
 /**
  * Bootstrap is allowed only while the CMS has not been set up. `status` is the parsed
