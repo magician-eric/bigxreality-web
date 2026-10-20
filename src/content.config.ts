@@ -45,19 +45,68 @@ const cta = z.object({ title: text, description: text });
 /** Paragraphs separated by a blank line. */
 const paragraphs = z.string().min(1);
 /**
- * Product sales landing page (owner copy, 2026-10-20): hero headline → training
- * challenge → our approach → key features → applications → closing CTA. When present,
- * the product page uses this layout; products without it keep the original template.
+ * Product sales landing page (owner copy V2.0, 2026-10-20). Shared by every product:
+ * all parts except the hero and the closing CTA are optional, and every list may have
+ * any number of items (no fixed count of features or scenarios). When present, the
+ * product page uses this layout; products without it keep the original template.
+ * Order on the page: hero → challenge → approach → capabilities → flow → scenarios →
+ * values → related products and solutions → closing CTA.
  */
+const card = z.object({ title: text, description: text });
 const landing = z.object({
   headline: text,
   subheadline: text,
+  /** Short product introduction shown under the sub-headline. */
+  intro: text.optional(),
   /** Button text of the hero and closing CTA, e.g. 洽詢 SUT 訓練系統. */
   ctaLabel: text,
-  challenge: z.object({ title: text, body: paragraphs }),
-  approach: z.object({ title: text, body: paragraphs }),
-  features: z.array(z.object({ title: text, description: text })).min(1),
-  applications: z.array(text).min(1),
+  challenge: z.object({
+    title: text,
+    intro: paragraphs.optional(),
+    cards: z.array(card).min(1),
+    /** Closing remark under the cards. */
+    note: text.optional(),
+  }),
+  approach: z.object({
+    title: text,
+    intro: paragraphs,
+    /** Technology / method pillars, e.g. VR, XR, AI: label + title + description. */
+    pillars: z.array(z.object({ label: text, title: text, description: text })).optional(),
+  }),
+  capabilities: z
+    .object({
+      title: text,
+      intro: text.optional(),
+      /** Each capability: what it is, and what it gives the trainee (training value). */
+      items: z.array(z.object({ title: text, content: text, value: text.optional() })).min(1),
+    })
+    .optional(),
+  flow: z
+    .object({
+      title: text,
+      intro: text.optional(),
+      steps: z.array(card).min(1),
+      /** Shown under the steps; e.g. that the flow is a suggested teaching use, not a software procedure. */
+      note: text.optional(),
+    })
+    .optional(),
+  scenarios: z
+    .object({
+      title: text,
+      intro: text.optional(),
+      items: z.array(z.object({ title: text, description: text, focus: text.optional() })).min(1),
+    })
+    .optional(),
+  values: z
+    .object({
+      title: text,
+      intro: text.optional(),
+      cards: z.array(card).min(1),
+      note: text.optional(),
+    })
+    .optional(),
+  /** Related products / solutions: intro text only; the cards come from relations that have real pages. */
+  related: z.object({ title: text, intro: text.optional() }).optional(),
   closing: z.object({ title: text, description: text }),
 });
 

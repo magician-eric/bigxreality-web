@@ -255,24 +255,24 @@
       "challenge": {
         "eyebrow": "Training Challenge",
         "title": "訓練挑戰"
-      },
-      "approach": {
-        "eyebrow": "Our Approach",
-        "title": "解決方式"
-      },
-      "features": {
-        "eyebrow": "Key Features",
-        "title": "核心特色"
-      },
-      "applications": {
-        "eyebrow": "Applications",
-        "title": "應用情境"
       }
     },
     "placeholders": {
       "hero": "產品主視覺（圖片待提供）",
       "showcase": "產品展示圖（圖片待提供）"
-    }
+    },
+    "eyebrows": {
+      "challenge": "Training Challenge",
+      "approach": "Our Approach",
+      "capabilities": "Key Capabilities",
+      "flow": "Training Flow",
+      "scenarios": "Applications",
+      "values": "Value",
+      "related": "Related"
+    },
+    "valueLabel": "訓練價值",
+    "focusLabel": "訓練重點",
+    "stepLabel": "STEP"
   },
   "contactPage": {
     "topicLabel": "洽詢項目",

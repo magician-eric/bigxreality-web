@@ -52,7 +52,15 @@ try {
   const toc = await page.$$eval("[data-toc] a", (as) => as.map((a) => a.hash));
   const ids = await page.$$eval("main section[id]", (ss) => ss.map((s) => "#" + s.id));
   check("in-page nav matches rendered sections", JSON.stringify(toc) === JSON.stringify(ids), toc.join(" "));
-  check("landing sections in order", JSON.stringify(await page.$$eval("main h2", (hs) => hs.map((h) => h.id))) === JSON.stringify(["h-challenge", "h-approach", "h-features", "h-applications", "product-cta"]));
+  check("landing sections in order", JSON.stringify(await page.$$eval("main h2", (hs) => hs.map((h) => h.id))) === JSON.stringify(["h-challenge", "h-approach", "h-capabilities", "h-flow", "h-scenarios", "h-values", "h-related", "product-cta"]));
+  const related = await page.locator("#h-related ~ .cards a, section[aria-labelledby=h-related] .cards a").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+  check("related products and solution link to existing pages", ["/tw/products/uav/", "/tw/products/usv/", "/tw/solutions/military/"].every((h) => related.includes(h)), related.join(" "));
+  check("no UAV / USV card shows an English-name placeholder", (await page.locator("section[aria-labelledby=h-related] mark.pending").count()) === 0);
+  const pillarTitle = await page.locator(".pillar h3").first().evaluate((h) => getComputedStyle(h).color);
+  check("pillar titles are light on the dark card", pillarTitle === "rgb(255, 255, 255)", pillarTitle);
+  check("each capability shows a training-value line", (await page.locator(".cap .value").count()) === 5);
+  check("flow has four steps, scenarios five, values four", (await page.locator(".flow .step").count()) === 4 && (await page.locator(".scenario").count()) === 5 && (await page.locator(".values .value").count()) === 4);
+  check("no AIDA wording shown on the page", !/\bAIDA\b|Attention|Desire/.test(await page.locator("main").innerText()));
   check("no pending markers on the landing page body", (await page.locator("main section:not(.cta-band) mark.pending").count()) === 0);
 
   await page.goto(`${base}/tw/contact/?topic=product&item=SUT`, { waitUntil: "networkidle" });

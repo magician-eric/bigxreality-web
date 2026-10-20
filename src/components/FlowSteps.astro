@@ -1,0 +1,30 @@
+---
+/** Horizontal step flow with a connecting line. For a suggested process, not a software procedure. */
+import Text from "./Text.astro";
+interface Props { steps: { title: string; description: string }[]; stepLabel: string }
+const { steps, stepLabel } = Astro.props;
+---
+<ol role="list" class="flow" style={`--cols: ${Math.min(steps.length, 4)}`}>
+  {steps.map((s, i) => (
+    <li class="step">
+      <span class="dot t-tech" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+      <p class="t-label label"><Text value={stepLabel} /> {String(i + 1).padStart(2, "0")}</p>
+      <h3 class="t-h4"><Text value={s.title} /></h3>
+      <p class="t-muted"><Text value={s.description} /></p>
+    </li>
+  ))}
+</ol>
+<style>
+  .flow { position: relative; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .step { position: relative; display: grid; gap: var(--space-1); align-content: start; padding-top: var(--space-6); }
+  .step::before { content: ""; position: absolute; top: 14px; left: 0; right: calc(-1 * var(--gutter)); height: 1px; background: var(--bxr-line); }
+  .step:last-child::before { right: 0; }
+  .dot { position: absolute; top: 0; left: 0; display: grid; place-items: center; width: 29px; height: 29px; background: var(--bxr-black); color: var(--bxr-white); font-size: 12px; }
+  .label { color: var(--ink-muted); margin: 0; }
+  @media (max-width: 1023px) {
+    .flow { grid-template-columns: 1fr; gap: 0; }
+    .step { padding: 0 0 var(--space-4) var(--space-6); }
+    .step::before { top: 29px; bottom: 0; left: 14px; right: auto; width: 1px; height: auto; }
+    .step:last-child::before { display: none; }
+  }
+</style>

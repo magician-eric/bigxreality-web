@@ -18,12 +18,14 @@ interface Props {
   kicker?: string;
   title: string;
   subtitle?: string;
-  description: string;
+  /** Sub-headline: a full sentence under the H1 (landing pages). */
+  lead?: string;
+  description?: string;
   image?: { src: ImageMetadata; alt: string };
   imageCaption?: string;
   imagePending?: string;
 }
-const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, description, image, imageCaption, imagePending } = Astro.props;
+const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending } = Astro.props;
 ---
 <section class="page-hero" data-theme="dark">
   <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
@@ -33,7 +35,8 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, descript
       {kicker && <p class="kicker t-h4"><Text value={kicker} /></p>}
       <h1 class="t-h1"><Text value={title} /></h1>
       {subtitle && <p class="subtitle"><Text value={subtitle} /></p>}
-      <p class="desc"><Text value={description} /></p>
+      {lead && <p class="lead"><Text value={lead} /></p>}
+      {description && <p class="desc"><Text value={description} /></p>}
       {Astro.slots.has("actions") && <div class="actions"><slot name="actions" /></div>}
     </div>
     {(image || imagePending) && <figure class="media">
@@ -57,6 +60,7 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, descript
   .eyebrow { color: var(--bxr-mist); margin-top: var(--space-3); }
   .kicker { color: var(--bxr-white); font-weight: 500; }
   .subtitle { color: var(--bxr-mist); font-size: var(--fs-h4); }
+  .lead { color: var(--bxr-white); font-size: var(--fs-h4); line-height: var(--lh-h4); max-width: 36rem; }
   .desc { color: var(--ink-muted); max-width: 36rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
   .media { position: relative; margin: 0; }

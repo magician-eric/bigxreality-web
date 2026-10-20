@@ -141,6 +141,22 @@ async function articleBase(fm, body, file) {
   });
 }
 
+/** Nested `landing` block of a product → flat EmDash landing_* fields (inverse of loader.ts landingFrom). */
+function landingFields(L) {
+  if (!L) return {};
+  return clean({
+    landing_headline: L.headline, landing_subheadline: L.subheadline, landing_intro: L.intro, landing_cta_label: L.ctaLabel,
+    landing_challenge_title: L.challenge?.title, landing_challenge_intro: L.challenge?.intro, landing_challenge_cards: L.challenge?.cards, landing_challenge_note: L.challenge?.note,
+    landing_approach_title: L.approach?.title, landing_approach_intro: L.approach?.intro, landing_approach_pillars: L.approach?.pillars,
+    landing_capabilities_title: L.capabilities?.title, landing_capabilities_intro: L.capabilities?.intro, landing_capabilities: L.capabilities?.items,
+    landing_flow_title: L.flow?.title, landing_flow_intro: L.flow?.intro, landing_flow_steps: L.flow?.steps, landing_flow_note: L.flow?.note,
+    landing_scenarios_title: L.scenarios?.title, landing_scenarios_intro: L.scenarios?.intro, landing_scenarios: L.scenarios?.items,
+    landing_values_title: L.values?.title, landing_values_intro: L.values?.intro, landing_values_cards: L.values?.cards, landing_values_note: L.values?.note,
+    landing_related_title: L.related?.title, landing_related_intro: L.related?.intro,
+    landing_closing_title: L.closing?.title, landing_closing_description: L.closing?.description,
+  });
+}
+
 const MAP = {
   products: async ({ fm: d, body, file }) => {
     const dep = d.deployment ?? {};
@@ -151,13 +167,7 @@ const MAP = {
         translation_status: d.translationStatus, review_status: "approved",
         hero_image: await image(d.hero.image, file),
         summary: d.summary,
-        ...(d.landing ? {
-          landing_headline: d.landing.headline, landing_subheadline: d.landing.subheadline, landing_cta_label: d.landing.ctaLabel,
-          landing_challenge_title: d.landing.challenge.title, landing_challenge_body: d.landing.challenge.body,
-          landing_approach_title: d.landing.approach.title, landing_approach_body: d.landing.approach.body,
-          landing_features: d.landing.features, landing_applications: d.landing.applications.map((title) => ({ title })),
-          landing_closing_title: d.landing.closing.title, landing_closing_description: d.landing.closing.description,
-        } : {}),
+        ...landingFields(d.landing),
         overview: await toPortableText(body, file, upload),
         capabilities: d.capabilities, how_it_works: d.howItWorks, scenarios: d.scenarios, components: d.components,
         deploy_personnel: personnel, deploy_personnel_approx: personnel ? !!dep.personnel?.approx : undefined,

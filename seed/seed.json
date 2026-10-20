@@ -101,17 +101,22 @@
     },
     {
      "slug": "landing_headline",
-     "label": "落地頁｜主標題（有填才使用銷售落地頁版型）",
+     "label": "落地頁｜Hero 主標題（有填才使用銷售落地頁版型）",
      "type": "string"
     },
     {
      "slug": "landing_subheadline",
-     "label": "落地頁｜副標題",
+     "label": "落地頁｜Hero 副標題",
+     "type": "text"
+    },
+    {
+     "slug": "landing_intro",
+     "label": "落地頁｜Hero 產品簡介",
      "type": "text"
     },
     {
      "slug": "landing_cta_label",
-     "label": "落地頁｜CTA 按鈕文字（Hero 與頁尾共用，例：洽詢 SUT 訓練系統）",
+     "label": "落地頁｜CTA 按鈕文字（Hero 與頁尾共用）",
      "type": "string"
     },
     {
@@ -120,29 +125,19 @@
      "type": "string"
     },
     {
-     "slug": "landing_challenge_body",
-     "label": "落地頁｜訓練挑戰：內文（段落之間空一行）",
+     "slug": "landing_challenge_intro",
+     "label": "落地頁｜訓練挑戰：導言（段落之間空一行）",
      "type": "text"
     },
     {
-     "slug": "landing_approach_title",
-     "label": "落地頁｜解決方式：標題",
-     "type": "string"
-    },
-    {
-     "slug": "landing_approach_body",
-     "label": "落地頁｜解決方式：內文（段落之間空一行）",
-     "type": "text"
-    },
-    {
-     "slug": "landing_features",
-     "label": "落地頁｜核心特色",
+     "slug": "landing_challenge_cards",
+     "label": "落地頁｜訓練挑戰：卡片",
      "type": "repeater",
      "validation": {
       "subFields": [
        {
         "slug": "title",
-        "label": "特色",
+        "label": "標題",
         "type": "string",
         "required": true
        },
@@ -156,19 +151,200 @@
      }
     },
     {
-     "slug": "landing_applications",
-     "label": "落地頁｜應用情境",
+     "slug": "landing_challenge_note",
+     "label": "落地頁｜訓練挑戰：區塊結語",
+     "type": "text"
+    },
+    {
+     "slug": "landing_approach_title",
+     "label": "落地頁｜解決方式：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_approach_intro",
+     "label": "落地頁｜解決方式：導言（段落之間空一行）",
+     "type": "text"
+    },
+    {
+     "slug": "landing_approach_pillars",
+     "label": "落地頁｜解決方式：技術價值（VR／XR／AI 等）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "label",
+        "label": "代號",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_capabilities_title",
+     "label": "落地頁｜核心能力：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_capabilities_intro",
+     "label": "落地頁｜核心能力：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_capabilities",
+     "label": "落地頁｜核心能力：項目",
      "type": "repeater",
      "validation": {
       "subFields": [
        {
         "slug": "title",
-        "label": "情境",
+        "label": "標題",
         "type": "string",
+        "required": true
+       },
+       {
+        "slug": "content",
+        "label": "內容",
+        "type": "text",
+        "required": true
+       },
+       {
+        "slug": "value",
+        "label": "訓練價值",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_flow_title",
+     "label": "落地頁｜訓練流程：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_flow_intro",
+     "label": "落地頁｜訓練流程：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_flow_steps",
+     "label": "落地頁｜訓練流程：步驟",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
         "required": true
        }
       ]
      }
+    },
+    {
+     "slug": "landing_flow_note",
+     "label": "落地頁｜訓練流程：補充說明",
+     "type": "text"
+    },
+    {
+     "slug": "landing_scenarios_title",
+     "label": "落地頁｜應用情境：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_scenarios_intro",
+     "label": "落地頁｜應用情境：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_scenarios",
+     "label": "落地頁｜應用情境：項目",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "情境說明",
+        "type": "text",
+        "required": true
+       },
+       {
+        "slug": "focus",
+        "label": "訓練重點",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_values_title",
+     "label": "落地頁｜導入價值：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_values_intro",
+     "label": "落地頁｜導入價值：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_values_cards",
+     "label": "落地頁｜導入價值：卡片",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_values_note",
+     "label": "落地頁｜導入價值：區塊結語",
+     "type": "text"
+    },
+    {
+     "slug": "landing_related_title",
+     "label": "落地頁｜關聯產品與解決方案：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_related_intro",
+     "label": "落地頁｜關聯產品與解決方案：說明",
+     "type": "text"
     },
     {
      "slug": "landing_closing_title",
