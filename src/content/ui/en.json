@@ -7,7 +7,11 @@
     "products": "Products",
     "technologies": "Technologies",
     "resources": "Resources",
-    "company": "Company"
+    "company": "Company",
+    "news": "News",
+    "insights": "Insights",
+    "caseStudies": "Case Studies",
+    "resourcesMenu": "[待翻譯] 資源選單"
   },
   "contact": "Contact",
   "search": "[待翻譯] 搜尋",
@@ -120,5 +124,96 @@
     "privacy": "[待翻譯] 隱私權政策",
     "rights": "[待翻譯] 版權所有"
   },
-  "coverPending": "[封面・待提供]"
+  "coverPending": "[封面・待提供]",
+  "solution": {
+    "sections": {
+      "overview": {
+        "eyebrow": "Overview",
+        "title": "[待翻譯] 方案概述"
+      },
+      "challenges": {
+        "eyebrow": "Challenges",
+        "title": "[待翻譯] 面臨的挑戰"
+      },
+      "capabilities": {
+        "eyebrow": "Capabilities",
+        "title": "[待翻譯] 方案能力"
+      },
+      "relatedProducts": {
+        "eyebrow": "Related Products",
+        "title": "[待翻譯] 相關產品"
+      },
+      "caseStudies": {
+        "eyebrow": "Case Studies",
+        "title": "[待翻譯] 相關案例"
+      },
+      "insights": {
+        "eyebrow": "Insights",
+        "title": "[待翻譯] 相關技術文章"
+      },
+      "news": {
+        "eyebrow": "News",
+        "title": "[待翻譯] 相關消息"
+      }
+    },
+    "explore": "[待翻譯] 了解方案"
+  },
+  "article": {
+    "published": "[待翻譯] 發布",
+    "updated": "[待翻譯] 更新",
+    "author": "[待翻譯] 作者",
+    "readingTime": "[待翻譯] 閱讀時間約 {n} 分鐘",
+    "tags": "[待翻譯] 標籤",
+    "related": {
+      "eyebrow": "Related",
+      "title": "[待翻譯] 延伸閱讀"
+    },
+    "relatedProducts": {
+      "eyebrow": "Related Products",
+      "title": "[待翻譯] 相關產品"
+    },
+    "relatedSolutions": {
+      "eyebrow": "Related Solutions",
+      "title": "[待翻譯] 相關解決方案"
+    },
+    "categories": {
+      "company": "[待翻譯] 公司消息",
+      "exhibition": "[待翻譯] 展覽活動",
+      "award": "[待翻譯] 獲獎",
+      "product-launch": "[待翻譯] 產品發表",
+      "partnership": "[待翻譯] 合作夥伴",
+      "media": "[待翻譯] 媒體報導"
+    },
+    "event": "[待翻譯] 活動",
+    "location": "[待翻譯] 地點",
+    "date": "[待翻譯] 日期",
+    "source": "[待翻譯] 報導來源",
+    "sourceLink": "[待翻譯] 閱讀原文",
+    "client": "[待翻譯] 客戶",
+    "anonymized": "[待翻譯] （匿名）",
+    "domains": "[待翻譯] 領域",
+    "products": "[待翻譯] 使用產品",
+    "challenge": "[待翻譯] 挑戰",
+    "solution": "[待翻譯] 導入方案",
+    "outcomes": "[待翻譯] 成果"
+  },
+  "listing": {
+    "empty": "[待翻譯] 目前還沒有內容。",
+    "count": "[待翻譯] 共 {n} 篇",
+    "pagination": "[待翻譯] 分頁",
+    "previous": "[待翻譯] 上一頁",
+    "next": "[待翻譯] 下一頁",
+    "page": "[待翻譯] 第 {n} 頁",
+    "pageOf": "[待翻譯] 第 {n} 頁，共 {total} 頁",
+    "filterEmpty": "[待翻譯] 沒有符合條件的案例。",
+    "filterResults": "[待翻譯] 共 {n} 個案例",
+    "filterSearchLabel": "[待翻譯] 搜尋案例",
+    "filterSearchPlaceholder": "[待翻譯] 輸入客戶、產品或關鍵字"
+  },
+  "tags": {
+    "eyebrow": "Tags",
+    "title": "[待翻譯] 標籤",
+    "count": "[待翻譯] {n} 篇",
+    "allTags": "[待翻譯] 所有標籤"
+  }
 }
