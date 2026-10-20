@@ -1,22 +1,36 @@
+import { existsSync } from "node:fs";
 import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { PENDING } from "./lib/pending";
+import { DOMAINS } from "./lib/domains";
+import { contentSource } from "./lib/content-source";
+import { emdashLoader } from "./lib/emdash/loader";
 
 /*
- * Folder layout follows Decap CMS `i18n.structure: multiple_folders`:
- *   src/content/<collection>/<lang>/<slug>.md
- * Entry ids are therefore `<lang>/<slug>`. Relations store bare slugs and are
- * checked at build time in src/lib/content.ts (unknown slugs fail the build).
- * Structural fields (order, domains, relations, dates, draft) are read from the
- * `tw` file only; see docs/PLAN.md §2.1.
+ * Entry ids are `<lang>/<slug>` (lang = URL segment en / tw / jp) whatever the source.
+ * Structural fields (order, domains, relations, dates, draft) are read from the `tw`
+ * entry only; see docs/PLAN.md §2.1. Relations store bare slugs and are checked at
+ * build time in src/lib/content.ts (unknown slugs fail the build).
+ *
+ * Content comes from EmDash in production, or from Markdown files (backup / local);
+ * see src/lib/content-source.ts. Both produce exactly the same entry shapes.
  */
 
-export const DOMAINS = ["military", "police", "fire-rescue", "smart-city"] as const;
+const source = contentSource();
+const FOLDER: Record<string, string> = { "case-studies": "case-studies" };
+function loader(collection: string, emdashCollection: string) {
+  if (source === "emdash") return emdashLoader(emdashCollection);
+  const folder = FOLDER[collection] ?? collection;
+  const fixture = `./tests/fixtures/content/${folder}`;
+  const base = source === "fixtures" && existsSync(fixture) ? fixture : `./src/content/${folder}`;
+  return glob({ pattern: "*/*.md", base });
+}
 
 const pending = z.literal(PENDING);
 const text = z.string().min(1);
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "slug: lowercase letters, digits and hyphens");
+const slugs = z.array(slug).default([]);
 const translationStatus = z.enum(["source", "pending", "translated"]);
 /** Numeric field that may hold the PENDING marker until the value is known. */
 const numberOrPending = z.union([z.number().nonnegative(), pending]);
@@ -25,9 +39,12 @@ const numberOrPending = z.union([z.number().nonnegative(), pending]);
 const picture = ({ image }: SchemaContext) => z.object({ src: image(), alt: text });
 
 const titled = z.object({ title: text, description: text });
+const seo = (ctx: SchemaContext) =>
+  z.object({ title: text.optional(), description: text.optional(), ogImage: ctx.image().optional() }).optional();
+const cta = z.object({ title: text, description: text });
 
 const products = defineCollection({
-  loader: glob({ pattern: "*/*.md", base: "./src/content/products" }),
+  loader: loader("products", "products"),
   schema: (ctx) =>
     z.object({
       translationStatus,
@@ -61,26 +78,16 @@ const products = defineCollection({
         .optional(),
       integratedOps: z.object({ description: text.optional(), products: z.array(slug).optional() }).optional(),
       relatedSolutions: z.array(slug).optional(),
-      cta: z
-        .object({
-          title: text,
-          description: text,
-          brochure: z.boolean().default(true),
-          demo: z.boolean().default(true),
-        })
+      cta: cta
+        .extend({ brochure: z.boolean().default(true), demo: z.boolean().default(true) })
         .optional(),
-      seo: z
-        .object({
-          title: text.optional(),
-          description: text.optional(),
-          ogImage: ctx.image().optional(),
-        })
-        .optional(),
+      seo: seo(ctx),
     }),
 });
 
+/** Market domains. Overview text is the Markdown body; related products and articles are reverse lookups. */
 const solutions = defineCollection({
-  loader: glob({ pattern: "*/*.md", base: "./src/content/solutions" }),
+  loader: loader("solutions", "solutions"),
   schema: (ctx) =>
     z.object({
       translationStatus,
@@ -90,13 +97,20 @@ const solutions = defineCollection({
       name: text,
       englishName: text,
       summary: text,
+      heroDescription: text.optional(),
       image: picture(ctx).optional(),
+      challenges: z.array(titled).optional(),
+      capabilities: z.array(titled).optional(),
+      cta: cta.optional(),
+      /** Where the wording comes from (old official site, requirements); not shown on the site. */
+      sourceNote: text.optional(),
+      seo: seo(ctx),
     }),
 });
 
 /** Integrated training scenarios (MUM-T, Counter-UAS). Not products; no pages of their own. */
 const scenarios = defineCollection({
-  loader: glob({ pattern: "*/*.md", base: "./src/content/scenarios" }),
+  loader: loader("scenarios", "scenarios"),
   schema: z.object({
     translationStatus,
     draft: z.boolean().default(false),
@@ -109,9 +123,9 @@ const scenarios = defineCollection({
   }),
 });
 
-/** Copy for fixed page templates (one file per page per language). */
+/** Copy for fixed page templates (one entry per page per language). */
 const pages = defineCollection({
-  loader: glob({ pattern: "*/*.md", base: "./src/content/pages" }),
+  loader: loader("pages", "pages"),
   schema: (ctx) =>
     z.object({
       translationStatus,
@@ -124,26 +138,64 @@ const pages = defineCollection({
         imageCaption: text.optional(),
       }),
       integrated: z.object({ eyebrow: text, title: text, description: text }).optional(),
-      cta: z.object({ title: text, description: text }).optional(),
+      cta: cta.optional(),
     }),
 });
 
-/** Articles: only the fields the product page reverse lookup needs in phase 1. */
-const article = (ctx: SchemaContext) =>
+/** Fixed tag list; articles can only use these (docs/PHASE-2-PLAN.md §3.5). */
+const tags = defineCollection({
+  loader: loader("tags", "tags"),
+  schema: z.object({ translationStatus, name: text, description: text.optional() }),
+});
+
+/** Fields shared by news, insights and case studies (§3.2). The body is the article text. */
+const articleBase = (ctx: SchemaContext) =>
   z.object({
     translationStatus,
     draft: z.boolean().default(false),
     publishDate: z.coerce.date(),
+    updatedAt: z.coerce.date().optional(),
     title: text,
     summary: text,
     cover: picture(ctx).optional(),
-    tags: z.array(slug).default([]),
-    relatedProducts: z.array(slug).default([]),
-    relatedSolutions: z.array(slug).default([]),
+    tags: slugs,
+    relatedProducts: slugs,
+    relatedSolutions: slugs,
+    relatedNews: slugs,
+    relatedInsights: slugs,
+    relatedCaseStudies: slugs,
+    seo: seo(ctx),
   });
 
-const insights = defineCollection({ loader: glob({ pattern: "*/*.md", base: "./src/content/insights" }), schema: article });
-const news = defineCollection({ loader: glob({ pattern: "*/*.md", base: "./src/content/news" }), schema: article });
-const caseStudies = defineCollection({ loader: glob({ pattern: "*/*.md", base: "./src/content/case-studies" }), schema: article });
+export const NEWS_CATEGORIES = ["company", "exhibition", "award", "product-launch", "partnership", "media"] as const;
 
-export const collections = { products, solutions, scenarios, pages, insights, news, "case-studies": caseStudies };
+const news = defineCollection({
+  loader: loader("news", "news"),
+  schema: (ctx) =>
+    articleBase(ctx).extend({
+      category: z.enum(NEWS_CATEGORIES),
+      event: z.object({ name: text, location: text.optional(), startDate: z.coerce.date(), endDate: z.coerce.date().optional() }).optional(),
+      source: z.object({ name: text, url: z.url() }).optional(),
+    }),
+});
+
+const insights = defineCollection({
+  loader: loader("insights", "insights"),
+  schema: (ctx) => articleBase(ctx).extend({ author: text.optional() }),
+});
+
+const caseStudies = defineCollection({
+  loader: loader("case-studies", "case_studies"),
+  schema: (ctx) =>
+    articleBase(ctx).extend({
+      client: z.object({ name: text, disclosure: z.enum(["public", "anonymized"]) }),
+      /** Client authorisation to publish; entries without it are never built. */
+      approval: z.object({ approved: z.boolean() }),
+      challenge: text.optional(),
+      solution: text.optional(),
+      outcomes: z.array(z.object({ label: text, value: text })).optional(),
+      domains: z.array(z.enum(DOMAINS)).default([]),
+    }),
+});
+
+export const collections = { products, solutions, scenarios, pages, tags, insights, news, "case-studies": caseStudies };

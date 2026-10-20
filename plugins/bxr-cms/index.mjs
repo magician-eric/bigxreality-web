@@ -62,7 +62,7 @@ export function createPlugin(options = {}) {
   return definePlugin({
     id: "bxr-cms",
     version: "1.0.0",
-    capabilities: ["content:read", "network:request", "hooks.content-policy:register"],
+    capabilities: ["content:read", "content:write", "network:request", "hooks.content-policy:register"],
     allowedHosts: ["api.cloudflare.com"],
     admin: {
       settingsSchema: {

@@ -1,0 +1,297 @@
+/**
+ * Astro Content Layer loader: reads PUBLISHED entries from EmDash at build time and
+ * hands them to the Zod schemas in src/content.config.ts in exactly the shape the
+ * Markdown backup files have, so pages and lib/content.ts work with either source.
+ *
+ * - Entry ids are `<lang>/<slug>` (lang = URL segment); every language uses the tw slug.
+ * - Relations come from the tw entry and are copied to its translations; links to
+ *   unpublished entries are dropped (they would otherwise point at missing pages).
+ * - Images used by published entries are downloaded once per build into
+ *   src/assets/.emdash-media (field images, optimised by Astro) and public/media
+ *   (images inside rich text). Neither folder is committed.
+ */
+import type { Loader } from "astro/loaders";
+import { mkdir, writeFile, access } from "node:fs/promises";
+import path from "node:path";
+import { CMS_LOCALES, SOURCE_LOCALE, cmsFile, cmsGet, groupSlugs, listPublished, type Json, type UrlLang } from "./client";
+import { portableTextToHtml, portableTextToPlain } from "./portable-text";
+
+const PENDING = "[待提供]";
+const ASSET_DIR = "src/assets/.emdash-media";
+const PUBLIC_DIR = "public/media";
+/** Virtual file every entry claims to come from, so `image()` resolves `./<key>` inside ASSET_DIR. */
+const ENTRY_FILE = path.join(ASSET_DIR, "entry.json");
+const MEDIA_ROUTE = "/_emdash/api/media/file/";
+
+type Refs = Record<string, string[]>;
+interface Ctx {
+  item: Json;
+  d: Json;
+  refs: Refs;
+  /** Field image → `./<key>` relative to ENTRY_FILE (downloaded before parsing). */
+  image: (m: Json | undefined) => { src: string; alt: string } | undefined;
+  rich: (blocks: Json[] | undefined) => { html: string; text: string };
+}
+type Mapped = { data: Json; body?: string; html?: string };
+
+/** Reference field → target collection: `related_news_by` → news, `tags` → tags, … */
+function targetOf(field: string): string | undefined {
+  if (field === "tags") return "tags";
+  const m = /^(?:related|integrated)_(products|solutions|scenarios|news|insights|case_studies)(?:_by)?$/.exec(field);
+  return m?.[1];
+}
+const REF_TARGET: Record<string, string> = { integrated_products: "products", integrated_by: "products", integrated_scenarios: "scenarios" };
+
+const omitEmpty = (o: Json) =>
+  Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)));
+const numOrPending = (v: string | undefined) => (v === undefined || v === null || v === "" ? undefined : v === PENDING ? PENDING : Number(v));
+const bool = (v: unknown, fallback: boolean) => (v === undefined || v === null ? fallback : v === true || v === 1 || v === "1");
+function personnel(v: string | undefined, approx: unknown) {
+  if (!v) return undefined;
+  if (v === PENDING) return PENDING;
+  const [min, max = min] = v.split("-").map(Number);
+  return { min, max, approx: bool(approx, false) };
+}
+const titledList = (v: Json[] | undefined) => v?.map((x) => ({ title: x.title, description: x.description }));
+const date = (v: string | null | undefined) => (v ? v : undefined);
+function seo(ctx: Ctx) {
+  const s = ctx.item.seo ?? {};
+  const og = ctx.image(s.image && typeof s.image === "object" ? { ...s.image, alt: "-" } : undefined);
+  return omitEmpty({ title: s.title, description: s.description, ogImage: og?.src });
+}
+const merge = (...lists: (string[] | undefined)[]) => [...new Set(lists.flatMap((l) => l ?? []))];
+
+function article(ctx: Ctx): Json {
+  const { item, d, refs } = ctx;
+  return {
+    translationStatus: d.translation_status,
+    draft: false,
+    publishDate: item.publishedAt,
+    updatedAt: date(d.updated_on),
+    title: d.title,
+    summary: d.summary,
+    cover: ctx.image(d.cover),
+    tags: refs.tags,
+    relatedProducts: refs.related_products,
+    relatedSolutions: refs.related_solutions,
+    relatedNews: merge(refs.related_news, refs.related_news_by),
+    relatedInsights: merge(refs.related_insights, refs.related_insights_by),
+    relatedCaseStudies: merge(refs.related_case_studies, refs.related_case_studies_by),
+    seo: seo(ctx),
+  };
+}
+
+const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
+  products(ctx) {
+    const { item, d, refs } = ctx;
+    const overview = ctx.rich(d.overview);
+    const hasDeploy = [d.deploy_personnel, d.deploy_area, d.deploy_setup_time, d.deploy_notes].some((v) => v);
+    return {
+      body: overview.text,
+      html: overview.html,
+      data: omitEmpty({
+        translationStatus: d.translation_status,
+        draft: false,
+        publishDate: item.publishedAt,
+        order: d.sort_order,
+        domains: d.domains,
+        hero: omitEmpty({ name: d.title, englishName: d.english_name, code: d.code, tagline: d.tagline, image: ctx.image(d.hero_image) }),
+        summary: d.summary,
+        capabilities: titledList(d.capabilities),
+        howItWorks: titledList(d.how_it_works),
+        scenarios: titledList(d.scenarios),
+        components: d.components?.map((x: Json) => ({ name: x.name, description: x.description })),
+        integratedScenarios: refs.integrated_scenarios,
+        deployment: hasDeploy
+          ? omitEmpty({
+              personnel: personnel(d.deploy_personnel, d.deploy_personnel_approx),
+              area: numOrPending(d.deploy_area),
+              setupTime: numOrPending(d.deploy_setup_time),
+              notes: d.deploy_notes,
+            })
+          : undefined,
+        integratedOps:
+          d.integrated_ops_description || refs.integrated_products?.length
+            ? omitEmpty({ description: d.integrated_ops_description, products: refs.integrated_products })
+            : undefined,
+        relatedSolutions: refs.related_solutions,
+        cta: d.cta_title
+          ? { title: d.cta_title, description: d.cta_description, brochure: bool(d.cta_brochure, true), demo: bool(d.cta_demo, true) }
+          : undefined,
+        seo: seo(ctx),
+      }),
+    };
+  },
+  solutions(ctx) {
+    const { d } = ctx;
+    const overview = ctx.rich(d.overview);
+    return {
+      body: overview.text,
+      html: overview.html,
+      data: omitEmpty({
+        translationStatus: d.translation_status,
+        draft: false,
+        order: d.sort_order,
+        domain: d.domain,
+        name: d.title,
+        englishName: d.english_name,
+        summary: d.summary,
+        heroDescription: d.hero_description,
+        image: ctx.image(d.hero_image),
+        challenges: titledList(d.challenges),
+        capabilities: titledList(d.capabilities),
+        cta: d.cta_title ? { title: d.cta_title, description: d.cta_description } : undefined,
+        sourceNote: d.source_note,
+        seo: seo(ctx),
+      }),
+    };
+  },
+  scenarios({ d, refs }) {
+    return {
+      data: omitEmpty({
+        translationStatus: d.translation_status,
+        draft: false,
+        order: d.sort_order,
+        code: d.code,
+        name: d.title,
+        englishName: d.english_name,
+        summary: d.summary,
+        products: refs.products,
+      }),
+    };
+  },
+  pages(ctx) {
+    const { d, item } = ctx;
+    return {
+      data: omitEmpty({
+        translationStatus: d.translation_status,
+        seo: { title: item.seo?.title || d.title, description: item.seo?.description || d.description },
+        hero: omitEmpty({ eyebrow: d.eyebrow, title: d.title, description: d.description, image: ctx.image(d.hero_image), imageCaption: d.image_caption }),
+        integrated: d.integrated_title
+          ? { eyebrow: d.integrated_eyebrow, title: d.integrated_title, description: d.integrated_description }
+          : undefined,
+        cta: d.cta_title ? { title: d.cta_title, description: d.cta_description } : undefined,
+      }),
+    };
+  },
+  tags({ d }) {
+    return { data: omitEmpty({ translationStatus: d.translation_status, name: d.title, description: d.description }) };
+  },
+  news(ctx) {
+    const { d } = ctx;
+    const body = ctx.rich(d.body);
+    return {
+      body: body.text,
+      html: body.html,
+      data: omitEmpty({
+        ...article(ctx),
+        category: d.category,
+        event: d.event_name && d.event_start ? omitEmpty({ name: d.event_name, location: d.event_location, startDate: d.event_start, endDate: date(d.event_end) }) : undefined,
+        source: d.source_name && d.source_url ? { name: d.source_name, url: d.source_url } : undefined,
+      }),
+    };
+  },
+  insights(ctx) {
+    const body = ctx.rich(ctx.d.body);
+    return { body: body.text, html: body.html, data: omitEmpty({ ...article(ctx), author: ctx.d.author }) };
+  },
+  case_studies(ctx) {
+    const { d } = ctx;
+    const body = ctx.rich(d.body);
+    return {
+      body: body.text,
+      html: body.html,
+      data: omitEmpty({
+        ...article(ctx),
+        client: { name: d.client_name, disclosure: d.client_disclosure },
+        approval: { approved: bool(d.approved, false) },
+        challenge: d.challenge,
+        solution: d.solution,
+        outcomes: d.outcomes?.map((o: Json) => ({ label: o.label, value: o.value })),
+        domains: d.domains,
+      }),
+    };
+  },
+};
+
+/** The reference fields of one tw entry, as canonical slugs of published targets. */
+async function references(collection: string, id: string): Promise<Refs> {
+  const full = await cmsGet(`/content/${collection}/${id}`);
+  const out: Refs = {};
+  for (const [field, ref] of Object.entries((full.item.references ?? {}) as Record<string, Json>)) {
+    const target = REF_TARGET[field] ?? (collection === "scenarios" && field === "products" ? "products" : targetOf(field));
+    if (!target) continue;
+    const published = await groupSlugs(target);
+    out[field] = (ref.children ?? [])
+      .slice()
+      .sort((a: Json, b: Json) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+      .map((c: Json) => published.get(c.translationGroup))
+      .filter((s: string | undefined): s is string => !!s);
+  }
+  return out;
+}
+
+export function emdashLoader(collection: string): Loader {
+  const map = MAPPERS[collection];
+  if (!map) throw new Error(`No EmDash mapping for collection "${collection}"`);
+  return {
+    name: `emdash:${collection}`,
+    async load({ store, parseData, generateDigest, logger }) {
+      await mkdir(ASSET_DIR, { recursive: true });
+      await mkdir(PUBLIC_DIR, { recursive: true });
+      const downloads = new Map<string, Promise<void>>();
+      const fetchOnce = (key: string, dest: string) => {
+        if (!downloads.has(dest)) {
+          downloads.set(dest, access(dest).catch(async () => {
+            await mkdir(path.dirname(dest), { recursive: true });
+            await writeFile(dest, await cmsFile(`${MEDIA_ROUTE}${key}`));
+          }));
+        }
+      };
+      const image: Ctx["image"] = (m) => {
+        const key = m?.meta?.storageKey ?? (typeof m?.src === "string" && m.src.startsWith(MEDIA_ROUTE) ? m.src.slice(MEDIA_ROUTE.length) : undefined);
+        if (!key) return undefined;
+        fetchOnce(key, path.join(ASSET_DIR, key));
+        return { src: `./${key}`, alt: m!.alt };
+      };
+      const rich: Ctx["rich"] = (blocks) => ({
+        text: portableTextToPlain(blocks),
+        html: portableTextToHtml(blocks, (b) => {
+          const url: string | undefined = b.asset?.url;
+          if (!url?.startsWith(MEDIA_ROUTE)) return undefined;
+          const key = url.slice(MEDIA_ROUTE.length);
+          fetchOnce(key, path.join(PUBLIC_DIR, key));
+          return { src: `/media/${key}`, width: b.width, height: b.height };
+        }),
+      });
+
+      const slugByGroup = await groupSlugs(collection);
+      const refsByGroup = new Map<string, Refs>();
+      for (const item of await listPublished(collection, SOURCE_LOCALE)) refsByGroup.set(item.translationGroup, await references(collection, item.id));
+
+      store.clear();
+      let count = 0;
+      for (const [lang, locale] of Object.entries(CMS_LOCALES) as [UrlLang, string][]) {
+        for (const item of await listPublished(collection, locale)) {
+          const slug = slugByGroup.get(item.translationGroup) ?? item.slug;
+          const ctx: Ctx = { item, d: item.data ?? {}, refs: refsByGroup.get(item.translationGroup) ?? {}, image, rich };
+          const { data, body, html } = map(ctx);
+          await Promise.all(downloads.values());
+          const id = `${lang}/${slug}`;
+          const parsed = await parseData({ id, data, filePath: ENTRY_FILE });
+          store.set({
+            id,
+            data: parsed,
+            body,
+            filePath: ENTRY_FILE,
+            digest: generateDigest({ data, body: body ?? "", html: html ?? "" }),
+            ...(html !== undefined ? { rendered: { html } } : {}),
+          });
+          count++;
+        }
+      }
+      await Promise.all(downloads.values());
+      logger.info(`${count} published entries from EmDash`);
+    },
+  };
+}

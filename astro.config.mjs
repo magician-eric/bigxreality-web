@@ -31,5 +31,8 @@ export default defineConfig({
       plugins: [bxrCmsPlugin({ url: process.env.DEPLOY_HOOK_URL })],
     }),
   ],
+  // A local build reads content from the running `astro dev` CMS; separate Vite caches
+  // keep the build from replacing the dependencies the dev server is using.
+  vite: { cacheDir: process.argv.includes("build") ? "node_modules/.vite-build" : "node_modules/.vite" },
   devToolbar: { enabled: false },
 });

@@ -15,3 +15,5 @@ public/icon-*.png
 .env
 .dev.vars
 src/assets/.emdash-media/
+public/media/
+src/data/.cms-site.json

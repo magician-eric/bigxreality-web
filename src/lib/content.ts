@@ -14,7 +14,7 @@ export interface Localized<C extends CollectionKey> {
   pendingTranslation: boolean;
 }
 
-type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "insights" | "news" | "case-studies";
+type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "tags" | "insights" | "news" | "case-studies";
 export const ARTICLE_COLLECTIONS = ["insights", "news", "case-studies"] as const;
 export type ArticleCollection = (typeof ARTICLE_COLLECTIONS)[number];
 
@@ -23,9 +23,13 @@ function split(id: string): { lang: string; slug: string } {
   return { lang, slug: rest.join("/") };
 }
 
-/** Published = not a draft and, when dated, publishDate has passed at build time. */
+/**
+ * Published = not a draft, (case studies) the client approved publication, and, when
+ * dated, publishDate has passed at build time.
+ */
 function isPublished(data: Record<string, unknown>, now: Date): boolean {
   if (data.draft === true) return false;
+  if ((data.approval as { approved?: boolean } | undefined)?.approved === false) return false;
   const date = data.publishDate;
   return !(date instanceof Date) || date.getTime() <= now.getTime();
 }
@@ -105,11 +109,18 @@ export function validateRelations(): Promise<void> {
     for (const e of await getCollection("scenarios")) {
       if (split(e.id).lang === SOURCE_LANG) expect(`scenarios/${e.id}.md`, "products", e.data.products, products);
     }
+    const tags = await slugs("tags");
+    const articles = { news: await slugs("news"), insights: await slugs("insights"), "case-studies": await slugs("case-studies") };
     for (const c of ARTICLE_COLLECTIONS) {
       for (const e of await getCollection(c)) {
         if (split(e.id).lang !== SOURCE_LANG) continue;
-        expect(`${c}/${e.id}.md`, "relatedProducts", e.data.relatedProducts, products);
-        expect(`${c}/${e.id}.md`, "relatedSolutions", e.data.relatedSolutions, solutions);
+        const file = `${c}/${e.id}.md`;
+        expect(file, "tags", e.data.tags, tags);
+        expect(file, "relatedProducts", e.data.relatedProducts, products);
+        expect(file, "relatedSolutions", e.data.relatedSolutions, solutions);
+        expect(file, "relatedNews", e.data.relatedNews, articles.news);
+        expect(file, "relatedInsights", e.data.relatedInsights, articles.insights);
+        expect(file, "relatedCaseStudies", e.data.relatedCaseStudies, articles["case-studies"]);
       }
     }
     if (errors.length) throw new Error(`Broken content relations:\n  ${errors.join("\n  ")}`);

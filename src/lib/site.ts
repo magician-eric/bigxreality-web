@@ -1,5 +1,5 @@
 import { z } from "astro/zod";
-import raw from "../data/site.json";
+import backup from "../data/site.json";
 import { PENDING, isPending } from "./pending";
 import type { Lang } from "../i18n";
 
@@ -24,7 +24,10 @@ const schema = z.object({
   analytics: z.object({ gaId: z.string().regex(/^G-[A-Z0-9]+$/) }),
 });
 
-export const site = schema.parse(raw);
+// In EmDash builds scripts/cms/pull-site.mjs writes the CMS values to .cms-site.json;
+// otherwise the committed site.json (backup) is used.
+const fromCms = Object.values(import.meta.glob<{ default: unknown }>("../data/.cms-site.json", { eager: true }))[0]?.default;
+export const site = schema.parse(process.env.BXR_CONTENT_SOURCE === "emdash" && fromCms ? fromCms : backup);
 export type FormKind = keyof typeof site.forms;
 
 /**

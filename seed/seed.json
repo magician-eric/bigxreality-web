@@ -260,10 +260,10 @@
     },
     {
      "slug": "integrated_scenarios",
-     "label": "參與的整合訓練情境",
+     "label": "參與的整合訓練情境（同一份關聯的另一端）",
      "type": "reference",
      "validation": {
-      "relation": "product_scenarios"
+      "relation": "scenario_products"
      }
     },
     {
@@ -543,10 +543,10 @@
     },
     {
      "slug": "products",
-     "label": "參與產品（同一份關聯的另一端）",
+     "label": "參與產品（依顯示順序）",
      "type": "reference",
      "validation": {
-      "relation": "product_scenarios"
+      "relation": "scenario_products"
      }
     },
     {
@@ -692,6 +692,14 @@
      "translatable": false
     },
     {
+     "slug": "tags",
+     "label": "標籤",
+     "type": "reference",
+     "validation": {
+      "relation": "news_tags"
+     }
+    },
+    {
      "slug": "related_products",
      "label": "相關產品",
      "type": "reference",
@@ -830,6 +838,14 @@
      "slug": "author",
      "label": "作者",
      "type": "string"
+    },
+    {
+     "slug": "tags",
+     "label": "標籤",
+     "type": "reference",
+     "validation": {
+      "relation": "insights_tags"
+     }
     },
     {
      "slug": "related_products",
@@ -1038,6 +1054,14 @@
      "translatable": false
     },
     {
+     "slug": "tags",
+     "label": "標籤",
+     "type": "reference",
+     "validation": {
+      "relation": "case_studies_tags"
+     }
+    },
+    {
      "slug": "related_products",
      "label": "相關產品",
      "type": "reference",
@@ -1086,6 +1110,47 @@
      "validation": {
       "relation": "insights_case_studies"
      }
+    }
+   ]
+  },
+  {
+   "slug": "tags",
+   "label": "標籤",
+   "labelSingular": "標籤",
+   "icon": "tag",
+   "group": "資源",
+   "sortOrder": 13,
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "routable": false,
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "標籤名稱",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     }
+    },
+    {
+     "slug": "description",
+     "label": "說明",
+     "type": "text"
     }
    ]
   },
@@ -1299,11 +1364,11 @@
    "childLabel": "關聯解決方案"
   },
   {
-   "slug": "product_scenarios",
-   "parentCollection": "products",
-   "childCollection": "scenarios",
-   "parentLabel": "參與產品",
-   "childLabel": "整合訓練情境"
+   "slug": "scenario_products",
+   "parentCollection": "scenarios",
+   "childCollection": "products",
+   "parentLabel": "整合訓練情境",
+   "childLabel": "參與產品"
   },
   {
    "slug": "news_products",
@@ -1388,19 +1453,27 @@
    "childCollection": "case_studies",
    "parentLabel": "案例",
    "childLabel": "案例"
-  }
- ],
- "taxonomies": [
+  },
   {
-   "name": "tag",
-   "label": "標籤",
-   "labelSingular": "標籤",
-   "hierarchical": false,
-   "collections": [
-    "news",
-    "insights",
-    "case_studies"
-   ]
+   "slug": "news_tags",
+   "parentCollection": "news",
+   "childCollection": "tags",
+   "parentLabel": "消息",
+   "childLabel": "標籤"
+  },
+  {
+   "slug": "insights_tags",
+   "parentCollection": "insights",
+   "childCollection": "tags",
+   "parentLabel": "技術文章",
+   "childLabel": "標籤"
+  },
+  {
+   "slug": "case_studies_tags",
+   "parentCollection": "case_studies",
+   "childCollection": "tags",
+   "parentLabel": "案例",
+   "childLabel": "標籤"
   }
  ]
 }
