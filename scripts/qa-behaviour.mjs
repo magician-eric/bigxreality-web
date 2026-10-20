@@ -2,7 +2,9 @@
 // hreflang/canonical, noindex on pending translations, structured data,
 // reverse product relations and disabled form buttons. Exits 1 on failure.
 import { chromium } from "playwright-core";
-import { startPreview, CHROMIUM } from "./lib/serve.mjs";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { startPreview, CHROMIUM, DIST } from "./lib/serve.mjs";
 
 const { base, stop } = await startPreview(4331);
 const browser = await chromium.launch({ executablePath: CHROMIUM });
@@ -61,8 +63,9 @@ try {
 
   const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
   check("sitemap excludes pending pages", !sitemap.includes("/en/") && !sitemap.includes("/jp/") && sitemap.includes("/tw/products/sut/"));
-  const root = await (await fetch(`${base}/`)).text();
-  check("/ redirects to /en/", root.includes('url=/en/'));
+  // Cloudflare serves dist/client/_redirects; the static QA server does not, so check the rule itself.
+  const redirects = readFileSync(path.join(DIST, "_redirects"), "utf8");
+  check("/ redirects to /en/ (301)", /^\/\s+\/en\/\s+301$/m.test(redirects));
 } finally {
   await browser.close();
   stop();

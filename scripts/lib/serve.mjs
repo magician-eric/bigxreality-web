@@ -1,11 +1,11 @@
-// Minimal static server for dist/ (directory index + 404 status), so QA scripts
+// Minimal static server for dist/client/ (the Worker's static assets) (directory index + 404 status), so QA scripts
 // test exactly the files Cloudflare Pages will serve. Run `npm run build` first.
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 export const CHROMIUM = process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium";
-export const DIST = path.resolve(import.meta.dirname, "../../dist");
+export const DIST = path.resolve(import.meta.dirname, "../../dist/client");
 
 const TYPES = {
   ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".json": "application/json",
