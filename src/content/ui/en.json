@@ -234,5 +234,107 @@
     "hint": "[待翻譯] 請輸入至少兩個字。",
     "noscript": "[待翻譯] 搜尋功能需要啟用 JavaScript。",
     "error": "[待翻譯] 搜尋暫時無法使用，請稍後再試。"
+  },
+  "cta": {
+    "exploreProducts": "[待翻譯] 探索產品",
+    "findSolutions": "[待翻譯] 尋找解決方案",
+    "viewProducts": "[待翻譯] 查看產品",
+    "viewSolutions": "[待翻譯] 查看解決方案",
+    "viewIntegrated": "[待翻譯] 了解整合訓練",
+    "bookDemo": "[待翻譯] 預約產品展示",
+    "requestInfo": "[待翻譯] 索取產品資料",
+    "productInquiry": "[待翻譯] 洽詢產品",
+    "solutionInquiry": "[待翻譯] 洽詢解決方案",
+    "solutionDemo": "[待翻譯] 預約展示",
+    "discussNeeds": "[待翻譯] 討論需求",
+    "learnMore": "[待翻譯] 了解更多"
+  },
+  "productLanding": {
+    "eyebrow": "Product",
+    "sections": {
+      "challenge": {
+        "eyebrow": "Training Challenge",
+        "title": "[待翻譯] 訓練挑戰"
+      },
+      "approach": {
+        "eyebrow": "Our Approach",
+        "title": "[待翻譯] 解決方式"
+      },
+      "features": {
+        "eyebrow": "Key Features",
+        "title": "[待翻譯] 核心特色"
+      },
+      "applications": {
+        "eyebrow": "Applications",
+        "title": "[待翻譯] 應用情境"
+      }
+    },
+    "placeholders": {
+      "hero": "[待翻譯] 產品主視覺（圖片待提供）",
+      "showcase": "[待翻譯] 產品展示圖（圖片待提供）"
+    }
+  },
+  "contactPage": {
+    "topicLabel": "[待翻譯] 洽詢項目",
+    "topics": {
+      "general": {
+        "title": "[待翻譯] 一般洽詢",
+        "subject": "[待翻譯] 一般洽詢"
+      },
+      "demo": {
+        "title": "[待翻譯] 預約產品展示",
+        "subject": "[待翻譯] 預約產品展示"
+      },
+      "info": {
+        "title": "[待翻譯] 索取產品資料",
+        "subject": "[待翻譯] 索取產品資料"
+      },
+      "product": {
+        "title": "[待翻譯] 洽詢產品",
+        "subject": "[待翻譯] 產品洽詢"
+      },
+      "solution": {
+        "title": "[待翻譯] 洽詢解決方案",
+        "subject": "[待翻譯] 解決方案洽詢"
+      },
+      "solution-demo": {
+        "title": "[待翻譯] 預約展示",
+        "subject": "[待翻譯] 預約解決方案展示"
+      },
+      "needs": {
+        "title": "[待翻譯] 討論訓練需求",
+        "subject": "[待翻譯] 訓練需求討論"
+      }
+    },
+    "about": "[待翻譯] 關於",
+    "steps": {
+      "eyebrow": "How to Reach Us",
+      "title": "[待翻譯] 以 Email 與我們聯繫",
+      "items": [
+        {
+          "title": "[待翻譯] 按下「寄送 Email」",
+          "description": "[待翻譯] 系統會開啟您的郵件軟體，主旨與信件格式已依洽詢項目填好。"
+        },
+        {
+          "title": "[待翻譯] 補上聯絡資料與需求",
+          "description": "[待翻譯] 請填寫姓名、單位、職稱、國家、電話，以及希望了解的內容。"
+        },
+        {
+          "title": "[待翻譯] 寄出後由業務聯繫",
+          "description": "[待翻譯] 我們收到來信後，將由業務人員與您聯繫，確認需求與後續安排。"
+        }
+      ]
+    },
+    "sendEmail": "[待翻譯] 寄送 Email",
+    "orWrite": "[待翻譯] 或直接寄信至",
+    "bodyFields": [
+      "[待翻譯] 姓名：",
+      "[待翻譯] 公司／單位：",
+      "[待翻譯] 職稱：",
+      "[待翻譯] 國家：",
+      "[待翻譯] 電話：",
+      "[待翻譯] 需求說明："
+    ],
+    "noEmail": "[待翻譯] 聯絡信箱尚未設定。"
   }
 }

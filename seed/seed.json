@@ -100,6 +100,87 @@
      "type": "text"
     },
     {
+     "slug": "landing_headline",
+     "label": "落地頁｜主標題（有填才使用銷售落地頁版型）",
+     "type": "string"
+    },
+    {
+     "slug": "landing_subheadline",
+     "label": "落地頁｜副標題",
+     "type": "text"
+    },
+    {
+     "slug": "landing_cta_label",
+     "label": "落地頁｜CTA 按鈕文字（Hero 與頁尾共用，例：洽詢 SUT 訓練系統）",
+     "type": "string"
+    },
+    {
+     "slug": "landing_challenge_title",
+     "label": "落地頁｜訓練挑戰：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_challenge_body",
+     "label": "落地頁｜訓練挑戰：內文（段落之間空一行）",
+     "type": "text"
+    },
+    {
+     "slug": "landing_approach_title",
+     "label": "落地頁｜解決方式：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_approach_body",
+     "label": "落地頁｜解決方式：內文（段落之間空一行）",
+     "type": "text"
+    },
+    {
+     "slug": "landing_features",
+     "label": "落地頁｜核心特色",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "特色",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_applications",
+     "label": "落地頁｜應用情境",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "情境",
+        "type": "string",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_closing_title",
+     "label": "落地頁｜頁尾 CTA：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_closing_description",
+     "label": "落地頁｜頁尾 CTA：說明",
+     "type": "text"
+    },
+    {
      "slug": "overview",
      "label": "產品概述",
      "type": "portableText"

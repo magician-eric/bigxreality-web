@@ -13,5 +13,5 @@ const { label, ratio = "16 / 9" } = Astro.props;
     background: var(--bxr-paper); color: var(--bxr-slate);
     border: 1px dashed var(--bxr-mist);
   }
-  [data-theme="dark"] .placeholder { background: var(--bxr-graphite); color: var(--bxr-mist); border-color: var(--bxr-slate); }
+  :global([data-theme="dark"]) .placeholder { background: var(--bxr-graphite); color: var(--bxr-mist); border-color: var(--bxr-slate); }
 </style>

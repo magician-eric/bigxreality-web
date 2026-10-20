@@ -17,6 +17,17 @@ export interface Product {
   tagline: string;
   hero_image?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; caption?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   summary?: string;
+  landing_headline?: string;
+  landing_subheadline?: string;
+  landing_cta_label?: string;
+  landing_challenge_title?: string;
+  landing_challenge_body?: string;
+  landing_approach_title?: string;
+  landing_approach_body?: string;
+  landing_features?: { "title": string; "description": string }[];
+  landing_applications?: { "title": string }[];
+  landing_closing_title?: string;
+  landing_closing_description?: string;
   overview?: PortableTextBlock[];
   capabilities?: { "title": string; "description": string }[];
   how_it_works?: { "title": string; "description": string }[];

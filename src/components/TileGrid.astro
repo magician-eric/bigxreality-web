@@ -1,18 +1,30 @@
 ---
-/** Titled tiles (capabilities, challenges): same look as the product page tiles. */
+/**
+ * Titled tiles: same look as the product page tiles.
+ * variant "numbered" numbers the tiles (features, challenges, limits);
+ * variant "benefit" marks them with a check (what the customer gains).
+ */
 import Text from "./Text.astro";
-interface Props { items: { title: string; description: string }[] }
-const { items } = Astro.props;
+interface Props { items: { title: string; description?: string }[]; variant?: "default" | "numbered" | "benefit"; columns?: 2 | 3 | 4 }
+const { items, variant = "default", columns = 3 } = Astro.props;
 ---
-<ul role="list" class="tiles">
-  {items.map((c) => (
-    <li class="tile"><h3 class="t-h4"><Text value={c.title} /></h3><p class="t-muted"><Text value={c.description} /></p></li>
+<ul role="list" class:list={["tiles", `tiles--${variant}`]} style={`--cols: ${columns}`}>
+  {items.map((c, i) => (
+    <li class="tile">
+      {variant === "numbered" && <span class="t-tech mark" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>}
+      {variant === "benefit" && <svg class="mark check" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 10.5l4 4 8-9" /></svg>}
+      <h3 class="t-h4"><Text value={c.title} /></h3>
+      {c.description && <p class="t-muted"><Text value={c.description} /></p>}
+    </li>
   ))}
 </ul>
 <style>
-  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .tiles { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
   .tile { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-3); background: var(--surface); border-top: 2px solid var(--bxr-black); }
   :global(.section--alt) .tile { background: var(--bxr-white); }
+  .mark { color: var(--ink-muted); }
+  
+  .tiles--benefit .check { color: var(--bxr-black); }
   @media (max-width: 1023px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 767px) { .tiles { grid-template-columns: 1fr; } }
 </style>

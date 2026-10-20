@@ -42,6 +42,24 @@ const titled = z.object({ title: text, description: text });
 const seo = (ctx: SchemaContext) =>
   z.object({ title: text.optional(), description: text.optional(), ogImage: ctx.image().optional() }).optional();
 const cta = z.object({ title: text, description: text });
+/** Paragraphs separated by a blank line. */
+const paragraphs = z.string().min(1);
+/**
+ * Product sales landing page (owner copy, 2026-10-20): hero headline → training
+ * challenge → our approach → key features → applications → closing CTA. When present,
+ * the product page uses this layout; products without it keep the original template.
+ */
+const landing = z.object({
+  headline: text,
+  subheadline: text,
+  /** Button text of the hero and closing CTA, e.g. 洽詢 SUT 訓練系統. */
+  ctaLabel: text,
+  challenge: z.object({ title: text, body: paragraphs }),
+  approach: z.object({ title: text, body: paragraphs }),
+  features: z.array(z.object({ title: text, description: text })).min(1),
+  applications: z.array(text).min(1),
+  closing: z.object({ title: text, description: text }),
+});
 
 const products = defineCollection({
   loader: loader("products", "products"),
@@ -61,6 +79,7 @@ const products = defineCollection({
         image: picture(ctx).optional(),
       }),
       summary: text.optional(),
+      landing: landing.optional(),
       capabilities: z.array(titled).optional(),
       howItWorks: z.array(titled).optional(),
       scenarios: z.array(titled).optional(),

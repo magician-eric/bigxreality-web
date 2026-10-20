@@ -6,7 +6,7 @@ publishDate: 2026-10-01
 order: 1
 domains: [military]
 hero:
-  name: "[待翻譯] SUT 小型部隊專項訓練系統"
+  name: "[待翻譯] SUT 小部隊戰術訓練系統"
   englishName: Small Unit Tactical Training System
   code: SUT
   tagline: "[待翻譯] 一套可從基礎操作延伸到小隊協同與跨系統聯合訓練的戰術訓練系統。"

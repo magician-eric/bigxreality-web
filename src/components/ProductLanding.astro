@@ -1,0 +1,120 @@
+---
+/**
+ * Product sales landing page, shared by every product that has a `landing` block
+ * (src/content.config.ts): hero with headline and CTA → training challenge → our
+ * approach (+ product showcase) → key features → applications → closing CTA.
+ * Images are placeholders until the approved photos are supplied; the boxes keep
+ * their final ratio so photos can be dropped in without layout changes.
+ * The hero and the closing band share one CTA definition (lib/cta.ts).
+ */
+import type { CollectionEntry } from "astro:content";
+import { localePath, type Lang } from "../i18n";
+import { availableLangs } from "../lib/content";
+import { ctaSet } from "../lib/cta";
+import { getUi } from "../lib/ui";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "./PageHero.astro";
+import SectionHead from "./SectionHead.astro";
+import TileGrid from "./TileGrid.astro";
+import ImagePlaceholder from "./ImagePlaceholder.astro";
+import CtaBand from "./CtaBand.astro";
+import CtaGroup from "./CtaGroup.astro";
+import Text from "./Text.astro";
+
+interface Props {
+  lang: Lang;
+  slug: string;
+  base: CollectionEntry<"products">["data"];
+  data: CollectionEntry<"products">["data"];
+  pendingTranslation: boolean;
+}
+const { lang, slug, base, data: d, pendingTranslation } = Astro.props;
+const L = d.landing!;
+const ui = getUi(lang);
+const t = ui.productLanding;
+const cta = ctaSet(lang, { page: "productInquiry", code: base.hero.code, label: L.ctaLabel });
+const paras = (s: string) => s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.products, path: localePath(lang, "products") },
+  { name: d.hero.name, path: localePath(lang, "products", slug) },
+];
+---
+<BaseLayout
+  lang={lang}
+  title={d.seo?.title ?? d.hero.name}
+  description={d.seo?.description ?? L.subheadline}
+  pathTemplate={`/{lang}/products/${slug}/`}
+  alternates={await availableLangs("products", slug)}
+  pendingTranslation={pendingTranslation}
+  headerTheme="dark"
+  current="products"
+  breadcrumbs={breadcrumbs}
+  search={{ type: "products" }}
+  product={{ name: d.hero.name, description: d.seo?.description ?? L.subheadline, code: base.hero.code }}
+>
+  <PageHero
+    breadcrumbs={breadcrumbs}
+    breadcrumbLabel={ui.breadcrumbLabel}
+    eyebrow={`${t.eyebrow} · ${base.hero.code}`}
+    kicker={d.hero.name}
+    title={L.headline}
+    description={L.subheadline}
+    imagePending={t.placeholders.hero}
+  >
+    <CtaGroup slot="actions" actions={cta.hero} />
+  </PageHero>
+
+  <section class="section" aria-labelledby="h-challenge">
+    <div class="container two-col">
+      <SectionHead id="h-challenge" eyebrow={t.sections.challenge.eyebrow} title={L.challenge.title} />
+      <div class="prose">{paras(L.challenge.body).map((p) => <p><Text value={p} /></p>)}</div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="h-approach">
+    <div class="container two-col">
+      <div class="approach-copy">
+        <SectionHead id="h-approach" eyebrow={t.sections.approach.eyebrow} title={L.approach.title} />
+        <div class="prose">{paras(L.approach.body).map((p) => <p><Text value={p} /></p>)}</div>
+      </div>
+      <figure class="showcase"><ImagePlaceholder label={t.placeholders.showcase} ratio="4 / 3" /></figure>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-features">
+    <div class="container">
+      <SectionHead id="h-features" eyebrow={t.sections.features.eyebrow} title={t.sections.features.title} />
+      <TileGrid items={L.features} variant="numbered" columns={L.features.length % 3 === 0 || L.features.length > 4 ? 3 : 2} />
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="h-applications">
+    <div class="container two-col">
+      <SectionHead id="h-applications" eyebrow={t.sections.applications.eyebrow} title={t.sections.applications.title} />
+      <ul role="list" class="applications">
+        {L.applications.map((a) => <li><Text value={a} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand id="product-cta" title={L.closing.title} description={L.closing.description}>
+    <CtaGroup actions={cta.footer} />
+  </CtaBand>
+</BaseLayout>
+
+<style>
+  .two-col { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
+  .two-col :global(.section-head) { margin-bottom: 0; }
+  .approach-copy { display: grid; gap: var(--space-4); align-content: start; }
+  .prose { display: grid; gap: var(--space-2); max-width: 44rem; font-size: var(--fs-body-l, 1.0625rem); }
+  .showcase { margin: 0; }
+  .applications { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--bxr-black); }
+  .applications li {
+    display: flex; align-items: center; min-height: 56px; padding-block: var(--space-2);
+    border-bottom: 1px solid var(--bxr-line); font-size: var(--fs-h4); font-weight: 500;
+  }
+  @media (max-width: 1023px) {
+    .two-col { grid-template-columns: 1fr; gap: var(--space-4); }
+  }
+</style>

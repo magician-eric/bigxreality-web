@@ -1,0 +1,17 @@
+---
+/** Hero / closing CTA buttons from lib/cta.ts. Full-width and stacked on phones. */
+import type { CtaAction } from "../lib/cta";
+import Text from "./Text.astro";
+interface Props { actions: CtaAction[]; slot?: string }
+const { actions } = Astro.props;
+---
+<div class="cta-group">
+  {actions.map((a) => <a class={`btn btn--${a.variant}`} href={a.href}><Text value={a.label} /></a>)}
+</div>
+<style>
+  .cta-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  @media (max-width: 767px) {
+    .cta-group { flex-direction: column; align-items: stretch; width: 100%; }
+    .cta-group :global(.btn) { width: 100%; justify-content: center; min-height: 48px; }
+  }
+</style>
