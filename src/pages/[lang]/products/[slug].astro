@@ -6,7 +6,8 @@
  */
 import { getImage } from "astro:assets";
 import { LANGS, localePath, type Lang } from "../../../i18n";
-import { getLocalized, availableLangs, integratedProducts, relatedArticles, validateRelations } from "../../../lib/content";
+import { getLocalized, availableLangs, integratedProducts, validateRelations } from "../../../lib/content";
+import { articlesAbout, articleHref, tagNames } from "../../../lib/articles";
 import { visibleProductSections, isPending, type ProductSection } from "../../../lib/pending";
 import { getUi } from "../../../lib/ui";
 import { markPendingHtml } from "../../../lib/text";
@@ -42,7 +43,8 @@ const heroImage = base.hero.image && { src: base.hero.image.src, alt: d.hero.ima
 const integrated = await integratedProducts(slug, lang);
 const solutions = (await getLocalized("solutions", lang)).filter((s) => (base.relatedSolutions ?? []).includes(s.slug));
 const scenarioEntries = (await getLocalized("scenarios", lang)).filter((s) => (base.integratedScenarios ?? []).includes(s.slug));
-const articles = await relatedArticles(slug, lang);
+const articles = (await articlesAbout("relatedProducts", slug, lang)).slice(0, 6);
+const articleTags = await Promise.all(articles.map((a) => tagNames(a.base.data.tags, lang)));
 const productNames = new Map((await getLocalized("products", lang)).map((p) => [p.slug, p.loc.data.hero.name]));
 
 const deployment = d.deployment && {
@@ -62,7 +64,7 @@ const sections = visibleProductSections({
   deployment,
   integratedOps: { description: d.integratedOps?.description, products: integrated.map((p) => p.slug) },
   relatedSolutions: solutions.map((s) => s.slug),
-  relatedArticles: articles.map((a) => a.entry.slug),
+  relatedArticles: articles.map((a) => a.slug),
 });
 const has = (s: ProductSection) => sections.includes(s);
 const head = (s: ProductSection) => ui.product.sections[s];
@@ -101,6 +103,7 @@ const deploymentRows = [
   breadcrumbs={breadcrumbs}
   ogImage={base.seo?.ogImage ?? heroImage?.src}
   ogImageAlt={heroImage?.alt}
+  search={{ type: "products" }}
   product={{ name: d.hero.name, description: d.seo?.description ?? d.hero.tagline, code: base.hero.code, image: jsonLdImage }}
 >
   <!-- 1 Hero -->
@@ -280,13 +283,13 @@ const deploymentRows = [
       <div class="container">
         <SectionHead id="h-relatedArticles" eyebrow={head("relatedArticles").eyebrow} title={head("relatedArticles").title} />
         <ul role="list" class="cards">
-          {articles.map(({ collection, entry }) => (
+          {articles.map((a, i) => (
             <li>
               <CardArticle
-                lang={lang} href={localePath(lang, collection, entry.slug)} type={ui.articleTypes[collection]}
-                date={entry.base.data.publishDate} title={entry.loc.data.title} summary={entry.loc.data.summary}
-                tags={entry.base.data.tags}
-                cover={entry.base.data.cover && { src: entry.base.data.cover.src, alt: entry.loc.data.cover?.alt ?? entry.base.data.cover.alt }}
+                lang={lang} href={articleHref(a)} type={ui.articleTypes[a.collection]}
+                date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary}
+                tags={articleTags[i]}
+                cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
               />
             </li>
           ))}

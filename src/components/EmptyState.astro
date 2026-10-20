@@ -1,0 +1,8 @@
+---
+import Text from "./Text.astro";
+interface Props { message: string }
+---
+<p class="empty" role="status"><Text value={Astro.props.message} /></p>
+<style>
+  .empty { padding: var(--space-8) var(--space-3); border: 1px dashed var(--bxr-ash); text-align: center; color: var(--ink-muted); }
+</style>

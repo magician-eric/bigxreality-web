@@ -8,15 +8,34 @@
     "jp": "[待提供]"
   },
   "contact": {
-    "address": { "tw": "[待提供]", "en": "[待提供]", "jp": "[待提供]" },
+    "address": {
+      "tw": "[待提供]",
+      "en": "[待提供]",
+      "jp": "[待提供]"
+    },
     "phone": "[待提供]",
     "email": "[待提供]"
   },
   "social": "[待提供]",
   "careersUrl": "[待提供]",
   "forms": {
-    "brochure": { "url": "[待提供]", "productEntry": "[待提供]" },
-    "demo": { "url": "[待提供]", "productEntry": "[待提供]" }
+    "brochure": {
+      "url": "[待提供]",
+      "productEntry": "[待提供]"
+    },
+    "demo": {
+      "url": "[待提供]",
+      "productEntry": "[待提供]"
+    }
   },
-  "analytics": { "gaId": "G-CSKFKPZTTE" }
+  "analytics": {
+    "gaId": "G-CSKFKPZTTE"
+  },
+  "listing": {
+    "pageSize": {
+      "news": 12,
+      "insights": 12,
+      "case-studies": null
+    }
+  }
 }

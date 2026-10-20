@@ -7,7 +7,11 @@
     "products": "產品",
     "technologies": "技術",
     "resources": "資源",
-    "company": "公司"
+    "company": "公司",
+    "news": "消息",
+    "insights": "技術文章",
+    "caseStudies": "案例",
+    "resourcesMenu": "資源選單"
   },
   "contact": "聯絡我們",
   "search": "搜尋",
@@ -120,5 +124,115 @@
     "privacy": "隱私權政策",
     "rights": "版權所有"
   },
-  "coverPending": "[封面・待提供]"
+  "coverPending": "[封面・待提供]",
+  "solution": {
+    "sections": {
+      "overview": {
+        "eyebrow": "Overview",
+        "title": "方案概述"
+      },
+      "challenges": {
+        "eyebrow": "Challenges",
+        "title": "面臨的挑戰"
+      },
+      "capabilities": {
+        "eyebrow": "Capabilities",
+        "title": "方案能力"
+      },
+      "relatedProducts": {
+        "eyebrow": "Related Products",
+        "title": "相關產品"
+      },
+      "caseStudies": {
+        "eyebrow": "Case Studies",
+        "title": "相關案例"
+      },
+      "insights": {
+        "eyebrow": "Insights",
+        "title": "相關技術文章"
+      },
+      "news": {
+        "eyebrow": "News",
+        "title": "相關消息"
+      }
+    },
+    "explore": "了解方案"
+  },
+  "article": {
+    "published": "發布",
+    "updated": "更新",
+    "author": "作者",
+    "readingTime": "閱讀時間約 {n} 分鐘",
+    "tags": "標籤",
+    "related": {
+      "eyebrow": "Related",
+      "title": "延伸閱讀"
+    },
+    "relatedProducts": {
+      "eyebrow": "Related Products",
+      "title": "相關產品"
+    },
+    "relatedSolutions": {
+      "eyebrow": "Related Solutions",
+      "title": "相關解決方案"
+    },
+    "categories": {
+      "company": "公司消息",
+      "exhibition": "展覽活動",
+      "award": "獲獎",
+      "product-launch": "產品發表",
+      "partnership": "合作夥伴",
+      "media": "媒體報導"
+    },
+    "event": "活動",
+    "location": "地點",
+    "date": "日期",
+    "source": "報導來源",
+    "sourceLink": "閱讀原文",
+    "client": "客戶",
+    "anonymized": "（匿名）",
+    "domains": "領域",
+    "products": "使用產品",
+    "challenge": "挑戰",
+    "solution": "導入方案",
+    "outcomes": "成果"
+  },
+  "listing": {
+    "empty": "目前還沒有內容。",
+    "count": "共 {n} 篇",
+    "pagination": "分頁",
+    "previous": "上一頁",
+    "next": "下一頁",
+    "page": "第 {n} 頁",
+    "pageOf": "第 {n} 頁，共 {total} 頁",
+    "filterEmpty": "沒有符合條件的案例。",
+    "filterResults": "共 {n} 個案例",
+    "filterSearchLabel": "搜尋案例",
+    "filterSearchPlaceholder": "輸入客戶、產品或關鍵字"
+  },
+  "tags": {
+    "eyebrow": "Tags",
+    "title": "標籤",
+    "count": "{n} 篇",
+    "allTags": "所有標籤"
+  },
+  "searchPage": {
+    "label": "搜尋關鍵字",
+    "placeholder": "輸入產品、解決方案或文章關鍵字",
+    "submit": "搜尋",
+    "typesLabel": "內容類型",
+    "types": {
+      "all": "全部",
+      "products": "產品",
+      "solutions": "解決方案",
+      "news": "消息",
+      "insights": "技術文章",
+      "case-studies": "案例"
+    },
+    "results": "找到 {n} 筆結果",
+    "empty": "找不到符合「{q}」的結果。",
+    "hint": "請輸入至少兩個字。",
+    "noscript": "搜尋功能需要啟用 JavaScript。",
+    "error": "搜尋暫時無法使用，請稍後再試。"
+  }
 }

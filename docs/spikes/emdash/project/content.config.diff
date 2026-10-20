@@ -1,0 +1,50 @@
+--- /home/user/bigxreality-web/src/content.config.ts	2026-10-19 07:50:17.880044619 +0000
++++ src/content.config.ts	2026-10-19 11:30:53.966779093 +0000
+@@ -2,6 +2,10 @@
+ import { glob } from "astro/loaders";
+ import { z } from "astro/zod";
+ import { PENDING } from "./lib/pending";
++import { emdashLoader } from "./lib/emdash-loader";
++
++// SPIKE (K2): BXR_CONTENT_SOURCE=emdash reads products, solutions and scenarios from EmDash.
++const fromEmdash = process.env.BXR_CONTENT_SOURCE === "emdash";
+ 
+ /*
+  * Folder layout follows Decap CMS `i18n.structure: multiple_folders`:
+@@ -12,7 +16,8 @@
+  * `tw` file only; see docs/PLAN.md §2.1.
+  */
+ 
+-export const DOMAINS = ["military", "police", "fire-rescue", "smart-city"] as const;
++import { DOMAINS } from "./lib/domains";
++export { DOMAINS };
+ 
+ const pending = z.literal(PENDING);
+ const text = z.string().min(1);
+@@ -27,7 +32,7 @@
+ const titled = z.object({ title: text, description: text });
+ 
+ const products = defineCollection({
+-  loader: glob({ pattern: "*/*.md", base: "./src/content/products" }),
++  loader: fromEmdash ? emdashLoader("products") : glob({ pattern: "*/*.md", base: "./src/content/products" }),
+   schema: (ctx) =>
+     z.object({
+       translationStatus,
+@@ -80,7 +85,7 @@
+ });
+ 
+ const solutions = defineCollection({
+-  loader: glob({ pattern: "*/*.md", base: "./src/content/solutions" }),
++  loader: fromEmdash ? emdashLoader("solutions") : glob({ pattern: "*/*.md", base: "./src/content/solutions" }),
+   schema: (ctx) =>
+     z.object({
+       translationStatus,
+@@ -96,7 +101,7 @@
+ 
+ /** Integrated training scenarios (MUM-T, Counter-UAS). Not products; no pages of their own. */
+ const scenarios = defineCollection({
+-  loader: glob({ pattern: "*/*.md", base: "./src/content/scenarios" }),
++  loader: fromEmdash ? emdashLoader("scenarios") : glob({ pattern: "*/*.md", base: "./src/content/scenarios" }),
+   schema: z.object({
+     translationStatus,
+     draft: z.boolean().default(false),

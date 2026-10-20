@@ -14,7 +14,7 @@ export interface Localized<C extends CollectionKey> {
   pendingTranslation: boolean;
 }
 
-type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "insights" | "news" | "case-studies";
+type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "tags" | "insights" | "news" | "case-studies";
 export const ARTICLE_COLLECTIONS = ["insights", "news", "case-studies"] as const;
 export type ArticleCollection = (typeof ARTICLE_COLLECTIONS)[number];
 
@@ -23,9 +23,13 @@ function split(id: string): { lang: string; slug: string } {
   return { lang, slug: rest.join("/") };
 }
 
-/** Published = not a draft and, when dated, publishDate has passed at build time. */
+/**
+ * Published = not a draft, (case studies) the client approved publication, and, when
+ * dated, publishDate has passed at build time.
+ */
 function isPublished(data: Record<string, unknown>, now: Date): boolean {
   if (data.draft === true) return false;
+  if ((data.approval as { approved?: boolean } | undefined)?.approved === false) return false;
   const date = data.publishDate;
   return !(date instanceof Date) || date.getTime() <= now.getTime();
 }
@@ -105,11 +109,18 @@ export function validateRelations(): Promise<void> {
     for (const e of await getCollection("scenarios")) {
       if (split(e.id).lang === SOURCE_LANG) expect(`scenarios/${e.id}.md`, "products", e.data.products, products);
     }
+    const tags = await slugs("tags");
+    const articles = { news: await slugs("news"), insights: await slugs("insights"), "case-studies": await slugs("case-studies") };
     for (const c of ARTICLE_COLLECTIONS) {
       for (const e of await getCollection(c)) {
         if (split(e.id).lang !== SOURCE_LANG) continue;
-        expect(`${c}/${e.id}.md`, "relatedProducts", e.data.relatedProducts, products);
-        expect(`${c}/${e.id}.md`, "relatedSolutions", e.data.relatedSolutions, solutions);
+        const file = `${c}/${e.id}.md`;
+        expect(file, "tags", e.data.tags, tags);
+        expect(file, "relatedProducts", e.data.relatedProducts, products);
+        expect(file, "relatedSolutions", e.data.relatedSolutions, solutions);
+        expect(file, "relatedNews", e.data.relatedNews, articles.news);
+        expect(file, "relatedInsights", e.data.relatedInsights, articles.insights);
+        expect(file, "relatedCaseStudies", e.data.relatedCaseStudies, articles["case-studies"]);
       }
     }
     if (errors.length) throw new Error(`Broken content relations:\n  ${errors.join("\n  ")}`);
@@ -126,22 +137,4 @@ export async function integratedProducts(slug: string, lang: Lang): Promise<Loca
   const self = all.find((p) => p.slug === slug);
   const forward = new Set(self?.base.data.integratedOps?.products ?? []);
   return all.filter((p) => p.slug !== slug && (forward.has(p.slug) || (p.base.data.integratedOps?.products ?? []).includes(slug)));
-}
-
-export interface RelatedArticle {
-  collection: ArticleCollection;
-  entry: Localized<ArticleCollection>;
-}
-
-/** Reverse lookup: articles whose relatedProducts include this product, newest first. */
-export async function relatedArticles(productSlug: string, lang: Lang, limit = 6): Promise<RelatedArticle[]> {
-  const found: RelatedArticle[] = [];
-  for (const collection of ARTICLE_COLLECTIONS) {
-    for (const entry of await getLocalized(collection, lang)) {
-      if (entry.base.data.relatedProducts.includes(productSlug)) found.push({ collection, entry });
-    }
-  }
-  return found
-    .sort((a, b) => b.entry.base.data.publishDate.getTime() - a.entry.base.data.publishDate.getTime())
-    .slice(0, limit);
 }

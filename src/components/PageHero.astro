@@ -24,7 +24,7 @@ interface Props {
 const { breadcrumbs, breadcrumbLabel, eyebrow, title, subtitle, description, image, imageCaption, imagePending } = Astro.props;
 ---
 <section class="page-hero" data-theme="dark">
-  <div class="container grid">
+  <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
     <div class="copy">
       <Breadcrumb items={breadcrumbs} label={breadcrumbLabel} />
       <p class="t-label eyebrow">{eyebrow}</p>
@@ -33,7 +33,7 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, title, subtitle, description, ima
       <p class="desc"><Text value={description} /></p>
       {Astro.slots.has("actions") && <div class="actions"><slot name="actions" /></div>}
     </div>
-    <figure class="media">
+    {(image || imagePending) && <figure class="media">
       {image ? (
         <Picture
           src={image.src} alt={image.alt} formats={["avif", "webp"]}
@@ -43,12 +43,13 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, title, subtitle, description, ima
         />
       ) : imagePending && <ImagePlaceholder label={imagePending} />}
       {image && imageCaption && <figcaption class="t-tech"><Text value={imageCaption} /></figcaption>}
-    </figure>
+    </figure>}
   </div>
 </section>
 <style>
   .page-hero { padding-block: var(--space-10) var(--space-12); }
   .grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: center; }
+  .no-media { grid-template-columns: minmax(0, 8fr) 4fr; }
   .copy { display: grid; gap: var(--space-3); align-content: start; }
   .eyebrow { color: var(--bxr-mist); margin-top: var(--space-3); }
   .subtitle { color: var(--bxr-mist); font-size: var(--fs-h4); }

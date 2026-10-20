@@ -1,0 +1,9 @@
+{
+  "name": "bxr-deploy-hook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": { ".": "./index.mjs" },
+  "peerDependencies": { "emdash": "*" }
+}

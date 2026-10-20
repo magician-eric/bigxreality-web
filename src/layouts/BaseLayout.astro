@@ -2,8 +2,9 @@
 import "../styles/global.css";
 import { HTML_LANG, LANGS, localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
-import SeoHead, { type Crumb, type ProductLd } from "../components/SeoHead.astro";
-import Header, { type NavKey } from "../components/Header.astro";
+import SeoHead, { type Crumb, type ProductLd, type ArticleMeta } from "../components/SeoHead.astro";
+import Header, { type NavKey, type ResourceKey } from "../components/Header.astro";
+import { isFixtureBuild } from "../lib/content-source";
 import Footer from "../components/Footer.astro";
 import Text from "../components/Text.astro";
 import type { ImageMetadata } from "astro";
@@ -16,17 +17,30 @@ interface Props {
   alternates: Lang[];
   /** Translation not finished: noindex, left out of the sitemap, banner on top (owner decision 2026-10-19). */
   pendingTranslation?: boolean;
+  /** Other reasons not to index (empty list, tag page with few articles, search page). */
+  noindex?: boolean;
   headerTheme: "light" | "dark";
   current?: NavKey;
+  currentResource?: ResourceKey;
+  /** Where the language switch goes when this page does not exist in a language (`{lang}` template). Default: products overview. */
+  fallbackPath?: string;
   breadcrumbs: Crumb[];
   ogImage?: ImageMetadata;
   ogImageAlt?: string;
   product?: ProductLd;
+  article?: ArticleMeta;
+  structuredData?: Record<string, unknown>[];
+  /** Detail pages that belong in site search (docs/PHASE-2-PLAN.md §5.2): result type and date. */
+  search?: { type: "products" | "solutions" | "news" | "insights" | "case-studies"; date?: Date };
 }
 const p = Astro.props;
+// TEST FIXTURE builds are never indexable, whatever the page says.
+const noindex = !!(p.pendingTranslation || p.noindex || isFixtureBuild());
+// Search follows the content rules only, so TEST FIXTURE builds can exercise search.
+const searchable = !!p.search && !p.pendingTranslation && !p.noindex;
 const ui = getUi(p.lang);
 const langLinks = Object.fromEntries(
-  LANGS.map((l) => [l, p.alternates.includes(l) ? p.pathTemplate.replace("{lang}", l) : localePath(l, "products")]),
+  LANGS.map((l) => [l, p.alternates.includes(l) ? p.pathTemplate.replace("{lang}", l) : p.fallbackPath ? p.fallbackPath.replace("{lang}", l) : localePath(l, "products")]),
 ) as Record<Lang, string>;
 ---
 <!doctype html>
@@ -37,8 +51,8 @@ const langLinks = Object.fromEntries(
     <script is:inline>document.documentElement.classList.replace("no-js", "js");</script>
     <SeoHead
       lang={p.lang} title={p.title} description={p.description} pathTemplate={p.pathTemplate}
-      alternates={p.alternates} noindex={p.pendingTranslation} breadcrumbs={p.breadcrumbs}
-      ogImage={p.ogImage} ogImageAlt={p.ogImageAlt} product={p.product}
+      alternates={p.alternates} noindex={noindex} breadcrumbs={p.breadcrumbs}
+      ogImage={p.ogImage} ogImageAlt={p.ogImageAlt} product={p.product} article={p.article} structuredData={p.structuredData}
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
@@ -55,11 +69,16 @@ const langLinks = Object.fromEntries(
   </head>
   <body>
     <a class="skip-link" href="#main"><Text value={ui.skipToContent} /></a>
-    <Header lang={p.lang} theme={p.headerTheme} current={p.current} langLinks={langLinks} />
+    <Header lang={p.lang} theme={p.headerTheme} current={p.current} currentResource={p.currentResource} langLinks={langLinks} />
     {p.pendingTranslation && (
       <div class="translation-banner" role="note"><div class="container t-small"><Text value={ui.translationPending} /></div></div>
     )}
-    <main id="main" tabindex="-1">
+    <main
+      id="main" tabindex="-1"
+      data-pagefind-body={searchable ? "" : undefined}
+      data-search-type={searchable ? p.search!.type : undefined}
+      data-search-date={searchable && p.search!.date ? p.search!.date.toISOString().slice(0, 10) : undefined}
+    >
       <slot />
     </main>
     <Footer lang={p.lang} />

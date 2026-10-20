@@ -12,11 +12,14 @@ import { getUi } from "../lib/ui";
 import Text from "./Text.astro";
 
 type Domain = "military" | "police" | "fire-rescue" | "smart-city";
-interface Props { lang: Lang; domains: readonly Domain[]; target: string }
+interface Labels { results: string; searchLabel: string; searchPlaceholder: string }
+/** `labels` defaults to the product wording (products overview). */
+interface Props { lang: Lang; domains: readonly Domain[]; target: string; labels?: Labels }
 const { lang, domains, target } = Astro.props;
 const ui = getUi(lang);
+const labels = Astro.props.labels ?? ui.filter;
 ---
-<div class="filter-bar" data-filter-bar data-target={target} data-results={ui.filter.results}>
+<div class="filter-bar" data-filter-bar data-target={target} data-results={labels.results}>
   <div class="group" role="group" aria-label={ui.filter.groupLabel}>
     <button type="button" class="chip" data-domain="" aria-pressed="true"><Text value={ui.filter.all} /></button>
     {domains.map((d) => (
@@ -26,9 +29,9 @@ const ui = getUi(lang);
     ))}
   </div>
   <div class="search">
-    <label for="filter-q" class="visually-hidden"><Text value={ui.filter.searchLabel} /></label>
+    <label for="filter-q" class="visually-hidden"><Text value={labels.searchLabel} /></label>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5L21 21" /></svg>
-    <input id="filter-q" type="search" autocomplete="off" placeholder={ui.filter.searchPlaceholder} />
+    <input id="filter-q" type="search" autocomplete="off" placeholder={labels.searchPlaceholder} />
   </div>
   <p class="status t-small" aria-live="polite" data-status></p>
 </div>

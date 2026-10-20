@@ -1,0 +1,270 @@
+---
+/**
+ * Article page shared by news, insights and case studies (docs/PHASE-2-PLAN.md §4):
+ * light header (breadcrumb, type · date, H1, summary, cover) → news event/source or
+ * case-study facts → body → tags → related products / solutions / articles → CTA.
+ * The only red buttons are in the closing CTA band.
+ */
+import { Picture, getImage } from "astro:assets";
+import { getEntry } from "astro:content";
+import { HTML_LANG, INTL_LOCALE, localePath, type Lang } from "../i18n";
+import { availableLangs, getLocalized } from "../lib/content";
+import { articleHref, readingMinutes, relatedToArticle, tagMap, tagNames, type Article } from "../lib/articles";
+import { getUi, format } from "../lib/ui";
+import { plain } from "../lib/text";
+import { site } from "../lib/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumb from "./Breadcrumb.astro";
+import SectionHead from "./SectionHead.astro";
+import Prose from "./Prose.astro";
+import CardProduct from "./CardProduct.astro";
+import CardSolution from "./CardSolution.astro";
+import CardArticle from "./CardArticle.astro";
+import CtaBand from "./CtaBand.astro";
+import FormButton from "./FormButton.astro";
+import Text from "./Text.astro";
+
+interface Props { article: Article }
+const { article } = Astro.props;
+const { lang, collection, slug } = article;
+const ui = getUi(lang as Lang);
+const t = ui.article;
+const base = article.base.data;
+const d = article.loc.data;
+const news = collection === "news" ? (d as typeof d & { category: keyof typeof t.categories; event?: { name: string; location?: string; startDate: Date; endDate?: Date }; source?: { name: string; url: string } }) : undefined;
+const newsBase = collection === "news" ? (base as typeof news) : undefined;
+const cs = collection === "case-studies" ? (d as typeof d & { client: { name: string; disclosure: "public" | "anonymized" }; challenge?: string; solution?: string; outcomes?: { label: string; value: string }[] }) : undefined;
+const csBase = collection === "case-studies" ? (base as typeof base & { domains: ("military" | "police" | "fire-rescue" | "smart-city")[] }) : undefined;
+const author = collection === "insights" ? (d as typeof d & { author?: string }).author : undefined;
+
+const fmt = (date: Date) => new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+const iso = (date: Date) => date.toISOString().slice(0, 10);
+const cover = base.cover && { src: base.cover.src, alt: d.cover?.alt ?? base.cover.alt };
+const html = article.loc.rendered?.html ?? "";
+const minutes = readingMinutes(article.loc.body ?? "");
+
+const tags = await tagMap(lang);
+const tagLinks = base.tags.map((s) => ({ slug: s, name: tags.get(s)?.loc.data.name })).filter((x): x is { slug: string; name: string } => !!x.name);
+const products = (await getLocalized("products", lang)).filter((p) => base.relatedProducts.includes(p.slug));
+const solutions = (await getLocalized("solutions", lang)).filter((s) => base.relatedSolutions.includes(s.slug));
+const related = await relatedToArticle(article);
+const relatedTags = await Promise.all(related.map((a) => tagNames(a.base.data.tags, lang)));
+
+const listName = ui.nav[collection === "case-studies" ? "caseStudies" : collection];
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: listName, path: localePath(lang, collection) },
+  { name: d.title, path: articleHref(article) },
+];
+const copy = (await getEntry("pages", `${lang}/${collection}`))?.data;
+
+// JSON-LD never carries placeholder text.
+const clean = (s: string | undefined) => (s && !s.includes("[待") ? plain(s) : undefined);
+const ldImage = cover ? new URL((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src, site.url).toString() : undefined;
+const articleLd: Record<string, unknown> = {
+  "@type": collection === "news" ? "NewsArticle" : "Article",
+  headline: clean(d.title),
+  description: clean(d.summary),
+  datePublished: base.publishDate.toISOString(),
+  ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
+  inLanguage: HTML_LANG[lang],
+  url: new URL(articleHref(article), site.url).toString(),
+  publisher: { "@id": `${site.url}/#organization` },
+  ...(ldImage ? { image: ldImage } : {}),
+  ...(clean(author) ? { author: { "@type": "Person", name: clean(author) } } : { author: { "@id": `${site.url}/#organization` } }),
+  ...(tagLinks.length ? { keywords: tagLinks.map((x) => plain(x.name)).join(", ") } : {}),
+};
+for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete articleLd[k];
+---
+<BaseLayout
+  lang={lang}
+  title={d.seo?.title ?? d.title}
+  description={d.seo?.description ?? d.summary}
+  pathTemplate={`/{lang}/${collection}/${slug}/`}
+  alternates={await availableLangs(collection, slug)}
+  pendingTranslation={article.pendingTranslation}
+  headerTheme="light"
+  current="resources"
+  currentResource={collection}
+  fallbackPath={`/{lang}/${collection}/`}
+  breadcrumbs={breadcrumbs}
+  ogImage={base.seo?.ogImage ?? cover?.src}
+  ogImageAlt={cover?.alt}
+  article={{ published: base.publishDate, modified: base.updatedAt, tags: tagLinks.map((x) => x.name) }}
+  structuredData={[articleLd]}
+  search={{ type: collection, date: base.publishDate }}
+>
+  <article>
+    <header class="article-header">
+      <div class="container narrow">
+        <Breadcrumb items={breadcrumbs} label={ui.breadcrumbLabel} />
+        <p class="t-tech meta">
+          <Text value={ui.articleTypes[collection]} />
+          {news && <> · <Text value={t.categories[newsBase!.category]} /></>}
+          {" · "}<span class="visually-hidden"><Text value={t.published} /> </span><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time>
+          {base.updatedAt && <> · <Text value={t.updated} /> <time datetime={iso(base.updatedAt)}>{fmt(base.updatedAt)}</time></>}
+        </p>
+        <h1 class="t-h1"><Text value={d.title} /></h1>
+        <p class="summary"><Text value={d.summary} /></p>
+        <p class="t-small t-muted byline">
+          {author && <><Text value={t.author} />：<Text value={author} /> · </>}
+          <Text value={format(t.readingTime, { n: minutes })} />
+        </p>
+      </div>
+      {cover && (
+        <figure class="container cover">
+          <Picture
+            src={cover.src} alt={cover.alt} formats={["avif", "webp"]}
+            widths={[640, 960, 1280, 1920].filter((w) => w <= cover.src.width)}
+            sizes="(max-width: 1023px) calc(100vw - 2 * var(--margin)), 1200px"
+            width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
+          />
+        </figure>
+      )}
+    </header>
+
+    {news && (news.event || news.source) && (
+      <div class="container narrow facts-wrap">
+        <dl class="facts">
+          {news.event && <div><dt><Text value={t.event} /></dt><dd><Text value={news.event.name} /></dd></div>}
+          {news.event?.location && <div><dt><Text value={t.location} /></dt><dd><Text value={news.event.location} /></dd></div>}
+          {newsBase?.event && (
+            <div><dt><Text value={t.date} /></dt><dd>
+              <time datetime={iso(newsBase.event.startDate)}>{fmt(newsBase.event.startDate)}</time>
+              {newsBase.event.endDate && <> – <time datetime={iso(newsBase.event.endDate)}>{fmt(newsBase.event.endDate)}</time></>}
+            </dd></div>
+          )}
+          {news.source && (
+            <div><dt><Text value={t.source} /></dt><dd>
+              <a href={newsBase?.source?.url ?? news.source.url} rel="noopener" target="_blank"><Text value={news.source.name} /> — <Text value={t.sourceLink} /><span class="visually-hidden"><Text value={ui.buttons.opensInNewTab} /></span></a>
+            </dd></div>
+          )}
+        </dl>
+      </div>
+    )}
+
+    {cs && (
+      <div class="container narrow facts-wrap">
+        <dl class="facts">
+          <div><dt><Text value={t.client} /></dt><dd><Text value={cs.client.name} />{cs.client.disclosure === "anonymized" && <Text value={t.anonymized} />}</dd></div>
+          {csBase!.domains.length > 0 && <div><dt><Text value={t.domains} /></dt><dd>{csBase!.domains.map((x, i) => <>{i > 0 && "、"}<Text value={ui.domains[x]} /></>)}</dd></div>}
+          {products.length > 0 && <div><dt><Text value={t.products} /></dt><dd>{products.map((p, i) => <>{i > 0 && "、"}<a href={localePath(lang, "products", p.slug)}><Text value={p.loc.data.hero.name} /></a></>)}</dd></div>}
+          {cs.challenge && <div class="wide"><dt><Text value={t.challenge} /></dt><dd><Text value={cs.challenge} /></dd></div>}
+          {cs.solution && <div class="wide"><dt><Text value={t.solution} /></dt><dd><Text value={cs.solution} /></dd></div>}
+        </dl>
+        {cs.outcomes && cs.outcomes.length > 0 && (
+          <>
+            <h2 class="t-h4 outcomes-title"><Text value={t.outcomes} /></h2>
+            <dl class="outcomes">
+              {cs.outcomes.map((o) => <div><dd class="value"><Text value={o.value} /></dd><dt class="t-small t-muted"><Text value={o.label} /></dt></div>)}
+            </dl>
+          </>
+        )}
+      </div>
+    )}
+
+    <div class="container narrow body">
+      <Prose html={html} />
+      {tagLinks.length > 0 && (
+        <div class="tags">
+          <h2 class="visually-hidden"><Text value={t.tags} /></h2>
+          <ul role="list">{tagLinks.map((x) => <li><a href={localePath(lang, "tags", x.slug)}>#<Text value={x.name} /></a></li>)}</ul>
+        </div>
+      )}
+    </div>
+  </article>
+
+  {products.length > 0 && collection !== "case-studies" && (
+    <section class="section section--alt" aria-labelledby="h-products">
+      <div class="container">
+        <SectionHead id="h-products" eyebrow={t.relatedProducts.eyebrow} title={t.relatedProducts.title} />
+        <ul role="list" class="cards">
+          {products.map((p) => (
+            <li>
+              <CardProduct
+                lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
+                englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                domains={p.base.data.domains}
+                image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {solutions.length > 0 && (
+    <section class="section" aria-labelledby="h-solutions">
+      <div class="container">
+        <SectionHead id="h-solutions" eyebrow={t.relatedSolutions.eyebrow} title={t.relatedSolutions.title} />
+        <ul role="list" class="cards">
+          {solutions.map((s) => (
+            <li>
+              <CardSolution
+                lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
+                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary}
+                image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section class="section section--alt" aria-labelledby="h-related">
+      <div class="container">
+        <SectionHead id="h-related" eyebrow={t.related.eyebrow} title={t.related.title} />
+        <ul role="list" class="cards">
+          {related.map((a, i) => (
+            <li>
+              <CardArticle
+                lang={lang} href={articleHref(a)} type={ui.articleTypes[a.collection]}
+                date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary} tags={relatedTags[i]}
+                cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {copy?.cta && (
+    <CtaBand id="article-cta" title={copy.cta.title} description={copy.cta.description}>
+      <FormButton kind="demo" lang={lang} variant="primary" />
+      <FormButton kind="brochure" lang={lang} variant="secondary" />
+    </CtaBand>
+  )}
+</BaseLayout>
+<style>
+  .article-header { padding-block: var(--space-8) var(--space-6); background: var(--bxr-paper); border-bottom: 1px solid var(--bxr-line); }
+  .narrow > * { max-width: 48rem; }
+  .narrow { display: grid; gap: var(--space-3); }
+  .meta { color: var(--ink-muted); margin-top: var(--space-3); }
+  .summary { font-size: var(--fs-h4); line-height: var(--lh-h4); color: var(--ink-muted); }
+  .cover { margin-top: var(--space-6); margin-bottom: 0; }
+  .cover :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .facts-wrap { padding-top: var(--space-6); }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--gutter); margin: 0; }
+  .facts div { display: grid; gap: 4px; padding-top: var(--space-2); border-top: 1px solid var(--bxr-black); }
+  .facts .wide { grid-column: 1 / -1; }
+  .facts dt { color: var(--ink-muted); font-size: var(--fs-small); }
+  .facts dd { margin: 0; }
+  .outcomes-title { margin-top: var(--space-5); }
+  .outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; }
+  .outcomes div { display: flex; flex-direction: column-reverse; gap: 4px; padding-top: var(--space-2); border-top: 1px solid var(--bxr-line); }
+  .outcomes .value { margin: 0; font-size: var(--fs-h3); font-weight: 500; }
+  .body { padding-block: var(--space-6) var(--space-10); }
+  .tags ul { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-4) 0 0; padding: 0; list-style: none; }
+  .tags a {
+    display: inline-flex; align-items: center; min-height: 32px; padding: 0 var(--space-2);
+    border: 1px solid var(--bxr-ash); color: var(--ink); text-decoration: none; font-size: var(--fs-small);
+  }
+  .tags a:hover { border-color: var(--bxr-black); }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .cards, .facts, .outcomes { grid-template-columns: 1fr; } }
+</style>

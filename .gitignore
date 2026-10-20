@@ -9,3 +9,12 @@ public/favicon-*.png
 public/favicon.svg
 public/fonts/
 public/icon-*.png
+
+# Cloudflare / EmDash local state and secrets
+.wrangler/
+.env
+.dev.vars
+src/assets/.emdash-media/
+public/media/
+src/data/.cms-site.json
+dist-fixtures/

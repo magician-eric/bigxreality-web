@@ -1,0 +1,16 @@
+---
+/** /[lang]/insights/[slug]/ — see components/ArticleDetail.astro. */
+import { LANGS } from "../../../i18n";
+import { getArticles } from "../../../lib/articles";
+import { validateRelations } from "../../../lib/content";
+import ArticleDetail from "../../../components/ArticleDetail.astro";
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of LANGS) for (const article of await getArticles("insights", lang)) paths.push({ params: { lang, slug: article.slug }, props: { article } });
+  return paths;
+}
+await validateRelations();
+const { article } = Astro.props;
+---
+<ArticleDetail article={article} />

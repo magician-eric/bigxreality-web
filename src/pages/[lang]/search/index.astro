@@ -1,0 +1,180 @@
+---
+/**
+ * /[lang]/search/ — site search (Pagefind, docs/PHASE-2-PLAN.md §5, §12.4).
+ * Always noindex and never in the sitemap. Pagefind's script loads only here.
+ * Results are drawn from the stored meta (title, summary, type, date); the query
+ * goes through the same tokenizer as the index.
+ */
+import { getEntry } from "astro:content";
+import { HTML_LANG, INTL_LOCALE, LANGS, localePath, type Lang } from "../../../i18n";
+import { getUi } from "../../../lib/ui";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import Text from "../../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const ui = getUi(lang);
+const t = ui.searchPage;
+const copy = (await getEntry("pages", `${lang}/search`))!.data;
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.search, path: localePath(lang, "search") },
+];
+const types = ["all", "products", "solutions", "news", "insights", "case-studies"] as const;
+---
+<BaseLayout
+  lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/search/" alternates={[...LANGS]}
+  pendingTranslation={copy.translationStatus === "pending"} noindex headerTheme="dark" breadcrumbs={breadcrumbs}
+>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
+  <section class="section">
+    <div class="container">
+      <form class="search-form" role="search" action={localePath(lang, "search")} method="get" data-search
+        data-lang={lang} data-html-lang={HTML_LANG[lang]} data-locale={INTL_LOCALE[lang]}
+        data-results={t.results} data-empty={t.empty} data-hint={t.hint} data-error={t.error}
+        data-types={JSON.stringify(Object.fromEntries(types.map((k) => [k, t.types[k]])))}
+      >
+        <div class="field">
+          <label for="q" class="visually-hidden"><Text value={t.label} /></label>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5L21 21" /></svg>
+          <input id="q" name="q" type="search" autocomplete="off" placeholder={t.placeholder} />
+          <button type="submit" class="btn btn--secondary"><Text value={t.submit} /></button>
+        </div>
+        <fieldset class="types">
+          <legend class="visually-hidden"><Text value={t.typesLabel} /></legend>
+          {types.map((k) => (
+            <label class="chip"><input type="radio" name="type" value={k === "all" ? "" : k} checked={k === "all"} /><span><Text value={t.types[k]} /></span></label>
+          ))}
+        </fieldset>
+      </form>
+      <noscript><p class="t-muted"><Text value={t.noscript} /></p></noscript>
+      <p class="status t-small" aria-live="polite" data-status></p>
+      <ol role="list" class="results" data-list></ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { tokenize } from "../../../lib/search-tokenize";
+
+  type Pagefind = {
+    init(): Promise<void>;
+    search(q: string, opts?: { filters?: Record<string, string> }): Promise<{ results: { data(): Promise<{ url: string; meta: Record<string, string> }> }[] }>;
+  };
+
+  const form = document.querySelector<HTMLFormElement>("[data-search]");
+  if (form) {
+    const d = form.dataset;
+    const input = form.querySelector<HTMLInputElement>("input[name=q]")!;
+    const status = document.querySelector<HTMLElement>("[data-status]")!;
+    const list = document.querySelector<HTMLOListElement>("[data-list]")!;
+    const typeNames: Record<string, string> = JSON.parse(d.types!);
+    const fmt = new Intl.DateTimeFormat(d.locale, { year: "numeric", month: "2-digit", day: "2-digit" });
+    let pf: Promise<Pagefind> | undefined;
+    const load = () =>
+      (pf ??= import(/* @vite-ignore */ `${location.origin}/pagefind/pagefind.js`).then(async (m: Pagefind) => {
+        await m.init();
+        return m;
+      }));
+
+    const el = (tag: string, cls: string, text?: string) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    };
+
+    let run = 0;
+    const search = async () => {
+      const q = input.value.trim();
+      const type = form.querySelector<HTMLInputElement>("input[name=type]:checked")?.value ?? "";
+      const url = new URL(location.href);
+      q ? url.searchParams.set("q", q) : url.searchParams.delete("q");
+      type ? url.searchParams.set("type", type) : url.searchParams.delete("type");
+      history.replaceState(null, "", url);
+      const mine = ++run;
+      list.replaceChildren();
+      if ([...q].length < 2 && !/[a-z0-9]{2}/i.test(q)) {
+        status.textContent = q ? d.hint! : "";
+        return;
+      }
+      try {
+        const engine = await load();
+        // CJK: the bigrams must appear consecutively (a quoted phrase), otherwise any one
+        // shared bigram (e.g. 消息) would match.
+        const tokens = d.lang === "en" ? q : tokenize(q);
+        const query = d.lang === "en" || !/qz[a-z]{4}/.test(tokens) ? tokens : `"${tokens}"`;
+        const res = await engine.search(query, type ? { filters: { type } } : undefined);
+        // A language without its own index falls back to another one; keep this language only.
+        const items = (await Promise.all(res.results.slice(0, 50).map((r) => r.data()))).filter((x) => x.url.startsWith(`/${d.lang}/`));
+        if (mine !== run) return;
+        status.textContent = items.length ? d.results!.replace("{n}", String(items.length)) : d.empty!.replace("{q}", q);
+        for (const item of items) {
+          const li = el("li", "result");
+          const meta = el("p", "t-tech meta", typeNames[item.meta.type] ?? "");
+          if (item.meta.date) meta.append(" · ", Object.assign(el("time", "", fmt.format(new Date(item.meta.date))), { dateTime: item.meta.date }));
+          const h = el("h2", "t-h4 title");
+          const a = el("a", "", item.meta.title) as HTMLAnchorElement;
+          a.href = item.url;
+          h.append(a);
+          li.append(meta, h);
+          if (item.meta.summary) li.append(el("p", "t-small summary", item.meta.summary));
+          list.append(li);
+        }
+      } catch {
+        status.textContent = d.error!;
+      }
+    };
+
+    const params = new URLSearchParams(location.search);
+    input.value = params.get("q") ?? "";
+    const typeParam = params.get("type") ?? "";
+    const radio = form.querySelector<HTMLInputElement>(`input[name=type][value="${CSS.escape(typeParam)}"]`);
+    if (radio) radio.checked = true;
+    let timer: number | undefined;
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = window.setTimeout(search, 250);
+    });
+    form.addEventListener("change", (e) => {
+      if ((e.target as HTMLInputElement).name === "type") search();
+    });
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      search();
+    });
+    if (input.value) search();
+  }
+</script>
+
+<style>
+  .search-form { display: grid; gap: var(--space-3); margin-bottom: var(--space-3); }
+  .field { position: relative; display: flex; gap: var(--space-2); align-items: center; max-width: 44rem; }
+  .field svg { position: absolute; left: 12px; color: var(--bxr-slate); pointer-events: none; }
+  .field input {
+    flex: 1; height: var(--btn-h); padding: 0 var(--space-2) 0 40px;
+    border: 1px solid var(--bxr-ash); border-radius: var(--radius-sm); background: var(--bxr-white); color: var(--bxr-black);
+  }
+  .field input::placeholder { color: var(--bxr-slate); }
+  .field input:focus { outline: none; border: 2px solid var(--bxr-black); padding-left: 39px; }
+  .types { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; border: 0; }
+  .chip { position: relative; display: inline-flex; }
+  .chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip span {
+    display: inline-flex; align-items: center; min-height: var(--btn-sm-h); padding: 0 var(--space-2);
+    border: 1px solid var(--bxr-ash); border-radius: var(--radius-sm); font-size: var(--fs-small); font-weight: 500;
+  }
+  .chip input:checked + span { background: var(--bxr-black); color: var(--bxr-white); border-color: var(--bxr-black); }
+  .chip input:focus-visible + span { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .status { color: var(--ink-muted); min-height: 1lh; margin-bottom: var(--space-3); }
+  .results { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; max-width: 48rem; }
+  .results :global(.result) { display: grid; gap: var(--space-1); padding-block: var(--space-3); border-top: 1px solid var(--bxr-line); }
+  .results :global(.meta), .results :global(.summary) { color: var(--ink-muted); }
+  .results :global(.title a) { color: var(--ink); text-decoration: none; }
+  .results :global(.title a:hover) { color: var(--bxr-text-red); text-decoration: underline; }
+  @media (max-width: 767px) { .field { flex-wrap: wrap; } .field button { flex-basis: 100%; } }
+</style>
