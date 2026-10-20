@@ -60,20 +60,31 @@ function seo(ctx: Ctx) {
   return omitEmpty({ title: s.title, description: s.description, ogImage: og?.src });
 }
 /** Flat EmDash fields (landing_*) → the nested `landing` object of the content schema. */
-function landingFrom(d: Json): Json | undefined {
+function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
   if (!d.landing_headline) return undefined;
+  /** Image position: the CMS image (downloaded for optimisation) plus its material note and caption. */
+  const slot = (x: Json | undefined, img?: Json) => {
+    const pic = image(img ?? x?.image);
+    return omitEmpty({ src: pic?.src, alt: pic?.alt, need: x?.need, caption: x?.caption });
+  };
+  const withSlot = (x: Json, keys: string[]) => {
+    const base = Object.fromEntries(keys.map((k) => [k, x[k]]).filter(([, v]) => v !== undefined && v !== null && v !== ""));
+    const s = slot(x);
+    return Object.keys(s).length ? { ...base, image: s } : base;
+  };
   const list = (v: Json[] | undefined, keys: string[]) => v?.map((x) => Object.fromEntries(keys.map((k) => [k, x[k]]).filter(([, val]) => val !== undefined && val !== null && val !== "")));
   const opt = (o: Json) => omitEmpty(o);
   return omitEmpty({
     headline: d.landing_headline,
     subheadline: d.landing_subheadline,
     intro: d.landing_intro,
+    heroImage: slot({ need: d.landing_hero_need }, d.landing_hero_image),
     ctaLabel: d.landing_cta_label,
     challenge: opt({ title: d.landing_challenge_title, intro: d.landing_challenge_intro, cards: list(d.landing_challenge_cards, ["title", "description"]), note: d.landing_challenge_note }),
-    approach: opt({ title: d.landing_approach_title, intro: d.landing_approach_intro, pillars: list(d.landing_approach_pillars, ["label", "title", "description"]) }),
-    capabilities: d.landing_capabilities?.length ? opt({ title: d.landing_capabilities_title, intro: d.landing_capabilities_intro, items: list(d.landing_capabilities, ["title", "content", "value"]) }) : undefined,
-    flow: d.landing_flow_steps?.length ? opt({ title: d.landing_flow_title, intro: d.landing_flow_intro, steps: list(d.landing_flow_steps, ["title", "description"]), note: d.landing_flow_note }) : undefined,
-    scenarios: d.landing_scenarios?.length ? opt({ title: d.landing_scenarios_title, intro: d.landing_scenarios_intro, items: list(d.landing_scenarios, ["title", "description", "focus"]) }) : undefined,
+    approach: opt({ title: d.landing_approach_title, intro: d.landing_approach_intro, images: d.landing_approach_images?.map((x: Json) => slot(x)), pillars: list(d.landing_approach_pillars, ["title", "description"]) }),
+    capabilities: d.landing_capabilities?.length ? opt({ title: d.landing_capabilities_title, intro: d.landing_capabilities_intro, items: d.landing_capabilities.map((x: Json) => withSlot(x, ["title", "content", "value"])) }) : undefined,
+    flow: d.landing_flow_steps?.length ? opt({ title: d.landing_flow_title, intro: d.landing_flow_intro, steps: d.landing_flow_steps.map((x: Json) => withSlot(x, ["title", "description", "icon"])), note: d.landing_flow_note }) : undefined,
+    scenarios: d.landing_scenarios?.length ? opt({ title: d.landing_scenarios_title, intro: d.landing_scenarios_intro, items: d.landing_scenarios.map((x: Json) => withSlot(x, ["title", "description", "focus"])) }) : undefined,
     values: d.landing_values_cards?.length ? opt({ title: d.landing_values_title, intro: d.landing_values_intro, cards: list(d.landing_values_cards, ["title", "description"]), note: d.landing_values_note }) : undefined,
     related: d.landing_related_title ? opt({ title: d.landing_related_title, intro: d.landing_related_intro }) : undefined,
     closing: opt({ title: d.landing_closing_title, description: d.landing_closing_description }),
@@ -117,7 +128,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         domains: d.domains,
         hero: omitEmpty({ name: d.title, englishName: d.english_name, code: d.code, tagline: d.tagline, image: ctx.image(d.hero_image) }),
         summary: d.summary,
-        landing: landingFrom(d),
+        landing: landingFrom(d, ctx.image),
         capabilities: titledList(d.capabilities),
         howItWorks: titledList(d.how_it_works),
         scenarios: titledList(d.scenarios),

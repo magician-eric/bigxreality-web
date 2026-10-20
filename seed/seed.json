@@ -120,6 +120,16 @@
      "type": "string"
     },
     {
+     "slug": "landing_hero_image",
+     "label": "落地頁｜Hero 圖片（16:9）",
+     "type": "image"
+    },
+    {
+     "slug": "landing_hero_need",
+     "label": "落地頁｜Hero 素材需求（圖片尚未提供時顯示）",
+     "type": "string"
+    },
+    {
      "slug": "landing_challenge_title",
      "label": "落地頁｜訓練挑戰：標題",
      "type": "string"
@@ -166,17 +176,35 @@
      "type": "text"
     },
     {
+     "slug": "landing_approach_images",
+     "label": "落地頁｜解決方式：圖片（最多 2 張，例：實際操作照片＋虛擬場景）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
      "slug": "landing_approach_pillars",
      "label": "落地頁｜解決方式：技術價值（VR／XR／AI 等）",
      "type": "repeater",
      "validation": {
       "subFields": [
-       {
-        "slug": "label",
-        "label": "代號",
-        "type": "string",
-        "required": true
-       },
        {
         "slug": "title",
         "label": "標題",
@@ -224,6 +252,21 @@
         "slug": "value",
         "label": "訓練價值",
         "type": "text"
+       },
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
        }
       ]
      }
@@ -255,6 +298,34 @@
         "label": "說明",
         "type": "text",
         "required": true
+       },
+       {
+        "slug": "icon",
+        "label": "圖示",
+        "type": "select",
+        "validation": {
+         "options": [
+          "target",
+          "team",
+          "variation",
+          "review"
+         ]
+        }
+       },
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
        }
       ]
      }
@@ -296,6 +367,21 @@
         "slug": "focus",
         "label": "訓練重點",
         "type": "text"
+       },
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
        }
       ]
      }

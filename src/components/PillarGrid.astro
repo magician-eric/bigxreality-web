@@ -1,14 +1,14 @@
 ---
-/** Technology / method pillars (VR, XR, AI…): big label, title, text, on a dark band. */
+/** Value pillars on a dark band: title (the value), then the text. No technology labels as headings. */
 import Text from "./Text.astro";
-interface Props { items: { label: string; title: string; description: string }[] }
+interface Props { items: { title: string; description: string }[] }
 const { items } = Astro.props;
 ---
 <ul role="list" class="pillars" style={`--cols: ${Math.min(items.length, 3)}`}>
-  {items.map((p) => (
+  {items.map((p, i) => (
     <li class="pillar">
-      <p class="label"><Text value={p.label} /></p>
-      <h3 class="t-h4"><Text value={p.title} /></h3>
+      <span class="t-tech idx" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+      <h3 class="t-h3"><Text value={p.title} /></h3>
       <p class="text"><Text value={p.description} /></p>
     </li>
   ))}
@@ -16,7 +16,7 @@ const { items } = Astro.props;
 <style>
   .pillars { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
   .pillar { display: grid; gap: var(--space-2); align-content: start; padding: var(--space-4) var(--space-3); background: var(--bxr-graphite); color: var(--bxr-white); border-top: 2px solid var(--bxr-red); }
-  .label { margin: 0; font-family: var(--font-mono); font-size: var(--fs-h2); line-height: 1; letter-spacing: 0.04em; color: var(--bxr-white); }
+  .idx { color: var(--bxr-mist); }
   .pillar h3 { color: var(--bxr-white); }
   .text { margin: 0; color: var(--bxr-ash); }
   @media (max-width: 1023px) { .pillars { grid-template-columns: 1fr; } }

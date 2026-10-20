@@ -17,7 +17,7 @@ interface Props {
   lang: Lang;
   href: string;
   name: string;
-  englishName: string;
+  englishName?: string;
   summary?: string;
   domains: Domain[];
   image?: { src: ImageMetadata; alt: string };
@@ -36,7 +36,7 @@ const H = `h${headingLevel}` as "h2" | "h3";
   <div class="body">
     <ul role="list" class="tags">{domains.map((d) => <li><SectorTag domain={d} lang={lang} /></li>)}</ul>
     <H class="t-h4 title"><a href={href}><Text value={name} /></a></H>
-    <p class="t-tech english"><Text value={englishName} /></p>
+    {englishName && <p class="t-tech english"><Text value={englishName} /></p>}
     {summary && <p class="t-small summary"><Text value={summary} /></p>}
   </div>
 </article>

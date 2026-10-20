@@ -272,7 +272,9 @@
     },
     "valueLabel": "訓練價值",
     "focusLabel": "訓練重點",
-    "stepLabel": "STEP"
+    "stepLabel": "STEP",
+    "mediaNeed": "素材需求｜",
+    "mediaPending": "圖片待提供"
   },
   "contactPage": {
     "topicLabel": "洽詢項目",

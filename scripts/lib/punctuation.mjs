@@ -5,7 +5,7 @@ import path from "node:path";
 import YAML from "yaml";
 
 /** Keys whose values are headings, sub-headings, names, labels or card titles. */
-export const HEADLINE_KEYS = new Set(["title", "name", "headline", "subheadline", "tagline", "label", "ctaLabel", "englishName", "eyebrow", "focus"]);
+export const HEADLINE_KEYS = new Set(["title", "name", "headline", "subheadline", "tagline", "label", "ctaLabel", "englishName", "eyebrow", "focus", "need"]);
 const END = /[。．.！!？?；;]$/;
 /** Roman-numeral style abbreviations that legitimately end with a period. */
 const ALLOWED_ENDINGS = /(?:\b(?:etc|vs|No|Inc|Ltd|Co)\.)$/;

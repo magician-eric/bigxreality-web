@@ -53,11 +53,22 @@ const paragraphs = z.string().min(1);
  * values → related products and solutions → closing CTA.
  */
 const card = z.object({ title: text, description: text });
-const landing = z.object({
+/**
+ * An image position on a landing page. `need` says what material belongs there (shown on
+ * the placeholder and in the supplier checklist); once `src` and `alt` are set the photo
+ * replaces the placeholder with no layout change.
+ */
+const slot = (ctx: SchemaContext) =>
+  z.object({ src: ctx.image().optional(), alt: text.optional(), need: text.optional(), caption: text.optional() });
+/** Step / feature icons drawn by the site (components/FlowIcon.astro). */
+const FLOW_ICONS = ["target", "team", "variation", "review"] as const;
+const landing = (ctx: SchemaContext) => z.object({
   headline: text,
   subheadline: text,
   /** Short product introduction shown under the sub-headline. */
   intro: text.optional(),
+  /** Hero image position (16:9). */
+  heroImage: slot(ctx).optional(),
   /** Button text of the hero and closing CTA, e.g. 洽詢 SUT 訓練系統. */
   ctaLabel: text,
   challenge: z.object({
@@ -70,22 +81,24 @@ const landing = z.object({
   approach: z.object({
     title: text,
     intro: paragraphs,
-    /** Technology / method pillars, e.g. VR, XR, AI: label + title + description. */
-    pillars: z.array(z.object({ label: text, title: text, description: text })).optional(),
+    /** Image positions beside the text, e.g. [physical training photo, virtual scene]. */
+    images: z.array(slot(ctx)).max(2).optional(),
+    /** Value pillars: title + description (a technology may appear in the text, not as the title). */
+    pillars: z.array(card).optional(),
   }),
   capabilities: z
     .object({
       title: text,
       intro: text.optional(),
-      /** Each capability: what it is, and what it gives the trainee (training value). */
-      items: z.array(z.object({ title: text, content: text, value: text.optional() })).min(1),
+      /** Each capability: what it is, and what it gives the trainee. An `image` makes it a picture + text row. */
+      items: z.array(z.object({ title: text, content: text, value: text.optional(), image: slot(ctx).optional() })).min(1),
     })
     .optional(),
   flow: z
     .object({
       title: text,
       intro: text.optional(),
-      steps: z.array(card).min(1),
+      steps: z.array(card.extend({ icon: z.enum(FLOW_ICONS).optional(), image: slot(ctx).optional() })).min(1),
       /** Shown under the steps; e.g. that the flow is a suggested teaching use, not a software procedure. */
       note: text.optional(),
     })
@@ -94,7 +107,7 @@ const landing = z.object({
     .object({
       title: text,
       intro: text.optional(),
-      items: z.array(z.object({ title: text, description: text, focus: text.optional() })).min(1),
+      items: z.array(z.object({ title: text, description: text, focus: text.optional(), image: slot(ctx).optional() })).min(1),
     })
     .optional(),
   values: z
@@ -128,7 +141,7 @@ const products = defineCollection({
         image: picture(ctx).optional(),
       }),
       summary: text.optional(),
-      landing: landing.optional(),
+      landing: landing(ctx).optional(),
       capabilities: z.array(titled).optional(),
       howItWorks: z.array(titled).optional(),
       scenarios: z.array(titled).optional(),

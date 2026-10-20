@@ -272,7 +272,9 @@
     },
     "valueLabel": "[待翻譯] 訓練價值",
     "focusLabel": "[待翻譯] 訓練重點",
-    "stepLabel": "STEP"
+    "stepLabel": "STEP",
+    "mediaNeed": "[待翻譯] 素材需求｜",
+    "mediaPending": "[待翻譯] 圖片待提供"
   },
   "contactPage": {
     "topicLabel": "[待翻譯] 洽詢項目",
