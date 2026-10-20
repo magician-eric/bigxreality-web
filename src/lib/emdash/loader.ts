@@ -59,6 +59,26 @@ function seo(ctx: Ctx) {
   const og = ctx.image(s.image && typeof s.image === "object" ? { ...s.image, alt: "-" } : undefined);
   return omitEmpty({ title: s.title, description: s.description, ogImage: og?.src });
 }
+/** Flat EmDash fields (landing_*) → the nested `landing` object of the content schema. */
+function landingFrom(d: Json): Json | undefined {
+  if (!d.landing_headline) return undefined;
+  const list = (v: Json[] | undefined, keys: string[]) => v?.map((x) => Object.fromEntries(keys.map((k) => [k, x[k]]).filter(([, val]) => val !== undefined && val !== null && val !== "")));
+  const opt = (o: Json) => omitEmpty(o);
+  return omitEmpty({
+    headline: d.landing_headline,
+    subheadline: d.landing_subheadline,
+    intro: d.landing_intro,
+    ctaLabel: d.landing_cta_label,
+    challenge: opt({ title: d.landing_challenge_title, intro: d.landing_challenge_intro, cards: list(d.landing_challenge_cards, ["title", "description"]), note: d.landing_challenge_note }),
+    approach: opt({ title: d.landing_approach_title, intro: d.landing_approach_intro, pillars: list(d.landing_approach_pillars, ["label", "title", "description"]) }),
+    capabilities: d.landing_capabilities?.length ? opt({ title: d.landing_capabilities_title, intro: d.landing_capabilities_intro, items: list(d.landing_capabilities, ["title", "content", "value"]) }) : undefined,
+    flow: d.landing_flow_steps?.length ? opt({ title: d.landing_flow_title, intro: d.landing_flow_intro, steps: list(d.landing_flow_steps, ["title", "description"]), note: d.landing_flow_note }) : undefined,
+    scenarios: d.landing_scenarios?.length ? opt({ title: d.landing_scenarios_title, intro: d.landing_scenarios_intro, items: list(d.landing_scenarios, ["title", "description", "focus"]) }) : undefined,
+    values: d.landing_values_cards?.length ? opt({ title: d.landing_values_title, intro: d.landing_values_intro, cards: list(d.landing_values_cards, ["title", "description"]), note: d.landing_values_note }) : undefined,
+    related: d.landing_related_title ? opt({ title: d.landing_related_title, intro: d.landing_related_intro }) : undefined,
+    closing: opt({ title: d.landing_closing_title, description: d.landing_closing_description }),
+  });
+}
 const merge = (...lists: (string[] | undefined)[]) => [...new Set(lists.flatMap((l) => l ?? []))];
 
 function article(ctx: Ctx): Json {
@@ -97,18 +117,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         domains: d.domains,
         hero: omitEmpty({ name: d.title, englishName: d.english_name, code: d.code, tagline: d.tagline, image: ctx.image(d.hero_image) }),
         summary: d.summary,
-        landing: d.landing_headline
-          ? {
-              headline: d.landing_headline,
-              subheadline: d.landing_subheadline,
-              ctaLabel: d.landing_cta_label,
-              challenge: { title: d.landing_challenge_title, body: d.landing_challenge_body },
-              approach: { title: d.landing_approach_title, body: d.landing_approach_body },
-              features: d.landing_features?.map((x: Json) => ({ title: x.title, description: x.description })),
-              applications: d.landing_applications?.map((x: Json) => x.title),
-              closing: { title: d.landing_closing_title, description: d.landing_closing_description },
-            }
-          : undefined,
+        landing: landingFrom(d),
         capabilities: titledList(d.capabilities),
         howItWorks: titledList(d.how_it_works),
         scenarios: titledList(d.scenarios),
