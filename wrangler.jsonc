@@ -1,12 +1,12 @@
 // Cloudflare Worker for www.bigxreality.com (static pages + EmDash admin).
-// Resource IDs are filled in during the first deployment (docs/DEPLOY.md); until then
-// `wrangler dev` / `astro dev` use local emulation in .wrangler/state.
+// D1 `bxr-cms` is the production CMS database (docs/DEPLOY.md §2.2). `wrangler dev` /
+// `astro dev` still use local emulation in .wrangler/state, never the real database.
 {
   "name": "bxr-web",
   "main": "./src/worker.ts",
   "compatibility_date": "2026-02-24",
   "compatibility_flags": ["nodejs_compat"],
-  "d1_databases": [{ "binding": "DB", "database_name": "bxr-cms", "database_id": "00000000-0000-0000-0000-000000000000" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "bxr-cms", "database_id": "352041cc-336b-48f8-824f-83d5f8d00269" }],
   "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "bxr-media" }],
   // EmDash scheduled publishing and the debounced rebuild task (plugins/bxr-cms).
   "triggers": { "crons": ["* * * * *"] },
