@@ -32,7 +32,7 @@ check("NewsArticle JSON-LD without placeholders", /"@type":"NewsArticle"/.test(h
 check("article og:type + published_time", html("tw/news/fixture-news-01").includes('property="article:published_time"'));
 check("related articles merge both directions", html("tw/news/fixture-news-01").includes("/tw/case-studies/fixture-case-1/") && html("tw/case-studies/fixture-case-1").includes("/tw/news/fixture-news-01/"));
 check("solution page lists reverse-linked case study and product", html("tw/solutions/police").includes("/tw/case-studies/fixture-case-1/"));
-check("product page lists articles that point at it", html("tw/products/sut").includes("/tw/news/fixture-news-01/"));
+check("product page lists articles that point at it", html("tw/products/usv").includes("/tw/insights/fixture-insight-1/"));
 check("search page noindex", robots("tw/search"));
 
 // browser behaviour

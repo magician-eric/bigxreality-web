@@ -44,12 +44,20 @@ try {
   check("JSON-LD Organization + BreadcrumbList + Product", ["Organization", "BreadcrumbList", "Product"].every((t) => types.includes(t)), types.join(", "));
   check("JSON-LD has no placeholder text", !JSON.stringify(ld).includes("[待"));
   check("language switch keeps the page", (await page.locator(".langs a", { hasText: "EN" }).getAttribute("href")) === "/en/products/sut/");
-  check("brochure button disabled while form URL is pending", (await page.locator(".page-hero a.btn--primary").getAttribute("aria-disabled")) === "true");
+  const heroCta = await page.locator(".page-hero a.btn--primary").getAttribute("href");
+  const footCta = await page.locator(".cta-band a.btn--primary").getAttribute("href");
+  check("hero CTA opens the contact page for this product", heroCta === "/tw/contact/?topic=product&item=SUT", heroCta);
+  check("closing CTA = hero CTA (shared definition)", footCta === heroCta, footCta);
   check("one red button in the hero", (await page.locator(".page-hero .btn--primary").count()) === 1 && (await page.locator(".site-header .btn--primary").count()) === 0);
   const toc = await page.$$eval("[data-toc] a", (as) => as.map((a) => a.hash));
   const ids = await page.$$eval("main section[id]", (ss) => ss.map((s) => "#" + s.id));
   check("in-page nav matches rendered sections", JSON.stringify(toc) === JSON.stringify(ids), toc.join(" "));
-  check("pending markers visible", (await page.locator("mark.pending").count()) > 0);
+  check("landing sections in order", JSON.stringify(await page.$$eval("main h2", (hs) => hs.map((h) => h.id))) === JSON.stringify(["h-challenge", "h-approach", "h-features", "h-applications", "product-cta"]));
+  check("no pending markers on the landing page body", (await page.locator("main section:not(.cta-band) mark.pending").count()) === 0);
+
+  await page.goto(`${base}/tw/contact/?topic=product&item=SUT`, { waitUntil: "networkidle" });
+  const mail = await page.locator("[data-mailto]").getAttribute("href");
+  check("contact page: topic + product in the e-mail subject", mail.startsWith("mailto:") && decodeURIComponent(mail).includes("產品洽詢 – SUT"), mail);
 
   await page.goto(`${base}/tw/products/uav/`, { waitUntil: "networkidle" });
   const integrated = await page.locator("#integratedOps .card h3").allTextContents();

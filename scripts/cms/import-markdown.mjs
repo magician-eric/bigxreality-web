@@ -151,6 +151,13 @@ const MAP = {
         translation_status: d.translationStatus, review_status: "approved",
         hero_image: await image(d.hero.image, file),
         summary: d.summary,
+        ...(d.landing ? {
+          landing_headline: d.landing.headline, landing_subheadline: d.landing.subheadline, landing_cta_label: d.landing.ctaLabel,
+          landing_challenge_title: d.landing.challenge.title, landing_challenge_body: d.landing.challenge.body,
+          landing_approach_title: d.landing.approach.title, landing_approach_body: d.landing.approach.body,
+          landing_features: d.landing.features, landing_applications: d.landing.applications.map((title) => ({ title })),
+          landing_closing_title: d.landing.closing.title, landing_closing_description: d.landing.closing.description,
+        } : {}),
         overview: await toPortableText(body, file, upload),
         capabilities: d.capabilities, how_it_works: d.howItWorks, scenarios: d.scenarios, components: d.components,
         deploy_personnel: personnel, deploy_personnel_approx: personnel ? !!dep.personnel?.approx : undefined,

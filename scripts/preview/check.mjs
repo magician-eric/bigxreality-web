@@ -78,8 +78,9 @@ try {
     await page.goto(`${origin}${base}${p}`, { waitUntil: "networkidle" });
   }
   check("no 404 while browsing (pages, images, fonts, scripts)", missing.length === 0, missing.slice(0, 5).join(" "));
+  await page.goto(`${origin}${base}tw/products/`, { waitUntil: "networkidle" });
+  check("hero image loads (products overview)", await page.locator(".page-hero img").evaluate((i) => i.complete && i.naturalWidth > 0).catch(() => false));
   await page.goto(`${origin}${base}tw/products/sut/`, { waitUntil: "networkidle" });
-  check("product hero image loads", await page.locator(".page-hero img").evaluate((i) => i.complete && i.naturalWidth > 0).catch(() => false));
   check("CIS fonts load", await page.evaluate(async () => { await document.fonts.ready; return [...document.fonts].some((f) => f.status === "loaded"); }));
   await page.click('.langs a[hreflang="en"]');
   check("language switch stays inside the preview", page.url().startsWith(`${origin}${base}en/`), page.url());

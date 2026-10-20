@@ -1,0 +1,12 @@
+---
+/** Landing-page section: heading group + content, alternating background. */
+import SectionHead from "./SectionHead.astro";
+interface Props { id: string; eyebrow: string; title: string; description?: string; alt?: boolean; dark?: boolean }
+const { id, eyebrow, title, description, alt = false, dark = false } = Astro.props;
+---
+<section class:list={["section", { "section--alt": alt }]} id={id} aria-labelledby={`h-${id}`} data-theme={dark ? "dark" : undefined}>
+  <div class="container">
+    <SectionHead id={`h-${id}`} eyebrow={eyebrow} title={title} description={description} />
+    <slot />
+  </div>
+</section>

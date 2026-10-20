@@ -97,6 +97,18 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         domains: d.domains,
         hero: omitEmpty({ name: d.title, englishName: d.english_name, code: d.code, tagline: d.tagline, image: ctx.image(d.hero_image) }),
         summary: d.summary,
+        landing: d.landing_headline
+          ? {
+              headline: d.landing_headline,
+              subheadline: d.landing_subheadline,
+              ctaLabel: d.landing_cta_label,
+              challenge: { title: d.landing_challenge_title, body: d.landing_challenge_body },
+              approach: { title: d.landing_approach_title, body: d.landing_approach_body },
+              features: d.landing_features?.map((x: Json) => ({ title: x.title, description: x.description })),
+              applications: d.landing_applications?.map((x: Json) => x.title),
+              closing: { title: d.landing_closing_title, description: d.landing_closing_description },
+            }
+          : undefined,
         capabilities: titledList(d.capabilities),
         howItWorks: titledList(d.how_it_works),
         scenarios: titledList(d.scenarios),

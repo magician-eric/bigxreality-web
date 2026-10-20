@@ -1,0 +1,22 @@
+---
+/** Numbered steps (how it works, training flow, contact steps). Same look as the product page steps. */
+import Text from "./Text.astro";
+interface Props { items: { title: string; description?: string }[] }
+const { items } = Astro.props;
+---
+<ol role="list" class="steps" style={`--cols: ${Math.min(Math.max(items.length, 2), 4)}`}>
+  {items.map((s, i) => (
+    <li class="step">
+      <span class="t-tech num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+      <h3 class="t-h4"><Text value={s.title} /></h3>
+      {s.description && <p class="t-muted"><Text value={s.description} /></p>}
+    </li>
+  ))}
+</ol>
+<style>
+  .steps { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .step { display: grid; gap: var(--space-1); align-content: start; padding-top: var(--space-2); border-top: 1px solid var(--bxr-line); }
+  .num { color: var(--ink-muted); }
+  @media (max-width: 1023px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .steps { grid-template-columns: 1fr; } }
+</style>

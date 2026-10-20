@@ -2,7 +2,8 @@
 /**
  * /[lang]/products/[slug]/ — the fixed 12-block product template (task brief §5.2).
  * A block whose field is left out is not rendered; a field holding [待提供] is
- * rendered with the marker visible.
+ * rendered with the marker visible. Products with a `landing` block use the sales
+ * landing page instead (components/ProductLanding.astro).
  */
 import { getImage } from "astro:assets";
 import { LANGS, localePath, type Lang } from "../../../i18n";
@@ -20,6 +21,7 @@ import CardArticle from "../../../components/CardArticle.astro";
 import CtaBand from "../../../components/CtaBand.astro";
 import FormButton from "../../../components/FormButton.astro";
 import Text from "../../../components/Text.astro";
+import ProductLanding from "../../../components/ProductLanding.astro";
 
 export async function getStaticPaths() {
   const paths = [];
@@ -91,6 +93,9 @@ const deploymentRows = [
   [t.notes, deployment?.notes],
 ].filter((r): r is [string, string] => r[1] !== undefined);
 ---
+{d.landing ? (
+  <ProductLanding lang={lang} slug={slug} base={base} data={d} pendingTranslation={product.pendingTranslation} />
+) : (
 <BaseLayout
   lang={lang}
   title={d.seo?.title ?? d.hero.name}
@@ -306,6 +311,7 @@ const deploymentRows = [
     </CtaBand>
   )}
 </BaseLayout>
+)}
 
 <script>
   // Marks the in-page navigation item for the section currently in view.

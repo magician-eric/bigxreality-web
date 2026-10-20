@@ -234,5 +234,107 @@
     "hint": "請輸入至少兩個字。",
     "noscript": "搜尋功能需要啟用 JavaScript。",
     "error": "搜尋暫時無法使用，請稍後再試。"
+  },
+  "cta": {
+    "exploreProducts": "探索產品",
+    "findSolutions": "尋找解決方案",
+    "viewProducts": "查看產品",
+    "viewSolutions": "查看解決方案",
+    "viewIntegrated": "了解整合訓練",
+    "bookDemo": "預約產品展示",
+    "requestInfo": "索取產品資料",
+    "productInquiry": "洽詢產品",
+    "solutionInquiry": "洽詢解決方案",
+    "solutionDemo": "預約展示",
+    "discussNeeds": "討論需求",
+    "learnMore": "了解更多"
+  },
+  "productLanding": {
+    "eyebrow": "Product",
+    "sections": {
+      "challenge": {
+        "eyebrow": "Training Challenge",
+        "title": "訓練挑戰"
+      },
+      "approach": {
+        "eyebrow": "Our Approach",
+        "title": "解決方式"
+      },
+      "features": {
+        "eyebrow": "Key Features",
+        "title": "核心特色"
+      },
+      "applications": {
+        "eyebrow": "Applications",
+        "title": "應用情境"
+      }
+    },
+    "placeholders": {
+      "hero": "產品主視覺（圖片待提供）",
+      "showcase": "產品展示圖（圖片待提供）"
+    }
+  },
+  "contactPage": {
+    "topicLabel": "洽詢項目",
+    "topics": {
+      "general": {
+        "title": "一般洽詢",
+        "subject": "一般洽詢"
+      },
+      "demo": {
+        "title": "預約產品展示",
+        "subject": "預約產品展示"
+      },
+      "info": {
+        "title": "索取產品資料",
+        "subject": "索取產品資料"
+      },
+      "product": {
+        "title": "洽詢產品",
+        "subject": "產品洽詢"
+      },
+      "solution": {
+        "title": "洽詢解決方案",
+        "subject": "解決方案洽詢"
+      },
+      "solution-demo": {
+        "title": "預約展示",
+        "subject": "預約解決方案展示"
+      },
+      "needs": {
+        "title": "討論訓練需求",
+        "subject": "訓練需求討論"
+      }
+    },
+    "about": "關於",
+    "steps": {
+      "eyebrow": "How to Reach Us",
+      "title": "以 Email 與我們聯繫",
+      "items": [
+        {
+          "title": "按下「寄送 Email」",
+          "description": "系統會開啟您的郵件軟體，主旨與信件格式已依洽詢項目填好。"
+        },
+        {
+          "title": "補上聯絡資料與需求",
+          "description": "請填寫姓名、單位、職稱、國家、電話，以及希望了解的內容。"
+        },
+        {
+          "title": "寄出後由業務聯繫",
+          "description": "我們收到來信後，將由業務人員與您聯繫，確認需求與後續安排。"
+        }
+      ]
+    },
+    "sendEmail": "寄送 Email",
+    "orWrite": "或直接寄信至",
+    "bodyFields": [
+      "姓名：",
+      "公司／單位：",
+      "職稱：",
+      "國家：",
+      "電話：",
+      "需求說明："
+    ],
+    "noEmail": "聯絡信箱尚未設定。"
   }
 }

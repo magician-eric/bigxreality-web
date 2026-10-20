@@ -14,6 +14,8 @@ interface Props {
   breadcrumbs: Crumb[];
   breadcrumbLabel: string;
   eyebrow: string;
+  /** Line above the H1 (e.g. the product name when the H1 is a headline). */
+  kicker?: string;
   title: string;
   subtitle?: string;
   description: string;
@@ -21,13 +23,14 @@ interface Props {
   imageCaption?: string;
   imagePending?: string;
 }
-const { breadcrumbs, breadcrumbLabel, eyebrow, title, subtitle, description, image, imageCaption, imagePending } = Astro.props;
+const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, description, image, imageCaption, imagePending } = Astro.props;
 ---
 <section class="page-hero" data-theme="dark">
   <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
     <div class="copy">
       <Breadcrumb items={breadcrumbs} label={breadcrumbLabel} />
       <p class="t-label eyebrow">{eyebrow}</p>
+      {kicker && <p class="kicker t-h4"><Text value={kicker} /></p>}
       <h1 class="t-h1"><Text value={title} /></h1>
       {subtitle && <p class="subtitle"><Text value={subtitle} /></p>}
       <p class="desc"><Text value={description} /></p>
@@ -52,6 +55,7 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, title, subtitle, description, ima
   .no-media { grid-template-columns: minmax(0, 8fr) 4fr; }
   .copy { display: grid; gap: var(--space-3); align-content: start; }
   .eyebrow { color: var(--bxr-mist); margin-top: var(--space-3); }
+  .kicker { color: var(--bxr-white); font-weight: 500; }
   .subtitle { color: var(--bxr-mist); font-size: var(--fs-h4); }
   .desc { color: var(--ink-muted); max-width: 36rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
