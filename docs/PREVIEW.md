@@ -11,6 +11,8 @@
 
 ## 第一次啟用（只需做一次）
 Repo **Settings → Pages → Build and deployment → Source** 選 **GitHub Actions**。
+
+> 如果網址顯示的是 README 而不是官網：代表 Source 還是 **Deploy from a branch**。這時 GitHub 會用 Jekyll 直接發布 `main` 分支的檔案，根目錄沒有 `index.html`，所以顯示 `README.md`；Actions 裡會看到 `pages-build-deployment` 這個流程。改成 **GitHub Actions** 後，網站改由 `Preview (GitHub Pages)` 這個 workflow build 並發布。
 之後到 **Actions → Preview (GitHub Pages) → Run workflow** 執行一次，或推送到 `main`。
 
 ## 修改內容並預覽
