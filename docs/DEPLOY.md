@@ -1,7 +1,7 @@
 # 部署與 Cloudflare 設定說明
 
 架構：GitHub 只放程式；內容在 Cloudflare D1，圖片在 Cloudflare R2。
-同一個 Worker（`bxr-web`）提供公開網站（build 時產生的靜態頁面）和 EmDash 後台（`/_emdash/admin`）。
+同一個 Worker（`bigxreality-web`）提供公開網站（build 時產生的靜態頁面）和 EmDash 後台（`/_emdash/admin`）。
 編輯在後台按「發布」後，外掛 `bxr-cms` 會在約 2 分鐘後呼叫 Workers Builds 重新 build 網站。連續編輯只會觸發一次重建，最多延後 10 分鐘。
 
 > ⚠️ 正式部署、DNS 修改、付費方案啟用，都要先經過你同意。以下步驟由你在 Cloudflare 後台操作，**不需要提供帳號密碼給任何人**。
@@ -26,15 +26,15 @@ Cloudflare 後台 → **R2 Object Storage** → **Purchase R2 / Enable** → 依
 **Workers & Pages → Create → Import a repository** → 選 `magician-eric/bigxreality-web`，分支 `main`。
 - Build command：`npm run build`
 - Deploy command：`npx wrangler deploy`
-- Worker 名稱：`bxr-web`
+- Worker 名稱：`bigxreality-web`（必須和 `wrangler.jsonc` 的 `name` 相同，否則 Workers Builds 會拒絕部署）
 
 **Settings → Build → Variables and secrets**（build 時用的環境變數）：
 
 | 名稱 | 值 | 類型 |
 |---|---|---|
-| `BXR_CONTENT_SOURCE` | `emdash` | 文字 |
-| `EMDASH_URL` | 後台網址，例如 `https://www.bigxreality.com`（第一次部署前先用 `https://bxr-web.<你的子網域>.workers.dev`） | 文字 |
-| `EMDASH_TOKEN` | 見 2.5 | **Secret** |
+| `BXR_CONTENT_SOURCE` | 第一次部署用 `bootstrap`，匯入內容後改成 `emdash`（見 2.4） | 文字 |
+| `EMDASH_URL` | 後台網址，例如 `https://www.bigxreality.com`（綁網域前先用 `https://bigxreality-web.<你的子網域>.workers.dev`；bootstrap 也需要這個值） | 文字 |
+| `EMDASH_TOKEN` | 見 2.5（`emdash` 才需要） | **Secret** |
 | `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET` | 見 2.6（有開 Access 才需要） | **Secret** |
 
 **Settings → Variables and secrets**（Worker 執行時用）：
@@ -44,15 +44,21 @@ Cloudflare 後台 → **R2 Object Storage** → **Purchase R2 / Enable** → 依
 | `EMDASH_ENCRYPTION_KEY` | 在自己電腦執行 `npx emdash secrets generate`，把產生的值設成 **Secret**（外掛設定等加密用，要妥善保存，遺失後已加密的設定需重填） |
 
 ### 2.4 第一次部署與匯入內容
-第一次 build 時 CMS 還是空的，所以順序是：
-1. 第一次部署時把 `BXR_CONTENT_SOURCE` 暫時設成 `markdown`。**這需要你同意，因為這是正式部署。**
+第一次 build 時 CMS 還是空的，所以先用 **bootstrap 模式**部署一次，讓 Worker 和 EmDash 後台上線：
+
+1. Build 變數設 `BXR_CONTENT_SOURCE=bootstrap`、`EMDASH_URL=https://bigxreality-web.<你的子網域>.workers.dev`，部署。**這需要你同意，因為這是正式部署。**
+   - 網站內容來自 `src/content` 的 Markdown（不會用到測試資料）。
+   - 所有頁面 `noindex`，`robots.txt` 禁止所有爬蟲，sitemap 是空的。這是暫時的網站，不適合綁正式網域。
+   - build 前會先查詢 `<EMDASH_URL>/_emdash/api/setup/status`。**後台一旦建立了管理員帳號，bootstrap 就會被拒絕**，build 失敗並提示改用 `emdash`。所以 bootstrap 只能用在初始化，之後不可能誤用。
+   - 正式 build 仍然拒絕 `markdown` 與 `fixtures`。
 2. 打開 `<網址>/_emdash/admin`，建立第一個管理員帳號（用 passkey 或 email 登入）。
 3. 後台 API Tokens 頁面（管理員） 建一個「匯入用」token，權限勾選 `content:read`、`content:write`、`media:read`、`media:write`。在自己電腦執行：
    ```bash
    EMDASH_URL=<網址> EMDASH_TOKEN=<匯入用 token> npm run cms:import
    ```
    這會把 `src/content` 的 Markdown（產品、解決方案、情境、頁面文案、網站資訊）和圖片匯入 CMS 並發布。可以重複執行，已存在的內容不會被覆蓋。
-4. 匯入完成、檢查無誤後，刪掉匯入用 token。把 `BXR_CONTENT_SOURCE` 改回 `emdash`，重新部署。
+4. 匯入完成、檢查無誤後，刪掉匯入用 token。建立 build 用的唯讀 token（2.5），把 Build 變數改成 `BXR_CONTENT_SOURCE=emdash` 並加上 `EMDASH_TOKEN`，然後重新部署（Deployments → Retry，或推一個 commit）。
+   - 從此網站內容只來自 EmDash。如果 CMS 裡沒有任何已發布的產品，build 會失敗，不會部署空白網站。
 5. 原本的 Markdown 留在 git 中當備份，不刪除。
 
 ### 2.5 build 用的唯讀 token
@@ -100,6 +106,6 @@ npm run build                       # Markdown 版
 npm run build:fixtures              # TEST FIXTURE 版 → dist-fixtures/（永遠不部署）
 ```
 注意事項：
-- 正式 build（`WORKERS_CI=1`）只接受 `BXR_CONTENT_SOURCE=emdash`。
+- 正式 build（`WORKERS_CI=1`）只接受 `BXR_CONTENT_SOURCE=emdash`，以及 CMS 尚未初始化時的 `bootstrap`。
 - build 後的搜尋索引步驟發現 `TEST FIXTURE` 文字時，會讓 build 失敗。
 - 已知情況：EmDash 後台的 Google 字型在無法連外的環境會顯示 `emdash-noto` 警告，不影響網站。

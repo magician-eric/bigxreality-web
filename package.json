@@ -8,7 +8,7 @@
   },
   "scripts": {
     "predev": "npm run assets",
-    "prebuild": "npm run assets && node scripts/cms/pull-site.mjs",
+    "prebuild": "node scripts/cms/check-source.mjs && npm run assets && node scripts/cms/pull-site.mjs",
     "assets": "node scripts/build-fonts.mjs && node scripts/make-favicons.mjs",
     "dev": "astro dev",
     "build": "astro build",

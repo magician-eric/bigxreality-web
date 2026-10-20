@@ -291,6 +291,10 @@ export function emdashLoader(collection: string): Loader {
         }
       }
       await Promise.all(downloads.values());
+      // Never deploy an empty site: an EmDash build before the content import is a setup mistake.
+      if (collection === "products" && count === 0) {
+        throw new Error("EmDash has no published products. Import the content first (npm run cms:import, docs/DEPLOY.md §2.4); until then deploy with BXR_CONTENT_SOURCE=bootstrap.");
+      }
       logger.info(`${count} published entries from EmDash`);
     },
   };
