@@ -1,0 +1,67 @@
+---
+/**
+ * /[lang]/tags/[slug]/ — news, insights and case studies with this tag, newest first.
+ * Fewer than TAG_INDEX_MIN articles: noindex and not in the sitemap (owner decision).
+ */
+import { LANGS, localePath, type Lang } from "../../../i18n";
+import { getLocalized, availableLangs } from "../../../lib/content";
+import { articlesWithTag, articleHref, tagNames, TAG_INDEX_MIN } from "../../../lib/articles";
+import { getUi, format } from "../../../lib/ui";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import CardArticle from "../../../components/CardArticle.astro";
+import EmptyState from "../../../components/EmptyState.astro";
+import Text from "../../../components/Text.astro";
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of LANGS) for (const t of await getLocalized("tags", lang)) paths.push({ params: { lang, slug: t.slug } });
+  return paths;
+}
+
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug!;
+const ui = getUi(lang);
+const tag = (await getLocalized("tags", lang)).find((t) => t.slug === slug)!;
+const articles = await articlesWithTag(slug, lang);
+const tags = await Promise.all(articles.map((a) => tagNames(a.base.data.tags, lang)));
+const name = tag.loc.data.name;
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.tags.title, path: localePath(lang, "tags") },
+  { name: `#${name}`, path: localePath(lang, "tags", slug) },
+];
+---
+<BaseLayout
+  lang={lang} title={`#${name}`} description={tag.loc.data.description ?? format(ui.listing.count, { n: articles.length })}
+  pathTemplate={`/{lang}/tags/${slug}/`} alternates={await availableLangs("tags", slug)}
+  pendingTranslation={tag.pendingTranslation} noindex={articles.length < TAG_INDEX_MIN}
+  headerTheme="dark" current="resources" fallbackPath="/{lang}/tags/" breadcrumbs={breadcrumbs}
+>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={ui.tags.eyebrow} title={`#${name}`} description={tag.loc.data.description ?? format(ui.listing.count, { n: articles.length })} />
+  <section class="section">
+    <div class="container">
+      {articles.length === 0 ? <EmptyState message={ui.listing.empty} /> : (
+        <ul role="list" class="cards">
+          {articles.map((a, i) => (
+            <li>
+              <CardArticle
+                lang={lang} href={articleHref(a)} type={ui.articleTypes[a.collection]}
+                date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary} tags={tags[i]}
+                cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+      <p class="all"><a href={localePath(lang, "tags")}><Text value={ui.tags.allTags} /></a></p>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .all { margin-top: var(--space-6); }
+  .all a { min-height: 24px; }
+  @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
+</style>

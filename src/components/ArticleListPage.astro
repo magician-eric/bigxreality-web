@@ -1,0 +1,119 @@
+---
+/**
+ * News / Insights / Case Studies list (docs/PHASE-2-PLAN.md §4, §11.4).
+ * One template for all three: `listing.pageSize` in site.json decides whether the
+ * list is split into pages (news, insights: 12) or shown whole (case studies: null).
+ * Case studies get the domain filter; paged lists cannot filter (only the current
+ * page would be filtered), so they link to tags and search instead.
+ * A list with no articles shows an empty state and is noindex.
+ */
+import { getEntry } from "astro:content";
+import { LANGS, localePath, type Lang } from "../i18n";
+import { getArticles, articleHref, tagNames, pageSize, paginate } from "../lib/articles";
+import type { ArticleCollection } from "../lib/content";
+import { DOMAINS } from "../lib/domains";
+import { getUi, format } from "../lib/ui";
+import { plain } from "../lib/text";
+import { site } from "../lib/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "./PageHero.astro";
+import CardArticle from "./CardArticle.astro";
+import CtaBand from "./CtaBand.astro";
+import FormButton from "./FormButton.astro";
+import FilterBar from "./FilterBar.astro";
+import Pagination from "./Pagination.astro";
+import EmptyState from "./EmptyState.astro";
+import Text from "./Text.astro";
+
+interface Props { lang: Lang; collection: ArticleCollection; page: number }
+const { lang, collection, page } = Astro.props;
+const ui = getUi(lang);
+const copy = (await getEntry("pages", `${lang}/${collection}`))!.data;
+const all = await getArticles(collection, lang);
+const pages = paginate(all, pageSize(collection));
+const items = pages[page - 1] ?? [];
+const total = pages.length;
+const filterable = collection === "case-studies" && pageSize(collection) === null && all.length > 0;
+const tags = await Promise.all(items.map((a) => tagNames(a.base.data.tags, lang)));
+
+const path = page === 1 ? `/{lang}/${collection}/` : `/{lang}/${collection}/page/${page}/`;
+// hreflang: other languages only when they have the same page number.
+const alternates: Lang[] = [];
+for (const l of LANGS) {
+  const n = paginate(await getArticles(collection, l), pageSize(collection)).length;
+  if (n >= page) alternates.push(l);
+}
+const listName = ui.nav[collection === "case-studies" ? "caseStudies" : collection];
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: listName, path: localePath(lang, collection) },
+  ...(page > 1 ? [{ name: format(ui.listing.page, { n: page }), path: localePath(lang, collection, "page", String(page)) }] : []),
+];
+const abs = (p: string) => new URL(p, site.url).toString();
+const collectionLd = {
+  "@type": "CollectionPage",
+  name: plain(copy.hero.title),
+  url: abs(path.replace("{lang}", lang)),
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: items.map((a, i) => ({ "@type": "ListItem", position: (page - 1) * (pageSize(collection) ?? 0) + i + 1, url: abs(articleHref(a)) })),
+  },
+};
+const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: page })}` : copy.seo.title;
+---
+<BaseLayout
+  lang={lang} title={title} description={copy.seo.description} pathTemplate={path} alternates={alternates}
+  pendingTranslation={copy.translationStatus === "pending"} noindex={all.length === 0}
+  headerTheme="dark" current="resources" currentResource={collection}
+  fallbackPath={`/{lang}/${collection}/`} breadcrumbs={breadcrumbs}
+  structuredData={all.length ? [collectionLd] : []}
+>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
+  <section class="section">
+    <div class="container">
+      {all.length === 0 ? (
+        <EmptyState message={ui.listing.empty} />
+      ) : (
+        <>
+          {filterable && (
+            <FilterBar
+              lang={lang} domains={DOMAINS} target="article-grid"
+              labels={{ results: ui.listing.filterResults, searchLabel: ui.listing.filterSearchLabel, searchPlaceholder: ui.listing.filterSearchPlaceholder }}
+            />
+          )}
+          <p class="t-small t-muted count"><Text value={format(ui.listing.count, { n: all.length })} /></p>
+          <ul role="list" class="cards" id="article-grid">
+            {items.map((a, i) => (
+              <li
+                data-filter-item={filterable ? "" : undefined}
+                data-domains={filterable ? ((a.base.data as { domains?: string[] }).domains ?? []).join(" ") : undefined}
+                data-text={filterable ? plain([a.loc.data.title, a.loc.data.summary, (a.loc.data as { client?: { name: string } }).client?.name ?? "", ...tags[i]].join(" ")) : undefined}
+              >
+                <CardArticle
+                  lang={lang} href={articleHref(a)} type={ui.articleTypes[collection]}
+                  date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary} tags={tags[i]}
+                  cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
+                />
+              </li>
+            ))}
+          </ul>
+          {filterable && <p class="empty" data-filter-empty="article-grid" hidden><Text value={ui.listing.filterEmpty} /></p>}
+          <Pagination lang={lang} base={collection} current={page} total={total} />
+        </>
+      )}
+    </div>
+  </section>
+  {copy.cta && (
+    <CtaBand id="list-cta" title={copy.cta.title} description={copy.cta.description}>
+      <FormButton kind="demo" lang={lang} variant="primary" />
+      <FormButton kind="brochure" lang={lang} variant="secondary" />
+    </CtaBand>
+  )}
+</BaseLayout>
+<style>
+  .count { margin-bottom: var(--space-3); }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .empty { padding: var(--space-5) 0; color: var(--ink-muted); }
+  @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
+</style>

@@ -1,6 +1,7 @@
 import { z } from "astro/zod";
 import backup from "../data/site.json";
 import { PENDING, isPending } from "./pending";
+import { contentSource } from "./content-source";
 import type { Lang } from "../i18n";
 
 const pending = z.literal(PENDING);
@@ -22,12 +23,16 @@ const schema = z.object({
   careersUrl: url,
   forms: z.object({ brochure: form, demo: form }),
   analytics: z.object({ gaId: z.string().regex(/^G-[A-Z0-9]+$/) }),
+  /** Articles per list page; null = everything on one page (docs/PHASE-2-PLAN.md §11.4). */
+  listing: z.object({
+    pageSize: z.object({ news: z.number().int().positive().nullable(), insights: z.number().int().positive().nullable(), "case-studies": z.number().int().positive().nullable() }),
+  }),
 });
 
 // In EmDash builds scripts/cms/pull-site.mjs writes the CMS values to .cms-site.json;
 // otherwise the committed site.json (backup) is used.
 const fromCms = Object.values(import.meta.glob<{ default: unknown }>("../data/.cms-site.json", { eager: true }))[0]?.default;
-export const site = schema.parse(process.env.BXR_CONTENT_SOURCE === "emdash" && fromCms ? fromCms : backup);
+export const site = schema.parse(contentSource() === "emdash" && fromCms ? fromCms : backup);
 export type FormKind = keyof typeof site.forms;
 
 /**

@@ -1,0 +1,173 @@
+---
+/**
+ * /[lang]/solutions/[slug]/ — one market domain. Related products and articles are
+ * reverse lookups (products.relatedSolutions, articles.relatedSolutions); nothing is
+ * stored twice. Sections without content are not rendered.
+ */
+import { getEntry } from "astro:content";
+import { LANGS, localePath, type Lang } from "../../../i18n";
+import { getLocalized, availableLangs, validateRelations } from "../../../lib/content";
+import { articlesAbout, articleHref, tagNames, type Article } from "../../../lib/articles";
+import { hasContent } from "../../../lib/pending";
+import { getUi } from "../../../lib/ui";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import SectionHead from "../../../components/SectionHead.astro";
+import InPageNav from "../../../components/InPageNav.astro";
+import Prose from "../../../components/Prose.astro";
+import TileGrid from "../../../components/TileGrid.astro";
+import CardProduct from "../../../components/CardProduct.astro";
+import CardArticle from "../../../components/CardArticle.astro";
+import CtaBand from "../../../components/CtaBand.astro";
+import FormButton from "../../../components/FormButton.astro";
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of LANGS) for (const s of await getLocalized("solutions", lang)) paths.push({ params: { lang, slug: s.slug } });
+  return paths;
+}
+
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug!;
+await validateRelations();
+const ui = getUi(lang);
+const t = ui.solution.sections;
+const solution = (await getLocalized("solutions", lang)).find((s) => s.slug === slug)!;
+const base = solution.base.data;
+const d = solution.loc.data;
+const overviewHtml = solution.loc.rendered?.html ?? "";
+const heroImage = base.image && { src: base.image.src, alt: d.image?.alt ?? base.image.alt };
+const products = (await getLocalized("products", lang)).filter((p) => (p.base.data.relatedSolutions ?? []).includes(slug));
+const groups: { id: "caseStudies" | "insights" | "news"; items: Article[] }[] = [
+  { id: "caseStudies", items: (await articlesAbout("relatedSolutions", slug, lang, ["case-studies"])).slice(0, 6) },
+  { id: "insights", items: (await articlesAbout("relatedSolutions", slug, lang, ["insights"])).slice(0, 6) },
+  { id: "news", items: (await articlesAbout("relatedSolutions", slug, lang, ["news"])).slice(0, 6) },
+];
+const tags = new Map<string, string[]>();
+for (const g of groups) for (const a of g.items) tags.set(`${a.collection}/${a.slug}`, await tagNames(a.base.data.tags, lang));
+
+const sections = [
+  { id: "overview", show: hasContent(solution.loc.body) },
+  { id: "challenges", show: hasContent(d.challenges) },
+  { id: "capabilities", show: hasContent(d.capabilities) },
+  { id: "relatedProducts", show: products.length > 0 },
+  ...groups.map((g) => ({ id: g.id, show: g.items.length > 0 })),
+].filter((s) => s.show).map((s) => ({ id: s.id, title: t[s.id as keyof typeof t].title }));
+const has = (id: string) => sections.some((s) => s.id === id);
+const alt = (i: number) => (i % 2 === 1 ? "section section--alt" : "section");
+const order = sections.map((s) => s.id);
+
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.solutions, path: localePath(lang, "solutions") },
+  { name: d.name, path: localePath(lang, "solutions", slug) },
+];
+const page = (await getEntry("pages", `${lang}/solutions`))?.data;
+const cta = d.cta ?? page?.cta;
+---
+<BaseLayout
+  lang={lang}
+  title={d.seo?.title ?? d.name}
+  description={d.seo?.description ?? d.heroDescription ?? d.summary}
+  pathTemplate={`/{lang}/solutions/${slug}/`}
+  alternates={await availableLangs("solutions", slug)}
+  pendingTranslation={solution.pendingTranslation}
+  headerTheme="dark"
+  current="solutions"
+  fallbackPath="/{lang}/solutions/"
+  breadcrumbs={breadcrumbs}
+  ogImage={base.seo?.ogImage ?? heroImage?.src}
+  ogImageAlt={heroImage?.alt}
+  searchable
+>
+  <PageHero
+    breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel}
+    eyebrow={`Solution · ${ui.domainCodes[base.domain]}`} title={d.name} subtitle={d.englishName}
+    description={d.heroDescription ?? d.summary} image={heroImage} imagePending={ui.solutionImagePending}
+  >
+    <FormButton slot="actions" kind="demo" lang={lang} variant="primary" />
+  </PageHero>
+
+  <InPageNav label={ui.product.onThisPage} items={sections} />
+
+  {has("overview") && (
+    <section class={alt(order.indexOf("overview"))} id="overview" aria-labelledby="h-overview">
+      <div class="container two-col">
+        <SectionHead id="h-overview" eyebrow={t.overview.eyebrow} title={t.overview.title} />
+        <Prose html={overviewHtml} />
+      </div>
+    </section>
+  )}
+
+  {has("challenges") && (
+    <section class={alt(order.indexOf("challenges"))} id="challenges" aria-labelledby="h-challenges">
+      <div class="container">
+        <SectionHead id="h-challenges" eyebrow={t.challenges.eyebrow} title={t.challenges.title} />
+        <TileGrid items={d.challenges!} />
+      </div>
+    </section>
+  )}
+
+  {has("capabilities") && (
+    <section class={alt(order.indexOf("capabilities"))} id="capabilities" aria-labelledby="h-capabilities">
+      <div class="container">
+        <SectionHead id="h-capabilities" eyebrow={t.capabilities.eyebrow} title={t.capabilities.title} />
+        <TileGrid items={d.capabilities!} />
+      </div>
+    </section>
+  )}
+
+  {has("relatedProducts") && (
+    <section class={alt(order.indexOf("relatedProducts"))} id="relatedProducts" aria-labelledby="h-relatedProducts">
+      <div class="container">
+        <SectionHead id="h-relatedProducts" eyebrow={t.relatedProducts.eyebrow} title={t.relatedProducts.title} />
+        <ul role="list" class="cards">
+          {products.map((p) => (
+            <li>
+              <CardProduct
+                lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
+                englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                domains={p.base.data.domains}
+                image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {groups.filter((g) => has(g.id)).map((g) => (
+    <section class={alt(order.indexOf(g.id))} id={g.id} aria-labelledby={`h-${g.id}`}>
+      <div class="container">
+        <SectionHead id={`h-${g.id}`} eyebrow={t[g.id].eyebrow} title={t[g.id].title} />
+        <ul role="list" class="cards">
+          {g.items.map((a) => (
+            <li>
+              <CardArticle
+                lang={lang} href={articleHref(a)} type={ui.articleTypes[a.collection]}
+                date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary}
+                tags={tags.get(`${a.collection}/${a.slug}`) ?? []}
+                cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  {cta && (
+    <CtaBand id="solution-cta" title={cta.title} description={cta.description}>
+      <FormButton kind="demo" lang={lang} variant="primary" />
+      <FormButton kind="brochure" lang={lang} variant="secondary" />
+    </CtaBand>
+  )}
+</BaseLayout>
+<style>
+  .two-col { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
+  .two-col :global(.section-head) { margin-bottom: 0; }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) { .two-col { grid-template-columns: 1fr; gap: var(--space-3); } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
+</style>

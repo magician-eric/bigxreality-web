@@ -1,31 +1,75 @@
 import type { APIRoute } from "astro";
-import { HREFLANG, LANGS, DEFAULT_LANG, type Lang } from "../i18n";
-import { getLocalized } from "../lib/content";
 import { getEntry } from "astro:content";
+import { HREFLANG, LANGS, DEFAULT_LANG, type Lang } from "../i18n";
+import { ARTICLE_COLLECTIONS, getLocalized } from "../lib/content";
+import { articlesWithTag, getArticles, pageSize, paginate, TAG_INDEX_MIN } from "../lib/articles";
+import { isFixtureBuild } from "../lib/content-source";
 import { site } from "../lib/site";
 
 /*
- * Lists every built page that may be indexed, with hreflang alternates.
- * Pages whose translation is pending are noindex and left out (owner decision 2026-10-19).
+ * Lists every built page that may be indexed, with hreflang alternates. Each page
+ * type applies the same rule its template uses for `noindex`:
+ * - translation pending → out (owner decision 2026-10-19)
+ * - list with no articles → out; tag page with fewer than TAG_INDEX_MIN articles → out
+ * - search page → never; TEST FIXTURE builds → empty sitemap
+ * tests/ (qa:sitemap) checks that this list equals the built pages without noindex.
  */
 interface Page { lang: Lang; path: string; alternates: Lang[] }
 
 export const GET: APIRoute = async () => {
   const pages: Page[] = [];
+  /** Adds one URL pattern for every language in which it is indexable. */
+  const add = (path: string, langs: Lang[]) => {
+    for (const lang of langs) pages.push({ lang, path, alternates: langs });
+  };
+  const copyOk = async (page: string, l: Lang) => (await getEntry("pages", `${l}/${page}`))?.data.translationStatus !== "pending";
+  const filter = async (test: (l: Lang) => Promise<boolean>) => {
+    const ok = await Promise.all(LANGS.map(test));
+    return LANGS.filter((_, i) => ok[i]);
+  };
 
-  const overviewOk = await Promise.all(LANGS.map(async (l) => (await getEntry("pages", `${l}/products`))?.data.translationStatus !== "pending"));
-  const overviewLangs = LANGS.filter((_, i) => overviewOk[i]);
-  for (const lang of overviewLangs) pages.push({ lang, path: "/{lang}/products/", alternates: overviewLangs });
+  if (!isFixtureBuild()) {
+    add("/{lang}/products/", await filter((l) => copyOk("products", l)));
+    add("/{lang}/solutions/", await filter((l) => copyOk("solutions", l)));
 
-  const indexable = new Map<string, Lang[]>();
-  for (const lang of LANGS) {
-    for (const p of await getLocalized("products", lang)) {
-      if (p.pendingTranslation) continue;
-      indexable.set(p.slug, [...(indexable.get(p.slug) ?? []), lang]);
+    for (const collection of ["products", "solutions"] as const) {
+      const indexable = new Map<string, Lang[]>();
+      for (const lang of LANGS) {
+        for (const e of await getLocalized(collection, lang)) if (!e.pendingTranslation) indexable.set(e.slug, [...(indexable.get(e.slug) ?? []), lang]);
+      }
+      for (const [slug, langs] of indexable) add(`/{lang}/${collection}/${slug}/`, langs);
     }
-  }
-  for (const [slug, langs] of indexable) {
-    for (const lang of langs) pages.push({ lang, path: `/{lang}/products/${slug}/`, alternates: langs });
+
+    for (const collection of ARTICLE_COLLECTIONS) {
+      const pageCount = new Map<Lang, number>();
+      for (const l of LANGS) {
+        const all = await getArticles(collection, l);
+        if (all.length && (await copyOk(collection, l))) pageCount.set(l, paginate(all, pageSize(collection)).length);
+      }
+      const maxPages = Math.max(0, ...pageCount.values());
+      for (let n = 1; n <= maxPages; n++) {
+        add(n === 1 ? `/{lang}/${collection}/` : `/{lang}/${collection}/page/${n}/`, LANGS.filter((l) => (pageCount.get(l) ?? 0) >= n));
+      }
+      const indexable = new Map<string, Lang[]>();
+      for (const lang of LANGS) {
+        for (const a of await getArticles(collection, lang)) if (!a.pendingTranslation) indexable.set(a.slug, [...(indexable.get(a.slug) ?? []), lang]);
+      }
+      for (const [slug, langs] of indexable) add(`/{lang}/${collection}/${slug}/`, langs);
+    }
+
+    const tagPages = new Map<string, Lang[]>();
+    const tagIndex: Lang[] = [];
+    for (const lang of LANGS) {
+      let any = false;
+      for (const t of await getLocalized("tags", lang)) {
+        const n = (await articlesWithTag(t.slug, lang)).length;
+        if (n > 0) any = true;
+        if (n >= TAG_INDEX_MIN && !t.pendingTranslation) tagPages.set(t.slug, [...(tagPages.get(t.slug) ?? []), lang]);
+      }
+      if (any && (await copyOk("tags", lang))) tagIndex.push(lang);
+    }
+    add("/{lang}/tags/", tagIndex);
+    for (const [slug, langs] of tagPages) add(`/{lang}/tags/${slug}/`, langs);
   }
 
   const abs = (path: string, l: Lang) => new URL(path.replace("{lang}", l), site.url).toString();

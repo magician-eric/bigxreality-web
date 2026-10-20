@@ -1,0 +1,51 @@
+---
+/** /[lang]/tags/ — every tag with its article count. */
+import { getEntry } from "astro:content";
+import { LANGS, localePath, type Lang } from "../../../i18n";
+import { getLocalized } from "../../../lib/content";
+import { articlesWithTag } from "../../../lib/articles";
+import { getUi, format } from "../../../lib/ui";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import EmptyState from "../../../components/EmptyState.astro";
+import Text from "../../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const ui = getUi(lang);
+const copy = (await getEntry("pages", `${lang}/tags`))!.data;
+const tags = [];
+for (const t of await getLocalized("tags", lang)) tags.push({ tag: t, count: (await articlesWithTag(t.slug, lang)).length });
+const used = tags.filter((t) => t.count > 0).sort((a, b) => b.count - a.count);
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.tags.title, path: localePath(lang, "tags") },
+];
+---
+<BaseLayout
+  lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/tags/" alternates={[...LANGS]}
+  pendingTranslation={copy.translationStatus === "pending"} noindex={used.length === 0}
+  headerTheme="dark" current="resources" breadcrumbs={breadcrumbs}
+>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
+  <section class="section">
+    <div class="container">
+      {used.length === 0 ? <EmptyState message={ui.listing.empty} /> : (
+        <ul role="list" class="tag-list">
+          {used.map(({ tag, count }) => (
+            <li><a href={localePath(lang, "tags", tag.slug)}>#<Text value={tag.loc.data.name} /> <span class="t-tech n"><Text value={format(ui.tags.count, { n: count })} /></span></a></li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .tag-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .tag-list a { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 44px; padding: 0 var(--space-3); border: 1px solid var(--bxr-ash); color: var(--ink); text-decoration: none; }
+  .tag-list a:hover { border-color: var(--bxr-black); }
+  .n { color: var(--ink-muted); }
+</style>

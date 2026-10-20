@@ -1,0 +1,10 @@
+---
+/** /[lang]/insights/ — first page of the list (see components/ArticleListPage.astro). */
+import { LANGS, type Lang } from "../../../i18n";
+import ArticleListPage from "../../../components/ArticleListPage.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+---
+<ArticleListPage lang={Astro.params.lang as Lang} collection="insights" page={1} />

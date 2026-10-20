@@ -15,6 +15,8 @@ export default defineConfig({
   // "always" would make the EmDash API answer 404.
   trailingSlash: "ignore",
   build: { format: "directory" },
+  // TEST FIXTURE builds never write to dist/ (docs/PHASE-2-PLAN.md §11.5).
+  outDir: process.env.BXR_CONTENT_SOURCE === "fixtures" ? "./dist-fixtures" : "./dist",
   // The adapter writes this as a 301 in dist/client/_redirects.
   redirects: { "/": "/en/" },
   adapter: cloudflare(),
@@ -33,6 +35,14 @@ export default defineConfig({
   ],
   // A local build reads content from the running `astro dev` CMS; separate Vite caches
   // keep the build from replacing the dependencies the dev server is using.
-  vite: { cacheDir: process.argv.includes("build") ? "node_modules/.vite-build" : "node_modules/.vite" },
+  vite: {
+    cacheDir: process.argv.includes("build") ? "node_modules/.vite-build" : "node_modules/.vite",
+    // Pages are prerendered inside workerd, which does not see the build's environment;
+    // the content source is fixed into the code here (read in src/lib/content-source.ts).
+    define: {
+      __BXR_CONTENT_SOURCE__: JSON.stringify(process.env.BXR_CONTENT_SOURCE ?? "markdown"),
+      __BXR_WORKERS_CI__: JSON.stringify(!!process.env.WORKERS_CI),
+    },
+  },
   devToolbar: { enabled: false },
 });

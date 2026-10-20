@@ -62,7 +62,7 @@ try {
   check("html lang en", (await page.getAttribute("html", "lang")) === "en");
 
   const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
-  check("sitemap excludes pending pages", !sitemap.includes("/en/") && !sitemap.includes("/jp/") && sitemap.includes("/tw/products/sut/"));
+  check("sitemap excludes pending pages", !sitemap.includes("/en/products/") && !sitemap.includes("/jp/") && sitemap.includes("/tw/products/sut/"));
   // Cloudflare serves dist/client/_redirects; the static QA server does not, so check the rule itself.
   const redirects = readFileSync(path.join(DIST, "_redirects"), "utf8");
   check("/ redirects to /en/ (301)", /^\/\s+\/en\/\s+301$/m.test(redirects));

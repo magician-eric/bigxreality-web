@@ -17,3 +17,4 @@ public/icon-*.png
 src/assets/.emdash-media/
 public/media/
 src/data/.cms-site.json
+dist-fixtures/

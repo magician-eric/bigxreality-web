@@ -5,7 +5,8 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 export const CHROMIUM = process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium";
-export const DIST = path.resolve(import.meta.dirname, "../../dist/client");
+// QA_DIST=dist-fixtures/client runs the QA scripts against the TEST FIXTURE build.
+export const DIST = path.resolve(import.meta.dirname, "../..", process.env.QA_DIST ?? "dist/client");
 
 const TYPES = {
   ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".json": "application/json",

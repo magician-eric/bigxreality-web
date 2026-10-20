@@ -138,21 +138,3 @@ export async function integratedProducts(slug: string, lang: Lang): Promise<Loca
   const forward = new Set(self?.base.data.integratedOps?.products ?? []);
   return all.filter((p) => p.slug !== slug && (forward.has(p.slug) || (p.base.data.integratedOps?.products ?? []).includes(slug)));
 }
-
-export interface RelatedArticle {
-  collection: ArticleCollection;
-  entry: Localized<ArticleCollection>;
-}
-
-/** Reverse lookup: articles whose relatedProducts include this product, newest first. */
-export async function relatedArticles(productSlug: string, lang: Lang, limit = 6): Promise<RelatedArticle[]> {
-  const found: RelatedArticle[] = [];
-  for (const collection of ARTICLE_COLLECTIONS) {
-    for (const entry of await getLocalized(collection, lang)) {
-      if (entry.base.data.relatedProducts.includes(productSlug)) found.push({ collection, entry });
-    }
-  }
-  return found
-    .sort((a, b) => b.entry.base.data.publishDate.getTime() - a.entry.base.data.publishDate.getTime())
-    .slice(0, limit);
-}
