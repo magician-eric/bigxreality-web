@@ -79,7 +79,8 @@ export function createPlugin(options = {}) {
       "content:afterPublish": queue("publish"),
       "content:afterUnpublish": queue("unpublish"),
       "content:afterDelete": queue("delete"),
-      "content:beforePublish": async (event) => publishDecision(event.collection, event.content, event.actor),
+      // Publish hooks receive the whole entry (fields under `data`); save hooks receive the fields.
+      "content:beforePublish": async (event) => publishDecision(event.collection, event.content?.data ?? event.content, event.actor),
       "content:beforeSave": async (event) => saveRule(event.collection, event.content, event.actor),
       cron: async (event, ctx) => {
         if (event.name !== TASK) return;

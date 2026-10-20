@@ -1,10 +1,12 @@
+import { existsSync } from "node:fs";
 // Minimal static server for dist/client/ (the Worker's static assets) (directory index + 404 status), so QA scripts
 // test exactly the files Cloudflare Pages will serve. Run `npm run build` first.
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
-export const CHROMIUM = process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium";
+// Pre-installed Chromium in the dev container; elsewhere (CI) Playwright's own download.
+export const CHROMIUM = process.env.CHROMIUM_PATH ?? (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
 // QA_DIST=dist-fixtures/client runs the QA scripts against the TEST FIXTURE build.
 export const DIST = path.resolve(import.meta.dirname, "../..", process.env.QA_DIST ?? "dist/client");
 

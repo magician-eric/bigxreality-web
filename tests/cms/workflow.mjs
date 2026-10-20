@@ -30,15 +30,24 @@ try {
   const pub = await tryApi("POST", `/content/news/${a.id}/publish`, {});
   check("Author cannot publish unapproved news", !pub.ok, pub.e?.slice(0, 80));
 
-  setRole(40); // Editor approves and publishes
+  setRole(40); // Editor approves
   const cur = await api("GET", `/content/news/${a.id}`);
   await api("PUT", `/content/news/${a.id}`, { _rev: cur._rev, data: { ...cur.item.data, review_status: "approved" } });
+  setRole(30); // …then the Author can publish
   const pub2 = await tryApi("POST", `/content/news/${a.id}/publish`, {});
-  check("Editor can approve and publish", pub2.ok, pub2.e);
+  check("Author can publish once an Editor approved", pub2.ok, pub2.e);
+  setRole(40);
+  const b = (await api("POST", "/content/news", { locale: "zh-TW", slug: `wf-ed-${stamp}`, data: { title: "TEST FIXTURE 編輯", summary: "x", body: pt("x"), category: "company", translation_status: "source", review_status: "draft" } })).item;
+  const pub2b = await tryApi("POST", `/content/news/${b.id}/publish`, {});
+  check("Editor can publish directly", pub2b.ok, pub2b.e);
 
   const c = (await api("POST", "/content/case_studies", { locale: "zh-TW", slug: `wf-cs-${stamp}`, data: { title: "TEST FIXTURE 案例", summary: "x", body: pt("x"), translation_status: "source", review_status: "approved", client_name: "TEST", client_disclosure: "anonymized", approved: false } })).item;
   const pub3 = await tryApi("POST", `/content/case_studies/${c.id}/publish`, {});
   check("Case study without client authorisation cannot be published (even by an Editor)", !pub3.ok, pub3.e?.slice(0, 80));
+  const cc = await api("GET", `/content/case_studies/${c.id}`);
+  await api("PUT", `/content/case_studies/${c.id}`, { _rev: cc._rev, data: { ...cc.item.data, approved: true } });
+  const pub4 = await tryApi("POST", `/content/case_studies/${c.id}/publish`, {});
+  check("Case study with client authorisation can be published", pub4.ok, pub4.e);
 
   const tasks = db.prepare("SELECT task_name, next_run_at FROM _emdash_cron_tasks WHERE plugin_id = 'bxr-cms'").all();
   const at = tasks[0] && Date.parse(tasks[0].next_run_at);

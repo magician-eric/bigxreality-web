@@ -103,6 +103,7 @@ const deploymentRows = [
   breadcrumbs={breadcrumbs}
   ogImage={base.seo?.ogImage ?? heroImage?.src}
   ogImageAlt={heroImage?.alt}
+  search={{ type: "products" }}
   product={{ name: d.hero.name, description: d.seo?.description ?? d.hero.tagline, code: base.hero.code, image: jsonLdImage }}
 >
   <!-- 1 Hero -->

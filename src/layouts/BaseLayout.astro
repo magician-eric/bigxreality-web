@@ -30,12 +30,14 @@ interface Props {
   product?: ProductLd;
   article?: ArticleMeta;
   structuredData?: Record<string, unknown>[];
-  /** Detail pages that belong in site search (docs/PHASE-2-PLAN.md §5.2). */
-  searchable?: boolean;
+  /** Detail pages that belong in site search (docs/PHASE-2-PLAN.md §5.2): result type and date. */
+  search?: { type: "products" | "solutions" | "news" | "insights" | "case-studies"; date?: Date };
 }
 const p = Astro.props;
 // TEST FIXTURE builds are never indexable, whatever the page says.
 const noindex = !!(p.pendingTranslation || p.noindex || isFixtureBuild());
+// Search follows the content rules only, so TEST FIXTURE builds can exercise search.
+const searchable = !!p.search && !p.pendingTranslation && !p.noindex;
 const ui = getUi(p.lang);
 const langLinks = Object.fromEntries(
   LANGS.map((l) => [l, p.alternates.includes(l) ? p.pathTemplate.replace("{lang}", l) : p.fallbackPath ? p.fallbackPath.replace("{lang}", l) : localePath(l, "products")]),
@@ -71,7 +73,12 @@ const langLinks = Object.fromEntries(
     {p.pendingTranslation && (
       <div class="translation-banner" role="note"><div class="container t-small"><Text value={ui.translationPending} /></div></div>
     )}
-    <main id="main" tabindex="-1" data-pagefind-body={p.searchable && !noindex ? "" : undefined}>
+    <main
+      id="main" tabindex="-1"
+      data-pagefind-body={searchable ? "" : undefined}
+      data-search-type={searchable ? p.search!.type : undefined}
+      data-search-date={searchable && p.search!.date ? p.search!.date.toISOString().slice(0, 10) : undefined}
+    >
       <slot />
     </main>
     <Footer lang={p.lang} />

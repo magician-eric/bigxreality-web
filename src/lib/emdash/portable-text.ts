@@ -5,6 +5,7 @@
  * images and code blocks. Raw HTML and embeds are dropped on purpose (editors
  * cannot inject scripts or third-party frames into the public site).
  */
+import GithubSlugger from "github-slugger";
 import type { Json } from "./client";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
@@ -33,6 +34,8 @@ function spans(block: Json): string {
 }
 
 export function portableTextToHtml(blocks: Json[] | undefined, image: ImageResolver): string {
+  // Heading anchors use the same slugs as Astro's Markdown renderer.
+  const slugger = new GithubSlugger();
   const out: string[] = [];
   const lists: { tag: string; level: number }[] = [];
   const closeLists = (level = 0) => {
@@ -63,7 +66,8 @@ export function portableTextToHtml(blocks: Json[] | undefined, image: ImageResol
       // h1 is the page title; a heading typed as h1 in the editor becomes h2.
       if (/^h[1-6]$/.test(style)) {
         const n = Math.min(Math.max(Number(style[1]), 2), 4);
-        out.push(`<h${n}>${inner}</h${n}>`);
+        const text = (b.children ?? []).map((c: Json) => c.text ?? "").join("");
+        out.push(`<h${n} id="${esc(slugger.slug(text))}">${inner}</h${n}>`);
       } else if (style === "blockquote") out.push(`<blockquote><p>${inner}</p></blockquote>`);
       else out.push(`<p>${inner}</p>`);
     } else if (b._type === "image") {

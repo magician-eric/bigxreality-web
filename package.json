@@ -24,7 +24,11 @@
     "qa:lighthouse": "node scripts/qa-lighthouse.mjs",
     "cms:import": "node scripts/cms/import-markdown.mjs",
     "build:emdash": "BXR_CONTENT_SOURCE=emdash npm run build",
-    "build:fixtures": "BXR_CONTENT_SOURCE=fixtures npm run build"
+    "build:fixtures": "BXR_CONTENT_SOURCE=fixtures npm run build",
+    "postbuild": "node scripts/build-search.mjs",
+    "qa:search": "QA_DIST=dist-fixtures/client node scripts/qa-search.mjs",
+    "check:sitemap": "node scripts/check-sitemap.mjs",
+    "qa:phase2": "QA_DIST=dist-fixtures/client node scripts/qa-phase2.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",
@@ -38,6 +42,7 @@
     "astro": "7.3.8",
     "bxr-cms": "file:plugins/bxr-cms",
     "emdash": "1.3.1",
+    "github-slugger": "2.0.0",
     "kysely": "0.29.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",

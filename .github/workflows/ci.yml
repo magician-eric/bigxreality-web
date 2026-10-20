@@ -1,0 +1,32 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npx playwright-core install --with-deps chromium
+      - name: Unit tests
+        run: npm test
+      - name: Type check
+        run: npx astro check
+      # Markdown backup content (production builds read EmDash in Workers Builds)
+      - name: Build
+        run: npm run build
+      - run: npm run check:sitemap
+      - run: npm run qa:links
+      - run: npm run qa:behaviour
+      # TEST FIXTURE content: pages, search and accessibility of phase 2 templates
+      - name: Build test fixtures
+        run: npm run build:fixtures
+      - run: npm run qa:phase2
+      - run: npm run qa:search
+      - run: QA_DIST=dist-fixtures/client npm run qa:a11y -- /tw/solutions/police/ /tw/news/ /tw/news/fixture-news-02/ /tw/case-studies/fixture-case-1/ /tw/tags/xr-training/ /tw/search/

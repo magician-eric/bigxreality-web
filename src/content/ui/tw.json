@@ -215,5 +215,24 @@
     "title": "標籤",
     "count": "{n} 篇",
     "allTags": "所有標籤"
+  },
+  "searchPage": {
+    "label": "搜尋關鍵字",
+    "placeholder": "輸入產品、解決方案或文章關鍵字",
+    "submit": "搜尋",
+    "typesLabel": "內容類型",
+    "types": {
+      "all": "全部",
+      "products": "產品",
+      "solutions": "解決方案",
+      "news": "消息",
+      "insights": "技術文章",
+      "case-studies": "案例"
+    },
+    "results": "找到 {n} 筆結果",
+    "empty": "找不到符合「{q}」的結果。",
+    "hint": "請輸入至少兩個字。",
+    "noscript": "搜尋功能需要啟用 JavaScript。",
+    "error": "搜尋暫時無法使用，請稍後再試。"
   }
 }

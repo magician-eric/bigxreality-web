@@ -92,7 +92,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
   ogImageAlt={cover?.alt}
   article={{ published: base.publishDate, modified: base.updatedAt, tags: tagLinks.map((x) => x.name) }}
   structuredData={[articleLd]}
-  searchable
+  search={{ type: collection, date: base.publishDate }}
 >
   <article>
     <header class="article-header">
