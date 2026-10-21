@@ -11,6 +11,7 @@ client:
 approval:
   approved: true
 domains: [other]
+relatedProducts: [machine-gun-simulator]
 ---
 
 TEST FIXTURE 案例三補充說明。

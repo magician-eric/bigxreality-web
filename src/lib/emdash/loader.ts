@@ -86,6 +86,7 @@ function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
     flow: d.landing_flow_steps?.length ? opt({ title: d.landing_flow_title, intro: d.landing_flow_intro, steps: d.landing_flow_steps.map((x: Json) => withSlot(x, ["title", "description", "icon"])), note: d.landing_flow_note }) : undefined,
     scenarios: d.landing_scenarios?.length ? opt({ title: d.landing_scenarios_title, intro: d.landing_scenarios_intro, items: d.landing_scenarios.map((x: Json) => withSlot(x, ["title", "description", "focus"])) }) : undefined,
     values: d.landing_values_cards?.length ? opt({ title: d.landing_values_title, intro: d.landing_values_intro, cards: list(d.landing_values_cards, ["title", "description"]), note: d.landing_values_note }) : undefined,
+    casesIntro: d.landing_cases_intro,
     related: d.landing_related_title ? opt({ title: d.landing_related_title, intro: d.landing_related_intro }) : undefined,
     closing: opt({ title: d.landing_closing_title, description: d.landing_closing_description }),
   });

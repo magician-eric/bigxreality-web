@@ -49,7 +49,7 @@ const need = t.mediaNeed;
 const pending = t.mediaPending;
 const hero = L.heroImage;
 const heroReady = hero?.src && hero.alt;
-const images = L.approach.images ?? [];
+const images = L.approach?.images ?? [];
 const paras = (s: string) => s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 
 // Related products / solutions: only entries that have a built page in this language.
@@ -106,41 +106,45 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   </PageHero>
 
   <!-- Training challenge: heading and introduction beside the numbered problems -->
-  <section class={alt()} aria-labelledby="h-challenge">
-    <div class="container">
-      <div class="challenge">
-        <div class="challenge-head">
-          <SectionHead id="h-challenge" eyebrow={e.challenge} title={L.challenge.title} />
-          {L.challenge.intro && <div class="prose">{paras(L.challenge.intro).map((p) => <p><Text value={p} /></p>)}</div>}
+  {L.challenge && (
+    <section class={alt()} aria-labelledby="h-challenge">
+      <div class="container">
+        <div class="challenge">
+          <div class="challenge-head">
+            <SectionHead id="h-challenge" eyebrow={e.challenge} title={L.challenge.title} />
+            {L.challenge.intro && <div class="prose">{paras(L.challenge.intro).map((p) => <p><Text value={p} /></p>)}</div>}
+          </div>
+          <ChallengeCards items={L.challenge.cards} columns={1} />
         </div>
-        <ChallengeCards items={L.challenge.cards} columns={1} />
+        {L.challenge.note && <p class="note"><Text value={L.challenge.note} /></p>}
       </div>
-      {L.challenge.note && <p class="note"><Text value={L.challenge.note} /></p>}
-    </div>
-  </section>
+    </section>
+  )}
 
   <!-- Approach: text beside a physical-training + virtual-scene image pair, then the value pillars -->
-  <section class={alt()} aria-labelledby="h-approach">
-    <div class="container">
-      <div class:list={["split", { solo: images.length === 0 }]}>
-        <div class="copy">
-          <SectionHead id="h-approach" eyebrow={e.approach} title={L.approach.title} />
-          <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>
-        </div>
-        {images.length > 0 && (
-          <div class:list={["pair", { single: images.length === 1, stack: images[0]?.ratio === "16 / 9" }]}>
-            {images.map((img, i) => (
-              <>
-                {i === 1 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
-                <MediaSlot media={img} ratio={images.length === 1 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} sizes="(max-width: 767px) 50vw, 28vw" />
-              </>
-            ))}
+  {L.approach && (
+    <section class={alt()} aria-labelledby="h-approach">
+      <div class="container">
+        <div class:list={["split", { solo: images.length === 0 }]}>
+          <div class="copy">
+            <SectionHead id="h-approach" eyebrow={e.approach} title={L.approach.title} />
+            <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>
           </div>
-        )}
+          {images.length > 0 && (
+            <div class:list={["pair", { single: images.length === 1, stack: images[0]?.ratio === "16 / 9" }]}>
+              {images.map((img, i) => (
+                <>
+                  {i === 1 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
+                  <MediaSlot media={img} ratio={images.length === 1 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} sizes="(max-width: 767px) 50vw, 28vw" />
+                </>
+              ))}
+            </div>
+          )}
+        </div>
+        {L.approach.pillars && <div class="after"><PillarGrid items={L.approach.pillars} /></div>}
       </div>
-      {L.approach.pillars && <div class="after"><PillarGrid items={L.approach.pillars} /></div>}
-    </div>
-  </section>
+    </section>
+  )}
 
   <!-- Capabilities -->
   {L.capabilities && (
@@ -185,7 +189,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   )}
 
   <!-- Applied cases: relations are stored on the case; nothing renders without a published case -->
-  <RelatedCases lang={lang} cases={cases} alt={cases.length > 0 && n++ % 2 === 1} />
+  <RelatedCases lang={lang} cases={cases} description={L.casesIntro} alt={cases.length > 0 && n++ % 2 === 1} />
 
   <!-- Related products and solutions (only entries with a real page) -->
   {showRelated && (

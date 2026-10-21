@@ -85,7 +85,7 @@ const landing = (ctx: SchemaContext) => z.object({
     cards: z.array(card).min(1),
     /** Closing remark under the cards. */
     note: text.optional(),
-  }),
+  }).optional(),
   approach: z.object({
     title: text,
     intro: paragraphs,
@@ -93,7 +93,7 @@ const landing = (ctx: SchemaContext) => z.object({
     images: z.array(slot(ctx)).max(2).optional(),
     /** Value pillars: title + description (a technology may appear in the text, not as the title). */
     pillars: z.array(card).optional(),
-  }),
+  }).optional(),
   capabilities: z
     .object({
       title: text,
@@ -126,6 +126,8 @@ const landing = (ctx: SchemaContext) => z.object({
       note: text.optional(),
     })
     .optional(),
+  /** One sentence under the "applied cases" heading; the cases themselves come from case relations (lib/cases.ts). */
+  casesIntro: text.optional(),
   /** Related products / solutions: intro text only; the cards come from relations that have real pages. */
   related: z.object({ title: text, intro: text.optional() }).optional(),
   closing: z.object({ title: text, description: text }),

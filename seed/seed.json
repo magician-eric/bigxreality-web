@@ -482,6 +482,11 @@
      "type": "text"
     },
     {
+     "slug": "landing_cases_intro",
+     "label": "落地頁｜實際應用案例：說明（案例本身由「案例」集合的關聯自動帶入，沒有案例時整塊隱藏）",
+     "type": "text"
+    },
+    {
      "slug": "landing_related_title",
      "label": "落地頁｜關聯產品與解決方案：標題",
      "type": "string"

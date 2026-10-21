@@ -157,6 +157,7 @@ async function landingFields(L, file) {
     landing_flow_title: L.flow?.title, landing_flow_intro: L.flow?.intro, landing_flow_steps: await all(L.flow?.steps, (x) => withSlot(x, ["title", "description", "icon"])), landing_flow_note: L.flow?.note,
     landing_scenarios_title: L.scenarios?.title, landing_scenarios_intro: L.scenarios?.intro, landing_scenarios: await all(L.scenarios?.items, (x) => withSlot(x, ["title", "description", "focus"])),
     landing_values_title: L.values?.title, landing_values_intro: L.values?.intro, landing_values_cards: L.values?.cards, landing_values_note: L.values?.note,
+    landing_cases_intro: L.casesIntro,
     landing_related_title: L.related?.title, landing_related_intro: L.related?.intro,
     landing_closing_title: L.closing?.title, landing_closing_description: L.closing?.description,
   });

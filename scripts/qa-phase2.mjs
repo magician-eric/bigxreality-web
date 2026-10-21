@@ -63,7 +63,7 @@ try {
   const cards = () => page.locator("#case-grid > li:not([hidden])").count();
   check("cases list: 3 published cards, unapproved one absent", (await page.locator("#case-grid > li").count()) === 3 && !(await page.content()).includes("未授權"));
   check("cases list: only used filters are offered", JSON.stringify(await page.$$eval('[data-group=domain] [data-value]:not([data-value=""])', (b) => b.map((x) => x.dataset.value))) === JSON.stringify(["military", "police", "other"])
-    && (await page.locator('[data-group=product] [data-value]:not([data-value=""])').count()) === 2 && (await page.locator('[data-group=solution] [data-value]:not([data-value=""])').count()) === 2);
+    && (await page.locator('[data-group=product] [data-value]:not([data-value=""])').count()) === 3 && (await page.locator('[data-group=solution] [data-value]:not([data-value=""])').count()) === 2);
   const text = await page.locator("#case-grid").innerText();
   check("client: anonymised case shows the unit type, public case the name", text.includes("縣市警察單位") && !text.includes("某市警察局") && text.includes("公開客戶") && !text.includes("不應顯示的單位類型"));
   await page.click('[data-group=domain] [data-value="military"]');
@@ -91,6 +91,8 @@ try {
   check("product page: cases come after values and before related", order.indexOf("h-cases") > order.indexOf("h-values") && order.indexOf("h-cases") < order.indexOf("h-related"), order.join(","));
   await page.goto(`${base}/tw/products/uav/`, { waitUntil: "networkidle" });
   check("product with 1 case: wide feature layout, no list link", (await page.locator("[data-related-cases] .feature").count()) === 1 && (await page.locator('[data-related-cases] a[href="/tw/cases/"]').count()) === 0);
+  await page.goto(`${base}/tw/products/machine-gun-simulator/`, { waitUntil: "networkidle" });
+  check("product-specific cases description is shown", (await page.locator("[data-related-cases]").innerText()).includes("了解機槍模擬系統如何應用於實際訓練需求"));
   await page.goto(`${base}/tw/products/usv/`, { waitUntil: "networkidle" });
   check("product without cases: block hidden", (await page.locator("[data-related-cases]").count()) === 0 && !(await page.content()).includes("實際應用案例"));
   await page.goto(`${base}/tw/solutions/military/`, { waitUntil: "networkidle" });
