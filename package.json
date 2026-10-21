@@ -20,6 +20,7 @@
     "qa:shots": "node scripts/qa-screenshots.mjs",
     "favicons": "node scripts/make-favicons.mjs",
     "qa:behaviour": "node scripts/qa-behaviour.mjs",
+    "qa:header": "node scripts/qa-header.mjs",
     "test": "node --test \"tests/**/*.test.ts\"",
     "qa:lighthouse": "node scripts/qa-lighthouse.mjs",
     "cms:import": "node scripts/cms/import-markdown.mjs",

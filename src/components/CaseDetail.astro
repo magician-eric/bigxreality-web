@@ -102,7 +102,7 @@ const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...r
   alternates={await availableLangs("case-studies", slug)}
   pendingTranslation={article.pendingTranslation}
   headerTheme="light"
-  current="caseStudies"
+  current="resources" currentResource="case-studies"
   fallbackPath="/{lang}/cases/"
   breadcrumbs={breadcrumbs}
   ogImage={base.seo?.ogImage ?? cover?.src}

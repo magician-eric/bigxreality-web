@@ -24,6 +24,7 @@ jobs:
       - run: npm run check:sitemap
       - run: npm run qa:links
       - run: npm run qa:behaviour
+      - run: npm run qa:header
       # TEST FIXTURE content: pages, search and accessibility of phase 2 templates
       - name: Build test fixtures
         run: npm run build:fixtures
