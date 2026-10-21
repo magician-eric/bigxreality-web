@@ -1,10 +1,10 @@
 ---
 /** Problem cards: large number, title, text. Two columns on desktop, with a heavy top rule. */
 import Text from "./Text.astro";
-interface Props { items: { title: string; description: string }[] }
-const { items } = Astro.props;
+interface Props { items: { title: string; description: string }[]; columns?: 1 | 2 }
+const { items, columns = 2 } = Astro.props;
 ---
-<ol role="list" class="challenges">
+<ol role="list" class="challenges" style={`--cols: ${columns}`}>
   {items.map((c, i) => (
     <li class="item">
       <span class="num t-tech" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
@@ -14,7 +14,7 @@ const { items } = Astro.props;
   ))}
 </ol>
 <style>
-  .challenges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .challenges { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 var(--gutter); margin: 0; padding: 0; list-style: none; }
   .item { display: grid; grid-template-columns: 56px 1fr; column-gap: var(--space-2); row-gap: var(--space-1); padding: var(--space-4) 0; border-top: 1px solid var(--bxr-black); }
   .num { grid-row: span 2; font-size: var(--fs-h3); color: var(--ink-muted); line-height: 1.2; }
   .item h3 { grid-column: 2; }

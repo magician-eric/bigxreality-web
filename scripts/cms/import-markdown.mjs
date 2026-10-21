@@ -122,7 +122,7 @@ async function upload(file, alt) {
   }
   return uploaded.get(file);
 }
-const image = async (pic, file) => (pic ? { id: (await upload(path.resolve(path.dirname(file), pic.src), pic.alt)).id, alt: pic.alt } : undefined);
+const image = async (pic, file) => (pic?.src ? { id: (await upload(path.resolve(path.dirname(file), pic.src), pic.alt)).id, alt: pic.alt } : undefined);
 
 // ---------------------------------------------------------------- field mapping (inverse of src/lib/emdash/loader.ts)
 const clean = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined));
@@ -142,15 +142,20 @@ async function articleBase(fm, body, file) {
 }
 
 /** Nested `landing` block of a product → flat EmDash landing_* fields (inverse of loader.ts landingFrom). */
-function landingFields(L) {
+async function landingFields(L, file) {
   if (!L) return {};
+  const slot = async (x) => clean({ image: await image(x, file), need: x?.need, caption: x?.caption });
+  const withSlot = async (x, keys) => ({ ...Object.fromEntries(keys.filter((k) => x[k] !== undefined).map((k) => [k, x[k]])), ...(x.image ? await slot(x.image) : {}) });
+  const all = (list, f) => (list ? Promise.all(list.map(f)) : undefined);
+  const hero = L.heroImage ? await slot(L.heroImage) : {};
   return clean({
     landing_headline: L.headline, landing_subheadline: L.subheadline, landing_intro: L.intro, landing_cta_label: L.ctaLabel,
+    landing_hero_image: hero.image, landing_hero_need: hero.need,
     landing_challenge_title: L.challenge?.title, landing_challenge_intro: L.challenge?.intro, landing_challenge_cards: L.challenge?.cards, landing_challenge_note: L.challenge?.note,
-    landing_approach_title: L.approach?.title, landing_approach_intro: L.approach?.intro, landing_approach_pillars: L.approach?.pillars,
-    landing_capabilities_title: L.capabilities?.title, landing_capabilities_intro: L.capabilities?.intro, landing_capabilities: L.capabilities?.items,
-    landing_flow_title: L.flow?.title, landing_flow_intro: L.flow?.intro, landing_flow_steps: L.flow?.steps, landing_flow_note: L.flow?.note,
-    landing_scenarios_title: L.scenarios?.title, landing_scenarios_intro: L.scenarios?.intro, landing_scenarios: L.scenarios?.items,
+    landing_approach_title: L.approach?.title, landing_approach_intro: L.approach?.intro, landing_approach_images: await all(L.approach?.images, slot), landing_approach_pillars: L.approach?.pillars,
+    landing_capabilities_title: L.capabilities?.title, landing_capabilities_intro: L.capabilities?.intro, landing_capabilities: await all(L.capabilities?.items, (x) => withSlot(x, ["title", "content", "value"])),
+    landing_flow_title: L.flow?.title, landing_flow_intro: L.flow?.intro, landing_flow_steps: await all(L.flow?.steps, (x) => withSlot(x, ["title", "description", "icon"])), landing_flow_note: L.flow?.note,
+    landing_scenarios_title: L.scenarios?.title, landing_scenarios_intro: L.scenarios?.intro, landing_scenarios: await all(L.scenarios?.items, (x) => withSlot(x, ["title", "description", "focus"])),
     landing_values_title: L.values?.title, landing_values_intro: L.values?.intro, landing_values_cards: L.values?.cards, landing_values_note: L.values?.note,
     landing_related_title: L.related?.title, landing_related_intro: L.related?.intro,
     landing_closing_title: L.closing?.title, landing_closing_description: L.closing?.description,
@@ -167,7 +172,7 @@ const MAP = {
         translation_status: d.translationStatus, review_status: "approved",
         hero_image: await image(d.hero.image, file),
         summary: d.summary,
-        ...landingFields(d.landing),
+        ...(await landingFields(d.landing, file)),
         overview: await toPortableText(body, file, upload),
         capabilities: d.capabilities, how_it_works: d.howItWorks, scenarios: d.scenarios, components: d.components,
         deploy_personnel: personnel, deploy_personnel_approx: personnel ? !!dep.personnel?.approx : undefined,

@@ -19,13 +19,13 @@ import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
 import ChallengeCards from "./ChallengeCards.astro";
 import PillarGrid from "./PillarGrid.astro";
-import CapabilityCards from "./CapabilityCards.astro";
+import CapabilityShowcase from "./CapabilityShowcase.astro";
+import MediaSlot from "./MediaSlot.astro";
 import FlowSteps from "./FlowSteps.astro";
 import ScenarioCards from "./ScenarioCards.astro";
 import ValueCards from "./ValueCards.astro";
 import CardProduct from "./CardProduct.astro";
 import CardSolution from "./CardSolution.astro";
-import ImagePlaceholder from "./ImagePlaceholder.astro";
 import CtaBand from "./CtaBand.astro";
 import CtaGroup from "./CtaGroup.astro";
 import Text from "./Text.astro";
@@ -43,6 +43,11 @@ const ui = getUi(lang);
 const t = ui.productLanding;
 const e = t.eyebrows;
 const cta = ctaSet(lang, { page: "productInquiry", code: base.hero.code, label: L.ctaLabel });
+const need = t.mediaNeed;
+const pending = t.mediaPending;
+const hero = L.heroImage;
+const heroReady = hero?.src && hero.alt;
+const images = L.approach.images ?? [];
 const paras = (s: string) => s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 
 // Related products / solutions: only entries that have a built page in this language.
@@ -84,30 +89,45 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     title={L.headline}
     lead={L.subheadline}
     description={L.intro}
-    imagePending={t.placeholders.hero}
+    image={heroReady ? { src: hero!.src!, alt: hero!.alt! } : undefined}
+    imageCaption={hero?.caption}
+    imagePending={hero?.need ? `${need}${hero.need}` : t.placeholders.hero}
   >
     <CtaGroup slot="actions" actions={cta.hero} />
   </PageHero>
 
-  <!-- Training challenge -->
+  <!-- Training challenge: heading and introduction beside the numbered problems -->
   <section class={alt()} aria-labelledby="h-challenge">
     <div class="container">
-      <SectionHead id="h-challenge" eyebrow={e.challenge} title={L.challenge.title} />
-      {L.challenge.intro && <div class="prose intro">{paras(L.challenge.intro).map((p) => <p><Text value={p} /></p>)}</div>}
-      <ChallengeCards items={L.challenge.cards} />
+      <div class="challenge">
+        <div class="challenge-head">
+          <SectionHead id="h-challenge" eyebrow={e.challenge} title={L.challenge.title} />
+          {L.challenge.intro && <div class="prose">{paras(L.challenge.intro).map((p) => <p><Text value={p} /></p>)}</div>}
+        </div>
+        <ChallengeCards items={L.challenge.cards} columns={1} />
+      </div>
       {L.challenge.note && <p class="note"><Text value={L.challenge.note} /></p>}
     </div>
   </section>
 
-  <!-- Approach -->
+  <!-- Approach: text beside a physical-training + virtual-scene image pair, then the value pillars -->
   <section class={alt()} aria-labelledby="h-approach">
     <div class="container">
-      <div class="split">
+      <div class:list={["split", { solo: images.length === 0 }]}>
         <div class="copy">
           <SectionHead id="h-approach" eyebrow={e.approach} title={L.approach.title} />
           <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>
         </div>
-        <figure class="showcase"><ImagePlaceholder label={t.placeholders.showcase} ratio="4 / 3" /></figure>
+        {images.length > 0 && (
+          <div class:list={["pair", { single: images.length === 1 }]}>
+            {images.map((img, i) => (
+              <>
+                {i === 1 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
+                <MediaSlot media={img} ratio={images.length === 1 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} sizes="(max-width: 767px) 50vw, 28vw" />
+              </>
+            ))}
+          </div>
+        )}
       </div>
       {L.approach.pillars && <div class="after"><PillarGrid items={L.approach.pillars} /></div>}
     </div>
@@ -118,7 +138,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     <section class={alt()} aria-labelledby="h-capabilities">
       <div class="container">
         <SectionHead id="h-capabilities" eyebrow={e.capabilities} title={L.capabilities.title} description={L.capabilities.intro} />
-        <CapabilityCards items={L.capabilities.items} valueLabel={t.valueLabel} />
+        <CapabilityShowcase items={L.capabilities.items} valueLabel={t.valueLabel} needPrefix={need} fallbackLabel={pending} />
       </div>
     </section>
   )}
@@ -128,7 +148,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     <section class={alt()} aria-labelledby="h-flow">
       <div class="container">
         <SectionHead id="h-flow" eyebrow={e.flow} title={L.flow.title} description={L.flow.intro} />
-        <FlowSteps steps={L.flow.steps} stepLabel={t.stepLabel} />
+        <FlowSteps steps={L.flow.steps} stepLabel={t.stepLabel} needPrefix={need} fallbackLabel={pending} />
         {L.flow.note && <p class="note t-small"><Text value={L.flow.note} /></p>}
       </div>
     </section>
@@ -139,14 +159,14 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     <section class={alt()} aria-labelledby="h-scenarios">
       <div class="container">
         <SectionHead id="h-scenarios" eyebrow={e.scenarios} title={L.scenarios.title} description={L.scenarios.intro} />
-        <ScenarioCards items={L.scenarios.items} focusLabel={t.focusLabel} />
+        <ScenarioCards items={L.scenarios.items} focusLabel={t.focusLabel} needPrefix={need} fallbackLabel={pending} />
       </div>
     </section>
   )}
 
-  <!-- Adoption value -->
+  <!-- Adoption value (dark band for rhythm) -->
   {L.values && (
-    <section class={alt()} aria-labelledby="h-values">
+    <section class="section" data-theme="dark" aria-labelledby="h-values">
       <div class="container">
         <SectionHead id="h-values" eyebrow={e.values} title={L.values.title} description={L.values.intro} />
         <ValueCards items={L.values.cards} />
@@ -191,17 +211,22 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
 </BaseLayout>
 
 <style>
+  .challenge { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
+  .challenge-head { display: grid; gap: var(--space-4); align-content: start; position: sticky; top: calc(var(--header-h) + var(--space-4)); }
+  .challenge-head :global(.section-head) { margin-bottom: 0; }
   .split { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
+  .split.solo { grid-template-columns: 1fr; }
+  .pair.single { grid-template-columns: 1fr; }
+  .pair { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .link { position: absolute; left: 50%; top: 50%; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; transform: translate(-50%, -50%); background: var(--bxr-black); color: var(--bxr-white); border-bottom: 2px solid var(--bxr-red); }
   .copy { display: grid; gap: var(--space-4); align-content: start; }
   .copy :global(.section-head) { margin-bottom: 0; }
   .prose { display: grid; gap: var(--space-2); max-width: 44rem; }
   .prose p { margin: 0; }
-  .intro { margin: calc(-1 * var(--space-3)) 0 var(--space-6); }
-  .showcase { margin: 0; }
   .after { margin-top: var(--space-8); }
   .note { margin: var(--space-5) 0 0; max-width: 48rem; color: var(--ink-muted); padding-left: var(--space-2); border-left: 2px solid var(--bxr-red); }
-  .note.closing { color: var(--ink); font-size: var(--fs-h4); line-height: var(--lh-h4); }
+  .note.closing { color: var(--ink); font-size: var(--fs-h4); line-height: var(--lh-h4); max-width: 64rem; }
   .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
-  @media (max-width: 1023px) { .split { grid-template-columns: 1fr; gap: var(--space-4); } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 1023px) { .split, .challenge { grid-template-columns: 1fr; gap: var(--space-4); } .challenge-head { position: static; } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
 </style>

@@ -1,0 +1,86 @@
+---
+/**
+ * Capabilities as an editorial sequence. A capability with an image slot becomes a
+ * picture + text row (alternating sides); consecutive capabilities without one are
+ * grouped into a two-column text row. Any number of items, any mix.
+ */
+import type { ImageMetadata } from "astro";
+import MediaSlot from "./MediaSlot.astro";
+import Text from "./Text.astro";
+
+type Slot = { src?: ImageMetadata; alt?: string; need?: string; caption?: string };
+type Item = { title: string; content: string; value?: string; image?: Slot };
+interface Props { items: Item[]; valueLabel: string; needPrefix: string; fallbackLabel: string }
+const { items, valueLabel, needPrefix, fallbackLabel } = Astro.props;
+
+type Entry = { item: Item; n: number };
+type Row = { kind: "feature"; entry: Entry; flip: boolean } | { kind: "plain"; entries: Entry[] };
+const rows: Row[] = [];
+let flip = false;
+items.forEach((item, i) => {
+  const entry = { item, n: i + 1 };
+  if (item.image) {
+    rows.push({ kind: "feature", entry, flip });
+    flip = !flip;
+  } else {
+    const last = rows[rows.length - 1];
+    if (last?.kind === "plain" && last.entries.length < 2) last.entries.push(entry);
+    else rows.push({ kind: "plain", entries: [entry] });
+  }
+});
+const num = (n: number) => String(n).padStart(2, "0");
+---
+<div class="showcase">
+  {rows.map((row) =>
+    row.kind === "feature" ? (
+      <article class:list={["feature", { flip: row.flip }]}>
+        <div class="pic">
+          <MediaSlot media={row.entry.item.image} ratio="3 / 2" fallbackLabel={fallbackLabel} needPrefix={needPrefix} sizes="(max-width: 1023px) 100vw, 58vw" />
+        </div>
+        <div class="text">
+          <p class="t-tech num" aria-hidden="true">{num(row.entry.n)}</p>
+          <h3 class="t-h3"><Text value={row.entry.item.title} /></h3>
+          <p class="content"><Text value={row.entry.item.content} /></p>
+          {row.entry.item.value && <p class="value t-small"><span class="t-label"><Text value={valueLabel} /></span><Text value={row.entry.item.value} /></p>}
+        </div>
+      </article>
+    ) : (
+      <ul role="list" class:list={["plain", { single: row.entries.length === 1 }]}>
+        {row.entries.map(({ item, n }) => (
+          <li class="cap">
+            <div class="head"><span class="num t-tech" aria-hidden="true">{num(n)}</span><h3 class="t-h4"><Text value={item.title} /></h3></div>
+            <p class="content"><Text value={item.content} /></p>
+            {item.value && <p class="value t-small"><span class="t-label"><Text value={valueLabel} /></span><Text value={item.value} /></p>}
+          </li>
+        ))}
+      </ul>
+    )
+  )}
+</div>
+<style>
+  .showcase { display: grid; gap: var(--space-8); }
+  .feature { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-6); align-items: center; }
+  .feature.flip { grid-template-columns: 5fr 7fr; }
+  .feature.flip .pic { order: 2; }
+  .text { display: grid; gap: var(--space-2); align-content: center; }
+  .text .num { color: var(--ink-muted); margin: 0; }
+  .content { margin: 0; }
+  .value { display: grid; gap: 4px; margin: var(--space-1) 0 0; padding: var(--space-2); background: var(--bxr-paper); border-left: 2px solid var(--bxr-red); color: var(--ink-muted); }
+  .value .t-label { color: var(--ink); }
+  .plain { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .plain.single { grid-template-columns: 1fr; }
+  .cap { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3); background: var(--bxr-white); border: 1px solid var(--bxr-line); border-top: 2px solid var(--bxr-black); }
+  .cap .head { display: flex; align-items: baseline; gap: var(--space-2); }
+  .cap .num { color: var(--ink-muted); }
+  .cap .value { margin-top: auto; }
+  /* A capability on its own row becomes a wide band: title left, text right. */
+  .plain.single .cap { display: grid; grid-template-columns: 4fr 8fr; column-gap: var(--space-6); align-items: start; }
+  .plain.single .cap .head { grid-row: span 2; }
+  .plain.single .cap .content, .plain.single .cap .value { grid-column: 2; margin-top: 0; }
+  @media (max-width: 1023px) {
+    .feature, .feature.flip { grid-template-columns: 1fr; gap: var(--space-3); }
+    .feature.flip .pic { order: 0; }
+    .showcase { gap: var(--space-6); }
+  }
+  @media (max-width: 767px) { .plain { grid-template-columns: 1fr; } .plain.single .cap { display: flex; } }
+</style>
