@@ -17,7 +17,8 @@
     "team": "経営陣",
     "partners": "パートナー",
     "investors": "投資家情報",
-    "companyMenu": "BXRについてメニュー"
+    "companyMenu": "BXRについてメニュー",
+    "planned": "（近日公開）"
   },
   "contact": "お問い合わせ",
   "search": "検索",
@@ -130,8 +131,8 @@
     "address": "所在地",
     "phone": "電話",
     "email": "メール",
-    "social": "SNS",
-    "careers": "採用情報",
+    "social": "ソーシャルメディア",
+    "mapLink": "Google マップで見る",
     "privacy": "プライバシーポリシー",
     "rights": "All rights reserved"
   },

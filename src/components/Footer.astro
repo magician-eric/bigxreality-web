@@ -1,7 +1,14 @@
 ---
+/**
+ * Site footer. The link columns are the Header menu itself: one column per top-level item of
+ * src/lib/navigation.ts, with its submenu items below, so the Footer never keeps its own list.
+ * Contact details, social links and the company name come from site settings (src/lib/site.ts).
+ * Social links appear only once real URLs are set; planned pages show as plain text.
+ */
 import { localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
-import { site, companyName } from "../lib/site";
+import { navigation, legalLinks } from "../lib/navigation";
+import { site, companyName, phoneDisplay, phoneHref } from "../lib/site";
 import { isPending } from "../lib/pending";
 import Logo from "./Logo.astro";
 import Text from "./Text.astro";
@@ -10,74 +17,99 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const ui = getUi(lang);
 const year = new Date().getFullYear();
-const links = [
-  { label: ui.nav.solutions, href: localePath(lang, "solutions") },
-  { label: ui.nav.products, href: localePath(lang, "products") },
-  { label: ui.nav.technologies, href: localePath(lang, "technologies") },
-  { label: ui.nav.news, href: localePath(lang, "news") },
-  { label: ui.nav.insights, href: localePath(lang, "insights") },
-  { label: ui.nav.caseStudies, href: localePath(lang, "case-studies") },
-  { label: ui.nav.company, href: localePath(lang, "company") },
-  { label: ui.contact, href: localePath(lang, "contact") },
-];
+const columns = navigation(lang);
+const legal = legalLinks(lang);
 const { contact } = site;
+const tel = phoneHref();
+const social = Array.isArray(site.social) ? site.social : [];
+const holder = isPending(companyName(lang)) ? site.brand : companyName(lang);
 ---
 <footer class="site-footer" data-theme="dark">
-  <div class="container grid">
+  <div class="container top">
     <div class="brand">
       <a href={localePath(lang)} aria-label={ui.logoHome} class="logo"><Logo theme="dark" /></a>
       <p class="tagline">{site.tagline}</p>
     </div>
 
-    <nav aria-label={ui.footer.navLabel}>
-      <ul role="list" class="links">
-        {links.map((l) => <li><a href={l.href}><Text value={l.label} /></a></li>)}
-        <li>
-          {isPending(site.careersUrl)
-            ? <span><Text value={ui.footer.careers} /> <mark class="pending">[待提供]</mark></span>
-            : <a href={site.careersUrl} rel="noopener" target="_blank"><Text value={ui.footer.careers} /><span class="visually-hidden"><Text value={ui.buttons.opensInNewTab} /></span></a>}
-        </li>
-      </ul>
-    </nav>
-
     <section class="contact" aria-labelledby="footer-contact">
       <h2 id="footer-contact" class="t-label"><Text value={ui.footer.contactHeading} /></h2>
       <dl>
-        <div><dt><Text value={ui.footer.address} /></dt><dd><Text value={contact.address[lang]} /></dd></div>
-        <div><dt><Text value={ui.footer.phone} /></dt><dd>{isPending(contact.phone) ? <Text value={contact.phone} /> : <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`}>{contact.phone}</a>}</dd></div>
-        <div><dt><Text value={ui.footer.email} /></dt><dd>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</dd></div>
-        <div><dt><Text value={ui.footer.social} /></dt><dd>
-          {Array.isArray(site.social)
-            ? site.social.map((s) => <a href={s.url} rel="noopener" target="_blank">{s.label}</a>)
-            : <Text value={site.social} />}
+        <div><dt><Text value={ui.footer.address} /></dt><dd>
+          {isPending(contact.mapUrl) || isPending(contact.address[lang])
+            ? <Text value={contact.address[lang]} />
+            : <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><Text value={contact.address[lang]} /><span class="visually-hidden"> <Text value={ui.footer.mapLink} /><Text value={ui.buttons.opensInNewTab} /></span></a>}
         </dd></div>
+        <div><dt><Text value={ui.footer.phone} /></dt><dd>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</dd></div>
+        <div><dt><Text value={ui.footer.email} /></dt><dd>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</dd></div>
       </dl>
+      {social.length > 0 && (
+        <ul role="list" class="social" aria-label={ui.footer.social}>
+          {social.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}<span class="visually-hidden"><Text value={ui.buttons.opensInNewTab} /></span></a></li>)}
+        </ul>
+      )}
     </section>
   </div>
+
+  <nav class="container cols" aria-label={ui.footer.navLabel}>
+    {columns.map((col) => (
+      <div class="col">
+        <h2 class="t-label col-head">
+          {col.href ? <a href={col.href}><Text value={col.label} /></a> : <span class:list={{ "is-planned": col.children.length === 0 }}><Text value={col.label} />{col.children.length === 0 && <span class="visually-hidden"> <Text value={ui.nav.planned} /></span>}</span>}
+        </h2>
+        {col.children.length > 0 && (
+          <ul role="list" class="links">
+            {col.children.map((l) => (
+              <li>{l.href ? <a href={l.href}><Text value={l.label} /></a> : <span class="is-planned"><Text value={l.label} /><span class="visually-hidden"> <Text value={ui.nav.planned} /></span></span>}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    ))}
+  </nav>
+
   <div class="container legal t-caption">
-    <p>© {year} <Text value={companyName(lang)} /> <Text value={ui.footer.rights} /></p>
-    <a href={localePath(lang, "privacy")}><Text value={ui.footer.privacy} /></a>
+    <p>© {year} <Text value={holder} /> <Text value={ui.footer.rights} /></p>
+    {legal.some((l) => l.href) && (
+      <ul role="list" class="legal-links">
+        {legal.filter((l) => l.href).map((l) => <li><a href={l.href!}><Text value={l.label} /></a></li>)}
+      </ul>
+    )}
   </div>
 </footer>
 
 <style>
   .site-footer { background: var(--surface); color: var(--ink); padding-block: var(--space-10) var(--space-5); }
-  .grid { display: grid; grid-template-columns: 4fr 3fr 5fr; gap: var(--space-6); }
+  .top { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-6); }
   .logo { display: inline-flex; }
   .tagline { margin-top: var(--space-2); color: var(--ink-muted); }
-  .links { display: grid; gap: var(--space-1); margin: 0; padding: 0; }
-  .links a, .links span { display: inline-flex; min-height: 32px; align-items: center; color: var(--ink); text-decoration: none; }
-  .links a:hover { text-decoration: underline; }
   h2 { color: var(--bxr-mist); margin-bottom: var(--space-2); }
   dl { display: grid; gap: var(--space-1); margin: 0; }
   dl div { display: grid; grid-template-columns: 6em 1fr; gap: var(--space-2); }
   dt { color: var(--ink-muted); }
-  dd { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  dd a { color: var(--ink); display: inline-block; min-height: 24px; }
+  .social { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: var(--space-3) 0 0; padding: 0; }
+  .social a { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink); }
+  .cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-5) var(--space-4);
+    margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--divider);
+  }
+  .col-head a { color: var(--ink); text-decoration: none; }
+  .col-head a:hover { text-decoration: underline; }
+  .links { display: grid; gap: var(--space-1); margin: 0; padding: 0; }
+  .links a, .links span { display: inline-flex; min-height: 32px; align-items: center; color: var(--ink); text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+  .col-head .is-planned, .links .is-planned { color: var(--ink-muted); }
   .legal {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2);
     margin-top: var(--space-8); padding-top: var(--space-3); border-top: 1px solid var(--divider); color: var(--ink-muted);
   }
+  .legal p { margin: 0; }
+  .legal-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; }
   .legal a { color: var(--ink); min-height: 24px; display: inline-flex; align-items: center; }
-  @media (max-width: 1023px) { .grid { grid-template-columns: 1fr 1fr; } .brand { grid-column: 1 / -1; } }
-  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1023px) { .top { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    dl div { grid-template-columns: 1fr; gap: 0; }
+  }
 </style>

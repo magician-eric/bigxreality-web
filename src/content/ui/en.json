@@ -17,7 +17,8 @@
     "team": "Management Team",
     "partners": "Partners",
     "investors": "Investor Relations",
-    "companyMenu": "About BXR menu"
+    "companyMenu": "About BXR menu",
+    "planned": "(coming soon)"
   },
   "contact": "Contact Us",
   "search": "Search",
@@ -130,8 +131,8 @@
     "address": "Address",
     "phone": "Phone",
     "email": "Email",
-    "social": "Social",
-    "careers": "Careers",
+    "social": "Social media",
+    "mapLink": "View on Google Maps",
     "privacy": "Privacy Policy",
     "rights": "All rights reserved"
   },

@@ -23,7 +23,7 @@ const perLang = (field) => Object.fromEntries(Object.keys(CMS_LOCALES).map((l) =
 const site = {
   ...backup,
   companyName: perLang("company_name"),
-  contact: { address: perLang("address"), phone: v(tw.phone), email: v(tw.email) },
+  contact: { address: perLang("address"), phone: v(tw.phone), email: v(tw.email), mapUrl: backup.contact.mapUrl },
   social: Array.isArray(tw.social) && tw.social.length ? tw.social.map((s) => ({ label: s.label, url: s.url })) : PENDING,
   careersUrl: v(tw.careers_url),
   forms: {

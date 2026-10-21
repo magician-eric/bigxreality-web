@@ -9,12 +9,13 @@
   },
   "contact": {
     "address": {
-      "tw": "[待提供]",
-      "en": "[待提供]",
-      "jp": "[待提供]"
+      "tw": "台北市大安區復興南路一段368號5樓",
+      "en": "5F., No. 368, Sec. 1, Fuxing S. Rd., Da'an Dist., Taipei City, Taiwan",
+      "jp": "台湾・台北市大安区復興南路一段368号5階"
     },
-    "phone": "[待提供]",
-    "email": "service@gptt.com.tw"
+    "phone": "+886-2-8791-6811",
+    "email": "service@gptt.com.tw",
+    "mapUrl": "https://maps.app.goo.gl/JP7JfUAfWUWUu3FP9"
   },
   "social": "[待提供]",
   "careersUrl": "[待提供]",

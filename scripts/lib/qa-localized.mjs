@@ -39,7 +39,7 @@ export async function runLocalizedQa({ lang, port, foreign, nav, scope, htmlLang
 
     // navigation labels
     await page.goto(`${base}/${lang}/solutions/`, { waitUntil: "networkidle" });
-    const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => (li.querySelector("a,button")?.textContent ?? "").trim()));
+    const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => { const el = li.querySelector("a,button,span.nav-link")?.cloneNode(true); el?.querySelectorAll(".visually-hidden").forEach((n) => n.remove()); return (el?.textContent ?? "").trim(); }));
     check("nav: top-level labels", JSON.stringify(top) === JSON.stringify(nav.top), top.join(" | "));
     check("nav: Resources items", JSON.stringify(await page.$$eval("#sub-resources a", (as) => as.map((a) => a.textContent.trim()))) === JSON.stringify(nav.resources));
     check("nav: contact button", (await page.locator("a.contact").innerText()).trim() === nav.contact);
