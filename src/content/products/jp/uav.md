@@ -1,47 +1,42 @@
 ---
-# 來源：requirements-2.0.md §6、§8、§9.2、§9.4。其餘欄位待提供。
-translationStatus: pending
+# 日本語版コピー: オーナー確認済みの原稿（2026-10-21）を一字一句そのまま使用。構造フィールド（order, domains, relations）は繁体字中国語版から読み込む。
+translationStatus: translated
 draft: false
-publishDate: 2026-10-01
+publishDate: '2026-10-01'
 order: 2
-domains: [military]
+domains:
+- military
 hero:
-  name: "[待翻譯] 無人機戰術與反制無人機訓練系統"
-  code: UAV
-  tagline: "[待提供]"
-capabilities:
-  - title: "[待翻譯] UAV 飛行操控"
-    description: "[待提供]"
-  - title: "[待翻譯] 搖桿操作"
-    description: "[待提供]"
-  - title: "[待翻譯] 與地面部隊的協同訓練"
-    description: "[待提供]"
-howItWorks:
-  - title: "[待提供]"
-    description: "[待提供]"
-scenarios:
-  - title: "[待翻譯] 無人機任務情境"
-    description: "[待提供]"
-integratedScenarios: [counter-uas, mum-t]
-components:
-  - name: "[待提供]"
-    description: "[待提供]"
-deployment:
-  personnel: "[待提供]"
-  area: "[待提供]"
-  setupTime: "[待提供]"
-integratedOps:
-  description: "[待翻譯] UAV 是獨立產品，與 SUT、USV 平行，可以各自展示，也可以在特定情境下整合。"
-relatedSolutions: [military]
-cta:
-  title: "[待提供]"
-  description: "[待提供]"
-  brochure: true
-  demo: true
+  name: ドローン戦術・対ドローン訓練システム
+  tagline: UAV の任務手順と、対ドローン対応訓練を支援するシミュレーションシステムです。
+landing:
+  headline: 無人航空機の運用と、新たな空の脅威に備える。
+  subheadline: UAV の任務手順と、対ドローン対応訓練を支援するシミュレーションシステムです。
+  ctaLabel: ドローン訓練の詳細を見る
+  blocks:
+  - kind: prose
+    title: 訓練課題
+    body: 無人航空機の普及により、新たな運用機会と脅威が生まれています。運用担当者や対応部隊には、実機や実際の運用環境に過度な負担をかけず、任務手順と判断力を練習する機会が求められます。
+  - kind: prose
+    title: システムによる対応
+    body: 仮想シミュレーションを活用し、UAV の運用に関する特定の訓練項目と、対ドローン対応シナリオを提供します。
+  - kind: checks
+    title: 主な訓練内容
+    items:
+    - title: UAV 任務の基本理解
+    - title: 仮想飛行・航法訓練
+    - title: 目標の観測・識別
+    - title: 任務に応じたシナリオ訓練
+    - title: 対ドローン脅威の認識
+    - title: 仮想環境での対応・対処手順
+  - kind: prose
+    title: 主な用途
+    body: 軍事訓練、基地防護、重要インフラの警備、低高度の航空脅威への対応準備。
+  - kind: prose
+    title: 導入価値
+    body: UAV 関連の任務手順と戦術判断を、安全かつ反復可能な環境で練習できます。
+  related:
+    title: 関連ソリューション
+  closing:
+    title: 担当者に相談する
 ---
-
-[待翻譯] UAV 無人機戰術訓練系統是獨立產品。目前已知有獨立的無人機訓練課程，學員可以透過搖桿控制虛擬無人機飛行。
-
-[待翻譯] 解決的訓練問題：[待提供]
-
-[待翻譯] 核心價值：[待提供]

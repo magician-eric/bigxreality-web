@@ -1,61 +1,42 @@
 ---
-# 來源：requirements-2.0.md §8、§9.1、§11、§12、§22。其餘欄位待提供。
-translationStatus: pending
+# 日本語版コピー: オーナー確認済みの原稿（2026-10-21）を一字一句そのまま使用。構造フィールド（order, domains, relations）は繁体字中国語版から読み込む。
+translationStatus: translated
 draft: false
 publishDate: 2026-10-01
 order: 1
-domains: [military]
+domains:
+- military
 hero:
-  name: "[待翻譯] SUT 小部隊戰術訓練系統"
-  englishName: Small Unit Tactical Training System
-  code: SUT
-  tagline: "[待翻譯] 一套可從基礎操作延伸到小隊協同與跨系統聯合訓練的戰術訓練系統"
-  image:
-    src: ../../../assets/images/products/sut-hero.jpg
-    alt: "[待翻譯] 四名學員頭戴 VR 頭盔、身穿戰術裝備並手持訓練用槍械，站在載具模擬器前"
-summary: "[待翻譯] 主要針對約 1 至 4 人的小部隊戰術訓練。"
-capabilities:
-  - title: "[待翻譯] 隊形、掩護與移動"
-    description: "[待提供]"
-  - title: "[待翻譯] 小隊溝通與協同"
-    description: "[待提供]"
-  - title: "[待翻譯] 情境判斷"
-    description: "[待提供]"
-  - title: "[待翻譯] 訓練評估"
-    description: "[待提供]"
-  - title: "[待翻譯] 可與無人載具整合的協同訓練"
-    description: "[待提供]"
-howItWorks:
-  - title: "[待提供]"
-    description: "[待提供]"
-scenarios:
-  - title: "[待翻譯] 基礎射擊訓練"
-    description: "[待提供]"
-  - title: "[待翻譯] CQB 近接戰鬥"
-    description: "[待提供]"
-  - title: "[待翻譯] 小部隊戰術情境"
-    description: "[待提供]"
-integratedScenarios: [mum-t, counter-uas]
-components:
-  - name: "[待提供]"
-    description: "[待提供]"
-deployment:
-  personnel: { min: 1, max: 4, approx: true }
-  area: "[待提供]"
-  setupTime: "[待提供]"
-integratedOps:
-  description: "[待翻譯] SUT、UAV、USV 是三個平行的獨立產品，可以各自展示，也可以在特定情境下整合。"
-  products: [uav, usv]
-relatedSolutions: [military]
-cta:
-  title: "[待提供]"
-  description: "[待提供]"
-  brochure: true
-  demo: true
+  name: SUT 小部隊戦術訓練システム
+  tagline: 小部隊の連携、コミュニケーション、移動、戦術的な判断を、仮想の任務環境で練習する没入型訓練システムです。
+landing:
+  headline: チームで判断し、連携して行動する。その力を訓練から。
+  subheadline: 小部隊の連携、コミュニケーション、移動、戦術的な判断を、仮想の任務環境で練習する没入型訓練システムです。
+  ctaLabel: SUT の詳細を見る
+  blocks:
+  - kind: prose
+    title: 訓練課題
+    body: 小部隊の行動には、明確な意思疎通、連携した移動、迅速な判断が求められます。多様な戦術状況を従来の訓練だけで再現するには、広い場所や人員、事前準備が必要となる場合があります。
+  - kind: prose
+    title: システムによる対応
+    body: SUT 小部隊戦術訓練システムは、VR を活用した反復可能な訓練環境を提供し、小部隊の行動手順や協同対応の練習を支援します。
+  - kind: checks
+    title: 主な訓練内容
+    items:
+    - title: 小部隊の移動と連携
+    - title: コミュニケーションと戦術指示
+    - title: 掩護と移動の訓練
+    - title: 近接戦闘を想定したシナリオ
+    - title: 状況判断と意思決定
+    - title: 指導者による反復訓練
+  - kind: prose
+    title: 主な用途
+    body: 軍事小部隊訓練、警察の戦術訓練、施設防護を想定した訓練。
+  - kind: prose
+    title: 導入価値
+    body: 管理された仮想環境で、訓練の反復性、チーム連携、体系的な戦術学習を支援します。
+  related:
+    title: 関連ソリューション
+  closing:
+    title: 担当者に相談する
 ---
-
-[待翻譯] SUT = Small Unit Tactical。SUT 小型部隊專項訓練系統主要針對約 1 至 4 人的小部隊戰術訓練，定位為可擴充的小部隊戰術訓練系統。
-
-[待翻譯] 解決的訓練問題：[待提供]
-
-[待翻譯] 核心價值：[待提供]

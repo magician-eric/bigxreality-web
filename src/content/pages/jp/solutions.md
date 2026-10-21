@@ -1,14 +1,26 @@
 ---
-# 繁中檔的 [待翻譯] 複本
-translationStatus: pending
+# 日本語版コピー: オーナー確認済みの原稿（2026-10-21）を一字一句そのまま使用。構造フィールド（order, domains, relations）は繁体字中国語版から読み込む。
+translationStatus: translated
 seo:
-  title: "[待翻譯] 解決方案"
-  description: "[待提供]"
+  title: ソリューション
+  description: XR 技術、シミュレーションシステム、システムインテグレーションの専門性を組み合わせ、複雑な訓練課題や運用ニーズに対応するソリューションを提供します。
 hero:
   eyebrow: Solutions
-  title: "[待翻譯] 解決方案"
-  description: "[待提供]"
+  title: 専門訓練からスマート技術の活用まで。現実とデジタルをつなぐソリューション。
+  description: Big x Reality は、XR 技術、シミュレーションシステム、システムインテグレーションの専門性を組み合わせ、複雑な訓練課題や運用ニーズに対応するソリューションを提供します。
+highlights:
+  title: 現場の課題から考える、実用的なテクノロジー。
+  items:
+  - title: 没入型体験
+    description: 複雑な状況を臨場感のあるデジタル環境で再現し、実践的な学習を支援します。
+  - title: 反復訓練
+    description: 重要な手順や対応を、管理された条件下で繰り返し練習できます。
+  - title: 柔軟なシステム構成
+    description: プロジェクトの要件に応じて、適切なソフトウェア、ハードウェア、シミュレーション機能を組み合わせます。
+  - title: 多様な分野への展開
+    description: 培った技術をさまざまな運用分野や訓練ニーズへ応用します。
 cta:
-  title: "[待提供]"
-  description: "[待提供]"
+  title: その課題に、最適な訓練・シミュレーション環境を。
+  description: 運用上の課題や訓練目標をお聞かせください。目的に応じたシステム構成や導入方法をご提案します。
+  button: お問い合わせ
 ---
