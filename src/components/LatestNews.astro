@@ -1,0 +1,53 @@
+---
+/**
+ * Latest news cards (home page; reusable elsewhere). Takes published news from
+ * lib/home.ts latestNews(), newest first. With no published news the block renders
+ * nothing on built pages; `astro dev` shows clearly labelled placeholders.
+ */
+import type { Lang } from "../i18n";
+import type { Article } from "../lib/articles";
+import { articleHref } from "../lib/articles";
+import { getUi } from "../lib/ui";
+import SectionHead from "./SectionHead.astro";
+import CardArticle from "./CardArticle.astro";
+import Text from "./Text.astro";
+
+interface Props {
+  lang: Lang;
+  items: Article[];
+  copy: { eyebrow: string; title: string; description: string; viewAll: string; placeholder: string };
+  viewAllHref: string;
+  slots?: number;
+  alt?: boolean;
+}
+const { lang, items, copy, viewAllHref, slots = 3, alt = false } = Astro.props;
+const ui = getUi(lang);
+const placeholders = items.length === 0 && import.meta.env.DEV ? slots : 0;
+---
+{(items.length > 0 || placeholders > 0) && (
+  <section class:list={["section", "compact", { "section--alt": alt }]} aria-labelledby="h-latest-news" data-block="latest-news">
+    <div class="container">
+      <SectionHead id="h-latest-news" eyebrow={copy.eyebrow} title={copy.title} description={copy.description} viewAll={items.length ? { href: viewAllHref, label: copy.viewAll } : undefined} />
+      <ul role="list" class="grid">
+        {items.map((a) => (
+          <li>
+            <CardArticle
+              lang={lang} href={articleHref(a)} type={ui.articleTypes.news} date={a.base.data.publishDate}
+              title={a.loc.data.title} summary={a.loc.data.summary} tags={[]}
+              cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
+            />
+          </li>
+        ))}
+        {Array.from({ length: placeholders }, () => <li class="dev-placeholder" data-dev-placeholder><Text value={copy.placeholder} /></li>)}
+      </ul>
+    </div>
+  </section>
+)}
+<style>
+  .compact { padding-block: var(--home-section-py, var(--section-py)); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .grid > li { display: grid; }
+  .dev-placeholder { place-items: center; min-height: 160px; padding: var(--space-3); text-align: center; border: 1px dashed var(--bxr-signal-amber); color: var(--ink-muted); font-family: var(--font-mono); font-size: var(--fs-small); }
+  @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
+</style>

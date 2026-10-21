@@ -31,6 +31,7 @@ export const GET: APIRoute = async () => {
   };
 
   if (!isNoIndexBuild()) {
+    add("/{lang}/", [...LANGS]);
     add("/{lang}/technologies/", [...LANGS]);
     for (const id of LIVE_TECHNOLOGY_IDS) add(`/{lang}/technologies/${id}/`, [...LANGS]);
     add("/{lang}/products/", await filter((l) => copyOk("products", l)));

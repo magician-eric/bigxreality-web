@@ -1,0 +1,272 @@
+---
+/**
+ * /[lang]/ — home page. AIDA order: Hero → why simulation → featured products →
+ * core technologies → four solutions → case studies → latest news → contact CTA.
+ * Home-only copy and the selection of items live in src/data/home.ts; names, images
+ * and routes are read from the products / solutions collections and the technology data.
+ */
+import { Picture } from "astro:assets";
+import { LANGS, localePath, type Lang } from "../../i18n";
+import { getLocalized } from "../../lib/content";
+import { getUi } from "../../lib/ui";
+import { site } from "../../lib/site";
+import { technologyHref, technologyName } from "../../lib/technologies";
+import { featuredCases, latestNews } from "../../lib/home";
+import { homeConfig, homeCopy } from "../../data/home";
+import poster from "../../assets/images/home/hero-poster.jpg";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HomeHero from "../../components/home/HomeHero.astro";
+import SectionHead from "../../components/SectionHead.astro";
+import CardSolution from "../../components/CardSolution.astro";
+import FeaturedCases from "../../components/FeaturedCases.astro";
+import LatestNews from "../../components/LatestNews.astro";
+import ImagePlaceholder from "../../components/ImagePlaceholder.astro";
+import Text from "../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const ui = getUi(lang);
+const copy = homeCopy[lang];
+
+const allProducts = await getLocalized("products", lang);
+const products = homeConfig.featuredProducts.flatMap((slug) => {
+  const p = allProducts.find((e) => e.slug === slug);
+  if (!p) return [];
+  const d = p.loc.data;
+  const img = p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: d.hero.image?.alt ?? p.base.data.hero.image.alt };
+  return [{ slug, name: d.hero.name, href: localePath(lang, "products", slug), image: img, ...copy.products.items[slug] }];
+});
+const [lead, ...others] = products;
+
+const allSolutions = await getLocalized("solutions", lang);
+const solutions = homeConfig.solutions.flatMap((slug) => allSolutions.filter((s) => s.slug === slug && !s.base.data.parent));
+
+const cases = await featuredCases(lang);
+const news = await latestNews(lang);
+
+const breadcrumbs = [{ name: ui.home, path: localePath(lang) }];
+const website = {
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  name: site.brand,
+  url: new URL(localePath(lang), site.url).toString(),
+  inLanguage: lang,
+  publisher: { "@id": `${site.url}/#organization` },
+};
+---
+<BaseLayout
+  lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/"
+  alternates={[...LANGS]} headerTheme="dark" breadcrumbs={breadcrumbs} structuredData={[website]}
+  ogImage={poster} ogImageAlt={copy.hero.posterAlt}
+>
+  <div class="home">
+    <HomeHero copy={copy.hero} primaryHref={localePath(lang, "solutions")} secondaryHref={localePath(lang, "company")} />
+
+    <!-- 02 Why simulation -->
+    <section class="section block" aria-labelledby="h-value">
+      <div class="container value">
+        <div class="value-copy">
+          <p class="t-label t-muted">{copy.value.eyebrow}</p>
+          <h2 class="t-h2" id="h-value"><Text value={copy.value.title} /></h2>
+          {copy.value.paragraphs.map((p) => <p class="t-muted"><Text value={p} /></p>)}
+        </div>
+        <ul role="list" class="points">
+          {copy.value.points.map((pt, i) => (
+            <li class="point">
+              <span class="icon" aria-hidden="true">
+                {i === 0 && <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>}
+                {i === 1 && <svg viewBox="0 0 24 24" width="24" height="24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>}
+                {i === 2 && <svg viewBox="0 0 24 24" width="24" height="24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>}
+              </span>
+              <h3 class="t-h4"><Text value={pt.title} /></h3>
+              <p class="t-small t-muted"><Text value={pt.description} /></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 03 Featured products -->
+    <section class="section section--alt block" aria-labelledby="h-products">
+      <div class="container">
+        <SectionHead id="h-products" eyebrow={copy.products.eyebrow} title={copy.products.title} description={copy.products.description} />
+        <div class="showcase">
+          {lead && (
+            <article class="feature feature--lead">
+              <div class="feature-media">
+                {lead.image
+                  ? <Picture src={lead.image.src} alt={lead.image.alt} formats={["avif", "webp"]} widths={[640, 960, 1280].filter((w) => w <= lead.image!.src.width)} sizes="(max-width: 1023px) 100vw, 760px" width={1280} height={720} fit="cover" />
+                  : <ImagePlaceholder label={ui.imagePending} />}
+              </div>
+              <div class="feature-body">
+                <p class="t-tech t-muted"><Text value={lead.name} /></p>
+                <h3 class="t-h3"><a href={lead.href}><Text value={lead.title} /></a></h3>
+                <p class="t-small t-muted"><Text value={lead.description} /></p>
+                <p class="more" aria-hidden="true"><Text value={copy.products.more} /> →</p>
+              </div>
+            </article>
+          )}
+          <ul role="list" class="side">
+            {others.map((p) => (
+              <li>
+                <article class="feature feature--row">
+                  <div class="feature-media">
+                    {p.image
+                      ? <Picture src={p.image.src} alt={p.image.alt} formats={["avif", "webp"]} widths={[320, 640]} sizes="(max-width: 767px) 40vw, 240px" width={640} height={360} fit="cover" />
+                      : <ImagePlaceholder label={ui.imagePending} />}
+                  </div>
+                  <div class="feature-body">
+                    <p class="t-tech t-muted"><Text value={p.name} /></p>
+                    <h3 class="t-h4"><a href={p.href}><Text value={p.title} /></a></h3>
+                    <p class="t-small t-muted desc"><Text value={p.description} /></p>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <p class="block-end"><a class="btn btn--secondary" href={localePath(lang, "products")}><Text value={copy.products.viewAll} /></a></p>
+      </div>
+    </section>
+
+    <!-- 04 Core technologies -->
+    <section class="section block tech" data-theme="dark" aria-labelledby="h-tech">
+      <div class="container tech-grid">
+        <div class="tech-copy">
+          <p class="t-label eyebrow">{copy.technologies.eyebrow}</p>
+          <h2 class="t-h2" id="h-tech"><Text value={copy.technologies.title} /></h2>
+          {copy.technologies.paragraphs.map((p) => <p class="muted-dark"><Text value={p} /></p>)}
+          <p><a class="btn btn--primary" href={localePath(lang, "technologies")}><Text value={copy.technologies.button} /></a></p>
+        </div>
+        <ol role="list" class="tech-list">
+          {homeConfig.featuredTechnologies.map((id, i) => (
+            <li>
+              <span class="t-tech num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <h3 class="t-h4"><a href={technologyHref(id, lang)}><Text value={technologyName(id, lang)} /></a></h3>
+              <p class="t-small muted-dark"><Text value={copy.technologies.items[id]} /></p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 05 Solutions -->
+    <section class="section block" aria-labelledby="h-solutions">
+      <div class="container">
+        <SectionHead id="h-solutions" eyebrow={copy.solutions.eyebrow} title={copy.solutions.title} description={copy.solutions.description} viewAll={{ href: localePath(lang, "solutions"), label: copy.solutions.viewAll }} />
+        <ul role="list" class="solutions">
+          {solutions.map((s) => (
+            <li>
+              <CardSolution
+                lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
+                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={copy.solutions.items[s.slug] ?? s.loc.data.summary} label={s.loc.data.cardLabel}
+                image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 06 Case studies (hidden on built pages until published cases exist) -->
+    <FeaturedCases lang={lang} items={cases} copy={copy.cases} viewAllHref={localePath(lang, "case-studies")} alt />
+
+    <!-- 07 Latest news (hidden on built pages until published news exists) -->
+    <LatestNews lang={lang} items={news} copy={copy.news} viewAllHref={localePath(lang, "news")} />
+
+    <!-- 08 Contact -->
+    <section class="cta" aria-labelledby="h-cta">
+      <div class="container cta-inner">
+        <div class="cta-copy">
+          <h2 class="t-h2" id="h-cta"><Text value={copy.cta.title} /></h2>
+          <p><Text value={copy.cta.description} /></p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn cta-primary" href={localePath(lang, "contact")}><Text value={copy.cta.primary} /></a>
+          <a class="btn cta-secondary" href={localePath(lang, "solutions")}><Text value={copy.cta.secondary} /></a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .home { --home-section-py: 56px; }
+  @media (max-width: 767px) { .home { --home-section-py: 40px; } }
+  .block { padding-block: var(--home-section-py); }
+
+  /* 02 */
+  .value { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6); align-items: start; }
+  .value-copy { display: grid; gap: var(--space-2); }
+  .points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .point { display: grid; gap: var(--space-1); align-content: start; padding-top: var(--space-2); border-top: 2px solid var(--bxr-red); }
+  .icon { color: var(--bxr-red); margin-bottom: var(--space-1); }
+
+  /* 03 */
+  .showcase { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter); }
+  .feature { position: relative; display: flex; flex-direction: column; height: 100%; background: var(--surface); border: 1px solid var(--divider); }
+  :global(.section--alt) .feature { background: var(--bxr-white); }
+  .feature-media { overflow: hidden; aspect-ratio: 16 / 9; }
+  .feature-media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-standard) var(--ease-precise); }
+  .feature:hover .feature-media :global(img) { transform: scale(1.02); }
+  .feature-media:has(:global(.placeholder)) { aspect-ratio: auto; }
+  .feature-body { display: grid; gap: var(--space-1); padding: var(--card-padding); align-content: start; }
+  .feature h3 a { color: var(--ink); text-decoration: none; }
+  .feature h3 a::after { content: ""; position: absolute; inset: 0; }
+  .feature:hover h3 a, .feature:hover .more { color: var(--bxr-text-red); }
+  .feature h3 a:focus-visible { outline: none; }
+  .feature:has(h3 a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .more { font-weight: 500; margin-top: var(--space-1); }
+  .side { display: grid; gap: var(--gutter); grid-auto-rows: 1fr; }
+  .feature--row { flex-direction: row; }
+  .feature--row .feature-media { flex: 0 0 38%; aspect-ratio: auto; }
+  .feature--row .feature-media :global(.placeholder) { height: 100%; max-height: none; }
+  .feature--row .feature-body { min-width: 0; padding: var(--space-2) var(--space-3); }
+  .feature-body { overflow-wrap: anywhere; }
+  .block-end { margin-top: var(--content-gap); }
+
+  /* 04 */
+  .tech { background: var(--bxr-graphite); }
+  .tech-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6); align-items: start; }
+  .tech-copy { display: grid; gap: var(--space-2); }
+  .tech-copy .eyebrow { color: var(--bxr-ash); }
+  .muted-dark { color: var(--bxr-ash); }
+  .tech-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 0; background: rgb(255 255 255 / 0.12); border: 1px solid rgb(255 255 255 / 0.12); }
+  .tech-list li { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-3); background: var(--bxr-graphite); }
+  .num { color: var(--bxr-red); }
+  .tech-list a { color: var(--bxr-white); text-decoration: none; }
+  .tech-list a:hover { text-decoration: underline; }
+
+  /* 05 */
+  .solutions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); }
+
+  /* 08 */
+  .cta { background: var(--bxr-red); color: var(--bxr-white); padding-block: var(--space-6); }
+  .cta h2 { color: var(--bxr-white); }
+  .cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
+  .cta-copy { display: grid; gap: var(--space-2); max-width: 44rem; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .cta-primary { background: var(--bxr-white); color: var(--bxr-red-pressed); }
+  .cta-primary:hover { background: var(--bxr-paper); }
+  .cta-secondary { color: var(--bxr-white); border-color: var(--bxr-white); }
+  .cta-secondary:hover { background: rgb(255 255 255 / 0.12); }
+  .cta :focus-visible { outline-color: var(--bxr-white); }
+
+  @media (max-width: 1023px) {
+    .value, .tech-grid, .showcase { grid-template-columns: minmax(0, 1fr); gap: var(--content-gap); }
+    .solutions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .points { grid-template-columns: 1fr; gap: var(--space-3); }
+    .tech-list { grid-template-columns: 1fr; }
+    .solutions { grid-template-columns: 1fr; }
+    /* No approved solution artwork yet: skip the empty frames on phones instead of stacking four. */
+    .solutions :global(.media:has(.placeholder)) { display: none; }
+    .feature--row .feature-media { flex-basis: 36%; }
+    .feature--row .desc { display: none; }
+    .cta { padding-block: var(--space-5); }
+  }
+</style>
