@@ -6,6 +6,7 @@ import { articlesWithTag, getArticles, pageSize, paginate, TAG_INDEX_MIN } from 
 import { isNoIndexBuild } from "../lib/content-source";
 import { site } from "../lib/site";
 import { INVESTOR_MODULES, companyContent } from "../lib/company";
+import { LIVE_TECHNOLOGY_IDS } from "../lib/technologies";
 
 /*
  * Lists every built page that may be indexed, with hreflang alternates. Each page
@@ -30,6 +31,8 @@ export const GET: APIRoute = async () => {
   };
 
   if (!isNoIndexBuild()) {
+    add("/{lang}/technologies/", [...LANGS]);
+    for (const id of LIVE_TECHNOLOGY_IDS) add(`/{lang}/technologies/${id}/`, [...LANGS]);
     add("/{lang}/products/", await filter((l) => copyOk("products", l)));
     add("/{lang}/solutions/", await filter((l) => copyOk("solutions", l)));
     add("/{lang}/contact/", await filter((l) => copyOk("contact", l)));

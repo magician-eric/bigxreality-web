@@ -1,0 +1,52 @@
+---
+/** Shared editorial sections; the content model retains each source paragraph and list. */
+interface Section {
+  id: string; title: string; paragraphs: readonly string[];
+  items?: readonly { title: string; paragraphs: readonly string[] }[];
+  bullets?: readonly string[]; note?: string;
+}
+interface Props { sections: readonly Section[]; variant: string }
+const { sections, variant } = Astro.props;
+---
+<div class={`technology-sections variant-${variant}`}>
+  {sections.map((section, index) => (
+    <section class:list={["section editorial", { "section--alt": index % 2 === 1 }]} id={section.id} aria-labelledby={`h-${section.id}`} data-technology-section={section.id}>
+      <div class="container section-grid">
+        <header><p class="t-tech section-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p><h2 class="t-h2" id={`h-${section.id}`}>{section.title}</h2></header>
+        <div class="section-body">
+          <div class="paragraphs">{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+          {section.items && <div class:list={["topics", { "process": ["training-design", "digital-simulation"].includes(variant) && section.items.length === 5 }]}>
+            {section.items.map((item) => <div class="topic"><h3 class="t-h3">{item.title}</h3>{item.paragraphs.map((p) => <p>{p}</p>)}</div>)}
+          </div>}
+          {section.bullets && <ul class="value-list">{section.bullets.map((item) => <li>{item}</li>)}</ul>}
+          {section.note && <p class="note t-small">{section.note}</p>}
+        </div>
+      </div>
+    </section>
+  ))}
+</div>
+<style>
+  .section-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-10); }
+  header { border-top: 2px solid var(--bxr-red); padding-top: var(--space-2); }
+  .section-number { color: var(--ink-muted); margin-bottom: var(--space-3); }
+  .paragraphs, .section-body { display: grid; gap: var(--space-3); }
+  .paragraphs:empty { display: none; }
+  .topics { display: grid; gap: var(--space-4); margin-top: var(--space-2); }
+  .topic { border-left: 3px solid var(--bxr-mist); padding-left: var(--space-3); }
+  .topic h3 { margin-bottom: var(--space-2); }
+  .topic p + p { margin-top: var(--space-2); }
+  .variant-xr .topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .variant-xr .topic { border-color: var(--bxr-signal-teal); }
+  .variant-domain-expertise .topic { border-color: var(--bxr-brass); }
+  .variant-training-design .process { counter-reset: step; }
+  .process .topic { padding: var(--space-3); border: 1px solid var(--divider); border-left: 3px solid var(--bxr-red); }
+  .variant-ai-simulation .topic { border-color: var(--bxr-brass); }
+  .variant-system-integration .topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .variant-system-integration .topic { border-color: var(--sector-police-deep); }
+  .variant-decision-visualization .topic { border-color: var(--sector-army-deep); }
+  .value-list { padding-left: 1.3em; display: grid; gap: var(--space-2); }
+  .value-list li::marker { color: var(--bxr-text-red); }
+  .note { border-top: 1px solid var(--divider); padding-top: var(--space-2); color: var(--ink-muted); }
+  @media (max-width: 1023px) { .section-grid { grid-template-columns: 1fr; gap: var(--space-4); } header { max-width: 44rem; } }
+  @media (max-width: 767px) { .variant-xr .topics, .variant-system-integration .topics { grid-template-columns: 1fr; } }
+</style>

@@ -1,3 +1,4 @@
+import { TECHNOLOGY_IDS } from "./lib/technologies";
 import { resolveSlot } from "./lib/slot";
 import { existsSync } from "node:fs";
 import { defineCollection, type SchemaContext } from "astro:content";
@@ -327,7 +328,7 @@ const news = defineCollection({
 
 const insights = defineCollection({
   loader: loader("insights", "insights"),
-  schema: (ctx) => articleBase(ctx).extend({ author: text.optional() }),
+  schema: (ctx) => articleBase(ctx).extend({ author: text.optional(), technologyTags: z.array(z.enum(TECHNOLOGY_IDS)).default([]) }),
 });
 
 /** Application fields of a case study: the four market domains plus "other". */

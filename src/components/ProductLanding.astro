@@ -14,6 +14,7 @@ import { availableLangs, getLocalized } from "../lib/content";
 import { ctaSet } from "../lib/cta";
 import { isPending } from "../lib/pending";
 import { getUi } from "../lib/ui";
+import RelatedTechnologies from "./RelatedTechnologies.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
@@ -144,6 +145,8 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
   )}
 
   {faq && <FaqAccordion id="product-faq" title={ui.faq.title} items={faq} class={alt()} />}
+
+  <RelatedTechnologies lang={lang} collection="products" slug={slug} />
 
   {backLabel && (
     <div class="container back"><a href={backHref}><span aria-hidden="true">←</span> <Text value={backLabel} /></a></div>

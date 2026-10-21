@@ -11,6 +11,8 @@ import type { ImageMetadata } from "astro";
 
 interface Props {
   lang: Lang;
+  /** Suppress missing site-level contact fields on complete public landing pages. */
+  hidePendingFooter?: boolean;
   title: string;
   description: string;
   pathTemplate: string;
@@ -82,7 +84,7 @@ const langLinks = Object.fromEntries(
     >
       <slot />
     </main>
-    <Footer lang={p.lang} />
+    <Footer lang={p.lang} hidePending={p.hidePendingFooter} />
   </body>
 </html>
 

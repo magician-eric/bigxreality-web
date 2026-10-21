@@ -14,6 +14,7 @@ import { alternatingSections } from "../lib/landing";
 import { casesAbout } from "../lib/cases";
 import { isPending } from "../lib/pending";
 import { getUi } from "../lib/ui";
+import RelatedTechnologies from "./RelatedTechnologies.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
@@ -129,6 +130,8 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
       </div>
     </section>
   )}
+
+  <RelatedTechnologies lang={lang} collection="solutions" slug={slug} />
 
   {backLabel && (
     <div class="container back"><a href={backHref}><span aria-hidden="true">←</span> <Text value={backLabel} /></a></div>

@@ -1,0 +1,25 @@
+---
+import type { Lang } from "../i18n";
+import { getTechnologyArticles, type TechnologyId } from "../lib/technologies";
+import { articleHref, tagNames } from "../lib/articles";
+import { getUi } from "../lib/ui";
+import CardArticle from "./CardArticle.astro";
+interface Props { lang: Lang; technology: TechnologyId }
+const { lang, technology } = Astro.props;
+const articles = await getTechnologyArticles(technology, lang);
+const labels = { tw: "相關技術文章", en: "Related Technical Articles", jp: "関連技術記事" };
+const ui = getUi(lang);
+const tags = await Promise.all(articles.map((article) => tagNames(article.base.data.tags, lang)));
+---
+{articles.length > 0 && <section class="section section--alt" id="technology-articles" aria-labelledby="h-technology-articles" data-technology-articles>
+  <div class="container">
+    <h2 class="t-h2" id="h-technology-articles">{labels[lang]}</h2>
+    <ul role="list" class="articles">{articles.map((article, index) => <li><CardArticle lang={lang} href={articleHref(article)} type={ui.articleTypes[article.collection]} date={article.base.data.publishDate} title={article.loc.data.title} summary={article.loc.data.summary} tags={tags[index]} /></li>)}</ul>
+  </div>
+</section>}
+<style>
+  h2 { margin-bottom: var(--space-5); }
+  .articles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  @media (max-width: 1023px) { .articles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .articles { grid-template-columns: 1fr; } }
+</style>

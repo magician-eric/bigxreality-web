@@ -163,6 +163,7 @@ export interface Insight {
   byline?: BylineSummary | null;
   bylines?: ContentBylineCredit[];
   terms?: Record<string, TaxonomyTerm[]>;
+  technology_tags?: ("xr" | "ai-simulation" | "digital-simulation" | "training-design" | "system-integration" | "decision-visualization" | "domain-expertise")[];
 }
 
 export interface CaseStudy {

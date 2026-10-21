@@ -13,8 +13,8 @@ import { isPending } from "../lib/pending";
 import Logo from "./Logo.astro";
 import Text from "./Text.astro";
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props { lang: Lang; hidePending?: boolean }
+const { lang, hidePending = false } = Astro.props;
 const ui = getUi(lang);
 const year = new Date().getFullYear();
 const columns = navigation(lang);
@@ -22,6 +22,8 @@ const legal = legalLinks(lang);
 const { contact } = site;
 const tel = phoneHref();
 const social = Array.isArray(site.social) ? site.social : [];
+const show = (value: string) => !hidePending || (!!value.trim() && !isPending(value));
+const hasContact = [contact.address[lang], contact.phone, contact.email].some(show) || social.length > 0;
 const holder = isPending(companyName(lang)) ? site.brand : companyName(lang);
 ---
 <footer class="site-footer" data-theme="dark">
@@ -31,23 +33,23 @@ const holder = isPending(companyName(lang)) ? site.brand : companyName(lang);
       <p class="tagline">{site.tagline}</p>
     </div>
 
-    <section class="contact" aria-labelledby="footer-contact">
+    {hasContact && <section class="contact" aria-labelledby="footer-contact">
       <h2 id="footer-contact" class="t-label"><Text value={ui.footer.contactHeading} /></h2>
       <dl>
-        <div><dt><Text value={ui.footer.address} /></dt><dd>
+        {show(contact.address[lang]) && <div><dt><Text value={ui.footer.address} /></dt><dd>
           {isPending(contact.mapUrl) || isPending(contact.address[lang])
             ? <Text value={contact.address[lang]} />
             : <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><Text value={contact.address[lang]} /><span class="visually-hidden"> <Text value={ui.footer.mapLink} /><Text value={ui.buttons.opensInNewTab} /></span></a>}
-        </dd></div>
-        <div><dt><Text value={ui.footer.phone} /></dt><dd>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</dd></div>
-        <div><dt><Text value={ui.footer.email} /></dt><dd>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</dd></div>
+        </dd></div>}
+        {show(contact.phone) && <div><dt><Text value={ui.footer.phone} /></dt><dd>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</dd></div>}
+        {show(contact.email) && <div><dt><Text value={ui.footer.email} /></dt><dd>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</dd></div>}
       </dl>
       {social.length > 0 && (
         <ul role="list" class="social" aria-label={ui.footer.social}>
           {social.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}<span class="visually-hidden"><Text value={ui.buttons.opensInNewTab} /></span></a></li>)}
         </ul>
       )}
-    </section>
+    </section>}
   </div>
 
   <nav class="container cols" aria-label={ui.footer.navLabel}>
