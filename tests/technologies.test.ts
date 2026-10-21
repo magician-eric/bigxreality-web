@@ -1,10 +1,20 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TECHNOLOGY_IDS, LIVE_TECHNOLOGY_IDS, selectTechnologyArticles, technologyHref } from "../src/lib/technologies.ts";
+import { TECHNOLOGY_IDS, LIVE_TECHNOLOGY_IDS, selectTechnologyArticles, technologyHref, technologyResources } from "../src/lib/technologies.ts";
 const make = (day: number, overrides = {}) => ({
   collection: "insights", lang: "en" as const, pendingTranslation: false,
   base: { data: { publishDate: new Date(`2026-01-${String(day).padStart(2, "0")}T00:00:00Z`), technologyTags: ["xr"] } },
   loc: { data: { translationStatus: "translated" }, body: "Genuine translated article" }, ...overrides,
+});
+test("related localized cards exclude pending and missing translations while preserving editorial order", () => {
+  const entries = [
+    { slug: "second", pendingTranslation: false },
+    { slug: "pending", pendingTranslation: true },
+    { slug: "unrelated", pendingTranslation: false },
+    { slug: "first", pendingTranslation: false },
+  ];
+  assert.deepEqual(technologyResources(entries, ["first", "missing", "pending", "second"]).map((entry) => entry.slug), ["first", "second"]);
+  assert.deepEqual(technologyResources(entries, ["pending", "missing"]), []);
 });
 test("technology taxonomy keeps seven IDs and seven complete public details", () => {
   assert.equal(new Set(TECHNOLOGY_IDS).size, 7);

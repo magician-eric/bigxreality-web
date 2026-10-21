@@ -2,7 +2,7 @@
 import { LANGS, HTML_LANG, localePath, type Lang } from "../../../i18n";
 import { technologyRelations, technologyRelationNotes } from "../../../data/technology-relations";
 import { technologyContent } from "../../../data/technologies-content";
-import { LIVE_TECHNOLOGY_IDS } from "../../../lib/technologies";
+import { LIVE_TECHNOLOGY_IDS, technologyResources } from "../../../lib/technologies";
 import { getLocalized } from "../../../lib/content";
 import { getUi } from "../../../lib/ui";
 import { site } from "../../../lib/site";
@@ -24,8 +24,8 @@ const relations = technologyRelations[slug];
 const allProducts = await getLocalized("products", lang);
 const allSolutions = await getLocalized("solutions", lang);
 // Resolve approved entries only. Subject links never assert implementation or interoperability.
-const products = relations.products.map((id) => allProducts.find((product) => product.slug === id)).filter((p) => !!p);
-const solutions = relations.solutions.map((id) => allSolutions.find((solution) => solution.slug === id)).filter((s) => !!s);
+const products = technologyResources(allProducts, relations.products);
+const solutions = technologyResources(allSolutions, relations.solutions);
 const relationNotes = technologyRelationNotes[slug as keyof typeof technologyRelationNotes]?.[lang] ?? [];
 const relatedLabels = { tw: { products: slug === "ai-simulation" ? "相關應用領域" : "相關產品", solutions: "相關解決方案" }, en: { products: slug === "ai-simulation" ? "Related Application Areas" : "Related Products", solutions: "Related Solutions" }, jp: { products: slug === "ai-simulation" ? "関連する活用分野" : "関連製品", solutions: "関連ソリューション" } };
 const imageSlotLabel = { tw: "技術應用圖片位置", en: "Technology application image", jp: "技術活用イメージの掲載位置" };

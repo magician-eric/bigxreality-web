@@ -10,6 +10,14 @@ export const isLiveTechnology = (id: string): id is (typeof LIVE_TECHNOLOGY_IDS)
 export const technologyName = (id: TechnologyId, lang: Lang) => overviewContent[lang].technologies[id].title;
 export const technologyHref = (id: TechnologyId, lang: Lang) => isLiveTechnology(id) ? `/${lang}/technologies/${id}/` : `/${lang}/technologies/#${id}`;
 
+/** Preserve the requested order without surfacing missing or unfinished localized cards. */
+export function technologyResources<T extends { slug: string; pendingTranslation: boolean }>(entries: readonly T[], slugs: readonly string[]): T[] {
+  return slugs.flatMap((slug) => {
+    const entry = entries.find((item) => item.slug === slug);
+    return entry && !entry.pendingTranslation ? [entry] : [];
+  });
+}
+
 /** Source-language tags own structure; published text must actually exist in the requested locale. */
 export function selectTechnologyArticles<T extends {
   collection: string; lang: Lang; pendingTranslation: boolean;
