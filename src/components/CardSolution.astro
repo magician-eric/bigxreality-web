@@ -34,7 +34,7 @@ const subtitle = headline ?? (englishName !== name ? englishName : undefined);
   .media { overflow: hidden; aspect-ratio: 16 / 9; }
   .media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-standard) var(--ease-precise); }
   .card:hover .media :global(img) { transform: scale(1.02); }
-  .body { display: grid; gap: var(--space-1); padding: var(--space-3); }
+  .body { display: grid; gap: var(--space-1); padding: var(--card-padding); }
   .code { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--sector-color); }
   .dot { width: 8px; height: 8px; background: var(--sector-color); }
   .title a { color: var(--ink); text-decoration: none; }
@@ -43,4 +43,5 @@ const subtitle = headline ?? (englishName !== name ? englishName : undefined);
   .title a:focus-visible { outline: none; }
   .card:has(.title a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
   .english, .summary { color: var(--ink-muted); }
+  .media:has(:global(.placeholder)) { aspect-ratio: auto; height: auto; }
 </style>

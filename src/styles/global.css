@@ -23,16 +23,19 @@
   --btn-h: 48px; --btn-px: var(--space-4);
   --btn-sm-h: 40px; --btn-sm-px: 20px;
   --logo-h: 32px;
-  --section-py: var(--space-16);
+  --section-py: 64px;
+  --content-gap: 32px;
+  --card-padding: 24px;
+  --placeholder-max: 200px;
   --gutter: 24px;
 }
 @media (max-width: 1023px) {
-  :root { --section-py: var(--space-12); --gutter: 20px; --logo-h: 28px; --fs-nav: 17px; }
+  :root { --section-py: 56px; --content-gap: 24px; --placeholder-max: 180px; --gutter: 20px; --logo-h: 28px; --fs-nav: 17px; }
 }
 @media (max-width: 767px) {
   :root {
     --fs-display: 40px; --fs-h1: 30px; --fs-h2: 22px; --fs-h3: 18px; --fs-h4: 17px;
-    --section-py: var(--space-8); --gutter: 16px;
+    --section-py: 40px; --content-gap: 20px; --card-padding: 20px; --placeholder-max: 144px; --gutter: 16px;
   }
 }
 

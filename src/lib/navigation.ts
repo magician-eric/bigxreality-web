@@ -15,12 +15,16 @@
 import { localePath, type Lang } from "../i18n";
 import { getUi, type Ui } from "./ui";
 
+import { DOMAINS, PRODUCT_DOMAINS } from "./domains";
+import { LIVE_TECHNOLOGY_IDS, technologyName, technologyHref, type TechnologyId } from "./technologies";
+
 export type PageStatus = "published" | "planned";
 
 interface NavNode {
   id: string;
   label: string;
   route?: readonly string[];
+  domain?: string;
   order: number;
   enabled: boolean;
   status: PageStatus;
@@ -28,9 +32,9 @@ interface NavNode {
 }
 
 export const NAVIGATION = [
-  { id: "solutions", label: "nav.solutions", route: ["solutions"], order: 10, enabled: true, status: "published" },
-  { id: "products", label: "nav.products", route: ["products"], order: 20, enabled: true, status: "published" },
-  { id: "technologies", label: "nav.technologies", route: ["technologies"], order: 30, enabled: true, status: "published" },
+  { id: "solutions", label: "nav.solutions", children: DOMAINS.map((id, order) => ({ id: `solution-${id}`, label: `domains.${id}`, route: ["solutions", id], order, enabled: true, status: "published" as const })), route: ["solutions"], order: 10, enabled: true, status: "published" },
+  { id: "products", label: "nav.products", children: PRODUCT_DOMAINS.map((id, order) => ({ id: `product-${id}`, label: `productDomains.${id}`, route: ["products"], domain: id, order, enabled: true, status: "published" as const })), route: ["products"], order: 20, enabled: true, status: "published" },
+  { id: "technologies", label: "nav.technologies", children: LIVE_TECHNOLOGY_IDS.map((id, order) => ({ id: `technology-${id}`, label: `technology:${id}`, route: ["technologies", id], order, enabled: true, status: "published" as const })), route: ["technologies"], order: 30, enabled: true, status: "published" },
   {
     id: "resources", label: "nav.resources", order: 40, enabled: true, status: "published",
     children: [
@@ -84,8 +88,14 @@ function lookup(ui: Ui, key: string): string {
 function hrefOf(lang: Lang, node: NavNode): string | null {
   if (!node.route || node.status !== "published") return null;
   const file = `/src/pages/[lang]/${node.route.join("/")}/index.astro`;
-  if (!PAGE_FILES.has(file)) throw new Error(`navigation: "${node.id}" is published but ${file} does not exist (set status "planned")`);
-  return localePath(lang, ...node.route);
+  const dynamicRoute = node.route.length === 2 && (
+    (node.route[0] === "solutions" && (DOMAINS as readonly string[]).includes(node.route[1])) ||
+    (node.route[0] === "technologies" && (LIVE_TECHNOLOGY_IDS as readonly string[]).includes(node.route[1]))
+  );
+  if (!PAGE_FILES.has(file) && !dynamicRoute) throw new Error(`navigation: "${node.id}" is published but ${file} does not exist (set status "planned")`);
+  const href = node.route[0] === "technologies" && node.route[1]
+    ? technologyHref(node.route[1] as TechnologyId, lang) : localePath(lang, ...node.route);
+  return node.domain ? `${href}?domain=${encodeURIComponent(node.domain)}` : href;
 }
 
 function resolve(lang: Lang, nodes: readonly NavNode[]): NavItem[] {
@@ -94,7 +104,7 @@ function resolve(lang: Lang, nodes: readonly NavNode[]): NavItem[] {
     .filter((n) => n.enabled)
     .slice()
     .sort((a, b) => a.order - b.order)
-    .map((n) => ({ id: n.id, label: lookup(ui, n.label), href: hrefOf(lang, n), children: resolve(lang, n.children ?? []) }));
+    .map((n) => ({ id: n.id, label: n.label.startsWith("technology:") ? technologyName(n.label.slice(11) as TechnologyId, lang) : lookup(ui, n.label), href: hrefOf(lang, n), children: resolve(lang, n.children ?? []) }));
 }
 
 /** The menu for one language, filtered and sorted; used by both Header and Footer. */

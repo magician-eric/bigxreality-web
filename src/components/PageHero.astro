@@ -56,8 +56,8 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, de
   </div>
 </section>
 <style>
-  .page-hero { padding-block: var(--space-10) var(--space-12); }
-  .grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: center; }
+  .page-hero { padding-block: var(--section-py); }
+  .grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--content-gap); align-items: center; }
   .no-media { grid-template-columns: minmax(0, 8fr) 4fr; }
   .copy { display: grid; gap: var(--space-3); align-content: start; }
   .eyebrow { color: var(--bxr-mist); margin-top: var(--space-3); }
@@ -74,5 +74,5 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, de
     background: rgb(10 12 16 / 0.72); color: var(--bxr-white); line-height: 1.5; pointer-events: none;
   }
   figcaption { position: absolute; right: var(--space-2); bottom: var(--space-1); color: var(--bxr-mist); }
-  @media (max-width: 1023px) { .grid { grid-template-columns: 1fr; } .page-hero { padding-block: var(--space-6) var(--space-8); } }
+  @media (max-width: 1023px) { .grid { grid-template-columns: 1fr; } .page-hero { padding-block: var(--section-py); } }
 </style>

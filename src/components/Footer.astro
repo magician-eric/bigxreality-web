@@ -62,6 +62,7 @@ const plannedNote = `<span class="visually-hidden"> ${ui.nav.planned}</span>`;
               <details class="group">
                 <summary class="item"><Text value={item.label} /><Fragment set:html={chevron} /></summary>
                 <ul role="list" class="sub">
+                  {item.href && <li><a class="sub-item" href={item.href}><Text value={item.label} /></a></li>}
                   {item.children.map((c) => (
                     <li>{c.href ? <a class="sub-item" href={c.href}><Text value={c.label} /></a> : <span class="sub-item is-planned"><Text value={c.label} /><Fragment set:html={plannedNote} /></span>}</li>
                   ))}

@@ -26,10 +26,10 @@ const { sections, variant } = Astro.props;
   ))}
 </div>
 <style>
-  .section-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-10); }
+  .section-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--content-gap); }
   header { border-top: 2px solid var(--bxr-red); padding-top: var(--space-2); }
   .section-number { color: var(--ink-muted); margin-bottom: var(--space-3); }
-  .paragraphs, .section-body { display: grid; gap: var(--space-3); }
+  .paragraphs, .section-body { display: grid; gap: var(--space-2); }
   .paragraphs:empty { display: none; }
   .topics { display: grid; gap: var(--space-4); margin-top: var(--space-2); }
   .topic { border-left: 3px solid var(--bxr-mist); padding-left: var(--space-3); }
