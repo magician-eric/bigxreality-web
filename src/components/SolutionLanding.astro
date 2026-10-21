@@ -23,6 +23,7 @@ import CardSolution from "./CardSolution.astro";
 import CtaBand from "./CtaBand.astro";
 import CtaGroup from "./CtaGroup.astro";
 import RelatedCases from "./RelatedCases.astro";
+import Text from "./Text.astro";
 
 interface Props {
   lang: Lang;
@@ -61,6 +62,8 @@ const breadcrumbs = [
 ];
 let n = alternatingSections(L);
 const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
+const backLabel = ui.backToSolutions;
+const backHref = localePath(lang, "solutions");
 const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
 ---
 <BaseLayout
@@ -127,11 +130,18 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
     </section>
   )}
 
+  {backLabel && (
+    <div class="container back"><a href={backHref}><span aria-hidden="true">←</span> <Text value={backLabel} /></a></div>
+  )}
+
   <CtaBand id="solution-cta" title={L.closing.title} description={L.closing.description}>
     <CtaGroup actions={cta.footer} />
   </CtaBand>
 </BaseLayout>
 <style>
+  .back { padding-block: var(--space-4); }
+  .back a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .back a:hover { color: var(--bxr-text-red); }
   .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
   @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }

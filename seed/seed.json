@@ -622,6 +622,55 @@
      "type": "text"
     },
     {
+     "slug": "landing_blocks",
+     "label": "落地頁｜自由區塊（英文版使用；依序顯示：prose 文字段、list 卡片列表、checks 勾選清單、featured 並列項目）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "kind",
+        "label": "類型",
+        "type": "select",
+        "required": true,
+        "validation": {
+         "options": [
+          "prose",
+          "list",
+          "checks",
+          "featured"
+         ]
+        }
+       },
+       {
+        "slug": "eyebrow",
+        "label": "小標（選填）",
+        "type": "string"
+       },
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "intro",
+        "label": "說明（選填）",
+        "type": "text"
+       },
+       {
+        "slug": "body",
+        "label": "內文（prose 使用；段落以空白行分隔）",
+        "type": "text"
+       },
+       {
+        "slug": "items",
+        "label": "項目（每行一項：標題 || 說明 || 按鈕文字 || solution:代稱 或 product:代稱；後面的部分可省略）",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
      "slug": "landing_related_title",
      "label": "落地頁｜關聯產品與解決方案：標題",
      "type": "string"
@@ -959,6 +1008,11 @@
     {
      "slug": "card_label",
      "label": "總覽卡片按鈕文字（例：探索軍事模擬）",
+     "type": "string"
+    },
+    {
+     "slug": "card_headline",
+     "label": "總覽卡片標語（顯示在名稱下方，選填）",
      "type": "string"
     },
     {
@@ -1643,6 +1697,55 @@
      "slug": "landing_audience_note",
      "label": "落地頁｜適用訓練需求：結語",
      "type": "text"
+    },
+    {
+     "slug": "landing_blocks",
+     "label": "落地頁｜自由區塊（英文版使用；依序顯示：prose 文字段、list 卡片列表、checks 勾選清單、featured 並列項目）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "kind",
+        "label": "類型",
+        "type": "select",
+        "required": true,
+        "validation": {
+         "options": [
+          "prose",
+          "list",
+          "checks",
+          "featured"
+         ]
+        }
+       },
+       {
+        "slug": "eyebrow",
+        "label": "小標（選填）",
+        "type": "string"
+       },
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "intro",
+        "label": "說明（選填）",
+        "type": "text"
+       },
+       {
+        "slug": "body",
+        "label": "內文（prose 使用；段落以空白行分隔）",
+        "type": "text"
+       },
+       {
+        "slug": "items",
+        "label": "項目（每行一項：標題 || 說明 || 按鈕文字 || solution:代稱 或 product:代稱；後面的部分可省略）",
+        "type": "text"
+       }
+      ]
+     }
     },
     {
      "slug": "landing_related_title",
@@ -2507,6 +2610,11 @@
      "slug": "cta_description",
      "label": "結尾 CTA 說明",
      "type": "text"
+    },
+    {
+     "slug": "cta_button",
+     "label": "頁尾區塊按鈕文字（選填）",
+     "type": "string"
     }
    ]
   },

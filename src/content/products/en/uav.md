@@ -1,47 +1,42 @@
 ---
-# 來源：requirements-2.0.md §6、§8、§9.2、§9.4。其餘欄位待提供。
-translationStatus: pending
+# English copy approved by the owner (2026-10-21), used exactly as supplied. Structural fields (order, domains, relations) are read from the Traditional Chinese file.
+translationStatus: translated
 draft: false
-publishDate: 2026-10-01
+publishDate: '2026-10-01'
 order: 2
-domains: [military]
+domains:
+- military
 hero:
-  name: "[待翻譯] 無人機戰術與反制無人機訓練系統"
-  code: UAV
-  tagline: "[待提供]"
-capabilities:
-  - title: "[待翻譯] UAV 飛行操控"
-    description: "[待提供]"
-  - title: "[待翻譯] 搖桿操作"
-    description: "[待提供]"
-  - title: "[待翻譯] 與地面部隊的協同訓練"
-    description: "[待提供]"
-howItWorks:
-  - title: "[待提供]"
-    description: "[待提供]"
-scenarios:
-  - title: "[待翻譯] 無人機任務情境"
-    description: "[待提供]"
-integratedScenarios: [counter-uas, mum-t]
-components:
-  - name: "[待提供]"
-    description: "[待提供]"
-deployment:
-  personnel: "[待提供]"
-  area: "[待提供]"
-  setupTime: "[待提供]"
-integratedOps:
-  description: "[待翻譯] UAV 是獨立產品，與 SUT、USV 平行，可以各自展示，也可以在特定情境下整合。"
-relatedSolutions: [military]
-cta:
-  title: "[待提供]"
-  description: "[待提供]"
-  brochure: true
-  demo: true
+  name: Drone Tactical & Counter-UAS Training System
+  tagline: A simulation-based training solution supporting UAV mission workflows and counter-UAS response exercises.
+landing:
+  headline: Prepare for Unmanned Aerial Operations and Emerging Threats.
+  subheadline: A simulation-based training solution supporting UAV mission workflows and counter-UAS response exercises.
+  ctaLabel: Explore UAV Training
+  blocks:
+  - kind: prose
+    title: Training Challenges
+    body: Unmanned aerial systems introduce new operational opportunities and threats. Operators and response teams need opportunities to practice mission procedures and decision-making without unnecessary equipment or operational risk.
+  - kind: prose
+    title: How It Works
+    body: The system uses virtual simulation to support selected UAV operational tasks and counter-drone training scenarios.
+  - kind: checks
+    title: Key Capabilities
+    items:
+    - title: UAV mission familiarization
+    - title: Simulated flight and navigation tasks
+    - title: Target observation and identification exercises
+    - title: Mission-oriented scenario training
+    - title: Counter-UAS threat recognition
+    - title: Simulated response and engagement procedures
+  - kind: prose
+    title: Applications
+    body: Military training, base protection, critical infrastructure security, and low-altitude threat response preparation.
+  - kind: prose
+    title: Training Benefits
+    body: Provide repeatable training opportunities for UAV-related operational procedures and tactical decisions.
+  related:
+    title: Related Products
+  closing:
+    title: Contact Our Team
 ---
-
-[待翻譯] UAV 無人機戰術訓練系統是獨立產品。目前已知有獨立的無人機訓練課程，學員可以透過搖桿控制虛擬無人機飛行。
-
-[待翻譯] 解決的訓練問題：[待提供]
-
-[待翻譯] 核心價值：[待提供]

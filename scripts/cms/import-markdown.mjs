@@ -124,6 +124,19 @@ async function upload(file, alt) {
 }
 const image = async (pic, file) => (pic?.src ? { id: (await upload(path.resolve(path.dirname(file), pic.src), pic.alt)).id, alt: pic.alt } : undefined);
 
+/** Inverse of loader.ts blockItems: items → one line each, `Title || Text || Button || solution:slug`. */
+const blockLines = (items) =>
+  items?.length
+    ? items
+        .map((i) => {
+          const target = i.solution ? `solution:${i.solution}` : i.product ? `product:${i.product}` : "";
+          const parts = [i.title, i.content ?? "", i.cta ?? "", target];
+          while (parts.length > 1 && !parts[parts.length - 1]) parts.pop();
+          return parts.join(" || ");
+        })
+        .join("\n")
+    : undefined;
+
 // ---------------------------------------------------------------- field mapping (inverse of src/lib/emdash/loader.ts)
 const clean = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined));
 const day = (d) => (d === undefined ? undefined : new Date(d).toISOString());
@@ -160,6 +173,7 @@ async function landingFields(L, file) {
     landing_cases_intro: L.casesIntro,
     landing_featured_title: L.featured?.title, landing_featured_intro: L.featured?.intro, landing_featured_items: L.featured?.items,
     landing_audience_title: L.audience?.title, landing_audience_intro: L.audience?.intro, landing_audience_cards: L.audience?.cards, landing_audience_note: L.audience?.note,
+    landing_blocks: L.blocks?.map((b) => clean({ kind: b.kind, eyebrow: b.eyebrow, title: b.title, intro: b.intro, body: b.body, items: blockLines(b.items) })),
     landing_related_title: L.related?.title, landing_related_intro: L.related?.intro,
     landing_closing_title: L.closing?.title, landing_closing_description: L.closing?.description,
   });
@@ -197,7 +211,7 @@ const MAP = {
       hero_description: d.heroDescription, hero_image: await image(d.image, file),
       overview: body ? await toPortableText(body, file, upload) : undefined,
       challenges: d.challenges, capabilities: d.capabilities,
-      card_label: d.cardLabel, ...(await landingFields(d.landing, file)),
+      card_label: d.cardLabel, card_headline: d.cardHeadline, ...(await landingFields(d.landing, file)),
       cta_title: d.cta?.title, cta_description: d.cta?.description, source_note: d.sourceNote,
     }),
     seo: seoOf(d.seo),
@@ -211,7 +225,7 @@ const MAP = {
       hero_image: await image(d.hero.image, file), image_caption: d.hero.imageCaption,
       closing_title: d.closing?.title, highlights_title: d.highlights?.title, highlights_items: d.highlights?.items,
       integrated_eyebrow: d.integrated?.eyebrow, integrated_title: d.integrated?.title, integrated_description: d.integrated?.description,
-      cta_title: d.cta?.title, cta_description: d.cta?.description,
+      cta_title: d.cta?.title, cta_description: d.cta?.description, cta_button: d.cta?.button,
     }),
     seo: seoOf(d.seo),
   }),

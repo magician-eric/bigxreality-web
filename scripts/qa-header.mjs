@@ -6,7 +6,7 @@ import { startPreview, CHROMIUM } from "./lib/serve.mjs";
 
 const LABELS = {
   tw: { top: ["解決方案", "產品介紹", "核心技術", "資源中心", "關於 BXR"], sub: ["最新消息", "技術專欄", "成功案例"] },
-  en: { top: ["Solutions", "Products", "Technology", "Resources", "About BXR"], sub: ["News", "Insights", "Case Studies"] },
+  en: { top: ["Solutions", "Products", "Core Technology", "Resources", "About BXR"], sub: ["News", "Insights", "Case Studies"] },
   jp: { top: ["ソリューション", "製品情報", "コア技術", "リソース", "BXRについて"], sub: ["ニュース", "技術コラム", "導入事例"] },
 };
 const SUB_HREFS = (l) => [`/${l}/news/`, `/${l}/insights/`, `/${l}/cases/`];

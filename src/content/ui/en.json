@@ -1,43 +1,43 @@
 {
   "translationStatus": "pending",
-  "skipToContent": "[待翻譯] 跳到主要內容",
+  "skipToContent": "Skip to main content",
   "nav": {
-    "label": "[待翻譯] 主選單",
+    "label": "Main menu",
     "solutions": "Solutions",
     "products": "Products",
-    "technologies": "Technology",
+    "technologies": "Core Technology",
     "resources": "Resources",
     "company": "About BXR",
     "news": "News",
     "insights": "Insights",
     "caseStudies": "Case Studies",
-    "resourcesMenu": "[待翻譯] 資源選單",
-    "aboutUs": "[待翻譯] 關於我們",
-    "history": "[待翻譯] 發展歷程",
-    "team": "[待翻譯] 經營團隊",
-    "partners": "[待翻譯] 合作夥伴",
-    "investors": "[待翻譯] 投資人專區",
-    "companyMenu": "[待翻譯] 關於 BXR 選單"
+    "resourcesMenu": "Resources menu",
+    "aboutUs": "About Us",
+    "history": "History",
+    "team": "Management Team",
+    "partners": "Partners",
+    "investors": "Investor Relations",
+    "companyMenu": "About BXR menu"
   },
-  "contact": "Contact",
-  "search": "[待翻譯] 搜尋",
-  "menuOpen": "[待翻譯] 開啟選單",
-  "menuClose": "[待翻譯] 關閉選單",
-  "languageLabel": "[待翻譯] 切換語言",
-  "home": "[待翻譯] 首頁",
-  "logoHome": "[待翻譯] Big x Reality 首頁",
-  "breadcrumbLabel": "[待翻譯] 麵包屑",
+  "contact": "Contact Us",
+  "search": "Search",
+  "menuOpen": "Open menu",
+  "menuClose": "Close menu",
+  "languageLabel": "Switch language",
+  "home": "Home",
+  "logoHome": "Big x Reality home",
+  "breadcrumbLabel": "Breadcrumb",
   "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
-  "imagePending": "[待翻譯] [產品圖・待提供]",
-  "solutionImagePending": "[待翻譯] [解決方案圖・待提供]",
+  "imagePending": "Product image",
+  "solutionImagePending": "Solution image",
   "syntheticImage": "[待翻譯] 合成示意",
   "buttons": {
     "brochure": "Request Brochure",
     "demo": "Book a Live Demo",
-    "viewAll": "[待翻譯] 查看全部",
-    "explore": "[待翻譯] 了解產品",
+    "viewAll": "View all",
+    "explore": "Learn more",
     "formPending": "[待翻譯] 表單網址待提供",
-    "opensInNewTab": "[待翻譯] （另開新視窗）"
+    "opensInNewTab": " (opens in a new tab)"
   },
   "filter": {
     "groupLabel": "[待翻譯] 依領域篩選",
@@ -50,8 +50,8 @@
   },
   "domains": {
     "military": "Military Simulation",
-    "police": "Police Simulation",
-    "fire-rescue": "Fire & Disaster Prevention",
+    "police": "Law Enforcement Training",
+    "fire-rescue": "Fire & Disaster Preparedness",
     "smart-city": "Smart City",
     "other": "[待翻譯] 其他"
   },
@@ -122,17 +122,17 @@
     "case-studies": "[待翻譯] 案例"
   },
   "footer": {
-    "navLabel": "[待翻譯] 頁尾選單",
-    "contactHeading": "[待翻譯] 聯絡資訊",
-    "address": "[待翻譯] 地址",
-    "phone": "[待翻譯] 電話",
-    "email": "[待翻譯] Email",
-    "social": "[待翻譯] 社群",
-    "careers": "[待翻譯] 人才招募",
-    "privacy": "[待翻譯] 隱私權政策",
-    "rights": "[待翻譯] 版權所有"
+    "navLabel": "Footer menu",
+    "contactHeading": "Contact",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "social": "Social",
+    "careers": "Careers",
+    "privacy": "Privacy Policy",
+    "rights": "All rights reserved"
   },
-  "coverPending": "[封面・待提供]",
+  "coverPending": "Cover image",
   "solution": {
     "sections": {
       "overview": {
@@ -266,16 +266,16 @@
       }
     },
     "placeholders": {
-      "hero": "[待翻譯] 產品主視覺（圖片待提供）",
-      "showcase": "[待翻譯] 產品展示圖（圖片待提供）"
+      "hero": "Product image",
+      "showcase": "Product showcase image"
     },
     "eyebrows": {
-      "challenge": "Training Challenge",
-      "approach": "Our Approach",
+      "challenge": "Training Challenges",
+      "approach": "How It Works",
       "capabilities": "Key Capabilities",
       "flow": "Training Flow",
       "scenarios": "Applications",
-      "values": "Value",
+      "values": "Training Benefits",
       "related": "Related",
       "featured": "Integration",
       "audience": "Suited For"
@@ -284,8 +284,8 @@
     "focusLabel": "[待翻譯] 訓練重點",
     "stepLabel": "STEP",
     "mediaNeed": "[待翻譯] 素材需求｜",
-    "mediaPending": "[待翻譯] 圖片待提供",
-    "illustrationLabel": "[待翻譯] 情境示意圖"
+    "mediaPending": "Image",
+    "illustrationLabel": "Conceptual Illustration"
   },
   "contactPage": {
     "topicLabel": "[待翻譯] 洽詢項目",
@@ -382,9 +382,9 @@
     "viewProduct": "[待翻譯] 前往產品頁",
     "viewSolution": "[待翻譯] 前往解決方案頁",
     "block": {
-      "title": "[待翻譯] 實際應用案例",
-      "description": "[待翻譯] 了解 Big x Reality 如何將相關模擬訓練技術應用於實際任務與訓練環境",
-      "more": "[待翻譯] 查看更多成功案例",
+      "title": "Related Case Studies",
+      "description": "",
+      "more": "Case Studies",
       "learnMore": "[待翻譯] 了解完整案例"
     },
     "cta": {
@@ -436,5 +436,7 @@
         "description": "[待翻譯] 投資人關係聯絡資訊及正式洽詢管道"
       }
     }
-  }
+  },
+  "backToSolutions": "Back to Solutions",
+  "backToProducts": "Back to Products"
 }

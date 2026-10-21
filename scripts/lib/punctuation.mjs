@@ -45,6 +45,8 @@ export async function* contentFiles(dir) {
 export async function scanContent(root) {
   const out = [];
   for await (const file of contentFiles(root)) {
+    // The rule is a Chinese-copy convention: English files keep their sentence punctuation as supplied.
+    if (file.includes(`${path.sep}en${path.sep}`) || file.endsWith(`${path.sep}en.json`)) continue;
     const text = await readFile(file, "utf8");
     let data, body = "";
     if (file.endsWith(".json")) data = JSON.parse(text);

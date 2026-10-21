@@ -1,45 +1,45 @@
 ---
-# 來源：requirements-2.0.md §6、§8、§9.3、§9.4。其餘欄位待提供。
-translationStatus: pending
+# English copy approved by the owner (2026-10-21), used exactly as supplied. Structural fields (order, domains, relations) are read from the Traditional Chinese file.
+translationStatus: translated
 draft: false
-publishDate: 2026-10-01
+publishDate: '2026-10-01'
 order: 3
-domains: [military]
+domains:
+- military
 hero:
-  name: "[待翻譯] USV 無人船 VR 訓練系統"
-  code: USV
-  tagline: "[待提供]"
-capabilities:
-  - title: "[待翻譯] 獨立 VR 訓練應用"
-    description: "[待翻譯] USV 目前是一個可以獨立運行的 VR App。"
-  - title: "[待翻譯] 與其他訓練系統的串接能力"
-    description: "[待翻譯] 可以將無人船的畫面串流進 SUT 的 MUM-T 訓練情境。"
-howItWorks:
-  - title: "[待提供]"
-    description: "[待提供]"
-scenarios:
-  - title: "[待翻譯] 無人船操作與任務模擬"
-    description: "[待提供]"
-integratedScenarios: [mum-t]
-components:
-  - name: "[待提供]"
-    description: "[待提供]"
-deployment:
-  personnel: "[待提供]"
-  area: "[待提供]"
-  setupTime: "[待提供]"
-integratedOps:
-  description: "[待翻譯] USV 與 SUT、UAV 的關係是「可整合」，不是「隸屬」。"
-relatedSolutions: [military]
-cta:
-  title: "[待提供]"
-  description: "[待提供]"
-  brochure: true
-  demo: true
+  name: USV VR Training System
+  tagline: A dedicated VR training application for unmanned surface vessel-related operational familiarization and simulated maritime scenarios.
+landing:
+  headline: Explore Unmanned Surface Vessel Operations Through VR.
+  subheadline: A dedicated VR training application for unmanned surface vessel-related operational familiarization and simulated maritime scenarios.
+  ctaLabel: Explore USV Training
+  blocks:
+  - kind: prose
+    title: Training Challenges
+    body: USV-related missions require operators and teams to understand mission procedures, maritime environments, and the information used during operations.
+  - kind: prose
+    title: How It Works
+    body: The USV VR Training System provides a virtual environment for selected USV-related training activities.
+  - kind: checks
+    title: Key Capabilities
+    items:
+    - title: VR-based maritime simulation
+    - title: USV mission familiarization
+    - title: Simulated operational scenarios
+    - title: Maritime situational awareness
+    - title: Repeatable training activities
+    - title: Supported visual integration with the SUT training environment
+  - kind: prose
+    title: Confirmed Integration
+    body: USV visual information can be transmitted to the SUT system within the supported integration configuration.
+  - kind: prose
+    title: Applications
+    body: Military maritime training, unmanned systems familiarization, and coordinated simulation exercises.
+  - kind: prose
+    title: Training Benefits
+    body: Support training familiarity and selected cross-system visual information sharing.
+  related:
+    title: Related Products
+  closing:
+    title: Contact Our Team
 ---
-
-[待翻譯] USV 無人船 VR 訓練系統目前是一個可以獨立運行的 VR App，同時可以將無人船的畫面串流進 SUT 的 MUM-T 訓練情境。
-
-[待翻譯] 解決的訓練問題：[待提供]
-
-[待翻譯] 核心價值：[待提供]

@@ -30,7 +30,9 @@ const pending = t.mediaPending;
 const images = L.approach?.images ?? [];
 const paras = (s: string) => s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 // Featured items link to a solution page only when it exists in this language.
-const solutions = L.featured ? await getLocalized("solutions", lang) : [];
+const needsLinks = !!L.featured || (L.blocks ?? []).some((b: any) => b.kind === "featured");
+const solutions = needsLinks ? await getLocalized("solutions", lang) : [];
+const products = needsLinks ? await getLocalized("products", lang) : [];
 let n = 0;
 const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
 ---
@@ -138,6 +140,43 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     </section>
   )}
 
+  <!-- Free-form blocks (prose / list / checks / featured), in the order given -->
+  {(L.blocks ?? []).map((b: any, i: number) => (
+    <section class={alt()} aria-labelledby={`h-block-${i}`}>
+      <div class="container">
+        {b.kind === "prose" ? (
+          <div class="pb">
+            <div class="pb-head">
+              {b.eyebrow && <p class="t-label eyebrow"><Text value={b.eyebrow} /></p>}
+              <h2 class="t-h2" id={`h-block-${i}`}><Text value={b.title} /></h2>
+            </div>
+            <div class="prose">{paras(b.body ?? "").map((p: string) => <p><Text value={p} /></p>)}</div>
+          </div>
+        ) : (
+          <>
+            <SectionHead id={`h-block-${i}`} eyebrow={b.eyebrow ?? ""} title={b.title} description={b.intro} />
+            {b.kind === "list" && <CapabilityShowcase items={(b.items ?? []).map((x: any) => ({ title: x.title, content: x.content ?? "" }))} valueLabel={t.valueLabel} needPrefix={need} fallbackLabel={pending} badge={badge} />}
+            {b.kind === "checks" && <ValueCards items={(b.items ?? []).map((x: any) => ({ title: x.title, description: x.content }))} />}
+            {b.kind === "featured" && (
+              <ul role="list" class="featured">
+                {(b.items ?? []).map((it: any) => {
+                  const href = it.solution && solutions.some((x) => x.slug === it.solution) ? localePath(lang, "solutions", it.solution) : it.product && products.some((x) => x.slug === it.product) ? localePath(lang, "products", it.product) : undefined;
+                  return (
+                    <li class="feat">
+                      <h3 class="t-h3"><Text value={it.title} /></h3>
+                      <div class="prose">{paras(it.content ?? "").map((p: string) => <p><Text value={p} /></p>)}</div>
+                      {href && it.cta && <a class="btn btn--secondary" href={href}><Text value={it.cta} /></a>}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  ))}
+
   <!-- Adoption value (dark band for rhythm) -->
   {L.values && (
     <section class="section" data-theme="dark" aria-labelledby="h-values">
@@ -152,6 +191,11 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
 
 
 <style>
+  .pb { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
+  .pb-head { display: grid; gap: var(--space-2); align-content: start; }
+  .pb-head h2, .pb-head .eyebrow { margin: 0; }
+  .pb-head .eyebrow { color: var(--ink-muted); }
+
   .featured { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
   .feat { display: grid; gap: var(--space-3); align-content: start; justify-items: start; padding: var(--space-4); border: 1px solid var(--divider); border-top: 2px solid var(--ink); background: var(--surface); }
   .feat h3, .feat .prose { margin: 0; }
@@ -174,6 +218,6 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   .note { margin: var(--space-5) 0 0; max-width: 48rem; color: var(--ink-muted); padding-left: var(--space-2); border-left: 2px solid var(--bxr-red); }
   .note.closing { color: var(--ink); font-size: var(--fs-h4); line-height: var(--lh-h4); max-width: 64rem; }
   .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
-  @media (max-width: 1023px) { .split, .challenge { grid-template-columns: 1fr; gap: var(--space-4); } .challenge-head { position: static; } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 1023px) { .pb { grid-template-columns: 1fr; gap: var(--space-3); } .split, .challenge { grid-template-columns: 1fr; gap: var(--space-4); } .challenge-head { position: static; } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 767px) { .cards, .pair.triple, .featured { grid-template-columns: 1fr; } }
 </style>

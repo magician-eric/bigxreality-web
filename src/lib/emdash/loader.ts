@@ -90,9 +90,23 @@ function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
     casesIntro: d.landing_cases_intro,
     featured: d.landing_featured_title ? opt({ title: d.landing_featured_title, intro: d.landing_featured_intro, items: list(d.landing_featured_items, ["title", "description", "ctaLabel", "solution"]) }) : undefined,
     audience: d.landing_audience_title ? opt({ title: d.landing_audience_title, intro: d.landing_audience_intro, cards: list(d.landing_audience_cards, ["title", "description"]), note: d.landing_audience_note }) : undefined,
+    blocks: d.landing_blocks?.length ? d.landing_blocks.map((b: Json) => omitEmpty({ kind: b.kind, eyebrow: b.eyebrow, title: b.title, intro: b.intro, body: b.body, items: blockItems(b.items) })) : undefined,
     related: d.landing_related_title ? opt({ title: d.landing_related_title, intro: d.landing_related_intro }) : undefined,
     closing: opt({ title: d.landing_closing_title, description: d.landing_closing_description }),
   });
+}
+/** `landing_blocks.items` text: one item per line, `Title || Text || Button || solution:slug|product:slug` (trailing parts optional). */
+function blockItems(text: string | undefined) {
+  const out = (text ?? "")
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [title, content, cta, target] = line.split(/\s*\|\|\s*/);
+      const [kind, slug] = (target ?? "").split(":");
+      return omitEmpty({ title, content, cta, solution: kind === "solution" ? slug : undefined, product: kind === "product" ? slug : undefined });
+    });
+  return out.length ? out : undefined;
 }
 const merge = (...lists: (string[] | undefined)[]) => [...new Set(lists.flatMap((l) => l ?? []))];
 
@@ -174,6 +188,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         englishName: d.english_name,
         summary: d.summary,
         cardLabel: d.card_label,
+        cardHeadline: d.card_headline,
         parent: refs.parent_solution?.[0],
         relatedSolutions: refs.related_solutions,
         relatedProducts: refs.related_products,
@@ -214,7 +229,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         integrated: d.integrated_title
           ? { eyebrow: d.integrated_eyebrow, title: d.integrated_title, description: d.integrated_description }
           : undefined,
-        cta: d.cta_title ? { title: d.cta_title, description: d.cta_description } : undefined,
+        cta: d.cta_title ? { title: d.cta_title, description: d.cta_description, button: d.cta_button } : undefined,
       }),
     };
   },
