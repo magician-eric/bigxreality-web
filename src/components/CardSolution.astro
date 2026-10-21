@@ -10,6 +10,8 @@ type Domain = "military" | "police" | "fire-rescue" | "smart-city";
 interface Props { lang: Lang; href: string; domain: Domain; name: string; englishName: string; summary: string; image?: { src: ImageMetadata; alt: string }; label?: string; headline?: string }
 const { lang, href, domain, name, englishName, summary, image, label, headline } = Astro.props;
 const ui = getUi(lang);
+// The English-name line repeats nothing on the English site, where it equals the name.
+const subtitle = headline ?? (englishName !== name ? englishName : undefined);
 ---
 <article class={`card sector--${domain}`}>
   <div class="media">
@@ -20,7 +22,7 @@ const ui = getUi(lang);
   <div class="body">
     <p class="t-label code"><span class="dot" aria-hidden="true"></span>{ui.domainCodes[domain]}</p>
     <h3 class="t-h4 title"><a href={href}><Text value={name} /></a></h3>
-    <p class="t-tech english"><Text value={headline ?? englishName} /></p>
+    {subtitle && <p class="t-tech english"><Text value={subtitle} /></p>}
     <p class="t-small summary"><Text value={summary} /></p>
     {label && <p class="more" aria-hidden="true"><Text value={label} /> →</p>}
   </div>

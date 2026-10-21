@@ -44,7 +44,7 @@ try {
   // solutions (MUM-T, NOVA) and Smart City live under Solutions, never on this page.
   const CHIPS = {
     tw: ["軍事訓練", "警勤訓練", "消防防災"],
-    en: ["Military Training", "Law Enforcement Training", "Fire & Disaster Preparedness"],
+    en: ["Military Training", "Police Training", "Fire & Disaster Prevention"],
     jp: ["軍事訓練", "警察訓練", "消防・防災"],
   };
   for (const l of ["tw", "en", "jp"]) {
@@ -166,14 +166,14 @@ try {
   await page.setViewportSize({ width: 1440, height: 900 });
   check("sitemap has no cases url while no case is published", !readFileSync(path.join(DIST, "sitemap.xml"), "utf8").includes("/cases/"));
 
-  // English and Japanese solution and product pages are translated; the product index still has no translated copy.
-  await page.goto(`${base}/en/products/`, { waitUntil: "networkidle" });
+  // English and Japanese solution and product pages and the product index are translated; the company page is not yet.
+  await page.goto(`${base}/en/company/`, { waitUntil: "networkidle" });
   check("pending translation → noindex", (await page.getAttribute('meta[name=robots]', "content")) === "noindex");
   check("pending translation banner", await page.locator(".translation-banner").isVisible());
   check("html lang en", (await page.getAttribute("html", "lang")) === "en");
 
   const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
-  check("sitemap excludes pending pages", !sitemap.includes("/en/products/</loc>") && !sitemap.includes("/jp/products/</loc>") && !sitemap.includes("/jp/news/") && sitemap.includes("/tw/products/sut/") && sitemap.includes("/jp/products/sut/"));
+  check("sitemap excludes pending pages", !sitemap.includes("/en/company/</loc>") && !sitemap.includes("/jp/company/</loc>") && sitemap.includes("/en/products/</loc>") && !sitemap.includes("/jp/news/") && sitemap.includes("/tw/products/sut/") && sitemap.includes("/jp/products/sut/"));
   // Cloudflare serves dist/client/_redirects; the static QA server does not, so check the rule itself.
   const redirects = readFileSync(path.join(DIST, "_redirects"), "utf8");
   check("/ redirects to /en/ (301)", /^\/\s+\/en\/\s+301$/m.test(redirects));

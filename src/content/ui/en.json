@@ -31,7 +31,7 @@
   "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
   "imagePending": "Product image",
   "solutionImagePending": "Solution image",
-  "syntheticImage": "[待翻譯] 合成示意",
+  "syntheticImage": "Composite illustration",
   "buttons": {
     "brochure": "Request Brochure",
     "demo": "Book a Live Demo",
@@ -41,20 +41,20 @@
     "opensInNewTab": " (opens in a new tab)"
   },
   "filter": {
-    "groupLabel": "[待翻譯] 依領域篩選",
-    "all": "[待翻譯] 全部",
-    "searchLabel": "[待翻譯] 搜尋產品",
-    "searchPlaceholder": "[待翻譯] 輸入產品名稱或關鍵字",
-    "results": "[待翻譯] 共 {n} 項產品",
-    "empty": "[待翻譯] 沒有符合條件的產品。",
-    "reset": "[待翻譯] 清除篩選"
+    "groupLabel": "Filter by field",
+    "all": "All",
+    "searchLabel": "Search products",
+    "searchPlaceholder": "Enter a product name or keyword",
+    "results": "{n} products",
+    "empty": "No products match the selected filters.",
+    "reset": "Clear filters"
   },
   "domains": {
     "military": "Military Simulation",
-    "police": "Law Enforcement Training",
-    "fire-rescue": "Fire & Disaster Preparedness",
+    "police": "Police Simulation",
+    "fire-rescue": "Fire & Disaster Prevention",
     "smart-city": "Smart City",
-    "other": "[待翻譯] 其他"
+    "other": "Other"
   },
   "domainCodes": {
     "military": "MILITARY",
@@ -65,8 +65,8 @@
   },
   "productDomains": {
     "military": "Military Training",
-    "police": "Law Enforcement Training",
-    "fire-rescue": "Fire & Disaster Preparedness"
+    "police": "Police Training",
+    "fire-rescue": "Fire & Disaster Prevention"
   },
   "product": {
     "onThisPage": "[待翻譯] 頁內導覽",
@@ -248,47 +248,47 @@
     "error": "[待翻譯] 搜尋暫時無法使用，請稍後再試。"
   },
   "cta": {
-    "exploreProducts": "[待翻譯] 探索產品",
-    "findSolutions": "[待翻譯] 尋找解決方案",
-    "viewProducts": "[待翻譯] 查看產品",
-    "viewSolutions": "[待翻譯] 查看解決方案",
-    "bookDemo": "[待翻譯] 預約產品展示",
-    "requestInfo": "[待翻譯] 索取產品資料",
-    "productInquiry": "[待翻譯] 洽詢產品",
-    "solutionInquiry": "[待翻譯] 洽詢解決方案",
-    "solutionDemo": "[待翻譯] 預約展示",
-    "discussNeeds": "[待翻譯] 討論需求",
-    "learnMore": "[待翻譯] 了解更多"
+    "exploreProducts": "Explore Products",
+    "findSolutions": "Find a Solution",
+    "viewProducts": "View Products",
+    "viewSolutions": "View Solutions",
+    "bookDemo": "Book a Product Demo",
+    "requestInfo": "Request Product Information",
+    "productInquiry": "Product Enquiry",
+    "solutionInquiry": "Solution Enquiry",
+    "solutionDemo": "Book a Demo",
+    "discussNeeds": "Discuss Your Needs",
+    "learnMore": "Learn More"
   },
   "productLanding": {
     "eyebrow": "Product",
     "sections": {
       "challenge": {
         "eyebrow": "Training Challenge",
-        "title": "[待翻譯] 訓練挑戰"
+        "title": "Training Challenges"
       }
     },
     "placeholders": {
-      "hero": "Product image",
+      "hero": "Product key visual",
       "showcase": "Product showcase image"
     },
     "eyebrows": {
-      "challenge": "Training Challenges",
-      "approach": "How It Works",
+      "challenge": "Training Challenge",
+      "approach": "Our Approach",
       "capabilities": "Key Capabilities",
       "flow": "Training Flow",
       "scenarios": "Applications",
-      "values": "Training Benefits",
+      "values": "Value",
       "related": "Related",
       "featured": "Integration",
       "audience": "Suited For"
     },
-    "valueLabel": "[待翻譯] 訓練價值",
-    "focusLabel": "[待翻譯] 訓練重點",
+    "valueLabel": "Training value",
+    "focusLabel": "Training focus",
     "stepLabel": "STEP",
-    "mediaNeed": "[待翻譯] 素材需求｜",
+    "mediaNeed": "Image needed | ",
     "mediaPending": "Image",
-    "illustrationLabel": "Conceptual Illustration"
+    "illustrationLabel": "Scenario illustration"
   },
   "contactPage": {
     "topicLabel": "[待翻譯] 洽詢項目",
@@ -440,9 +440,9 @@
       }
     }
   },
-  "backToSolutions": "Back to Solutions",
-  "backToProducts": "Back to Products",
+  "backToSolutions": "",
+  "backToProducts": "",
   "faq": {
-    "title": "[待翻譯] 常見問題"
+    "title": "Frequently Asked Questions"
   }
 }

@@ -124,6 +124,10 @@ a:hover { text-decoration: none; }
   cursor: pointer; white-space: nowrap;
   transition: background-color var(--dur-micro) var(--ease-precise), color var(--dur-micro) var(--ease-precise), border-color var(--dur-micro) var(--ease-precise);
 }
+/* Long English and Japanese labels wrap on phones instead of widening the page. */
+@media (max-width: 767px) {
+  .btn { max-width: 100%; white-space: normal; text-align: center; line-height: 1.3; padding-block: var(--space-1); }
+}
 .btn--sm { min-height: var(--btn-sm-h); padding: 0 var(--btn-sm-px); font-size: var(--fs-small); }
 .btn--primary { background: var(--bxr-red); color: var(--bxr-white); }
 .btn--primary:hover { background: var(--bxr-red-hover); }

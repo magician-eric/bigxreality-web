@@ -1,46 +1,81 @@
 ---
-# English copy approved by the owner (2026-10-21), used exactly as supplied. Structural fields (order, domains, relations) are read from the Traditional Chinese file.
+# English localisation of the Traditional Chinese master (src/content/solutions/tw/mum-t.md), complete and section for section (2026-10-21). Replaces the earlier English copy (owner authorisation 2026-10-21). MUM-T is a solution under Military Simulation, not a product or a fifth category. Structural fields are read from the Traditional Chinese file.
 translationStatus: translated
 order: 5
 domain: military
-name: MUM-T Small-Unit Tactical Coordination
-englishName: MUM-T Small-Unit Tactical Coordination
-summary: A small-unit coordination approach centered on information sharing and collaboration between soldiers and squad leaders through chest-mounted information panels.
+name: MUM-T Squad Tactical Teaming
+englishName: MUM-T Squad Tactical Teaming
+summary: Using chest-mounted panels worn by soldiers and squad leaders as the information integration interface to bring front-line mission information into squad simulation training
 landing:
-  headline: Connected Information. Coordinated Small-Unit Action.
-  subheadline: Support tactical collaboration between soldiers and squad leaders through a small-unit information-sharing approach built around chest-mounted panels.
-  ctaLabel: Contact Our Team
-  blocks:
-  - kind: prose
-    title: Designed Around the Needs of Small Tactical Teams
-    body: 'Small-unit operations depend on timely communication, shared understanding, and coordinated action.
+  headline: Helping Squad Members Share the Mission and Build Closer Tactical Coordination
+  subheadline: Using chest-mounted panels worn by soldiers and squad leaders as the information integration interface to bring front-line mission information into squad simulation training
+  intro: 'The Big x Reality MUM-T Squad Tactical Teaming solution focuses on information integration and mission coordination for front-line squads
 
 
-      BXR''s MUM-T solution concept focuses on information integration at the soldier and squad-leader level, using chest-mounted panels as an interface for team-oriented information exchange and collaboration.
+    When a squad carries out a mission, members need to keep track not only of their own position and surroundings but also of mission information relating to the squad leader and other members
 
 
-      Unlike large-scale command and simulation integration platforms, this approach is designed around the immediate coordination needs of a tactical team.'
-    eyebrow: Overview
-  - kind: list
-    title: Core Focus
+    The solution uses chest-mounted panels worn by soldiers and squad leaders as the information display interface, bringing relevant simulation information into the training process and helping the squad observe, judge and coordinate within a shared mission
+
+
+    The core of MUM-T is not building a large command centre, but bringing information closer to the actual operating environment of front-line personnel'
+  heroImage:
+    need: Squad training hero key visual (16:9)
+    ratio: 16 / 9
+  ctaLabel: Enquire About the MUM-T Solution
+  challenge:
+    title: Squad Training Challenges
+    cards:
+    - title: Scattered Member Information
+      description: When different members each receive information separately, the squad needs to build a shared understanding of the mission
+    - title: The Squad Leader Needs to Keep Track of the Mission
+      description: Besides carrying out their own tasks, the squad leader also needs to understand overall mission progress from the information available
+    - title: Information Must Be Part of Real Operation
+      description: Training cannot stop at looking at information screens; information must become part of situational judgement and mission coordination
+  approach:
+    title: Built Around Chest-Mounted Panels, Bringing Information Integration into Squad Training
+    pillars:
+    - title: Front-Line Information Display
+      description: Chest-mounted panels worn by soldiers and squad leaders provide an applicable interface for displaying simulated mission information
+    - title: Squad Mission Coordination
+      description: Relevant information is built into the shared training scenario, helping members understand mission conditions and coordination needs
+    - title: Extending to Multi-System Use
+      description: Depending on the actual system configuration, combines SUT with applicable unmanned system simulation information to extend squad coordination training
+    images:
+    - need: Close-up of the soldier's chest-mounted panel (must match the appearance of the actual equipment)
+      ratio: 4 / 3
+    - need: Close-up of the squad leader's chest-mounted panel (must match the appearance of the actual equipment)
+      ratio: 4 / 3
+  capabilities:
+    title: Training Applications
     items:
-    - title: Soldier-Level Information Access
-      content: Provide a practical information interface within the small-unit training environment.
-    - title: Squad-Leader Coordination
-      content: Support the squad leader's role in coordinating information and team activities.
-    - title: Shared Team Awareness
-      content: Help team members develop a more consistent understanding of mission-related information.
-    - title: Scenario-Based Collaboration
-      content: Apply the coordination concept within suitable tactical training scenarios.
-  - kind: prose
-    title: Built for Practical Small-Unit Integration
-    body: 'The system architecture and available information interfaces depend on the equipment and training environment selected for each project.
-
-
-      Integration with other BXR simulation products must be assessed and confirmed for the specific implementation.'
-    eyebrow: Integration Approach
+    - title: Squad Mission Information Awareness
+      content: Members practise reading and understanding relevant information during simulated missions
+      image:
+        need: Squad information integration illustration (3:2)
+        ratio: 3 / 2
+        kind: illustration
+    - title: Squad Leader Mission Coordination
+      content: Information displayed on the chest-mounted panel supports the squad leader in practising mission judgement and squad coordination
+    - title: Scenario-Based Coordinated Exercises
+      content: Combines information awareness with squad operation for a more complete shared mission experience
+    - title: Unmanned System Information Support
+      content: Based on integration functions already completed, applicable unmanned system simulation information is brought into squad training scenarios
+      image:
+        need: Applicable system coordination scenario illustration (3:2)
+        ratio: 3 / 2
+        kind: illustration
+  values:
+    title: Value of Adoption
+    cards:
+    - title: Focused on Real Front-Line Needs
+      description: Soldiers and squad leaders are the main users, and squad training does not need to be treated as a large command system
+    - title: Combining Information and Operation
+      description: Information display becomes part of the training process rather than a separate display screen
+    - title: Extending Squad Coordination
+      description: Helps trainees practise information awareness, judgement and coordination within a shared mission
   related:
-    title: Related Products
+    title: Related Products and Solutions
   closing:
-    title: Explore Small-Unit Coordination Training.
+    title: Taking Squad Training from Individual Operation to Coordinated Shared Missions
 ---
