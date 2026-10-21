@@ -18,11 +18,15 @@ const visibleCards = () => page.locator("#product-grid > li:not([hidden])").coun
 
 try {
   await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
-  check("overview lists 9 products", (await visibleCards()) === 9);
+  check("overview lists 12 products", (await visibleCards()) === 12);
   await page.getByRole("button", { name: "警勤" }).click();
-  check("domain filter: Police → 0 cards + empty message", (await visibleCards()) === 0 && (await page.locator("[data-filter-empty]").isVisible()));
-  check("filter state announced", (await page.locator("[data-status]").textContent()) === "共 0 項產品");
+  check("domain filter: Police → 2 cards", (await visibleCards()) === 2);
+  check("filter state announced", (await page.locator("[data-status]").textContent()) === "共 2 項產品");
   check("filter state in URL", new URL(page.url()).searchParams.get("domain") === "police");
+  await page.getByRole("button", { name: "消防與防救災" }).click();
+  check("domain filter: Fire & rescue → 1 card", (await visibleCards()) === 1);
+  await page.getByRole("button", { name: "智慧城市" }).click();
+  check("domain filter: Smart city → 0 cards + empty message", (await visibleCards()) === 0 && (await page.locator("[data-filter-empty]").isVisible()));
   await page.getByRole("button", { name: "軍事" }).click();
   check("domain filter: Military → 9 cards", (await visibleCards()) === 9);
   check("pressed state", (await page.getByRole("button", { name: "軍事" }).getAttribute("aria-pressed")) === "true");
@@ -31,7 +35,7 @@ try {
   await page.getByLabel("搜尋產品").fill("無人機");
   check("text filter: '無人機' → 1 card (UAV)", (await visibleCards()) === 1);
   await page.goto(`${base}/tw/products/?domain=police`, { waitUntil: "networkidle" });
-  check("filter restored from URL", (await visibleCards()) === 0);
+  check("filter restored from URL", (await visibleCards()) === 2);
 
   await page.goto(`${base}/tw/products/sut/`, { waitUntil: "networkidle" });
   const alt = await page.$$eval('link[rel=alternate][hreflang]', (ls) => ls.map((l) => `${l.hreflang} ${l.href}`));
@@ -88,7 +92,7 @@ try {
   const mail = await page.locator("[data-mailto]").getAttribute("href");
   check("contact page: topic + product in the e-mail subject", mail.startsWith("mailto:") && decodeURIComponent(mail).includes("產品洽詢 – SUT"), mail);
 
-  for (const [slug, h1, scen, related, cta, flowCount = 4] of [
+  for (const [slug, h1, scen, related, cta, flowCount = 4, capCount = 5] of [
     ["uav", "從掌握空中任務，到應對低空威脅", 5, ["/tw/products/sut/", "/tw/products/usv/", "/tw/solutions/military/"], "UAV"],
     ["usv", "讓無人船任務訓練，從虛擬海域開始", 3, ["/tw/products/sut/", "/tw/products/uav/", "/tw/solutions/military/"], "USV"],
     ["wargaming-table", "整合多元訓練資訊，建構更完整的指揮決策視野", 4, ["/tw/products/sut/", "/tw/solutions/military/"], "兵棋圖台系統", 0],
@@ -97,11 +101,14 @@ try {
     ["machine-gun-simulator", "讓射擊訓練，從操作熟悉延伸至任務判斷", 4, ["/tw/products/sniper-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "機槍模擬系統"],
     ["hmmwv-simulator", "讓軍用車輛駕駛訓練，延伸至更多任務情境", 4, ["/tw/products/tactical-boat-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "悍馬車載具訓練系統"],
     ["tactical-boat-simulator", "讓海上操艇訓練，從可控的模擬環境開始", 4, ["/tw/products/usv/", "/tw/products/hmmwv-simulator/", "/tw/solutions/military/"], "快艇載具訓練系統"],
+    ["full-scale-police-training", "讓警勤訓練走進更接近真實的勤務現場", 4, ["/tw/products/police-box/", "/tw/products/sut/", "/tw/solutions/police/"], "全配式警勤訓練系統（On-sited）"],
+    ["police-box", "讓警勤模擬訓練，不再受限於固定場域", 4, ["/tw/products/full-scale-police-training/", "/tw/products/sut/", "/tw/solutions/police/"], "攜帶式警勤訓練器（BOX）"],
+    ["fire-extinguisher-simulator", "從認識火災到實際操作，讓滅火訓練更接近真實應變", 6, ["/tw/solutions/fire-rescue/"], "VR 虛擬滅火訓練系統", 4, 6],
   ]) {
     await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
     check(`${slug}: H1 is the V2.0 headline`, (await page.locator("h1").innerText()).trim() === h1);
     check(`${slug}: ${scen} scenario cards`, (await page.locator(".scenarios .card").count()) === scen);
-    check(`${slug}: ${flowCount} flow steps, 5 capabilities`, (await page.locator(".flow .step").count()) === flowCount && (await page.locator(".feature, .plain .cap").count()) === 5);
+    check(`${slug}: ${flowCount} flow steps, ${capCount} capabilities`, (await page.locator(".flow .step").count()) === flowCount && (await page.locator(".feature, .plain .cap").count()) === capCount);
     const hrefs = await page.locator("a[href]").evaluateAll((els) => els.map((e) => e.getAttribute("href")));
     check(`${slug}: related links`, related.every((h) => hrefs.includes(h)), related.filter((h) => !hrefs.includes(h)).join(" "));
     check(`${slug}: CTA goes to the contact page with the product code`, hrefs.some((h) => h.includes(`/tw/contact/?topic=product&${new URLSearchParams({ item: cta })}`)));
@@ -119,7 +126,7 @@ try {
   check("cases list opens with an empty state and no cards", (await page.locator("[data-case-empty]").isVisible()) && (await page.locator("article.card").count()) === 0);
   check("cases list without cases is noindex", (await page.getAttribute('meta[name=robots]', "content")) === "noindex");
   check("cases list heading and sub-heading", (await page.locator("h1").innerText()).trim() === "成功案例" && (await page.locator(".page-hero .lead").innerText()).includes("從實際導入經驗，看見沉浸式模擬訓練的應用價值"));
-  for (const slug of ["sut", "uav", "usv", "wargaming-table", "mortar-observation", "sniper-simulator", "machine-gun-simulator", "hmmwv-simulator", "tactical-boat-simulator"]) {
+  for (const slug of ["sut", "uav", "usv", "wargaming-table", "mortar-observation", "sniper-simulator", "machine-gun-simulator", "hmmwv-simulator", "tactical-boat-simulator", "full-scale-police-training", "police-box", "fire-extinguisher-simulator"]) {
     await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
     if ((await page.locator("[data-related-cases]").count()) !== 0 || (await page.content()).includes("實際應用案例")) check(`${slug}: no cases block without cases`, false);
   }

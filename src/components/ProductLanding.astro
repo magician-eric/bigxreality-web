@@ -127,17 +127,17 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   {L.approach && (
     <section class={alt()} aria-labelledby="h-approach">
       <div class="container">
-        <div class:list={["split", { solo: images.length === 0 }]}>
+        <div class:list={["split", { solo: images.length === 0, wide: images.length === 3 }]}>
           <div class="copy">
             <SectionHead id="h-approach" eyebrow={e.approach} title={L.approach.title} />
             {L.approach.intro && <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>}
           </div>
           {images.length > 0 && (
-            <div class:list={["pair", { single: images.length === 1, stack: images[0]?.ratio === "16 / 9" }]}>
+            <div class:list={["pair", { single: images.length === 1, triple: images.length === 3, stack: images.length < 3 && images[0]?.ratio === "16 / 9" }]}>
               {images.map((img, i) => (
                 <>
-                  {i === 1 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
-                  <MediaSlot media={img} ratio={images.length === 1 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} badge={badge} sizes="(max-width: 767px) 50vw, 28vw" />
+                  {i === 1 && images.length === 2 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
+                  <MediaSlot media={img} ratio={images.length === 1 || images.length === 3 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} badge={badge} sizes="(max-width: 767px) 50vw, 28vw" />
                 </>
               ))}
             </div>
@@ -233,7 +233,8 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   .challenge-head { display: grid; gap: var(--space-4); align-content: start; position: sticky; top: calc(var(--header-h) + var(--space-4)); }
   .challenge-head :global(.section-head) { margin-bottom: 0; }
   .split { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
-  .split.solo { grid-template-columns: 1fr; }
+  .split.solo, .split.wide { grid-template-columns: 1fr; }
+  .pair.triple { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pair.single, .pair.stack { grid-template-columns: 1fr; }
   .pair.stack .link svg { transform: rotate(90deg); }
   .pair { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
@@ -247,5 +248,5 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   .note.closing { color: var(--ink); font-size: var(--fs-h4); line-height: var(--lh-h4); max-width: 64rem; }
   .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
   @media (max-width: 1023px) { .split, .challenge { grid-template-columns: 1fr; gap: var(--space-4); } .challenge-head { position: static; } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) { .cards, .pair.triple { grid-template-columns: 1fr; } }
 </style>
