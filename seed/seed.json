@@ -2452,6 +2452,11 @@
      "type": "string"
     },
     {
+     "slug": "closing_title",
+     "label": "頁尾標語（公司介紹頁：顯示在頁尾上方的一行）",
+     "type": "string"
+    },
+    {
      "slug": "highlights_title",
      "label": "重點卡片：標題（解決方案總覽頁）",
      "type": "string"

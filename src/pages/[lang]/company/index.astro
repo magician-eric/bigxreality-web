@@ -1,0 +1,36 @@
+---
+/**
+ * /[lang]/company/ — company introduction. Copy comes from the `pages` entry "company"
+ * (hero: label, title, paragraphs; closing: slogan band with a link to the contact page).
+ */
+import { getEntry } from "astro:content";
+import { LANGS, localePath, type Lang } from "../../../i18n";
+import { getUi } from "../../../lib/ui";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import CtaBand from "../../../components/CtaBand.astro";
+import Text from "../../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const ui = getUi(lang);
+const copy = (await getEntry("pages", `${lang}/company`))!.data;
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.company, path: localePath(lang, "company") },
+];
+---
+<BaseLayout
+  lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/company/" alternates={[...LANGS]}
+  pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" current="company" breadcrumbs={breadcrumbs}
+>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
+  {copy.closing && (
+    <CtaBand id="company-slogan" title={copy.closing.title}>
+      <a class="btn btn--primary" href={localePath(lang, "contact")}><Text value={ui.contact} /></a>
+    </CtaBand>
+  )}
+</BaseLayout>

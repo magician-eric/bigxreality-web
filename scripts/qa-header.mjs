@@ -94,6 +94,9 @@ try {
   check("Active: 產品介紹 on the products overview", JSON.stringify(await current("/tw/products/")) === '["產品介紹"]');
   check("Active: 產品介紹 on a product page", JSON.stringify(await current("/tw/products/sut/")) === '["產品介紹"]');
   check("Active: 解決方案 on a solution page", JSON.stringify(await current("/tw/solutions/military/")) === '["解決方案"]');
+  await page.goto(`${base}/tw/company/`, { waitUntil: "networkidle" });
+  check("company page: heading, three paragraphs and slogan", (await page.locator("h1").innerText()).trim() === "虛擬訓練．真實應變．守護未來" && (await page.locator(".page-hero .desc").count()) === 3 && (await page.locator("#company-slogan").innerText()).includes("Turn Every Drill into Real"));
+  check("Active: 公司介紹 on the company page", JSON.stringify(await current("/tw/company/")) === '["公司介紹"]');
   check("Active: 資源中心 on the case list", JSON.stringify(await current("/tw/cases/")) === '["資源中心"]');
   check("Active: 資源中心 on the news list", JSON.stringify(await current("/tw/news/")) === '["資源中心"]');
   check("Active: 資源中心 on the insights list", JSON.stringify(await current("/tw/insights/")) === '["資源中心"]');

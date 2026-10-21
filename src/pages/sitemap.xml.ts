@@ -32,6 +32,7 @@ export const GET: APIRoute = async () => {
     add("/{lang}/products/", await filter((l) => copyOk("products", l)));
     add("/{lang}/solutions/", await filter((l) => copyOk("solutions", l)));
     add("/{lang}/contact/", await filter((l) => copyOk("contact", l)));
+    add("/{lang}/company/", await filter((l) => copyOk("company", l)));
 
     for (const collection of ["products", "solutions"] as const) {
       const indexable = new Map<string, Lang[]>();

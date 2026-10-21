@@ -208,6 +208,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       data: omitEmpty({
         translationStatus: d.translation_status,
         seo: { title: item.seo?.title || d.title, description: item.seo?.description || d.description },
+        closing: d.closing_title ? { title: d.closing_title } : undefined,
         highlights: d.highlights_title ? { title: d.highlights_title, items: titledList(d.highlights_items) } : undefined,
         hero: omitEmpty({ eyebrow: d.eyebrow, title: d.title, lead: d.lead, description: d.description, image: ctx.image(d.hero_image), imageCaption: d.image_caption }),
         integrated: d.integrated_title
