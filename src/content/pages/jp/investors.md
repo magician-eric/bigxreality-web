@@ -2,8 +2,8 @@
 # 繁中檔的 [待翻譯] 複本
 translationStatus: pending
 seo:
-  title: "[待翻譯] 投資人專區"
-  description: "[待翻譯] Big x Reality 全球動力科技的投資人專區"
+  title: "投資家情報｜Big x Reality"
+  description: "Big x Reality が公開している企業情報および投資家向け情報をご案内します。"
 hero:
   eyebrow: Investor Relations
   title: "[待翻譯] 投資人專區"

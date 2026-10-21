@@ -59,10 +59,11 @@ const collectionLd = {
     itemListElement: items.map((a, i) => ({ "@type": "ListItem", position: (page - 1) * (pageSize(collection) ?? 0) + i + 1, url: abs(articleHref(a)) })),
   },
 };
+const description = page > 1 ? `${copy.seo.description} ${format(ui.listing.page, { n: page })}` : copy.seo.description;
 const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: page })}` : copy.seo.title;
 ---
 <BaseLayout
-  lang={lang} title={title} description={copy.seo.description} pathTemplate={path} alternates={alternates}
+  lang={lang} title={title} description={description} pathTemplate={path} alternates={alternates}
   pendingTranslation={copy.translationStatus === "pending"} noindex={all.length === 0}
   headerTheme="dark" current="resources" currentResource={collection}
   fallbackPath={`/{lang}/${segmentOf(collection)}/`} breadcrumbs={breadcrumbs}

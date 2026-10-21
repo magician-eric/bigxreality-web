@@ -163,4 +163,7 @@ faq:
   answer: The training scenarios include a home kitchen, living room, office, high-tech factory, port and sheet-metal building, so trainees encounter fire response situations in different environments.
 - question: Can VR fire extinguisher training completely replace operating a real fire extinguisher?
   answer: Not completely. VR is suitable for repeated practice of extinguisher selection, basic operating procedures and situational judgement, but the weight of real equipment, the spray response and on-site safety requirements still need to be supplemented through appropriate physical training.
+seo:
+  title: "VR Fire Extinguisher Training Simulator | Fire Safety Education"
+  description: "The VR fire extinguisher training system combines a realistic extinguisher device, immersive fire scenarios, and interactive lessons for fire safety education, operation practice, and assessment."
 ---

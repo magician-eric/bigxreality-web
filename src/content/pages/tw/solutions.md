@@ -2,8 +2,8 @@
 # 解決方案總覽頁文案：業主提供（2026-10-21）
 translationStatus: source
 seo:
-  title: "解決方案"
-  description: "整合沉浸式模擬、人工智慧、互動設備與數位化應用，滿足軍事、警勤、消防防災及智慧城市的多元需求"
+  title: "XR 專業模擬訓練與系統整合解決方案"
+  description: "Big x Reality 針對軍事、警勤、消防防災與智慧城市需求，整合 XR 沉浸式模擬、AI、互動設備及數位場景技術，規劃從單一操作到跨系統整合的多元應用。"
 hero:
   eyebrow: Solutions
   title: "從專業訓練到智慧應用，打造虛實整合的全方位解決方案"

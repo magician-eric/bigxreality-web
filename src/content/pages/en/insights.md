@@ -2,8 +2,8 @@
 # 繁中檔的 [待翻譯] 複本
 translationStatus: pending
 seo:
-  title: "[待翻譯] 技術文章"
-  description: "[待提供]"
+  title: "Technical Insights｜XR, AI & Simulation Training"
+  description: "Explore Big x Reality insights on XR, AI, digital simulation, training design, and system integration for military, policing, fire safety, and smart applications."
 hero:
   eyebrow: Insights
   title: "[待翻譯] 技術文章"

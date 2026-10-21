@@ -157,4 +157,7 @@ faq:
   answer: Simulation training allows selected operation and mission practice in a virtual environment without using a real drone every time. If the training objectives include operating a real aircraft, equipment maintenance or actual flight, corresponding physical training still needs to be arranged separately.
 - question: Which training needs is this system suitable for?
   answer: It is suitable for simulation training in drone mission familiarisation, low-altitude threat awareness, base protection and related tactical response. Actual course content and equipment configuration must be confirmed according to the unit's needs.
+seo:
+  title: "UAV Tactical & Counter-UAS Training Simulator"
+  description: "Explore VR-based UAV flight simulation and counter-UAS training, combining XR mission information with scenarios for flight operations, tactical decisions, low-altitude threat identification, and response."
 ---

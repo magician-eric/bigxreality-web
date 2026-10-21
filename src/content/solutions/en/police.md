@@ -108,4 +108,7 @@ landing:
     title: Related Products
   closing:
     title: From Police Equipment Operation to Duty Response, a More Complete Police Training Environment
+seo:
+  title: "Police Simulation Training | VR Scenarios & De-escalation"
+  description: "Combine immersive police scenarios, equipment handling, verbal de-escalation, operational decision-making, and training management for foundational and advanced police training."
 ---

@@ -138,4 +138,7 @@ faq:
   answer: Depending on configuration, training related to police scenario simulation, operating familiarisation and on-scene judgement can be arranged. The courses, interaction equipment and number of participants actually supported depend on the selected system version.
 - question: Which units is the Police BOX suitable for?
   answer: It suits police-related units that need touring training, teaching across different sites or flexibly scheduled training activities. Suitability can be assessed at adoption according to how often it will be moved, the number of trainees and course content.
+seo:
+  title: "Police BOX | Portable VR Police Training Simulator"
+  description: "Police BOX is a portable police training simulator that integrates equipment into a transportable case, supporting flexible deployment for police equipment practice and operational scenarios."
 ---

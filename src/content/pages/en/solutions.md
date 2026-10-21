@@ -2,8 +2,8 @@
 # English localisation of the Traditional Chinese master (src/content/pages/tw/solutions.md), complete (2026-10-21). Replaces the earlier English copy (owner authorisation 2026-10-21); like the master, the page has no closing CTA band.
 translationStatus: translated
 seo:
-  title: "Solutions"
-  description: "Integrating immersive simulation, artificial intelligence, interactive equipment and digital applications to meet the diverse needs of military, police, fire and disaster prevention, and smart city applications"
+  title: "XR Training & System Integration Solutions"
+  description: "Big x Reality integrates XR simulation, AI, interactive equipment, and digital environments to support military, police, fire and disaster response, and smart city applications."
 hero:
   eyebrow: Solutions
   title: "From Professional Training to Smart Applications: Comprehensive Solutions Integrating the Physical and the Virtual"

@@ -135,4 +135,7 @@ faq:
   answer: For some basic operation, procedural familiarisation and scenario exercises, the simulation system can provide practice opportunities without live ammunition, but it cannot replace all live-fire shooting and training with real equipment.
 - question: Which training uses is this system suitable for?
   answer: It is suitable for military equipment operation education, training related to tactical support and repeated exercises in specified scenarios. The adoption approach must be assessed according to the unit's equipment and course needs.
+seo:
+  title: "Machine Gun Training Simulator | Weapon Handling & Firing Discipline"
+  description: "The machine gun simulator supports weapon handling, firing discipline, shooting procedures, and mission-based practice in a simulated training environment."
 ---

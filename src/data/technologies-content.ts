@@ -157,7 +157,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "洽詢 XR 訓練應用"
       },
       "seo": {
-        "title": "XR 延展實境技術｜VR、AR、MR 專業模擬訓練｜BXR",
+        "title": "XR 延展實境技術｜VR、AR、MR 專業模擬訓練",
         "description": "了解 BXR 如何運用 XR 延展實境、VR、AR 與 MR 技術，建立軍事、警勤及消防防災領域的互動式模擬訓練情境，支援操作練習與任務應變。"
       }
     },
@@ -280,7 +280,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "Discuss XR training applications"
       },
       "seo": {
-        "title": "Extended Reality (XR) Technology | VR, AR & MR for Professional Simulation Training | BXR",
+        "title": "Extended Reality (XR) Technology｜VR, AR & MR Training",
         "description": "Discover how BXR uses XR, VR, AR, and MR to create interactive simulation training scenarios for military, police, and fire and disaster response, supporting operational practice and mission response."
       }
     },
@@ -403,7 +403,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "XR 訓練の活用について相談する"
       },
       "seo": {
-        "title": "XR（エクステンデッド・リアリティ）技術｜VR・AR・MR による専門シミュレーション訓練｜BXR",
+        "title": "XR 技術｜VR・AR・MR 専門シミュレーション訓練",
         "description": "BXR が XR（エクステンデッド・リアリティ）、VR、AR、MR 技術を活用し、軍事、警察業務、消防・防災分野で操作練習と任務への対応を支援する、インタラクティブなシミュレーション訓練シナリオを構築する方法をご紹介します。"
       }
     }
@@ -551,7 +551,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "洽詢模擬訓練規劃"
       },
       "seo": {
-        "title": "模擬訓練設計｜嚴肅遊戲與 XR 專業訓練應用｜BXR",
+        "title": "模擬訓練設計｜嚴肅遊戲與 XR 訓練",
         "description": "了解 BXR 如何結合模擬訓練設計、嚴肅遊戲（Serious Games）與 XR 互動技術，將軍事、警勤及消防防災的訓練需求轉換為可操作、可重複練習的模擬情境。"
       }
     },
@@ -697,7 +697,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "Discuss simulation training planning"
       },
       "seo": {
-        "title": "Simulation-Based Training Design | Serious Games & XR for Professional Training | BXR",
+        "title": "Simulation-Based Training Design｜Serious Games & XR",
         "description": "Discover how BXR combines simulation-based training design, serious games, and interactive XR technology to translate military, police, and fire and disaster response training requirements into actionable, repeatable simulated scenarios."
       }
     },
@@ -843,7 +843,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "シミュレーション訓練の計画について相談する"
       },
       "seo": {
-        "title": "シミュレーション訓練設計｜シリアスゲームと XR による専門訓練への活用｜BXR",
+        "title": "シミュレーション訓練設計｜シリアスゲーム・XR",
         "description": "BXR がシミュレーション訓練設計、シリアスゲーム（Serious Games）、XR インタラクション技術を組み合わせ、軍事、警察業務、消防・防災の訓練要件を、操作でき、繰り返し練習できる模擬シナリオに変換する方法をご紹介します。"
       }
     }
@@ -979,7 +979,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "洽詢專業訓練需求"
       },
       "seo": {
-        "title": "專業訓練領域知識｜軍警消模擬訓練需求與系統設計｜BXR",
+        "title": "專業訓練領域知識｜軍警消模擬系統設計",
         "description": "了解 BXR 如何結合軍事、警勤與消防防災的訓練需求理解、專案經驗及 XR 模擬技術，將專業任務情境轉換為適合的模擬訓練系統設計。"
       }
     },
@@ -1113,7 +1113,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "Discuss your professional training requirements"
       },
       "seo": {
-        "title": "Domain Expertise in Professional Training | Military, Police & Fire Simulation System Design | BXR",
+        "title": "Professional Training Expertise｜Military, Police & Fire",
         "description": "Discover how BXR combines an understanding of military, police, and fire and disaster response training requirements, project experience, and XR simulation technology to translate professional mission scenarios into suitable simulation training system designs."
       }
     },
@@ -1247,7 +1247,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "cta": "専門訓練の要件について相談する"
       },
       "seo": {
-        "title": "専門訓練分野の知識｜軍事・警察・消防のシミュレーション訓練要件とシステム設計｜BXR",
+        "title": "専門訓練分野の知識｜軍事・警察・消防の模擬訓練",
         "description": "BXR が軍事、警察業務、消防・防災の訓練要件への理解、プロジェクト経験、XR シミュレーション技術を組み合わせ、専門的な任務シナリオを適切なシミュレーション訓練システムの設計に変換する方法をご紹介します。"
       }
     }
@@ -1297,8 +1297,8 @@ export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewConte
       }
     },
     "seo": {
-      "title": "核心技術｜XR 模擬訓練、訓練設計與系統整合｜BXR",
-      "description": "了解 BXR 如何整合 XR 延展實境、數位模擬、訓練設計、專業領域知識及系統整合能力，回應軍事、警勤與消防防災等專業訓練需求。"
+      "title": "核心技術｜XR、AI 與數位模擬系統整合",
+      "description": "了解 Big x Reality 七大核心技術，涵蓋 XR 延展實境、AI 智慧模擬、數位場景建構、模擬訓練設計、系統整合、指揮決策視覺化及專業訓練領域知識。"
     }
   },
   "en": {
@@ -1341,8 +1341,8 @@ export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewConte
       }
     },
     "seo": {
-      "title": "Core Technologies | XR Simulation Training, Training Design & System Integration | BXR",
-      "description": "Discover how BXR brings together XR, digital simulation, training design, domain expertise, and system integration capabilities to address professional training requirements in military, police, and fire and disaster response."
+      "title": "Core Technologies | XR, AI & Digital Simulation",
+      "description": "Explore Big x Reality's seven core technology areas: extended reality, AI simulation, digital environments, training design, system integration, decision visualization, and professional training expertise."
     }
   },
   "jp": {
@@ -1385,8 +1385,8 @@ export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewConte
       }
     },
     "seo": {
-      "title": "コア技術｜XR シミュレーション訓練・訓練設計・システム統合｜BXR",
-      "description": "BXR が XR（エクステンデッド・リアリティ）、デジタルシミュレーション、訓練設計、専門分野の知識、システム統合能力を結び付け、軍事、警察業務、消防・防災などの専門訓練要件に応える方法をご紹介します。"
+      "title": "コア技術｜XR・AI・デジタルシミュレーション",
+      "description": "Big x Reality の7つのコア技術をご紹介します。XR、AI シミュレーション、デジタル環境構築、訓練設計、システム統合、指揮・意思決定の可視化、専門訓練分野の知識を網羅しています。"
     }
   }
 };
