@@ -21,7 +21,8 @@ export function getArticles(collection: ArticleCollection, lang: Lang): Promise<
     cache.set(key, (async () => {
       const out: Article[] = [];
       for (const e of await getLocalized(collection, lang)) {
-        if (!e.loc.body?.trim()) {
+        // Case studies are written in structured fields; the free-text body is optional for them.
+        if (collection !== "case-studies" && !e.loc.body?.trim()) {
           const id = `${collection}/${lang}/${e.slug}`;
           if (!warned.has(id)) console.warn(`[articles] ${id}: empty body, page not built`);
           warned.add(id);

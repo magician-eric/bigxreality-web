@@ -1,0 +1,10 @@
+---
+/** /[lang]/cases/ — success-case overview (see components/CaseListPage.astro). */
+import { LANGS, type Lang } from "../../../i18n";
+import CaseListPage from "../../../components/CaseListPage.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+---
+<CaseListPage lang={Astro.params.lang as Lang} />

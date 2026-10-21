@@ -28,6 +28,8 @@ import CardProduct from "./CardProduct.astro";
 import CardSolution from "./CardSolution.astro";
 import CtaBand from "./CtaBand.astro";
 import CtaGroup from "./CtaGroup.astro";
+import RelatedCases from "./RelatedCases.astro";
+import { casesAbout } from "../lib/cases";
 import Text from "./Text.astro";
 
 interface Props {
@@ -70,6 +72,8 @@ const breadcrumbs = [
   { name: d.hero.name, path: localePath(lang, "products", slug) },
 ];
 // background rhythm: sections alternate white / tinted in the order they appear
+// Published, client-approved cases that point at this product (hidden when there are none).
+const cases = await casesAbout("relatedProducts", slug, lang);
 let n = 0;
 const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
 ---
@@ -179,6 +183,9 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
       </div>
     </section>
   )}
+
+  <!-- Applied cases: relations are stored on the case; nothing renders without a published case -->
+  <RelatedCases lang={lang} cases={cases} alt={cases.length > 0 && n++ % 2 === 1} />
 
   <!-- Related products and solutions (only entries with a real page) -->
   {showRelated && (

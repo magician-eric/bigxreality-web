@@ -46,13 +46,15 @@
     "military": "[待翻譯] 軍事",
     "police": "[待翻譯] 警勤",
     "fire-rescue": "[待翻譯] 消防與防救災",
-    "smart-city": "[待翻譯] 智慧城市"
+    "smart-city": "[待翻譯] 智慧城市",
+    "other": "[待翻譯] 其他"
   },
   "domainCodes": {
     "military": "MILITARY",
     "police": "POLICE",
     "fire-rescue": "FIRE & RESCUE",
-    "smart-city": "SMART CITY"
+    "smart-city": "SMART CITY",
+    "other": "OTHER"
   },
   "product": {
     "onThisPage": "[待翻譯] 頁內導覽",
@@ -338,5 +340,48 @@
       "[待翻譯] 需求說明："
     ],
     "noEmail": "[待翻譯] 聯絡信箱尚未設定。"
+  },
+  "cases": {
+    "filterLabel": "[待翻譯] 篩選成功案例",
+    "domain": "[待翻譯] 應用領域",
+    "product": "[待翻譯] 關聯產品",
+    "solution": "[待翻譯] 關聯解決方案",
+    "all": "[待翻譯] 全部",
+    "learnMore": "[待翻譯] 了解完整案例",
+    "count": "[待翻譯] 共 {n} 個案例",
+    "filterResults": "[待翻譯] 共 {n} 個案例",
+    "filterEmpty": "[待翻譯] 沒有符合條件的案例",
+    "empty": "[待翻譯] 成功案例整理中，目前尚無已發布的案例",
+    "emptyHint": "[待翻譯] 如需了解沉浸式模擬訓練如何配合您的任務需求，歡迎與我們聯絡",
+    "emptyCta": "[待翻譯] 聯絡我們",
+    "client": "[待翻譯] 導入單位",
+    "domains": "[待翻譯] 應用領域",
+    "products": "[待翻譯] 關聯產品",
+    "solutions": "[待翻譯] 關聯解決方案",
+    "anonymized": "[待翻譯] （單位資訊匿名）",
+    "section": {
+      "background": "[待翻譯] 專案背景",
+      "challenge": "[待翻譯] 面臨的訓練挑戰",
+      "solution": "[待翻譯] 導入解決方案",
+      "application": "[待翻譯] 實際應用方式",
+      "results": "[待翻譯] 專案成果與效益",
+      "gallery": "[待翻譯] 現場影像",
+      "details": "[待翻譯] 專案詳述",
+      "relatedItems": "[待翻譯] 相關產品與解決方案",
+      "more": "[待翻譯] 延伸閱讀"
+    },
+    "viewProduct": "[待翻譯] 前往產品頁",
+    "viewSolution": "[待翻譯] 前往解決方案頁",
+    "block": {
+      "title": "[待翻譯] 實際應用案例",
+      "description": "[待翻譯] 了解 Big x Reality 如何將相關模擬訓練技術應用於實際任務與訓練環境",
+      "more": "[待翻譯] 查看更多成功案例",
+      "learnMore": "[待翻譯] 了解完整案例"
+    },
+    "cta": {
+      "title": "[待翻譯] 與我們討論您的訓練需求",
+      "description": "[待翻譯] 歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
+      "button": "[待翻譯] 聯絡我們"
+    }
   }
 }

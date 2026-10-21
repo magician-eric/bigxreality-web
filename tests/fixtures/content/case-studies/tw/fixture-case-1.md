@@ -6,11 +6,18 @@ title: TEST FIXTURE 案例一
 summary: TEST FIXTURE 案例摘要
 client:
   name: TEST FIXTURE 某市警察局
+  type: TEST FIXTURE 縣市警察單位
   disclosure: anonymized
 approval:
   approved: true
+background: |-
+  TEST FIXTURE 專案背景
+
+  TEST FIXTURE 專案背景第二段
 challenge: TEST FIXTURE 挑戰說明
 solution: TEST FIXTURE 導入方案說明
+application: TEST FIXTURE 實際應用方式
+results: TEST FIXTURE 已確認成果敘述
 outcomes:
   - label: TEST FIXTURE 訓練時數
     value: "[待提供]"

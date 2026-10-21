@@ -203,7 +203,7 @@ const MAP = {
   }),
   pages: async ({ fm: d, file }) => ({
     data: clean({
-      title: d.hero.title, translation_status: d.translationStatus, eyebrow: d.hero.eyebrow, description: d.hero.description,
+      title: d.hero.title, translation_status: d.translationStatus, eyebrow: d.hero.eyebrow, lead: d.hero.lead, description: d.hero.description,
       hero_image: await image(d.hero.image, file), image_caption: d.hero.imageCaption,
       integrated_eyebrow: d.integrated?.eyebrow, integrated_title: d.integrated?.title, integrated_description: d.integrated?.description,
       cta_title: d.cta?.title, cta_description: d.cta?.description,
@@ -225,8 +225,10 @@ const MAP = {
   case_studies: async ({ fm: d, body, file }) => ({
     data: clean({
       ...(await articleBase(d, body, file)),
-      client_name: d.client.name, client_disclosure: d.client.disclosure, approved: !!d.approval?.approved,
-      challenge: d.challenge, solution: d.solution, outcomes: d.outcomes, domains: d.domains,
+      client_name: d.client.name, client_type: d.client.type, client_disclosure: d.client.disclosure, approved: !!d.approval?.approved,
+      background: d.background, challenge: d.challenge, solution: d.solution, application: d.application, results: d.results,
+      outcomes: d.outcomes, domains: d.domains,
+      gallery: d.gallery ? await Promise.all(d.gallery.map(async (g) => clean({ image: await image(g, file), caption: g.caption }))) : undefined,
     }),
     seo: seoOf(d.seo),
     publishedAt: day(d.publishDate),

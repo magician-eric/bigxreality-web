@@ -9,6 +9,8 @@ import { getImage } from "astro:assets";
 import { LANGS, localePath, type Lang } from "../../../i18n";
 import { getLocalized, availableLangs, integratedProducts, validateRelations } from "../../../lib/content";
 import { articlesAbout, articleHref, tagNames } from "../../../lib/articles";
+import { casesAbout } from "../../../lib/cases";
+import RelatedCases from "../../../components/RelatedCases.astro";
 import { visibleProductSections, isPending, type ProductSection } from "../../../lib/pending";
 import { getUi } from "../../../lib/ui";
 import { markPendingHtml } from "../../../lib/text";
@@ -45,7 +47,9 @@ const heroImage = base.hero.image && { src: base.hero.image.src, alt: d.hero.ima
 const integrated = await integratedProducts(slug, lang);
 const solutions = (await getLocalized("solutions", lang)).filter((s) => (base.relatedSolutions ?? []).includes(s.slug));
 const scenarioEntries = (await getLocalized("scenarios", lang)).filter((s) => (base.integratedScenarios ?? []).includes(s.slug));
-const articles = (await articlesAbout("relatedProducts", slug, lang)).slice(0, 6);
+// Cases have their own block (RelatedCases); this list keeps news and insights.
+const articles = (await articlesAbout("relatedProducts", slug, lang, ["news", "insights"])).slice(0, 6);
+const cases = await casesAbout("relatedProducts", slug, lang);
 const articleTags = await Promise.all(articles.map((a) => tagNames(a.base.data.tags, lang)));
 const productNames = new Map((await getLocalized("products", lang)).map((p) => [p.slug, p.loc.data.hero.name]));
 
@@ -281,6 +285,8 @@ const deploymentRows = [
       </div>
     </section>
   )}
+
+  <RelatedCases lang={lang} cases={cases} />
 
   <!-- 11 Related articles (reverse lookup of relatedProducts) -->
   {has("relatedArticles") && (

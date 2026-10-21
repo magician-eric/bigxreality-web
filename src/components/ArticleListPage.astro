@@ -8,7 +8,7 @@
  * A list with no articles shows an empty state and is noindex.
  */
 import { getEntry } from "astro:content";
-import { LANGS, localePath, type Lang } from "../i18n";
+import { LANGS, localePath, segmentOf, type Lang } from "../i18n";
 import { getArticles, articleHref, tagNames, pageSize, paginate } from "../lib/articles";
 import type { ArticleCollection } from "../lib/content";
 import { DOMAINS } from "../lib/domains";
@@ -36,7 +36,7 @@ const total = pages.length;
 const filterable = collection === "case-studies" && pageSize(collection) === null && all.length > 0;
 const tags = await Promise.all(items.map((a) => tagNames(a.base.data.tags, lang)));
 
-const path = page === 1 ? `/{lang}/${collection}/` : `/{lang}/${collection}/page/${page}/`;
+const path = page === 1 ? `/{lang}/${segmentOf(collection)}/` : `/{lang}/${segmentOf(collection)}/page/${page}/`;
 // hreflang: other languages only when they have the same page number.
 const alternates: Lang[] = [];
 for (const l of LANGS) {
@@ -65,7 +65,7 @@ const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: pa
   lang={lang} title={title} description={copy.seo.description} pathTemplate={path} alternates={alternates}
   pendingTranslation={copy.translationStatus === "pending"} noindex={all.length === 0}
   headerTheme="dark" current="resources" currentResource={collection}
-  fallbackPath={`/{lang}/${collection}/`} breadcrumbs={breadcrumbs}
+  fallbackPath={`/{lang}/${segmentOf(collection)}/`} breadcrumbs={breadcrumbs}
   structuredData={all.length ? [collectionLd] : []}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />

@@ -199,7 +199,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       data: omitEmpty({
         translationStatus: d.translation_status,
         seo: { title: item.seo?.title || d.title, description: item.seo?.description || d.description },
-        hero: omitEmpty({ eyebrow: d.eyebrow, title: d.title, description: d.description, image: ctx.image(d.hero_image), imageCaption: d.image_caption }),
+        hero: omitEmpty({ eyebrow: d.eyebrow, title: d.title, lead: d.lead, description: d.description, image: ctx.image(d.hero_image), imageCaption: d.image_caption }),
         integrated: d.integrated_title
           ? { eyebrow: d.integrated_eyebrow, title: d.integrated_title, description: d.integrated_description }
           : undefined,
@@ -236,11 +236,20 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       html: body.html,
       data: omitEmpty({
         ...article(ctx),
-        client: { name: d.client_name, disclosure: d.client_disclosure },
+        client: { name: d.client_name, type: d.client_type, disclosure: d.client_disclosure },
         approval: { approved: bool(d.approved, false) },
+        background: d.background,
         challenge: d.challenge,
         solution: d.solution,
+        application: d.application,
+        results: d.results,
         outcomes: d.outcomes?.map((o: Json) => ({ label: o.label, value: o.value })),
+        gallery: d.gallery
+          ?.map((x: Json) => {
+            const pic = ctx.image(x.image);
+            return pic?.src ? omitEmpty({ src: pic.src, alt: pic.alt, caption: x.caption }) : undefined;
+          })
+          .filter(Boolean),
         domains: d.domains,
       }),
     };

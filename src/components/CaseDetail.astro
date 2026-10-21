@@ -1,0 +1,294 @@
+---
+/**
+ * Case page, one template for every published case (docs/EDITOR-GUIDE.md "成功案例").
+ * Hero → facts → background → challenge → solution → application → results → gallery →
+ * free-text details → related products and solutions → more cases → CTA.
+ * A section without data is not rendered, heading included. Results show only what the
+ * case record contains; nothing is calculated or filled in.
+ */
+import { Picture, getImage } from "astro:assets";
+import { HTML_LANG, INTL_LOCALE, localePath, type Lang } from "../i18n";
+import { availableLangs } from "../lib/content";
+import { articleHref, tagMap, type Article } from "../lib/articles";
+import { caseBase, caseLoc, clientLabel, moreCases, paragraphs, toViews } from "../lib/cases";
+import { getLocalized } from "../lib/content";
+import { getUi } from "../lib/ui";
+import { plain } from "../lib/text";
+import { site } from "../lib/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumb from "./Breadcrumb.astro";
+import SectionHead from "./SectionHead.astro";
+import Prose from "./Prose.astro";
+import CardProduct from "./CardProduct.astro";
+import CardSolution from "./CardSolution.astro";
+import CaseCard from "./CaseCard.astro";
+import CaseVisual from "./CaseVisual.astro";
+import CtaBand from "./CtaBand.astro";
+import Text from "./Text.astro";
+
+interface Props { article: Article }
+const { article } = Astro.props;
+const { lang, slug } = article;
+const ui = getUi(lang as Lang);
+const c = ui.cases;
+const s = c.section;
+const base = caseBase(article);
+const d = caseLoc(article);
+const client = clientLabel(article);
+const view = (await toViews([article], lang as Lang))[0];
+
+const cover = view.cover;
+const fmt = (date: Date) => new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+const iso = (date: Date) => date.toISOString().slice(0, 10);
+const html = article.loc.rendered?.html ?? "";
+
+// Gallery pictures are spread beside the solution and application text; the rest form a gallery.
+const gallery = (d.gallery ?? base.gallery ?? []).map((g, i) => ({ ...g, alt: d.gallery?.[i]?.alt ?? g.alt }));
+const sideImages = [gallery[0], gallery[1]];
+const restImages = gallery.slice(2);
+
+const text = {
+  background: d.background,
+  challenge: d.challenge,
+  solution: d.solution,
+  application: d.application,
+};
+const outcomes = d.outcomes ?? [];
+const hasResults = !!d.results || outcomes.length > 0;
+
+const products = (await getLocalized("products", lang)).filter((p) => base.relatedProducts.includes(p.slug));
+const solutions = (await getLocalized("solutions", lang)).filter((x) => base.relatedSolutions.includes(x.slug));
+const more = await moreCases(article, 3);
+
+const tags = await tagMap(lang);
+const tagLinks = base.tags.map((t) => ({ slug: t, name: tags.get(t)?.loc.data.name })).filter((x): x is { slug: string; name: string } => !!x.name);
+
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.caseStudies, path: localePath(lang, "case-studies") },
+  { name: d.title, path: articleHref(article) },
+];
+const clean = (v: string | undefined) => (v && !v.includes("[待") ? plain(v) : undefined);
+const ldImage = cover ? new URL((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src, site.url).toString() : undefined;
+const articleLd: Record<string, unknown> = {
+  "@type": "Article",
+  headline: clean(d.title),
+  description: clean(d.summary),
+  datePublished: base.publishDate.toISOString(),
+  ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
+  inLanguage: HTML_LANG[lang],
+  url: new URL(articleHref(article), site.url).toString(),
+  publisher: { "@id": `${site.url}/#organization` },
+  author: { "@id": `${site.url}/#organization` },
+  ...(ldImage ? { image: ldImage } : {}),
+};
+for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete articleLd[k];
+
+const sections = [
+  { key: "background", title: s.background, body: text.background },
+  { key: "challenge", title: s.challenge, body: text.challenge },
+  { key: "solution", title: s.solution, body: text.solution, img: sideImages[0] },
+  { key: "application", title: s.application, body: text.application, img: sideImages[1] },
+].filter((x) => x.body);
+// A picture placed beside a section that is missing would be lost; show it in the gallery instead.
+const shownSide = new Set(sections.map((x) => x.img).filter(Boolean));
+const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...restImages];
+---
+<BaseLayout
+  lang={lang}
+  title={d.seo?.title ?? d.title}
+  description={d.seo?.description ?? d.summary}
+  pathTemplate={`/{lang}/cases/${slug}/`}
+  alternates={await availableLangs("case-studies", slug)}
+  pendingTranslation={article.pendingTranslation}
+  headerTheme="light"
+  current="caseStudies"
+  fallbackPath="/{lang}/cases/"
+  breadcrumbs={breadcrumbs}
+  ogImage={base.seo?.ogImage ?? cover?.src}
+  ogImageAlt={cover?.alt}
+  article={{ published: base.publishDate, modified: base.updatedAt, tags: tagLinks.map((x) => x.name) }}
+  structuredData={[articleLd]}
+  search={{ type: "case-studies", date: base.publishDate }}
+>
+  <article>
+    <header class="case-header">
+      <div class="container head">
+        <div class="copy">
+          <Breadcrumb items={breadcrumbs} label={ui.breadcrumbLabel} />
+          <p class="t-tech meta">
+            <Text value={ui.articleTypes["case-studies"]} />
+            {view.domains.length > 0 && <> · {view.domains.map((x, i) => <>{i > 0 && "、"}<Text value={ui.domains[x]} /></>)}</>}
+          </p>
+          <h1 class="t-h1"><Text value={d.title} /></h1>
+          {client.text && <p class="client"><span class="visually-hidden"><Text value={c.client} />：</span><Text value={client.text} /></p>}
+          <p class="summary"><Text value={d.summary} /></p>
+        </div>
+        <figure class="hero-media"><CaseVisual cover={cover} sizes="(max-width: 1023px) 100vw, 640px" eager /></figure>
+      </div>
+    </header>
+
+    <div class="container facts-wrap">
+      <dl class="facts">
+        {client.text && <div><dt><Text value={c.client} /></dt><dd><Text value={client.text} /></dd></div>}
+        {view.domains.length > 0 && <div><dt><Text value={c.domains} /></dt><dd>{view.domains.map((x, i) => <>{i > 0 && "、"}<Text value={ui.domains[x]} /></>)}</dd></div>}
+        {view.products.length > 0 && <div><dt><Text value={c.products} /></dt><dd>{view.products.map((p, i) => <>{i > 0 && "、"}<a href={p.href}><Text value={p.name} /></a></>)}</dd></div>}
+        {view.solutions.length > 0 && <div><dt><Text value={c.solutions} /></dt><dd>{view.solutions.map((p, i) => <>{i > 0 && "、"}<a href={p.href}><Text value={p.name} /></a></>)}</dd></div>}
+        <div><dt class="visually-hidden"><Text value={ui.article.published} /></dt><dd><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time></dd></div>
+      </dl>
+    </div>
+
+    {sections.map((sec, i) => (
+      <section class:list={["section", "block", { "section--alt": i % 2 === 1, flip: i % 2 === 1 }]} aria-labelledby={`h-${sec.key}`}>
+        <div class:list={["container", "row", { "has-img": !!sec.img }]}>
+          <div class="text">
+            <h2 class="t-h2" id={`h-${sec.key}`}><Text value={sec.title} /></h2>
+            <div class="paras">{paragraphs(sec.body!).map((para) => <p><Text value={para} /></p>)}</div>
+          </div>
+          {sec.img && (
+            <figure class="pic">
+              <Picture src={sec.img.src} alt={sec.img.alt} formats={["avif", "webp"]} widths={[480, 800, 1200].filter((w) => w <= sec.img.src.width)} sizes="(max-width: 1023px) 100vw, 560px" width={1200} height={750} fit="cover" loading="lazy" />
+              {sec.img.caption && <figcaption class="t-caption"><Text value={sec.img.caption} /></figcaption>}
+            </figure>
+          )}
+        </div>
+      </section>
+    ))}
+
+    {hasResults && (
+      <section class="section section--dark" data-theme="dark" aria-labelledby="h-results">
+        <div class="container results">
+          <h2 class="t-h2" id="h-results"><Text value={s.results} /></h2>
+          {d.results && <div class="res-text">{paragraphs(d.results).map((para) => <p><Text value={para} /></p>)}</div>}
+          {outcomes.length > 0 && (
+            <dl class="outcomes">
+              {outcomes.map((o) => <div><dd class="value"><Text value={o.value} /></dd><dt class="t-small"><Text value={o.label} /></dt></div>)}
+            </dl>
+          )}
+        </div>
+      </section>
+    )}
+
+    {galleryImages.length > 0 && (
+      <section class="section" aria-labelledby="h-gallery">
+        <div class="container">
+          <h2 class="t-h2 gallery-title" id="h-gallery"><Text value={s.gallery} /></h2>
+          <ul role="list" class="gallery">
+            {galleryImages.map((g) => (
+              <li>
+                <figure>
+                  <Picture src={g!.src} alt={g!.alt} formats={["avif", "webp"]} widths={[480, 800, 1200].filter((w) => w <= g!.src.width)} sizes="(max-width: 767px) 100vw, 380px" width={1200} height={675} fit="cover" loading="lazy" />
+                  {g!.caption && <figcaption class="t-caption"><Text value={g!.caption} /></figcaption>}
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    {html.trim() && (
+      <section class="section" aria-labelledby="h-details">
+        <div class="container row">
+          <h2 class="t-h2 details-title" id="h-details"><Text value={s.details} /></h2>
+          <div class="paras"><Prose html={html} /></div>
+        </div>
+      </section>
+    )}
+  </article>
+
+  {(products.length > 0 || solutions.length > 0) && (
+    <section class="section section--alt" aria-labelledby="h-related-items">
+      <div class="container">
+        <SectionHead id="h-related-items" eyebrow="Related" title={s.relatedItems} />
+        <ul role="list" class="cards">
+          {products.map((p) => (
+            <li>
+              <CardProduct
+                lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
+                englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                domains={p.base.data.domains}
+                image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
+              />
+            </li>
+          ))}
+          {solutions.map((x) => (
+            <li>
+              <CardSolution
+                lang={lang} href={localePath(lang, "solutions", x.slug)} domain={x.base.data.domain}
+                name={x.loc.data.name} englishName={x.loc.data.englishName} summary={x.loc.data.summary}
+                image={x.base.data.image && { src: x.base.data.image.src, alt: x.loc.data.image?.alt ?? x.base.data.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {more.length > 0 && (
+    <section class="section" aria-labelledby="h-more">
+      <div class="container">
+        <SectionHead id="h-more" eyebrow="Case Studies" title={s.more} viewAll={{ href: localePath(lang, "case-studies"), label: c.block.more }} />
+        <ul role="list" class="cards">
+          {more.map((item) => <li><CaseCard lang={lang} item={item} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <CtaBand id="case-cta" title={c.cta.title} description={c.cta.description}>
+    <a class="btn btn--primary" href={localePath(lang, "contact")}><Text value={c.cta.button} /></a>
+  </CtaBand>
+</BaseLayout>
+<style>
+  .case-header { padding-block: var(--space-8) var(--space-6); background: var(--bxr-paper); border-bottom: 1px solid var(--bxr-line); }
+  .head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gutter); align-items: center; }
+  .copy { display: grid; gap: var(--space-3); align-content: start; }
+  .copy > * { margin: 0; }
+  .meta { color: var(--ink-muted); margin-top: var(--space-3); }
+  .client { font-size: var(--fs-h4); font-weight: 500; }
+  .summary { font-size: var(--fs-h4); line-height: var(--lh-h4); color: var(--ink-muted); }
+  .hero-media { margin: 0; }
+  .facts-wrap { padding-top: var(--space-6); }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-2) var(--gutter); margin: 0; }
+  .facts div { display: grid; gap: 4px; padding-top: var(--space-2); border-top: 1px solid var(--bxr-black); }
+  .facts dt { color: var(--ink-muted); font-size: var(--fs-small); }
+  .facts dd { margin: 0; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gutter); align-items: center; }
+  .row.has-img { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+  .flip .row.has-img { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  .flip .row.has-img .pic { order: -1; }
+  .text { display: grid; gap: var(--space-2); max-width: 44rem; }
+  .text h2, .text p { margin: 0; }
+  .paras { display: grid; gap: var(--space-2); }
+  /* No picture: the heading sits left and the text right, so a text-only section still has a layout. */
+  .row:not(.has-img) { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); align-items: start; }
+  .row:not(.has-img) .text { display: contents; }
+  .row:not(.has-img) h2 { grid-column: 1; }
+  .row:not(.has-img) .paras { grid-column: 2; max-width: 44rem; }
+  .pic { margin: 0; }
+  .pic :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; }
+  .pic figcaption, .gallery figcaption { margin-top: var(--space-1); color: var(--ink-muted); }
+  .section--dark { background: var(--bxr-graphite); color: var(--bxr-white); }
+  .results { display: grid; gap: var(--space-4); }
+  .results h2, .res-text p { margin: 0; }
+  .res-text { display: grid; gap: var(--space-2); max-width: 44rem; color: var(--bxr-ash); }
+  .outcomes { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--gutter); margin: 0; }
+  .outcomes div { display: flex; flex-direction: column-reverse; gap: 4px; padding-top: var(--space-2); border-top: 2px solid var(--bxr-red); }
+  .outcomes .value { margin: 0; font-size: var(--fs-h2); font-weight: 500; }
+  .outcomes dt { color: var(--bxr-ash); }
+  .gallery-title { margin-bottom: var(--space-4); }
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .gallery figure { margin: 0; }
+  .gallery :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .details-title { margin: 0; }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) {
+    .head, .row.has-img, .flip .row.has-img, .row:not(.has-img) { grid-template-columns: 1fr; }
+    .row:not(.has-img) .paras { grid-column: 1; }
+    .flip .row.has-img .pic { order: 0; }
+    .cards, .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) { .cards, .gallery { grid-template-columns: 1fr; } }
+</style>

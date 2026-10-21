@@ -17,8 +17,15 @@ export function isLang(value: string | undefined): value is Lang {
   return (LANGS as readonly string[]).includes(value ?? "");
 }
 
+/**
+ * Collections whose public URL segment differs from the collection name. Case studies
+ * live under `/cases/` (the content collection keeps its name `case-studies`).
+ */
+export const URL_SEGMENT: Record<string, string> = { "case-studies": "cases" };
+export const segmentOf = (collection: string) => URL_SEGMENT[collection] ?? collection;
+
 /** Builds a site path such as `/tw/products/sut/` (always with trailing slash). */
 export function localePath(lang: Lang, ...segments: string[]): string {
-  const rest = segments.filter(Boolean).join("/");
+  const rest = segments.filter(Boolean).map((s, i) => (i === 0 ? segmentOf(s) : s)).join("/");
   return rest ? `/${lang}/${rest}/` : `/${lang}/`;
 }

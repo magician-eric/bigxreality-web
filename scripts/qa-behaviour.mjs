@@ -109,6 +109,25 @@ try {
     await page.setViewportSize({ width: 1440, height: 900 });
   }
 
+  // success cases: no real case is published yet, so the section must open cleanly and stay honest
+  await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
+  check("header: 成功案例 link on desktop", (await page.locator('.nav-list > li > a[href="/tw/cases/"]').innerText()).trim() === "成功案例");
+  await page.goto(`${base}/tw/cases/`, { waitUntil: "networkidle" });
+  check("cases list opens with an empty state and no cards", (await page.locator("[data-case-empty]").isVisible()) && (await page.locator("article.card").count()) === 0);
+  check("cases list without cases is noindex", (await page.getAttribute('meta[name=robots]', "content")) === "noindex");
+  check("cases list heading and sub-heading", (await page.locator("h1").innerText()).trim() === "成功案例" && (await page.locator(".page-hero .lead").innerText()).includes("從實際導入經驗，看見沉浸式模擬訓練的應用價值"));
+  for (const slug of ["sut", "uav", "usv", "wargaming-table", "mortar-observation", "sniper-simulator"]) {
+    await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
+    if ((await page.locator("[data-related-cases]").count()) !== 0 || (await page.content()).includes("實際應用案例")) check(`${slug}: no cases block without cases`, false);
+  }
+  check("product pages show no cases block without published cases", true);
+  await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.click(".menu-toggle");
+  check("header: 成功案例 link in the phone menu", await page.locator('.nav-list > li > a[href="/tw/cases/"]').isVisible());
+  await page.setViewportSize({ width: 1440, height: 900 });
+  check("sitemap has no cases url while no case is published", !readFileSync(path.join(DIST, "sitemap.xml"), "utf8").includes("/cases/"));
+
   await page.goto(`${base}/en/products/sut/`, { waitUntil: "networkidle" });
   check("pending translation → noindex", (await page.getAttribute('meta[name=robots]', "content")) === "noindex");
   check("pending translation banner", await page.locator(".translation-banner").isVisible());

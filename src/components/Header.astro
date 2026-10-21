@@ -4,15 +4,16 @@
  * with a 2 px BxR Red underline. ≤ 1023 px collapses into a menu button.
  * "Contact" is an outline button: red is reserved for the page's main action
  * (owner decision 2026-10-19).
- * "Resources" is a disclosure button (not an ARIA menu) that opens News / Insights /
- * Case Studies; there is no resources overview page (docs/PHASE-2-PLAN.md §5.5).
+ * "Resources" is a disclosure button (not an ARIA menu) that opens News / Insights;
+ * there is no resources overview page (docs/PHASE-2-PLAN.md §5.5).
+ * "Case Studies" (成功案例) is its own top-level item, between Resources and Company.
  */
 import { LANGS, LANG_LABEL, HREFLANG, localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
 import Logo from "./Logo.astro";
 import Text from "./Text.astro";
 
-export type NavKey = "solutions" | "products" | "technologies" | "resources" | "company";
+export type NavKey = "solutions" | "products" | "technologies" | "resources" | "caseStudies" | "company";
 export type ResourceKey = "news" | "insights" | "case-studies";
 interface Props {
   lang: Lang;
@@ -29,12 +30,12 @@ const nav: { key: NavKey; href: string }[] = [
   { key: "solutions", href: localePath(lang, "solutions") },
   { key: "products", href: localePath(lang, "products") },
   { key: "technologies", href: localePath(lang, "technologies") },
+  { key: "caseStudies", href: localePath(lang, "case-studies") },
   { key: "company", href: localePath(lang, "company") },
 ];
 const resources: { key: ResourceKey; label: string }[] = [
   { key: "news", label: ui.nav.news },
   { key: "insights", label: ui.nav.insights },
-  { key: "case-studies", label: ui.nav.caseStudies },
 ];
 const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp: "日本語" };
 ---

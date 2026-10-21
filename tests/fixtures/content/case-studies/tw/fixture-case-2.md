@@ -10,7 +10,8 @@ client:
 approval:
   approved: true
 domains: [military]
-relatedProducts: [uav]
+relatedProducts: [sut, uav]
+relatedSolutions: [military]
 ---
 
 TEST FIXTURE 案例二正文。

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getEntry } from "astro:content";
-import { HREFLANG, LANGS, DEFAULT_LANG, type Lang } from "../i18n";
+import { HREFLANG, LANGS, DEFAULT_LANG, segmentOf, type Lang } from "../i18n";
 import { ARTICLE_COLLECTIONS, getLocalized } from "../lib/content";
 import { articlesWithTag, getArticles, pageSize, paginate, TAG_INDEX_MIN } from "../lib/articles";
 import { isNoIndexBuild } from "../lib/content-source";
@@ -49,13 +49,13 @@ export const GET: APIRoute = async () => {
       }
       const maxPages = Math.max(0, ...pageCount.values());
       for (let n = 1; n <= maxPages; n++) {
-        add(n === 1 ? `/{lang}/${collection}/` : `/{lang}/${collection}/page/${n}/`, LANGS.filter((l) => (pageCount.get(l) ?? 0) >= n));
+        add(n === 1 ? `/{lang}/${segmentOf(collection)}/` : `/{lang}/${segmentOf(collection)}/page/${n}/`, LANGS.filter((l) => (pageCount.get(l) ?? 0) >= n));
       }
       const indexable = new Map<string, Lang[]>();
       for (const lang of LANGS) {
         for (const a of await getArticles(collection, lang)) if (!a.pendingTranslation) indexable.set(a.slug, [...(indexable.get(a.slug) ?? []), lang]);
       }
-      for (const [slug, langs] of indexable) add(`/{lang}/${collection}/${slug}/`, langs);
+      for (const [slug, langs] of indexable) add(`/{lang}/${segmentOf(collection)}/${slug}/`, langs);
     }
 
     const tagPages = new Map<string, Lang[]>();

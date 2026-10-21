@@ -1336,7 +1336,7 @@
    "fields": [
     {
      "slug": "title",
-     "label": "標題",
+     "label": "案例名稱",
      "type": "string",
      "required": true
     },
@@ -1356,20 +1356,20 @@
     },
     {
      "slug": "summary",
-     "label": "摘要",
+     "label": "案例摘要",
      "type": "text",
      "required": true
     },
     {
      "slug": "cover",
-     "label": "封面圖",
+     "label": "代表圖片（16:9，案例列表與詳細頁 Hero）",
      "type": "image"
     },
     {
      "slug": "body",
-     "label": "正文",
+     "label": "補充說明（選填，顯示在案例詳細頁最後）",
      "type": "portableText",
-     "required": true
+     "required": false
     },
     {
      "slug": "updated_on",
@@ -1395,13 +1395,18 @@
     },
     {
      "slug": "client_name",
-     "label": "客戶名稱（匿名時填描述）",
+     "label": "導入單位名稱（未取得公開同意時，填可公開的描述，例如「某陸軍訓練單位」）",
      "type": "string",
      "required": true
     },
     {
+     "slug": "client_type",
+     "label": "單位類型（例如：陸軍訓練單位、縣市消防局；匿名案例顯示此欄）",
+     "type": "string"
+    },
+    {
      "slug": "client_disclosure",
-     "label": "客戶揭露方式",
+     "label": "客戶揭露方式（public＝可公開顯示名稱；anonymized＝只顯示單位類型）",
      "type": "select",
      "required": true,
      "validation": {
@@ -1420,18 +1425,33 @@
      "translatable": false
     },
     {
+     "slug": "background",
+     "label": "專案背景（客戶的訓練環境、任務背景與原有需求）",
+     "type": "text"
+    },
+    {
      "slug": "challenge",
-     "label": "挑戰",
+     "label": "面臨的訓練挑戰（段落以空白行分隔）",
      "type": "text"
     },
     {
      "slug": "solution",
-     "label": "導入方案",
+     "label": "導入解決方案（段落以空白行分隔）",
+     "type": "text"
+    },
+    {
+     "slug": "application",
+     "label": "實際應用方式（訓練現場的使用情境、訓練方式與應用範圍）",
+     "type": "text"
+    },
+    {
+     "slug": "results",
+     "label": "專案成果與效益（只寫已確認、可公開的內容；沒有就留空）",
      "type": "text"
     },
     {
      "slug": "outcomes",
-     "label": "成果（只填已確認的數據）",
+     "label": "專案成果數據（只填已確認、可公開的項目；沒有就留空，成果區塊不會顯示）",
      "type": "repeater",
      "validation": {
       "subFields": [
@@ -1451,15 +1471,35 @@
      }
     },
     {
+     "slug": "gallery",
+     "label": "現場影像（選填，可多張）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
      "slug": "domains",
-     "label": "領域",
+     "label": "應用領域",
      "type": "multiSelect",
      "validation": {
       "options": [
        "military",
        "police",
        "fire-rescue",
-       "smart-city"
+       "smart-city",
+       "other"
       ]
      },
      "translatable": false
@@ -1605,6 +1645,11 @@
      "type": "string",
      "required": true,
      "translatable": false
+    },
+    {
+     "slug": "lead",
+     "label": "副標題（標題下的一句話，選填）",
+     "type": "string"
     },
     {
      "slug": "description",

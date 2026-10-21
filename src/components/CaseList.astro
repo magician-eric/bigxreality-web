@@ -1,0 +1,32 @@
+---
+/** Filter bar + responsive grid of case cards (3 columns, 2 on tablets, 1 on phones). */
+import type { Lang } from "../i18n";
+import { facets, type CaseView } from "../lib/cases";
+import { getUi, format } from "../lib/ui";
+import CaseCard from "./CaseCard.astro";
+import CaseFilters from "./CaseFilters.astro";
+import Text from "./Text.astro";
+
+interface Props { lang: Lang; cases: CaseView[]; id?: string }
+const { lang, cases, id = "case-grid" } = Astro.props;
+const c = getUi(lang).cases;
+const f = facets(cases);
+---
+<CaseFilters lang={lang} target={id} domains={f.domains} products={f.products} solutions={f.solutions} />
+<p class="t-small t-muted count"><Text value={format(c.count, { n: cases.length })} /></p>
+<ul role="list" class="grid" id={id}>
+  {cases.map((item) => (
+    <li data-filter-item data-domains={item.domains.join(" ")} data-products={item.products.map((p) => p.slug).join(" ")} data-solutions={item.solutions.map((s) => s.slug).join(" ")}>
+      <CaseCard lang={lang} item={item} />
+    </li>
+  ))}
+</ul>
+<p class="empty t-muted" data-filter-empty={id} hidden><Text value={c.filterEmpty} /></p>
+<style>
+  .count { margin-bottom: var(--space-3); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .grid > li[hidden] { display: none; }
+  .empty { padding: var(--space-5) 0; }
+  @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
+</style>
