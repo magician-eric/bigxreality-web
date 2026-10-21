@@ -58,10 +58,13 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
               </li>
             ) : (
               <li class="has-sub" data-disclosure>
-                <button type="button" class:list={["nav-link", "sub-toggle", { "is-current": current === item.id }]} aria-expanded="false" aria-controls={`sub-${item.id}`}>
-                  <Text value={item.label} />
+                <div class="nav-heading">
+                {item.href && <a class="nav-link" href={item.href} aria-current={current === item.id ? "page" : undefined}><Text value={item.label} /></a>}
+                <button type="button" class:list={["nav-link", "sub-toggle", { "is-current": current === item.id }]} aria-expanded="false" aria-controls={`sub-${item.id}`} aria-label={item.href ? item.label : undefined}>
+                  {!item.href && <Text value={item.label} />}
                   <svg class="chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" /></svg>
                 </button>
+                </div>
                 <ul role="list" class="sub" id={`sub-${item.id}`}>
                   {item.children.map((r) => (
                     <li>
@@ -142,12 +145,16 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
   const hoverDesktop = window.matchMedia("(min-width: 1024px) and (hover: hover)");
   for (const item of document.querySelectorAll<HTMLElement>("[data-disclosure]")) {
     const button = item.querySelector<HTMLButtonElement>("button")!;
-    const set = (open: boolean) => button.setAttribute("aria-expanded", String(open));
+    const set = (open: boolean) => {
+      if (open) for (const other of document.querySelectorAll(".sub-toggle")) if (other !== button) other.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-expanded", String(open));
+    };
     item.classList.add("is-enhanced");
     let byHover = false;
     let timer: number | undefined;
     button.addEventListener("click", () => {
-      if (byHover) { byHover = false; return; } // a click right after hover-opening keeps it open
+      if (byHover && !button.parentElement?.querySelector("a")) { byHover = false; return; }
+      byHover = false;
       set(button.getAttribute("aria-expanded") !== "true");
     });
     item.addEventListener("pointerenter", (e) => {
@@ -161,6 +168,7 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
       timer = window.setTimeout(() => { if (byHover) { byHover = false; set(false); } }, 160);
     });
     item.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" && e.target === button) { e.preventDefault(); set(true); item.querySelector<HTMLElement>(".sub a")?.focus(); }
       if (e.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
         e.stopPropagation();
         set(false);
@@ -202,6 +210,10 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
   .chev { display: block; flex: none; transform-origin: 50% 50%; transition: transform var(--dur-micro) var(--ease-precise); }
   .sub-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
   .has-sub { position: relative; }
+  .nav-heading { display: flex; align-items: center; }
+  .nav-heading > a { flex: 1; }
+  .nav-heading > a + .sub-toggle { flex: none; width: 24px; justify-content: center; }
+  @media (max-width: 1023px) { .nav-heading > a + .sub-toggle { width: 44px; } }
   .sub { margin: 0; padding: var(--space-1) 0; list-style: none; }
   .is-enhanced .sub { display: none; }
   .is-enhanced:has(.sub-toggle[aria-expanded="true"]) .sub { display: block; }
@@ -231,7 +243,7 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
     .nav-list { gap: var(--space-3); }
     .langs a { min-width: 28px; }
   }
-  @media (min-width: 1024px) and (max-width: 1139px) { .nav-list { gap: var(--space-2); } .bar { padding-inline: 40px; gap: var(--space-2); } .menu { gap: var(--space-2); } }
+  @media (min-width: 1024px) and (max-width: 1139px) { .nav-list { gap: var(--space-1); } .bar { padding-inline: 20px; gap: var(--space-1); } .menu, .tools { gap: var(--space-1); } }
   .icon-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--ink); }
   .langs { display: flex; gap: 0; margin: 0; padding: 0; list-style: none; font-family: var(--font-mono); font-size: 13px; }
   .langs li + li::before { content: "/"; color: var(--ink-muted); padding-inline: 2px; }

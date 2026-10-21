@@ -1,0 +1,52 @@
+---
+import type { Lang } from "../i18n";
+interface Props { lang: Lang }
+const labels = { tw: "返回頂部", en: "Back to top", jp: "ページの先頭へ戻る" };
+---
+<!-- Shared rail: future floating controls belong here, stacked above the bottom control. -->
+<div class="floating-tools" data-floating-tools>
+  <button class="back-to-top" type="button" aria-label={labels[Astro.props.lang]} hidden>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 7-7 7 7M12 5v15" /></svg>
+  </button>
+</div>
+<script>
+  const button = document.querySelector<HTMLButtonElement>(".back-to-top");
+  if (button) {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      // Keep focused form controls unobstructed; the header menu covers the rail via CSS.
+      const editing = document.activeElement?.matches("input, textarea, select, [contenteditable=true]");
+      button.hidden = window.scrollY < 400 || !!editing;
+    };
+    const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("pageshow", schedule);
+    document.addEventListener("focusin", schedule);
+    document.addEventListener("focusout", schedule);
+    button.addEventListener("click", () => {
+      document.getElementById("main")?.focus({ preventScroll: true });
+      window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+    });
+    update();
+  }
+</script>
+<style>
+  .floating-tools {
+    --floating-tools-right: 32px;
+    --floating-tools-bottom: 24px;
+    position: fixed; z-index: 40;
+    right: calc(var(--floating-tools-right) + env(safe-area-inset-right, 0px));
+    bottom: calc(var(--floating-tools-bottom) + env(safe-area-inset-bottom, 0px));
+    display: flex; flex-direction: column; gap: 12px; pointer-events: none;
+  }
+  .back-to-top {
+    display: grid; place-items: center; width: 48px; height: 48px; padding: 0;
+    background: #D02753; color: #fff; border: 1px solid #D02753;
+    border-radius: var(--radius-sm); cursor: pointer; pointer-events: auto;
+  }
+  .back-to-top[hidden] { display: none; }
+  .back-to-top:hover { background: var(--bxr-red-hover); }
+  :global(html.menu-open) .floating-tools, :global(body:has(dialog[open])) .floating-tools { visibility: hidden; }
+  @media (max-width: 767px) { .floating-tools { --floating-tools-right: 16px; --floating-tools-bottom: 16px; } }
+</style>

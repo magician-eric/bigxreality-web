@@ -5,6 +5,7 @@ import { getUi } from "../lib/ui";
 import SeoHead, { type Crumb, type ProductLd, type ArticleMeta } from "../components/SeoHead.astro";
 import Header, { type NavKey, type ResourceKey, type CompanyKey } from "../components/Header.astro";
 import { isNoIndexBuild } from "../lib/content-source";
+import BackToTop from "../components/BackToTop.astro";
 import Footer from "../components/Footer.astro";
 import Text from "../components/Text.astro";
 import type { ImageMetadata } from "astro";
@@ -85,6 +86,7 @@ const langLinks = Object.fromEntries(
       <slot />
     </main>
     <Footer lang={p.lang} hidePending={p.hidePendingFooter} />
+    <BackToTop lang={p.lang} />
   </body>
 </html>
 

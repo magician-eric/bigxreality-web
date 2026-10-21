@@ -31,7 +31,7 @@ const shown = new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", mont
   .media { overflow: hidden; aspect-ratio: 16 / 9; }
   .media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-standard) var(--ease-precise); }
   .card:hover .media :global(img) { transform: scale(1.02); }
-  .body { display: grid; gap: var(--space-1); padding: var(--space-3); }
+  .body { display: grid; gap: var(--space-1); padding: var(--card-padding); }
   .meta, .summary, .tags { color: var(--ink-muted); }
   .title a { color: var(--ink); text-decoration: none; }
   .title a::after { content: ""; position: absolute; inset: 0; }
@@ -45,4 +45,5 @@ const shown = new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", mont
     .body { padding: var(--space-2); }
     .summary { display: none; }
   }
+  .media:has(:global(.placeholder)) { aspect-ratio: auto; height: auto; }
 </style>

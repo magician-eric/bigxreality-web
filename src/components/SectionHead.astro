@@ -13,10 +13,10 @@ const { eyebrow, title, description, id, viewAll } = Astro.props;
   {viewAll && <a class="view-all" href={viewAll.href}><Text value={viewAll.label} /> <span aria-hidden="true">→</span></a>}
 </div>
 <style>
-  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-6); }
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--content-gap); }
   .copy { max-width: 50%; min-width: min(100%, 36rem); }
   .eyebrow { color: var(--ink-muted); margin-bottom: var(--space-2); }
-  .desc { margin-top: var(--space-3); }
+  .desc { margin-top: var(--space-2); }
   .view-all { flex: none; min-height: 24px; }
   @media (max-width: 767px) { .section-head { flex-direction: column; align-items: flex-start; } .copy { max-width: none; min-width: 0; } }
 </style>

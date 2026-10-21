@@ -36,7 +36,7 @@ try {
       }
       const m = await page.evaluate(() => {
         const bar = document.querySelector(".site-header .bar");
-        const links = [...document.querySelectorAll(".nav-list > li > .nav-link")];
+        const links = [...document.querySelectorAll(".nav-list > li > .nav-heading > .nav-link:first-child")];
         const cs = getComputedStyle(links[0]);
         return {
           overflow: bar.scrollWidth > bar.clientWidth + 1 || document.documentElement.scrollWidth > window.innerWidth,
@@ -112,8 +112,8 @@ try {
   check("Active: the open menu marks 成功案例", (await page.locator('#sub-resources a[aria-current="page"]').getAttribute("href")) === "/tw/cases/");
 
   // existing URLs unchanged
-  check("links: the published direct items keep their URLs", (await page.locator('.nav-list > li > a').evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join() === "/tw/solutions/,/tw/products/,/tw/technologies/");
-  check("links: published 核心技術 links to its built overview", (await page.locator('.nav-list > li > a[href="/tw/technologies/"]').count()) === 1 && (await page.locator('.nav-list > li > span.nav-link.is-planned').count()) === 0);
+  check("links: the published direct items keep their URLs", (await page.locator('.nav-list > li > .nav-heading > a').evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join() === "/tw/solutions/,/tw/products/,/tw/technologies/");
+  check("links: published 核心技術 links to its built overview", (await page.locator('.nav-list > li > .nav-heading > a[href="/tw/technologies/"]').count()) === 1 && (await page.locator('.nav-list > li > span.nav-link.is-planned').count()) === 0);
   check("Active: 核心技術 on its overview and detail", JSON.stringify(await current("/tw/technologies/")) === '["核心技術"]' && JSON.stringify(await current("/tw/technologies/ai-simulation/")) === '["核心技術"]');
 
   // phone

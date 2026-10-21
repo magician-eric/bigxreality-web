@@ -20,6 +20,7 @@
     "qa:shots": "node scripts/qa-screenshots.mjs",
     "favicons": "node scripts/make-favicons.mjs",
     "qa:behaviour": "node scripts/qa-behaviour.mjs",
+    "qa:density-navigation": "node scripts/qa-density-navigation.mjs",
     "qa:header": "node scripts/qa-header.mjs",
     "qa:footer": "node scripts/qa-footer.mjs",
     "qa:solutions": "node scripts/qa-solutions.mjs",
