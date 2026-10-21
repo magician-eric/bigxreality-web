@@ -65,7 +65,7 @@ function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
   /** Image position: the CMS image (downloaded for optimisation) plus its material note and caption. */
   const slot = (x: Json | undefined, img?: Json) => {
     const pic = image(img ?? x?.image);
-    return omitEmpty({ src: pic?.src, alt: pic?.alt, need: x?.need, caption: x?.caption });
+    return omitEmpty({ src: pic?.src, alt: pic?.alt, need: x?.need, caption: x?.caption, ratio: x?.ratio });
   };
   const withSlot = (x: Json, keys: string[]) => {
     const base = Object.fromEntries(keys.map((k) => [k, x[k]]).filter(([, v]) => v !== undefined && v !== null && v !== ""));
@@ -146,6 +146,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
           d.integrated_ops_description || refs.integrated_products?.length
             ? omitEmpty({ description: d.integrated_ops_description, products: refs.integrated_products })
             : undefined,
+        relatedProducts: refs.related_products,
         relatedSolutions: refs.related_solutions,
         cta: d.cta_title
           ? { title: d.cta_title, description: d.cta_description, brochure: bool(d.cta_brochure, true), demo: bool(d.cta_demo, true) }

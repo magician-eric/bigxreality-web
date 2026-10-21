@@ -102,6 +102,8 @@ export function validateRelations(): Promise<void> {
       if (split(e.id).lang !== SOURCE_LANG) continue;
       const file = `products/${e.id}.md`;
       expect(file, "integratedOps.products", e.data.integratedOps?.products, products);
+      expect(file, "relatedProducts", e.data.relatedProducts, products);
+      if (e.data.relatedProducts?.includes(split(e.id).slug)) errors.push(`${file}: relatedProducts lists itself`);
       expect(file, "relatedSolutions", e.data.relatedSolutions, solutions);
       expect(file, "integratedScenarios", e.data.integratedScenarios, scenarios);
       if (e.data.integratedOps?.products?.includes(split(e.id).slug)) errors.push(`${file}: integratedOps.products lists itself`);

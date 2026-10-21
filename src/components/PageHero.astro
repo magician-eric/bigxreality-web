@@ -36,7 +36,7 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, de
       <h1 class="t-h1"><Text value={title} /></h1>
       {subtitle && <p class="subtitle"><Text value={subtitle} /></p>}
       {lead && <p class="lead"><Text value={lead} /></p>}
-      {description && <p class="desc"><Text value={description} /></p>}
+      {description && description.split(/\n\s*\n/).map((para) => <p class="desc"><Text value={para.trim()} /></p>)}
       {Astro.slots.has("actions") && <div class="actions"><slot name="actions" /></div>}
     </div>
     {(image || imagePending) && <figure class="media">
@@ -62,6 +62,7 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, de
   .subtitle { color: var(--bxr-mist); font-size: var(--fs-h4); }
   .lead { color: var(--bxr-white); font-size: var(--fs-h4); line-height: var(--lh-h4); max-width: 36rem; }
   .desc { color: var(--ink-muted); max-width: 36rem; }
+  .desc + .desc { margin-top: calc(-1 * var(--space-2)); }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
   .media { position: relative; margin: 0; }
   .media :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }

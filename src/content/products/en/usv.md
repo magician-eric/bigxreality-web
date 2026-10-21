@@ -7,7 +7,6 @@ order: 3
 domains: [military]
 hero:
   name: "[待翻譯] USV 無人船 VR 訓練系統"
-  englishName: "[待提供]"
   code: USV
   tagline: "[待提供]"
 capabilities:

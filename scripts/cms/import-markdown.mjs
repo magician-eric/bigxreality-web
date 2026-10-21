@@ -144,7 +144,7 @@ async function articleBase(fm, body, file) {
 /** Nested `landing` block of a product → flat EmDash landing_* fields (inverse of loader.ts landingFrom). */
 async function landingFields(L, file) {
   if (!L) return {};
-  const slot = async (x) => clean({ image: await image(x, file), need: x?.need, caption: x?.caption });
+  const slot = async (x) => clean({ image: await image(x, file), need: x?.need, caption: x?.caption, ratio: x?.ratio });
   const withSlot = async (x, keys) => ({ ...Object.fromEntries(keys.filter((k) => x[k] !== undefined).map((k) => [k, x[k]])), ...(x.image ? await slot(x.image) : {}) });
   const all = (list, f) => (list ? Promise.all(list.map(f)) : undefined);
   const hero = L.heroImage ? await slot(L.heroImage) : {};
@@ -298,6 +298,7 @@ const add = (coll, slug, field, targets) => {
 for (const [slug, d] of Object.entries(source.products ?? {})) {
   add("products", slug, "integrated_products", d.integratedOps?.products);
   add("products", slug, "related_solutions", d.relatedSolutions);
+  add("products", slug, "related_products", d.relatedProducts);
 }
 for (const [slug, d] of Object.entries(source.scenarios ?? {})) add("scenarios", slug, "products", d.products);
 for (const [slug, d] of Object.entries(source.products ?? {})) for (const s of d.integratedScenarios ?? []) add("scenarios", s, "products", [slug]);

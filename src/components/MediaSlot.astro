@@ -10,8 +10,8 @@ import Text from "./Text.astro";
 import ImagePlaceholder from "./ImagePlaceholder.astro";
 
 interface Props {
-  media?: { src?: ImageMetadata; alt?: string; need?: string; caption?: string };
-  /** CSS aspect ratio, e.g. "16 / 9". */
+  media?: { src?: ImageMetadata; alt?: string; need?: string; caption?: string; ratio?: string };
+  /** Default CSS aspect ratio, e.g. "16 / 9"; a ratio set on the position itself wins. */
   ratio: string;
   /** Label of the placeholder when the slot has no `need`. */
   fallbackLabel: string;
@@ -21,10 +21,11 @@ interface Props {
   eager?: boolean;
 }
 const { media, ratio, fallbackLabel, needPrefix, sizes = "(max-width: 767px) 100vw, 50vw", eager = false } = Astro.props;
+const useRatio = media?.ratio ?? ratio;
 const ready = media?.src && media.alt;
 const label = media?.need ? `${needPrefix}${media.need}` : fallbackLabel;
 ---
-<figure class="media" style={`--ratio: ${ratio}`}>
+<figure class="media" style={`--ratio: ${useRatio}`}>
   {ready ? (
     <Picture
       src={media!.src!} alt={media!.alt!} formats={["avif", "webp"]}
@@ -32,7 +33,7 @@ const label = media?.need ? `${needPrefix}${media.need}` : fallbackLabel;
       fit="cover" loading={eager ? "eager" : "lazy"}
     />
   ) : (
-    <ImagePlaceholder label={label} ratio={ratio} />
+    <ImagePlaceholder label={label} ratio={useRatio} />
   )}
   {media?.caption && <figcaption class="t-caption"><Text value={media.caption} /></figcaption>}
 </figure>

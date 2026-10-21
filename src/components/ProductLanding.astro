@@ -51,9 +51,14 @@ const images = L.approach.images ?? [];
 const paras = (s: string) => s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 
 // Related products / solutions: only entries that have a built page in this language.
-const relatedProducts = (await getLocalized("products", lang)).filter(
+// Confirmed integrations (either direction) come first, then the products this one lists
+// as "related" (a pointer to look at next, not an integration).
+const allProducts = await getLocalized("products", lang);
+const integrated = allProducts.filter(
   (p) => p.slug !== slug && ((base.integratedOps?.products ?? []).includes(p.slug) || (p.base.data.integratedOps?.products ?? []).includes(slug)),
 );
+const listed = allProducts.filter((p) => p.slug !== slug && (base.relatedProducts ?? []).includes(p.slug) && !integrated.includes(p));
+const relatedProducts = [...integrated, ...listed];
 const relatedSolutions = (await getLocalized("solutions", lang)).filter((s) => (base.relatedSolutions ?? []).includes(s.slug));
 // Fields still holding the [待提供] marker are left off the cards instead of being shown.
 const known = (v?: string) => (v && !isPending(v) ? v : undefined);
@@ -119,7 +124,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
           <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>
         </div>
         {images.length > 0 && (
-          <div class:list={["pair", { single: images.length === 1 }]}>
+          <div class:list={["pair", { single: images.length === 1, stack: images[0]?.ratio === "16 / 9" }]}>
             {images.map((img, i) => (
               <>
                 {i === 1 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
@@ -216,7 +221,8 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   .challenge-head :global(.section-head) { margin-bottom: 0; }
   .split { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
   .split.solo { grid-template-columns: 1fr; }
-  .pair.single { grid-template-columns: 1fr; }
+  .pair.single, .pair.stack { grid-template-columns: 1fr; }
+  .pair.stack .link svg { transform: rotate(90deg); }
   .pair { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
   .link { position: absolute; left: 50%; top: 50%; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; transform: translate(-50%, -50%); background: var(--bxr-black); color: var(--bxr-white); border-bottom: 2px solid var(--bxr-red); }
   .copy { display: grid; gap: var(--space-4); align-content: start; }

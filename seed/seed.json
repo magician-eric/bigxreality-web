@@ -195,6 +195,20 @@
         "slug": "caption",
         "label": "圖說（選填）",
         "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
        }
       ]
      }
@@ -267,6 +281,20 @@
         "slug": "caption",
         "label": "圖說（選填）",
         "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
        }
       ]
      }
@@ -308,7 +336,10 @@
           "target",
           "team",
           "variation",
-          "review"
+          "review",
+          "route",
+          "headset",
+          "link"
          ]
         }
        },
@@ -326,6 +357,20 @@
         "slug": "caption",
         "label": "圖說（選填）",
         "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
        }
       ]
      }
@@ -382,6 +427,20 @@
         "slug": "caption",
         "label": "圖說（選填）",
         "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
        }
       ]
      }
@@ -591,6 +650,15 @@
      "validation": {
       "relation": "product_integrations",
       "relationSide": "child"
+     }
+    },
+    {
+     "slug": "related_products",
+     "label": "其他相關產品（落地頁「關聯產品」顯示，不代表已整合）",
+     "type": "reference",
+     "validation": {
+      "relation": "product_related",
+      "relationSide": "parent"
      }
     },
     {
@@ -1817,6 +1885,13 @@
    "childCollection": "tags",
    "parentLabel": "案例",
    "childLabel": "標籤"
+  },
+  {
+   "slug": "product_related",
+   "parentCollection": "products",
+   "childCollection": "products",
+   "parentLabel": "被列為相關產品",
+   "childLabel": "其他相關產品"
   }
  ]
 }

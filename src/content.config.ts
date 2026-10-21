@@ -58,10 +58,18 @@ const card = z.object({ title: text, description: text });
  * the placeholder and in the supplier checklist); once `src` and `alt` are set the photo
  * replaces the placeholder with no layout change.
  */
+const RATIOS = ["16 / 9", "3 / 2", "4 / 3", "4 / 5", "1 / 1"] as const;
 const slot = (ctx: SchemaContext) =>
-  z.object({ src: ctx.image().optional(), alt: text.optional(), need: text.optional(), caption: text.optional() });
+  z.object({
+    src: ctx.image().optional(),
+    alt: text.optional(),
+    need: text.optional(),
+    caption: text.optional(),
+    /** Recommended aspect ratio of the photo for this position (the page lays the position out at this ratio). */
+    ratio: z.enum(RATIOS).optional(),
+  });
 /** Step / feature icons drawn by the site (components/FlowIcon.astro). */
-const FLOW_ICONS = ["target", "team", "variation", "review"] as const;
+const FLOW_ICONS = ["target", "team", "variation", "review", "route", "headset", "link"] as const;
 const landing = (ctx: SchemaContext) => z.object({
   headline: text,
   subheadline: text,
@@ -135,7 +143,7 @@ const products = defineCollection({
       domains: z.array(z.enum(DOMAINS)).min(1),
       hero: z.object({
         name: text,
-        englishName: text,
+        englishName: text.optional(),
         code: text,
         tagline: text,
         image: picture(ctx).optional(),
@@ -158,6 +166,11 @@ const products = defineCollection({
         })
         .optional(),
       integratedOps: z.object({ description: text.optional(), products: z.array(slug).optional() }).optional(),
+      /**
+       * Other products worth looking at next, shown on the landing page. Not an integration:
+       * confirmed integrations belong in integratedOps. Listed one way (this product → those).
+       */
+      relatedProducts: z.array(slug).optional(),
       relatedSolutions: z.array(slug).optional(),
       cta: cta
         .extend({ brochure: z.boolean().default(true), demo: z.boolean().default(true) })
