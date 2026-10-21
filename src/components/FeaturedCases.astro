@@ -1,0 +1,41 @@
+---
+/**
+ * Featured case studies (home page; reusable elsewhere). Takes CaseView items from
+ * lib/home.ts featuredCases(). With no published case the block renders nothing on
+ * built pages; `astro dev` shows clearly labelled placeholders so the layout can be reviewed.
+ */
+import type { Lang } from "../i18n";
+import type { CaseView } from "../lib/cases";
+import SectionHead from "./SectionHead.astro";
+import CaseCard from "./CaseCard.astro";
+import Text from "./Text.astro";
+
+interface Props {
+  lang: Lang;
+  items: CaseView[];
+  copy: { eyebrow: string; title: string; description: string; viewAll: string; placeholder: string };
+  viewAllHref: string;
+  /** Number of placeholder cards in dev when there is no data. */
+  slots?: number;
+  alt?: boolean;
+}
+const { lang, items, copy, viewAllHref, slots = 2, alt = false } = Astro.props;
+const placeholders = items.length === 0 && import.meta.env.DEV ? slots : 0;
+---
+{(items.length > 0 || placeholders > 0) && (
+  <section class:list={["section", "compact", { "section--alt": alt }]} aria-labelledby="h-featured-cases" data-block="featured-cases">
+    <div class="container">
+      <SectionHead id="h-featured-cases" eyebrow={copy.eyebrow} title={copy.title} description={copy.description} viewAll={items.length ? { href: viewAllHref, label: copy.viewAll } : undefined} />
+      <ul role="list" class="grid">
+        {items.map((item) => <li><CaseCard lang={lang} item={item} /></li>)}
+        {Array.from({ length: placeholders }, () => <li class="dev-placeholder" data-dev-placeholder><Text value={copy.placeholder} /></li>)}
+      </ul>
+    </div>
+  </section>
+)}
+<style>
+  .compact { padding-block: var(--home-section-py, var(--section-py)); }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
+  .dev-placeholder { display: grid; place-items: center; min-height: 160px; padding: var(--space-3); text-align: center; border: 1px dashed var(--bxr-signal-amber); color: var(--ink-muted); font-family: var(--font-mono); font-size: var(--fs-small); }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
+</style>

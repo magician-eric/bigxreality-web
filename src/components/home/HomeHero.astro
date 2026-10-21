@@ -1,0 +1,119 @@
+---
+/**
+ * Home hero: approved BXR training footage (muted, no audio track) behind the H1.
+ * The poster image is always rendered and is what search engines, no-JS visitors,
+ * reduced-motion and Save-Data users see. The two clips play one after the other
+ * (docs/PLAN.md §4.3); the second is only fetched once the first is playing, and a
+ * pause button is shown because the loop runs longer than five seconds (WCAG 2.2.2).
+ */
+import { Picture } from "astro:assets";
+import poster from "../../assets/images/home/hero-poster.jpg";
+import type { HomeCopy } from "../../data/home";
+import Text from "../Text.astro";
+
+interface Props { copy: HomeCopy["hero"]; primaryHref: string; secondaryHref: string }
+const { copy, primaryHref, secondaryHref } = Astro.props;
+const clips = ["/video/hero/hero-2", "/video/hero/hero-1"];
+---
+<section class="hero" data-theme="dark" aria-labelledby="home-title" data-hero>
+  <div class="media">
+    <Picture src={poster} alt={copy.posterAlt} formats={["avif", "webp"]} widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="poster" />
+    {clips.map((c) => (
+      <video muted playsinline preload="none" aria-label={copy.videoLabel} data-clip hidden>
+        <source data-src={`${c}.webm`} type="video/webm" />
+        <source data-src={`${c}.mp4`} type="video/mp4" />
+      </video>
+    ))}
+    <div class="shade" aria-hidden="true"></div>
+  </div>
+  <div class="container inner">
+    <p class="t-label eyebrow">{copy.eyebrow}</p>
+    <h1 class="t-h1 title" id="home-title"><Text value={copy.title} /></h1>
+    <p class="subtitle t-h3"><Text value={copy.subtitle} /></p>
+    <p class="desc"><Text value={copy.description} /></p>
+    <div class="actions">
+      <a class="btn btn--primary" href={primaryHref}><Text value={copy.primary} /></a>
+      <a class="btn btn--secondary" href={secondaryHref}><Text value={copy.secondary} /></a>
+    </div>
+  </div>
+  <button type="button" class="toggle" data-toggle hidden aria-pressed="false" data-pause={copy.pause} data-play={copy.play} aria-label={copy.pause}>
+    <svg class="i-pause" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 2h3v12H4zM9 2h3v12H9z" fill="currentColor" /></svg>
+    <svg class="i-play" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 2l10 6-10 6z" fill="currentColor" /></svg>
+  </button>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-hero]");
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches || conn?.saveData;
+  if (root && !still) {
+    const clips = [...root.querySelectorAll<HTMLVideoElement>("[data-clip]")];
+    const toggle = root.querySelector<HTMLButtonElement>("[data-toggle]")!;
+    const load = (v: HTMLVideoElement) => {
+      if (v.dataset.loaded) return;
+      v.querySelectorAll<HTMLSourceElement>("source").forEach((s) => { s.src = s.dataset.src!; });
+      v.load();
+      v.dataset.loaded = "1";
+    };
+    let current = 0;
+    let paused = false;
+    const show = (i: number) => {
+      current = i;
+      clips.forEach((v, j) => v.classList.toggle("is-on", j === i));
+      const v = clips[i];
+      v.currentTime = 0;
+      if (!paused) v.play().catch(() => {});
+    };
+    clips.forEach((v, i) => {
+      v.hidden = false;
+      v.addEventListener("ended", () => show((i + 1) % clips.length));
+    });
+    clips[0].addEventListener("playing", () => { clips.slice(1).forEach(load); toggle.hidden = false; }, { once: true });
+    load(clips[0]);
+    show(0);
+    toggle.addEventListener("click", () => {
+      paused = !paused;
+      const v = clips[current];
+      if (paused) v.pause(); else v.play().catch(() => {});
+      toggle.setAttribute("aria-pressed", String(paused));
+      toggle.setAttribute("aria-label", (paused ? toggle.dataset.play : toggle.dataset.pause)!);
+    });
+  }
+</script>
+
+<style>
+  .hero { position: relative; isolation: isolate; overflow: hidden; background: var(--bxr-black); color: var(--bxr-white); display: flex; align-items: center; min-height: clamp(480px, 70vh, 600px); }
+  .media, .media :global(picture), .media :global(img), .media video, .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .media { z-index: -1; }
+  .media :global(img), .media video { object-fit: cover; object-position: 60% center; }
+  .media video { opacity: 0; transition: opacity 600ms var(--ease-precise); }
+  .media video.is-on { opacity: 1; }
+  .shade { background: linear-gradient(90deg, rgb(11 15 20 / 0.92) 0%, rgb(11 15 20 / 0.72) 45%, rgb(11 15 20 / 0.25) 100%); }
+  .inner { position: relative; display: grid; gap: var(--space-2); padding-block: var(--space-8); }
+  .inner > * { max-width: 40rem; }
+  .inner > .title { max-width: 52rem; }
+  .eyebrow { color: var(--bxr-ash); }
+  .title { color: var(--bxr-white); font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: var(--ls-display); }
+  :lang(zh) .title, :lang(ja) .title { font-size: calc(var(--fs-display) * 0.8); line-height: 1.2; letter-spacing: 0.02em; }
+  .subtitle { color: var(--bxr-white); }
+  .desc { color: var(--bxr-ash); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+  .toggle {
+    position: absolute; right: var(--margin); bottom: var(--space-3); display: grid; place-items: center; width: 40px; height: 40px;
+    border: 1px solid rgb(255 255 255 / 0.5); border-radius: 50%; background: rgb(11 15 20 / 0.5); color: var(--bxr-white); cursor: pointer;
+  }
+  .toggle[hidden] { display: none; }
+  .toggle:hover { border-color: var(--bxr-white); }
+  .toggle .i-play, .toggle[aria-pressed="true"] .i-pause { display: none; }
+  .toggle[aria-pressed="true"] .i-play { display: block; }
+  @media (max-width: 1023px) {
+    .title { font-size: calc(var(--fs-display) * 0.8); }
+    :lang(zh) .title, :lang(ja) .title { font-size: calc(var(--fs-display) * 0.66); }
+  }
+  @media (max-width: 767px) {
+    .hero { min-height: 0; }
+    .inner { padding-block: var(--space-6) var(--space-8); }
+    .title, :lang(zh) .title, :lang(ja) .title { font-size: var(--fs-h1); line-height: 1.25; }
+    .shade { background: linear-gradient(180deg, rgb(11 15 20 / 0.6) 0%, rgb(11 15 20 / 0.88) 60%); }
+  }
+</style>
