@@ -269,6 +269,8 @@ const pages = defineCollection({
         image: picture(ctx).optional(),
         imageCaption: text.optional(),
       }),
+      /** One closing line shown in a band above the footer (company page: the slogan). */
+      closing: z.object({ title: text }).optional(),
       /** A short list of principle cards (solutions overview). */
       highlights: z.object({ title: text, items: z.array(card).min(1) }).optional(),
       integrated: z.object({ eyebrow: text, title: text, description: text }).optional(),

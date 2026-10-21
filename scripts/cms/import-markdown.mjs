@@ -209,7 +209,7 @@ const MAP = {
     data: clean({
       title: d.hero.title, translation_status: d.translationStatus, eyebrow: d.hero.eyebrow, lead: d.hero.lead, description: d.hero.description,
       hero_image: await image(d.hero.image, file), image_caption: d.hero.imageCaption,
-      highlights_title: d.highlights?.title, highlights_items: d.highlights?.items,
+      closing_title: d.closing?.title, highlights_title: d.highlights?.title, highlights_items: d.highlights?.items,
       integrated_eyebrow: d.integrated?.eyebrow, integrated_title: d.integrated?.title, integrated_description: d.integrated?.description,
       cta_title: d.cta?.title, cta_description: d.cta?.description,
     }),
