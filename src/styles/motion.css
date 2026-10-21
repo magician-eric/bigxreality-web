@@ -1,0 +1,26 @@
+/* Shared, finite feedback. Content remains visible before JS and when animation is unavailable. */
+:root { --feedback-duration: 180ms; --entrance-duration: 360ms; }
+[data-interactive-card] {
+  transition: transform var(--feedback-duration) var(--ease-precise), border-color var(--feedback-duration) var(--ease-precise);
+}
+[data-interactive-card]:focus-within { border-color: var(--focus-ring); }
+.btn, .back-to-top {
+  transition: transform var(--feedback-duration) var(--ease-precise), background-color var(--feedback-duration) var(--ease-precise), color var(--feedback-duration) var(--ease-precise), border-color var(--feedback-duration) var(--ease-precise);
+}
+main a:not(.btn) { transition: color var(--feedback-duration) var(--ease-precise); }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-interactive-card]:hover { transform: translateY(-3px); border-color: var(--bxr-text-red); }
+  .btn:not(:disabled):not([aria-disabled="true"]):hover, .back-to-top:hover { transform: translateY(-1px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn:not(:disabled):not([aria-disabled="true"]):active, .back-to-top:active { transform: translateY(1px); }
+  .motion-enter { animation: bxr-enter var(--entrance-duration) var(--ease-precise) both; }
+  /* Keep disclosure layout and close/focus behavior immediate; animate only its visual entrance. */
+  .site-header .is-enhanced:has(.sub-toggle[aria-expanded="true"]) > .sub { animation: bxr-menu-in 140ms ease-out; }
+}
+@keyframes bxr-enter { from { opacity: .82; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes bxr-menu-in { from { opacity: .8; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-interactive-card], [data-interactive-card] img, .btn, .back-to-top, .motion-enter { transform: none !important; }
+  .motion-enter, .site-header .sub { animation: none !important; }
+}

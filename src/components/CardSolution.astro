@@ -13,7 +13,7 @@ const ui = getUi(lang);
 // The English-name line repeats nothing on the English site, where it equals the name.
 const subtitle = headline ?? (englishName !== name ? englishName : undefined);
 ---
-<article class={`card sector--${domain}`}>
+<article data-interactive-card class={`card sector--${domain}`}>
   <div class="media">
     {image
       ? <Picture src={image.src} alt={image.alt} formats={["avif", "webp"]} widths={[400, 640, 960]} sizes="(max-width: 767px) 100vw, 400px" width={640} height={360} fit="cover" />
