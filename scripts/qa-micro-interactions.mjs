@@ -43,7 +43,7 @@ try {
     }
     await page.goBack();
     assert.equal(await page.locator('h1').count(), 1);
-    assert.equal(await page.locator('.motion-enter').count(), 0);
+    await page.waitForFunction(() => !document.querySelector('.motion-enter'));
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
     assert.deepEqual(errors, []);
     await page.close(); checked++;
@@ -60,3 +60,5 @@ try {
   }
   console.log(`PASS: ${checked} language/viewport combinations; one-time entrance, stable height, reduced motion, card feedback, keyboard focus, history/reload, no-JS/no-observer fallbacks`);
 } finally { await browser.close(); server.stop(); }
+
+await import('./qa-motion-lifecycle.mjs');
