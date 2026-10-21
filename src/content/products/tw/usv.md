@@ -138,8 +138,6 @@ landing:
   closing:
     title: 讓無人船訓練，從單一任務延伸至更多應用
     description: 了解 USV 無人船 VR 訓練系統，如何配合單位的模擬訓練需求，並延伸至與 SUT 的跨系統協同應用
-integratedScenarios:
-- mum-t
 integratedOps:
   description: USV 與 SUT、UAV 的關係是「可整合」，不是「隸屬」
 relatedProducts:

@@ -880,14 +880,6 @@
      }
     },
     {
-     "slug": "integrated_scenarios",
-     "label": "參與的整合訓練情境（同一份關聯的另一端）",
-     "type": "reference",
-     "validation": {
-      "relation": "scenario_products"
-     }
-    },
-    {
      "slug": "domains",
      "label": "領域",
      "type": "multiSelect",
@@ -896,8 +888,7 @@
       "options": [
        "military",
        "police",
-       "fire-rescue",
-       "smart-city"
+       "fire-rescue"
       ]
      },
      "translatable": false
@@ -1809,75 +1800,6 @@
    ]
   },
   {
-   "slug": "scenarios",
-   "label": "整合訓練情境",
-   "labelSingular": "整合訓練情境",
-   "icon": "git-merge",
-   "group": "產品與解決方案",
-   "sortOrder": 3,
-   "supports": [
-    "drafts",
-    "revisions"
-   ],
-   "routable": false,
-   "titleField": "title",
-   "fields": [
-    {
-     "slug": "title",
-     "label": "名稱",
-     "type": "string",
-     "required": true
-    },
-    {
-     "slug": "translation_status",
-     "label": "翻譯狀態",
-     "type": "select",
-     "required": true,
-     "defaultValue": "pending",
-     "validation": {
-      "options": [
-       "source",
-       "pending",
-       "translated"
-      ]
-     }
-    },
-    {
-     "slug": "code",
-     "label": "代號",
-     "type": "string",
-     "required": true,
-     "translatable": false
-    },
-    {
-     "slug": "english_name",
-     "label": "英文名",
-     "type": "string"
-    },
-    {
-     "slug": "summary",
-     "label": "說明",
-     "type": "text",
-     "required": true
-    },
-    {
-     "slug": "products",
-     "label": "參與產品（依顯示順序）",
-     "type": "reference",
-     "validation": {
-      "relation": "scenario_products"
-     }
-    },
-    {
-     "slug": "sort_order",
-     "label": "排序",
-     "type": "integer",
-     "required": true,
-     "translatable": false
-    }
-   ]
-  },
-  {
    "slug": "news",
    "label": "消息",
    "labelSingular": "消息",
@@ -2607,22 +2529,6 @@
      }
     },
     {
-     "slug": "integrated_eyebrow",
-     "label": "整合訓練情境：小標（產品總覽頁用）",
-     "type": "string",
-     "translatable": false
-    },
-    {
-     "slug": "integrated_title",
-     "label": "整合訓練情境：標題",
-     "type": "string"
-    },
-    {
-     "slug": "integrated_description",
-     "label": "整合訓練情境：說明",
-     "type": "text"
-    },
-    {
      "slug": "cta_title",
      "label": "結尾 CTA 標題",
      "type": "string"
@@ -3081,13 +2987,6 @@
    "childCollection": "solutions",
    "parentLabel": "相關產品",
    "childLabel": "關聯解決方案"
-  },
-  {
-   "slug": "scenario_products",
-   "parentCollection": "scenarios",
-   "childCollection": "products",
-   "parentLabel": "整合訓練情境",
-   "childLabel": "參與產品"
   },
   {
    "slug": "news_products",

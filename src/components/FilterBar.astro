@@ -13,9 +13,12 @@ import Text from "./Text.astro";
 
 type Domain = "military" | "police" | "fire-rescue" | "smart-city";
 interface Labels { results: string; searchLabel: string; searchPlaceholder: string }
-/** `labels` defaults to the product wording (products overview). */
-interface Props { lang: Lang; domains: readonly Domain[]; target: string; labels?: Labels }
-const { lang, domains, target } = Astro.props;
+/**
+ * `labels` defaults to the product wording (products overview). `domainLabels` replaces the
+ * chip names (the products overview uses the product categories, not the solution names).
+ */
+interface Props { lang: Lang; domains: readonly Domain[]; target: string; labels?: Labels; domainLabels?: Partial<Record<Domain, string>> }
+const { lang, domains, target, domainLabels } = Astro.props;
 const ui = getUi(lang);
 const labels = Astro.props.labels ?? ui.filter;
 ---
@@ -24,7 +27,7 @@ const labels = Astro.props.labels ?? ui.filter;
     <button type="button" class="chip" data-domain="" aria-pressed="true"><Text value={ui.filter.all} /></button>
     {domains.map((d) => (
       <button type="button" class={`chip sector--${d}`} data-domain={d} aria-pressed="false">
-        <span class="dot" aria-hidden="true"></span><Text value={ui.domains[d]} />
+        <span class="dot" aria-hidden="true"></span><Text value={domainLabels?.[d] ?? ui.domains[d]} />
       </button>
     ))}
   </div>

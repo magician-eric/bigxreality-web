@@ -62,6 +62,11 @@
     "smart-city": "SMART CITY",
     "other": "OTHER"
   },
+  "productDomains": {
+    "military": "軍事訓練",
+    "police": "警勤訓練",
+    "fire-rescue": "消防防災"
+  },
   "product": {
     "onThisPage": "頁內導覽",
     "sections": {
@@ -112,9 +117,7 @@
       "minuteUnit": "分鐘",
       "approx": "約"
     },
-    "integratedScenario": "整合訓練情境",
-    "integratesWith": "可整合的產品",
-    "participants": "參與產品"
+    "integratesWith": "可整合的產品"
   },
   "articleTypes": {
     "insights": "技術文章",
@@ -248,7 +251,6 @@
     "findSolutions": "尋找解決方案",
     "viewProducts": "查看產品",
     "viewSolutions": "查看解決方案",
-    "viewIntegrated": "了解整合訓練",
     "bookDemo": "預約產品展示",
     "requestInfo": "索取產品資料",
     "productInquiry": "洽詢產品",

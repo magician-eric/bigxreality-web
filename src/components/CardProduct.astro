@@ -7,23 +7,26 @@
 import { Picture } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import type { Lang } from "../i18n";
+import type { ProductDomain } from "../lib/domains";
 import { getUi } from "../lib/ui";
 import ImagePlaceholder from "./ImagePlaceholder.astro";
 import SectorTag from "./SectorTag.astro";
 import Text from "./Text.astro";
 
-type Domain = "military" | "police" | "fire-rescue" | "smart-city";
 interface Props {
   lang: Lang;
   href: string;
   name: string;
   englishName?: string;
   summary?: string;
-  domains: Domain[];
+  /** Product categories (lib/domains.ts PRODUCT_DOMAINS). */
+  domains: ProductDomain[];
+  /** Tag names; the products overview passes ui.productDomains, other pages keep ui.domains. */
+  domainLabels?: Partial<Record<ProductDomain, string>>;
   image?: { src: ImageMetadata; alt: string };
   headingLevel?: 2 | 3;
 }
-const { lang, href, name, englishName, summary, domains, image, headingLevel = 3 } = Astro.props;
+const { lang, href, name, englishName, summary, domains, domainLabels, image, headingLevel = 3 } = Astro.props;
 const ui = getUi(lang);
 const H = `h${headingLevel}` as "h2" | "h3";
 ---
@@ -34,7 +37,7 @@ const H = `h${headingLevel}` as "h2" | "h3";
       : <ImagePlaceholder label={ui.imagePending} />}
   </div>
   <div class="body">
-    <ul role="list" class="tags">{domains.map((d) => <li><SectorTag domain={d} lang={lang} /></li>)}</ul>
+    <ul role="list" class="tags">{domains.map((d) => <li><SectorTag domain={d} lang={lang} label={domainLabels?.[d]} /></li>)}</ul>
     <H class="t-h4 title"><a href={href}><Text value={name} /></a></H>
     {englishName && <p class="t-tech english"><Text value={englishName} /></p>}
     {summary && <p class="t-small summary"><Text value={summary} /></p>}

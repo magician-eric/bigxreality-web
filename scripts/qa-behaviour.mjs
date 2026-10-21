@@ -25,8 +25,9 @@ try {
   check("filter state in URL", new URL(page.url()).searchParams.get("domain") === "police");
   await page.getByRole("button", { name: "消防防災" }).click();
   check("domain filter: Fire & rescue → 1 card", (await visibleCards()) === 1);
-  await page.getByRole("button", { name: "智慧城市" }).click();
-  check("domain filter: Smart city → 0 cards + empty message", (await visibleCards()) === 0 && (await page.locator("[data-filter-empty]").isVisible()));
+  await page.getByLabel("搜尋產品").fill("zzz");
+  check("no match → empty message", (await visibleCards()) === 0 && (await page.locator("[data-filter-empty]").isVisible()));
+  await page.getByLabel("搜尋產品").fill("");
   await page.getByRole("button", { name: "軍事" }).click();
   check("domain filter: Military → 9 cards", (await visibleCards()) === 9);
   check("pressed state", (await page.getByRole("button", { name: "軍事" }).getAttribute("aria-pressed")) === "true");
@@ -36,6 +37,32 @@ try {
   check("text filter: '無人機' → 1 card (UAV)", (await visibleCards()) === 1);
   await page.goto(`${base}/tw/products/?domain=police`, { waitUntil: "networkidle" });
   check("filter restored from URL", (await visibleCards()) === 2);
+  await page.goto(`${base}/tw/products/?domain=smart-city`, { waitUntil: "networkidle" });
+  check("?domain=smart-city is not a product category → all 12 shown", (await visibleCards()) === 12);
+
+  // Products overview: the twelve products and the three product categories only. Integration
+  // solutions (MUM-T, NOVA) and Smart City live under Solutions, never on this page.
+  const CHIPS = {
+    tw: ["軍事訓練", "警勤訓練", "消防防災"],
+    en: ["Military Training", "Law Enforcement Training", "Fire & Disaster Preparedness"],
+    jp: ["軍事訓練", "警察訓練", "消防・防災"],
+  };
+  for (const l of ["tw", "en", "jp"]) {
+    await page.goto(`${base}/${l}/products/`, { waitUntil: "networkidle" });
+    check(`${l} overview: 12 products`, (await page.locator("#product-grid > li").count()) === 12);
+    const domains = await page.$$eval("[data-filter-bar] button[data-domain]", (bs) => bs.map((b) => b.dataset.domain));
+    check(`${l} overview: filter = all + military / police / fire-rescue`, JSON.stringify(domains) === JSON.stringify(["", "military", "police", "fire-rescue"]), domains.join(","));
+    const chips = await page.$$eval("[data-filter-bar] button[data-domain]:not([data-domain=''])", (bs) => bs.map((b) => b.textContent.trim()));
+    check(`${l} overview: product category labels`, JSON.stringify(chips) === JSON.stringify(CHIPS[l]), chips.join(","));
+    // The header and footer link to the Solutions pages (Smart City, MUM-T, NOVA); only the page body and head are checked.
+    // "Counter-UAS" may appear only inside the product grid (it is part of the UAV product's English name).
+    const head = await page.$eval("head", (h) => h.innerHTML);
+    const main = await page.$eval("main", (m) => m.outerHTML);
+    const outsideGrid = await page.$eval("main", (m) => { const c = m.cloneNode(true); c.querySelector("#product-grid")?.remove(); return c.outerHTML; });
+    const leaked = ["Integrated Training", "整合訓練情境", "MUM-T", "NOVA", "smart-city", "SMART CITY", "智慧城市", "Smart City", "スマートシティ", "#integrated"].filter((w) => (head + main).includes(w));
+    if ((head + outsideGrid).includes("Counter-UAS")) leaked.push("Counter-UAS");
+    check(`${l} overview: no integrated training block or Smart City category`, leaked.length === 0, leaked.join(","));
+  }
 
   await page.goto(`${base}/tw/products/sut/`, { waitUntil: "networkidle" });
   const alt = await page.$$eval('link[rel=alternate][hreflang]', (ls) => ls.map((l) => `${l.hreflang} ${l.href}`));

@@ -46,12 +46,10 @@ const overviewHtml = markPendingHtml(product.loc.rendered?.html ?? "");
 const heroImage = base.hero.image && { src: base.hero.image.src, alt: d.hero.image?.alt ?? base.hero.image.alt };
 const integrated = await integratedProducts(slug, lang);
 const solutions = (await getLocalized("solutions", lang)).filter((s) => (base.relatedSolutions ?? []).includes(s.slug));
-const scenarioEntries = (await getLocalized("scenarios", lang)).filter((s) => (base.integratedScenarios ?? []).includes(s.slug));
 // Cases have their own block (RelatedCases); this list keeps news and insights.
 const articles = (await articlesAbout("relatedProducts", slug, lang, ["news", "insights"])).slice(0, 6);
 const cases = await casesAbout("relatedProducts", slug, lang);
 const articleTags = await Promise.all(articles.map((a) => tagNames(a.base.data.tags, lang)));
-const productNames = new Map((await getLocalized("products", lang)).map((p) => [p.slug, p.loc.data.hero.name]));
 
 const deployment = d.deployment && {
   personnel: base.deployment?.personnel,
@@ -65,7 +63,6 @@ const sections = visibleProductSections({
   capabilities: d.capabilities,
   howItWorks: d.howItWorks,
   scenarios: d.scenarios,
-  integratedScenarios: scenarioEntries.map((s) => s.slug),
   components: d.components,
   deployment,
   integratedOps: { description: d.integratedOps?.description, products: integrated.map((p) => p.slug) },
@@ -183,35 +180,16 @@ const deploymentRows = [
     </section>
   )}
 
-  <!-- 6 Training scenarios (product's own + integrated scenarios it takes part in) -->
+  <!-- 6 Training scenarios -->
   {has("scenarios") && (
     <section class="section section--alt" id="scenarios" aria-labelledby="h-scenarios">
       <div class="container">
         <SectionHead id="h-scenarios" eyebrow={head("scenarios").eyebrow} title={head("scenarios").title} />
-        {d.scenarios && d.scenarios.length > 0 && (
-          <ul role="list" class="tiles">
-            {d.scenarios.map((s) => (
-              <li class="tile"><h3 class="t-h4"><Text value={s.title} /></h3><p class="t-muted"><Text value={s.description} /></p></li>
-            ))}
-          </ul>
-        )}
-        {scenarioEntries.length > 0 && (
-          <ul role="list" class="integrated-scenarios">
-            {scenarioEntries.map((s) => (
-              <li class="scenario">
-                <p class="t-label label"><Text value={ui.product.integratedScenario} /> · {s.base.data.code}</p>
-                <h3 class="t-h4"><Text value={s.loc.data.name} /></h3>
-                <p><Text value={s.loc.data.summary} /></p>
-                <p class="t-small participants">
-                  <span class="t-muted"><Text value={ui.product.participants} />：</span>
-                  {s.base.data.products.filter((p) => productNames.has(p)).map((p, i) => (
-                    <>{i > 0 && "、"}{p === slug ? <Text value={productNames.get(p)!} /> : <a href={localePath(lang, "products", p)}><Text value={productNames.get(p)!} /></a>}</>
-                  ))}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
+        <ul role="list" class="tiles">
+          {d.scenarios!.map((s) => (
+            <li class="tile"><h3 class="t-h4"><Text value={s.title} /></h3><p class="t-muted"><Text value={s.description} /></p></li>
+          ))}
+        </ul>
       </div>
     </section>
   )}
@@ -363,10 +341,6 @@ const deploymentRows = [
   .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; counter-reset: none; }
   .step { display: grid; gap: var(--space-1); align-content: start; padding-top: var(--space-2); border-top: 1px solid var(--bxr-line); }
   .num { color: var(--ink-muted); }
-  .integrated-scenarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
-  .scenario { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-3); background: var(--bxr-white); border: 1px solid var(--bxr-line); }
-  .scenario .label { color: var(--ink-muted); }
-  .participants a { min-height: 24px; }
   .spec { display: grid; margin: 0; border-top: 1px solid var(--bxr-black); }
   .spec div { display: grid; grid-template-columns: 4fr 8fr; gap: var(--space-3); padding-block: var(--space-2); border-bottom: 1px solid var(--bxr-line); }
   .spec dt { font-weight: 500; }
@@ -382,7 +356,7 @@ const deploymentRows = [
     .tiles, .cards, .steps, .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 767px) {
-    .tiles, .cards, .steps, .figures, .integrated-scenarios { grid-template-columns: 1fr; }
+    .tiles, .cards, .steps, .figures { grid-template-columns: 1fr; }
     .spec div { grid-template-columns: 1fr; gap: var(--space-1); }
   }
 </style>

@@ -159,9 +159,6 @@ scenarios:
   description: '[待提供]'
 - title: 小部隊戰術情境
   description: '[待提供]'
-integratedScenarios:
-- mum-t
-- counter-uas
 components:
 - name: '[待提供]'
   description: '[待提供]'

@@ -12,10 +12,6 @@ hero:
     src: ../../../../design-source/06_KeyVisuals/BXR_KV_CORP_DIGITAL_TWIN_v3.2.jpg
     alt: "[待翻譯] 以點雲呈現的室內訓練場域數位模型"
   imageCaption: "[待翻譯] 合成示意"
-integrated:
-  eyebrow: Integrated Training
-  title: "[待翻譯] 整合訓練情境"
-  description: "[待翻譯] SUT、UAV、USV 是三個平行的獨立產品，可以各自展示，也可以在特定情境下整合。以下整合訓練情境由多個產品串接形成，不是獨立產品。"
 cta:
   title: "[待提供]"
   description: "[待提供]"

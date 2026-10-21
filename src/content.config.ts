@@ -4,7 +4,7 @@ import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { PENDING } from "./lib/pending";
-import { DOMAINS } from "./lib/domains";
+import { DOMAINS, PRODUCT_DOMAINS } from "./lib/domains";
 import { INVESTOR_MODULES, PARTNER_CATEGORIES } from "./lib/company";
 import { contentSource } from "./lib/content-source";
 import { emdashLoader } from "./lib/emdash/loader";
@@ -188,7 +188,8 @@ const products = defineCollection({
       publishDate: z.coerce.date(),
       updatedAt: z.coerce.date().optional(),
       order: z.number().int(),
-      domains: z.array(z.enum(DOMAINS)).min(1),
+      /** Product categories only (military / police / fire-rescue). Smart City is a solution, never a product category. */
+      domains: z.array(z.enum(PRODUCT_DOMAINS)).min(1),
       hero: z.object({
         name: text,
         englishName: text.optional(),
@@ -204,7 +205,6 @@ const products = defineCollection({
       capabilities: z.array(titled).optional(),
       howItWorks: z.array(titled).optional(),
       scenarios: z.array(titled).optional(),
-      integratedScenarios: z.array(slug).optional(),
       components: z.array(z.object({ name: text, description: text })).optional(),
       deployment: z
         .object({
@@ -263,21 +263,6 @@ const solutions = defineCollection({
     }),
 });
 
-/** Integrated training scenarios (MUM-T, Counter-UAS). Not products; no pages of their own. */
-const scenarios = defineCollection({
-  loader: loader("scenarios", "scenarios"),
-  schema: z.object({
-    translationStatus,
-    draft: z.boolean().default(false),
-    order: z.number().int(),
-    code: text,
-    name: text,
-    englishName: text.optional(),
-    summary: text,
-    products: z.array(slug).min(2),
-  }),
-});
-
 /** Copy for fixed page templates (one entry per page per language). */
 const pages = defineCollection({
   loader: loader("pages", "pages"),
@@ -298,7 +283,6 @@ const pages = defineCollection({
       closing: z.object({ title: text }).optional(),
       /** A short list of principle cards (solutions overview). */
       highlights: z.object({ title: text, items: z.array(card).min(1) }).optional(),
-      integrated: z.object({ eyebrow: text, title: text, description: text }).optional(),
       /** Closing band; `button` is the label of its contact button. */
       cta: cta.extend({ button: text.optional() }).optional(),
     }),
@@ -440,4 +424,4 @@ const investorItems = defineCollection({
   }),
 });
 
-export const collections = { products, solutions, scenarios, pages, tags, insights, news, "case-studies": caseStudies, milestones, team, partners, "investor-items": investorItems };
+export const collections = { products, solutions, pages, tags, insights, news, "case-studies": caseStudies, milestones, team, partners, "investor-items": investorItems };

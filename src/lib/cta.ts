@@ -45,7 +45,7 @@ export function ctaSet(lang: Lang, ctx: Ctx): CtaSet {
     case "products":
       return {
         hero: [p(t.viewProducts, "#product-list"), s(t.findSolutions, solutions)],
-        footer: [p(t.findSolutions, solutions), s(t.viewIntegrated, "#integrated-training")],
+        footer: [p(t.findSolutions, solutions), s(t.viewProducts, "#product-list")],
       };
     case "solutions":
       return {

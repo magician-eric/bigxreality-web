@@ -147,9 +147,6 @@ landing:
   closing:
     title: 讓每一次模擬演練，都成為面對空中任務與低空威脅的準備
     description: 了解無人機戰術與反制無人機訓練系統，如何配合不同單位的操作課程、任務訓練與低空威脅應處需求
-integratedScenarios:
-- counter-uas
-- mum-t
 integratedOps:
   description: UAV 是獨立產品，與 SUT、USV 平行，可以各自展示，也可以在特定情境下整合
 relatedProducts:
