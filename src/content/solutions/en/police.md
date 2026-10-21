@@ -1,72 +1,111 @@
 ---
-# English copy approved by the owner (2026-10-21), used exactly as supplied. Structural fields (order, domains, relations) are read from the Traditional Chinese file.
+# English localisation of the Traditional Chinese master (src/content/solutions/tw/police.md), complete and section for section (2026-10-21). Replaces the earlier English copy (owner authorisation 2026-10-21). Structural fields are read from the Traditional Chinese file.
 translationStatus: translated
 order: 2
 domain: police
-name: Law Enforcement Training
-englishName: Law Enforcement Training
-summary: Immersive scenarios, realistic equipment interaction, and structured training workflows help law enforcement personnel strengthen operational skills, situational judgment, and team coordination.
-cardLabel: Explore Law Enforcement Solutions
-cardHeadline: Prepare Officers for Real-World Decisions.
+name: Police Simulation
+englishName: Police Simulation
+summary: Integrating police equipment operation, basic and advanced duty training, verbal de-escalation, scenario response and course management to help officers strengthen on-scene judgement and duty performance
+cardLabel: Explore Police Simulation
 landing:
-  headline: Prepare for the Decisions That Matter in the Field
-  subheadline: Build operational confidence through immersive police training scenarios, realistic equipment interaction, and structured opportunities to practice judgment, communication, and response.
-  ctaLabel: Discuss Law Enforcement Training
-  blocks:
-  - kind: prose
-    title: Training That Goes Beyond Equipment Familiarity
-    body: 'Law enforcement duties require more than technical proficiency. Officers must assess rapidly changing situations, communicate effectively, select appropriate responses, and coordinate with colleagues.
+  headline: Bringing Police Training Closer to Real Duty, from Operating Proficiency to Scenario Response
+  subheadline: Integrating police equipment operation, basic and advanced training, verbal de-escalation, scenario simulation and training management in a multi-faceted police education and training environment
+  intro: 'The Big x Reality smart police simulation training solution is designed for the professional education and training needs of police officers. It combines immersive simulated environments, police operating equipment and varied training courses to provide training from basic police equipment operation to complex duty scenarios
 
 
-      BXR''s law enforcement training solutions combine simulated environments with relevant equipment and instructional workflows to support progressive, scenario-based learning.'
-    eyebrow: Overview
-  - kind: prose
-    title: Practice with Familiar Operational Equipment
-    body: 'Depending on the training configuration, simulated equipment may include batons, pepper spray, conducted-energy devices, and handguns.
+    The system can work with applicable simulated equipment such as batons, pepper spray canisters, conducted-energy weapons and handguns, so trainees practise the related operations in virtual scenarios and progress through different courses to on-scene judgement, verbal communication and use-of-force decisions
 
 
-      These training tools support the practice of equipment handling and appropriate operational responses within simulated scenarios.'
-    eyebrow: Training Equipment
-  - kind: list
-    title: Training Modules
+    For instructors and training units, the solution can also be combined with the course editing, training records and results review functions of applicable systems to help build a more complete teaching process'
+  heroImage:
+    need: 'Police simulation key visual: training scene (16:9)'
+    ratio: 16 / 9
+  ctaLabel: Enquire About Police Simulation Solutions
+  challenge:
+    title: Police Training Challenges
+    cards:
+    - title: Police Equipment Operation Needs Repeated Practice
+      description: Each piece of police equipment is operated in its own way, and trainees need to become familiar with the related procedures step by step
+    - title: On-Scene Situations Cannot Be Fully Predicted
+      description: Real duty can involve different people, environments and sudden incidents, so judgement needs to be built through varied scenarios
+    - title: Verbal Communication and Use of Force Need Integrated Training
+      description: When facing agitated or uncooperative subjects, applying communication skills and responding appropriately is an important part of police training
+    - title: Instructors Need to Arrange and Review Courses Effectively
+      description: Training needs not only scenarios but also course design and review of results
+  capabilities:
+    title: Core Training Applications
     items:
+    - title: Police Equipment Operation Training
+      content: Depending on the course and system configuration, simulated equipment such as batons, pepper spray canisters, conducted-energy weapons and handguns helps trainees become familiar with how to operate them and with the concepts of their use
+      image:
+        need: Training equipment view (3:2)
+        ratio: 3 / 2
     - title: Basic Training
-      content: Build foundational equipment-handling skills, operational familiarity, and coordination through structured practice.
+      content: Starting from the operation of a single piece of police equipment and physical coordination, a progressive course guides trainees in building basic operating skills
+      image:
+        need: Basic training view (3:2)
+        ratio: 3 / 2
     - title: Advanced Training
-      content: Apply established skills in more demanding scenarios involving movement, judgment, and changing threat conditions.
+      content: In more complex simulated scenes, trainees combine what they learned in basic training to practise response judgement when facing different environments and behaviour
+      image:
+        need: Advanced training view (3:2)
+        ratio: 3 / 2
     - title: Verbal De-escalation Training
-      content: Practice communication techniques in tense encounters through instructor-led role-playing and simulated subject interactions.
-    - title: Scenario-Based Training
-      content: Develop situational awareness, safe-distance management, equipment selection, and appropriate response decisions across different simulated incidents.
-    - title: Course Editing
-      content: Where supported by the system configuration, instructors can adapt training scenarios and course workflows to suit specific instructional objectives.
-    - title: After-Action Review
-      content: 'Review available training records and performance information to support feedback, discussion, and continued improvement.
+      content: 'Through instructor role-play and scenario interaction, trainees practise using verbal communication to ease conflict and reduce the likelihood of escalation
 
 
-        Specific recorded data depends on the deployed system and equipment configuration.'
-  - kind: featured
-    title: Featured Products
-    items:
-    - title: BXR Police Training System — On-site
-      content: An immersive training solution for dedicated training environments, supporting physical interaction and team-based exercises with suitable equipment configurations.
-      cta: Explore On-site Training
-      product: full-scale-police-training
-    - title: BXR Police BOX — Portable Training System
-      content: A portable training solution designed for flexible deployment and convenient setup across different training locations.
-      cta: Explore Police BOX
-      product: police-box
-  - kind: checks
-    title: Support Better Preparation Through Structured Practice
-    items:
-    - title: Practice operational decisions in a controlled environment.
-    - title: Reinforce appropriate equipment-handling procedures.
-    - title: Develop communication and de-escalation skills.
-    - title: Support individual and team-based exercises.
-    - title: Review available training outcomes for continuous learning.
-    eyebrow: Training Benefits
+        In applicable systems the instructor can play or control a scenario character, configured according to the functions of the actual version'
+      image:
+        need: Verbal de-escalation training view (3:2)
+        ratio: 3 / 2
+    - title: Scenario Simulation Training
+      content: Different preset situations and simulated environments are used to practise observation, response and appropriate use-of-force decisions
+      image:
+        need: Scenario simulation training view (3:2)
+        ratio: 3 / 2
+    - title: Course Editing and Lesson Planning
+      content: The course editing function of applicable systems lets instructors plan scenarios and mission processes according to training objectives, supporting different course needs
+      image:
+        need: Course editing view (3:2)
+        ratio: 3 / 2
+    - title: Post-Training Results Review
+      content: The training records and results information of applicable systems help instructors and trainees review the operating process, discuss judgement and adjust the training focus
+      image:
+        need: Post-training learning view (3:2)
+        ratio: 3 / 2
+  flow:
+    title: From Basic Operation to Scenario Response, a Progressive Police Training Process
+    steps:
+    - title: Get to Know the Equipment and How It Is Operated
+      description: Understand the simulated equipment used in the course, the operating requirements and safety matters
+      icon: target
+    - title: Basic Operating Practice
+      description: Build operating familiarity through practice with a single piece of police equipment and basic movements
+      icon: headset
+    - title: Advanced Scenario Exercises
+      description: Bring operating skills into different duty scenarios and practise on-scene observation and response
+      icon: variation
+    - title: Verbal and Action Judgement
+      description: According to the scenario, practise communication, controlling the scene and appropriate handling
+      icon: team
+    - title: Results Review and Retraining
+      description: Instructors lead a discussion based on the training objectives and the applicable results information, and arrange further practice
+      icon: review
+  values:
+    title: Value of Adoption
+    cards:
+    - title: A Safe, Controlled Training Environment
+      description: Simulation supplements real police training and reduces the training constraints of some high-risk operations
+    - title: Supporting Varied Duty Scenarios
+      description: Different environments and mission backgrounds extend trainees' practice in scenario observation and response
+    - title: Integrating Operating and Communication Skills
+      description: Police equipment operation, verbal de-escalation and on-scene judgement are brought into one continuous training process
+    - title: More Flexible Course Scheduling
+      description: Suitable systems and course configurations are chosen according to each unit's training needs
+    - title: Supporting Instructional Review
+      description: Training information from applicable systems helps instructors and trainees discuss operating and judgement performance
   related:
     title: Related Products
   closing:
-    title: Build Training Around Real Policing Challenges.
+    title: From Police Equipment Operation to Duty Response, a More Complete Police Training Environment
 ---

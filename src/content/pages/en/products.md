@@ -1,17 +1,17 @@
 ---
-# 產品總覽頁文案。來源：requirements-2.0.md §9、§10。
-translationStatus: pending
+# English localisation of the Traditional Chinese master (src/content/pages/tw/products.md), 2026-10-21. Fields that are "[待提供]" (copy not yet supplied) in the master stay "[待提供]" here: no copy is invented.
+translationStatus: translated
 seo:
-  title: "[待翻譯] 產品"
+  title: Products
   description: "[待提供]"
 hero:
   eyebrow: Products
-  title: "[待翻譯] 產品"
+  title: Products
   description: "[待提供]"
   image:
     src: ../../../../design-source/06_KeyVisuals/BXR_KV_CORP_DIGITAL_TWIN_v3.2.jpg
-    alt: "[待翻譯] 以點雲呈現的室內訓練場域數位模型"
-  imageCaption: "[待翻譯] 合成示意"
+    alt: Digital model of an indoor training facility rendered as a point cloud
+  imageCaption: Composite illustration
 cta:
   title: "[待提供]"
   description: "[待提供]"

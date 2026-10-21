@@ -1,5 +1,6 @@
 // Product FAQ (/tw/products/*): every question and full answer in the initial HTML, FAQPage JSON-LD,
-// single-open accordion behaviour, keyboard, phone layout, and no FAQ on other pages or languages.
+// single-open accordion behaviour, keyboard, phone layout, and no FAQ on other pages. The English and
+// Japanese product FAQs are checked in qa-english.mjs and qa-japanese.mjs.
 import { chromium } from "playwright-core";
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
@@ -76,8 +77,12 @@ try {
     await v.close();
   }
 
-  // not elsewhere
-  for (const p of ["/tw/products/", "/en/products/sut/", "/jp/products/sut/", "/tw/solutions/military/", "/tw/solutions/"]) {
+  // the localized product pages carry their own five questions; no FAQ on overview or solution pages
+  for (const p of ["/en/products/sut/", "/jp/products/sut/"]) {
+    await page.goto(base + p, { waitUntil: "networkidle" });
+    check(`${p}: five FAQ items`, (await page.locator("[data-faq] details").count()) === 5);
+  }
+  for (const p of ["/tw/products/", "/tw/solutions/military/", "/tw/solutions/"]) {
     await page.goto(base + p, { waitUntil: "networkidle" });
     check(`${p}: no FAQ block`, (await page.locator("[data-faq]").count()) === 0);
   }

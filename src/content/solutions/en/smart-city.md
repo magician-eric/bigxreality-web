@@ -1,62 +1,109 @@
 ---
-# English copy approved by the owner (2026-10-21), used exactly as supplied. Structural fields (order, domains, relations) are read from the Traditional Chinese file.
+# English localisation of the Traditional Chinese master (src/content/solutions/tw/smart-city.md), complete and section for section (2026-10-21). Replaces the earlier English copy (owner authorisation 2026-10-21). Structural fields are read from the Traditional Chinese file.
 translationStatus: translated
 order: 4
 domain: smart-city
 name: Smart City
 englishName: Smart City
-summary: Explore how digital twins, 3D visualization, and simulation technologies can support smarter planning, training, and decision-making across urban and infrastructure environments.
-cardLabel: Explore Smart City Solutions
-cardHeadline: Connect Digital Environments with Real-World Challenges.
+summary: Combining digital twins, 3D visualisation and simulation concepts to extend into smart buildings, transport, port management, disaster response, industry training and other applications
+cardLabel: Explore Smart City
 landing:
-  headline: Make Complex Environments Easier to Understand
-  subheadline: Explore how digital twins, simulation, and 3D visualization can connect information with real-world environments to support planning, training, and operational decision-making.
-  ctaLabel: Contact BXR
-  blocks:
-  - kind: prose
-    title: Digital Perspectives for Smarter Applications
-    body: 'Cities and infrastructure operators manage complex environments involving buildings, transportation networks, industrial facilities, and public safety systems.
+  headline: Making City Information More Intuitive and Extending Digital Simulation to More Smart Applications
+  subheadline: Combining digital twins, 3D visualisation and immersive simulation concepts to explore integrated applications in buildings, transport, ports, disaster response and industry training
+  intro: 'The Big x Reality Smart City solution builds on digital spaces, 3D visualisation and simulation applications to explore ways of integrating physical sites with digital information
 
 
-      Digital modeling and visualization technologies can help organize relevant information, explore possible scenarios, and present complex environments in more intuitive ways.
+    Using technologies such as digital twins, data visualisation and immersive interaction, solutions for building management, traffic analysis, port applications, disaster response and professional training can be planned according to the needs of different sites
 
 
-      BXR approaches smart city applications through simulation, XR, visualization, and project-specific system integration.
-
-
-      The capabilities described below represent potential application directions. Their availability depends on project requirements, data sources, and confirmed integration scope.'
-    eyebrow: Overview
-  - kind: list
-    title: Application Areas
-    items:
-    - title: Smart Buildings
-      content: Use 3D visualization and digital environment models to explore building management, facility information, and emergency response scenarios.
-    - title: Intelligent Transportation
-      content: Explore how traffic information, simulated road conditions, and visualized environments can support traffic planning and training.
-    - title: Fire and Emergency Response
-      content: Apply immersive simulation to selected emergency response training and operational preparation scenarios.
-    - title: Airport Ground Operations
-      content: Use simulated driving environments to support training for airside vehicle operations and ground personnel.
-    - title: Disaster Preparedness
-      content: Explore the use of digital terrain models, scenario simulation, and visualization to support disaster planning and preparedness exercises.
-    - title: Smart Ports
-      content: Visualize port environments and explore simulation applications involving vessels, facilities, and operational workflows.
-    - title: Sports and Skills Training
-      content: Apply XR technologies to create immersive practice environments for selected sports and skill-development activities.
-  - kind: list
-    title: Technology Capabilities
-    items:
-    - title: Data Integration
-      content: Organize relevant data from compatible sources within a project-specific visualization or simulation environment.
+    The core of a smart city is not a single device, but how sites, data, simulated environments and management needs are integrated, helping users understand complex information more intuitively and evaluate suitable digital applications'
+  heroImage:
+    need: 'Smart city key visual: 3D city or digital twin view (16:9)'
+    ratio: 16 / 9
+  ctaLabel: Enquire About Smart City Solutions
+  challenge:
+    title: Application Challenges
+    cards:
+    - title: Scattered Information
+      description: Different equipment, sites and management systems may each generate their own data, making overall understanding and integration more difficult
+    - title: Complex Environments Are Hard to Present Intuitively
+      description: Large sites such as buildings, transport networks and ports need clearer spatial information and ways of visualising it
+    - title: Emergency Response Needs Advance Preparation
+      description: Different disasters and sudden incidents can involve complex environments and coordination between several organisations, requiring suitable simulation and training tools
+    - title: Professional Training Is Limited by On-Site Conditions
+      description: Some industrial equipment and work environments are difficult to schedule for on-site training at any time; simulation can supplement instruction
+  approach:
+    title: Core Integration Directions
+    pillars:
+    - title: Multi-Source Data Integration
+      description: Information aggregation and visual presentation are planned according to the actual data sources, interface methods and system conditions
+    - title: 3D Visualisation
+      description: 3D sites and spatial models present the environment and information, helping users understand complex site conditions
     - title: Scenario Simulation
-      content: Explore selected operational situations through digital models and simulated environments.
-    - title: Operational Analysis
-      content: Use suitable visualization and simulation tools to support scenario review and planning discussions.
-    - title: 3D Visualization
-      content: Present complex environments and information in a spatial format that is easier to explore and understand.
+      description: Simulated environments present different application scenarios, providing support for planning, education and training
+    - title: Management and Decision Support
+      description: According to project needs, evaluates integrating relevant information into suitable management and decision processes
+  capabilities:
+    title: Main Application Areas
+    items:
+    - title: Smart Building Management
+      content: 'Using 3D building models and applicable data integration methods, plans applications for presenting equipment information, managing space and visualising abnormal conditions
+
+
+        The possibility of integrating information such as energy, temperature and humidity, and equipment status is evaluated according to actual interface conditions'
+      image:
+        need: Smart building view (3:2)
+        ratio: 3 / 2
+    - title: Smart Traffic Analysis
+      content: '3D sites and traffic data visualisation help in understanding roads, traffic flow and the traffic environment, extending to traffic simulation and planning applications
+
+
+        Functions such as real-time signal control, traffic forecasting and data interfaces must be evaluated according to project conditions'
+      image:
+        need: Smart traffic view (3:2)
+        ratio: 3 / 2
+    - title: Smart Fire Safety and Disaster Response
+      content: Combines 3D scenes, immersive simulation and related training tools to provide directions for fire awareness, disaster response and rescue training
+      image:
+        need: Smart fire safety view (3:2)
+        ratio: 3 / 2
+    - title: Smart Airside Driving
+      content: Using immersive simulation and applicable operating equipment, plans education and training for airport ground handling and operational vehicles, supplementing on-site operating training
+      image:
+        need: Smart airside view (3:2)
+        ratio: 3 / 2
+    - title: Disaster Early Warning and Response
+      content: Using 3D terrain, site models and applicable data visualisation, plans directions for presenting disaster scenarios, response education and decision support
+      image:
+        need: Disaster response view (3:2)
+        ratio: 3 / 2
+    - title: Smart Port Management
+      content: 'Based on a 3D port environment and information visualisation, explores integrated applications of information on vessels, equipment, operating areas and port management
+
+
+        Functions such as AIS, cargo flow and real-time equipment monitoring must be confirmed according to the interface conditions of the actual project'
+      image:
+        need: Smart port view (3:2)
+        ratio: 3 / 2
+    - title: Smart Sports Training
+      content: Immersive simulation and interactive technology extend to sports skills, shooting sports and other applicable training
+      image:
+        need: Smart sports view (3:2)
+        ratio: 3 / 2
+  values:
+    title: Value of Adoption
+    cards:
+    - title: Making Complex Information Easier to Understand
+      description: Presenting information spatially in 3D and through visualisation makes large sites and diverse data easier to understand
+    - title: Supporting Different Industry Applications
+      description: Suitable digital applications are planned according to the needs of buildings, transport, ports and other sites
+    - title: Extending the Value of Simulation Training
+      description: Extends immersive simulation into different professional fields, supplementing traditional education and on-site training
+    - title: Keeping Flexibility for System Integration
+      description: The feasible scope of integration is evaluated according to actual data, equipment and project needs
   related:
     title: Related Solutions
   closing:
-    title: Explore the Possibilities of Digital Simulation.
-    description: Discuss your application requirements with BXR to evaluate suitable technologies and integration options.
+    title: Starting from Site Needs to Explore More Flexible Smart Integration
+    description: Find out how Big x Reality uses 3D visualisation, digital simulation and system integration capabilities to plan smart applications for the needs of different industries
 ---

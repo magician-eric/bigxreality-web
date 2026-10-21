@@ -36,7 +36,9 @@ try {
   r = await search("en", "English body");
   check("en: English article found", r.some((x) => x.url === "/en/news/fixture-news-01/"), JSON.stringify(r));
   r = await search("jp", "TEST FIXTURE");
-  check("jp: pending translations are not indexed", r.length === 0, JSON.stringify(r));
+  // The fixture articles exist in Japanese only as pending translations, so none of them may be found. Translated
+  // solution pages can match the single letter "T" of "MUM-T" in Pagefind, which is not a pending translation.
+  check("jp: pending translations are not indexed", r.every((x) => !/\/(news|insights|cases)\//.test(x.url)), JSON.stringify(r));
   for (const [q, why] of [["未授權", "case study without client approval"], ["未來消息", "future-dated news"], ["空白消息", "news with empty body"]]) {
     r = await search("tw", q);
     check(`not searchable: ${why}`, r.length === 0, JSON.stringify(r));

@@ -50,7 +50,7 @@
   },
   "domains": {
     "military": "軍事シミュレーション",
-    "police": "警察訓練シミュレーション",
+    "police": "警察業務シミュレーション",
     "fire-rescue": "消防・防災",
     "smart-city": "スマートシティ",
     "other": "その他"
@@ -248,46 +248,46 @@
   },
   "cta": {
     "exploreProducts": "製品を見る",
-    "findSolutions": "ソリューションを見る",
+    "findSolutions": "ソリューションを探す",
     "viewProducts": "製品を見る",
     "viewSolutions": "ソリューションを見る",
-    "bookDemo": "担当者に相談する",
-    "requestInfo": "資料請求",
-    "productInquiry": "担当者に相談する",
-    "solutionInquiry": "担当者に相談する",
-    "solutionDemo": "担当者に相談する",
-    "discussNeeds": "担当者に相談する",
-    "learnMore": "詳細を見る"
+    "bookDemo": "製品デモを予約する",
+    "requestInfo": "製品資料を請求する",
+    "productInquiry": "製品について問い合わせる",
+    "solutionInquiry": "ソリューションについて問い合わせる",
+    "solutionDemo": "デモを予約する",
+    "discussNeeds": "ニーズを相談する",
+    "learnMore": "詳しく見る"
   },
   "productLanding": {
-    "eyebrow": "製品",
+    "eyebrow": "Product",
     "sections": {
       "challenge": {
-        "eyebrow": "訓練課題",
+        "eyebrow": "Training Challenge",
         "title": "訓練課題"
       }
     },
     "placeholders": {
-      "hero": "製品画像",
-      "showcase": "製品イメージ"
+      "hero": "製品メインビジュアル",
+      "showcase": "製品紹介画像"
     },
     "eyebrows": {
       "challenge": "Training Challenge",
       "approach": "Our Approach",
-      "capabilities": "主な機能",
-      "flow": "システムの特長",
-      "scenarios": "活用分野",
+      "capabilities": "Key Capabilities",
+      "flow": "Training Flow",
+      "scenarios": "Applications",
       "values": "Value",
-      "related": "関連",
-      "featured": "連携",
-      "audience": "活用分野"
+      "related": "Related",
+      "featured": "Integration",
+      "audience": "Suited For"
     },
-    "valueLabel": "導入メリット",
-    "focusLabel": "主な機能",
+    "valueLabel": "訓練価値",
+    "focusLabel": "訓練の重点",
     "stepLabel": "STEP",
-    "mediaNeed": "[待翻譯] 素材需求｜",
+    "mediaNeed": "画像素材｜",
     "mediaPending": "画像",
-    "illustrationLabel": "イメージ図"
+    "illustrationLabel": "シナリオのイメージ図"
   },
   "contactPage": {
     "topicLabel": "[待翻譯] 洽詢項目",
@@ -439,9 +439,9 @@
       }
     }
   },
-  "backToSolutions": "ソリューション一覧へ戻る",
-  "backToProducts": "製品一覧へ戻る",
+  "backToSolutions": "",
+  "backToProducts": "",
   "faq": {
-    "title": "[待翻譯] 常見問題"
+    "title": "よくあるご質問"
   }
 }
