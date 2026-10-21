@@ -30,7 +30,7 @@ interface NavNode {
 export const NAVIGATION = [
   { id: "solutions", label: "nav.solutions", route: ["solutions"], order: 10, enabled: true, status: "published" },
   { id: "products", label: "nav.products", route: ["products"], order: 20, enabled: true, status: "published" },
-  { id: "technologies", label: "nav.technologies", route: ["technologies"], order: 30, enabled: true, status: "planned" },
+  { id: "technologies", label: "nav.technologies", route: ["technologies"], order: 30, enabled: true, status: "published" },
   {
     id: "resources", label: "nav.resources", order: 40, enabled: true, status: "published",
     children: [

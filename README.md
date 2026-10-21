@@ -36,3 +36,9 @@ npm run build      # 輸出到 dist/（會先產生字型與 favicon）
 - 沒有填的欄位：整個區塊不顯示；填 `[待提供]`：區塊照常顯示並標出缺什麼。
 - 介面文字在 `src/content/ui/<lang>.json`，站點設定在 `src/data/site.json`。
 - `design-source/` 是設計來源，程式直接引用，不要修改。
+
+## 核心技術模組
+
+三語總覽與第一批技術頁、CMS 技術標籤遷移及驗收方式見 [TECHNOLOGIES.md](docs/TECHNOLOGIES.md)。完成建置後執行 `npm run qa:technologies`，三語完整性報告輸出至 `.qa/technologies-content-audit.md`。
+
+第二批四項技術頁、七項技術的產品／解決方案雙向關聯與三語驗收見 [TECHNOLOGIES-BATCH-TWO.md](docs/TECHNOLOGIES-BATCH-TWO.md)。

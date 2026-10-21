@@ -245,7 +245,7 @@ const MAP = {
     seo: seoOf(d.seo),
     publishedAt: day(d.publishDate),
   }),
-  insights: async ({ fm: d, body, file }) => ({ data: clean({ ...(await articleBase(d, body, file)), author: d.author }), seo: seoOf(d.seo), publishedAt: day(d.publishDate) }),
+  insights: async ({ fm: d, body, file }) => ({ data: clean({ ...(await articleBase(d, body, file)), author: d.author, technology_tags: d.technologyTags }), seo: seoOf(d.seo), publishedAt: day(d.publishDate) }),
   case_studies: async ({ fm: d, body, file }) => ({
     data: clean({
       ...(await articleBase(d, body, file)),

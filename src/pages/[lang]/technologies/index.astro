@@ -1,0 +1,44 @@
+---
+import { LANGS, localePath, type Lang } from "../../../i18n";
+import { overviewContent } from "../../../data/technologies-content";
+import { TECHNOLOGY_IDS, LIVE_TECHNOLOGY_IDS } from "../../../lib/technologies";
+import { getUi } from "../../../lib/ui";
+import { site } from "../../../lib/site";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+export function getStaticPaths() { return LANGS.map((lang) => ({ params: { lang } })); }
+const lang = Astro.params.lang as Lang;
+const content = overviewContent[lang];
+const ui = getUi(lang);
+const live = (id: string) => (LIVE_TECHNOLOGY_IDS as readonly string[]).includes(id);
+const labels = { tw: "探索技術", en: "Explore Technology", jp: "技術を詳しく見る" };
+const imageSlotLabel = { tw: "核心技術圖片位置", en: "Core technologies image", jp: "コア技術イメージの掲載位置" };
+const breadcrumbs = [{ name: ui.home, path: localePath(lang) }, { name: content.title, path: localePath(lang, "technologies") }];
+const structuredData = [{ "@type": "CollectionPage", name: content.title, description: content.seo.description, url: new URL(localePath(lang, "technologies"), site.url).href, mainEntity: { "@type": "ItemList", itemListElement: TECHNOLOGY_IDS.map((id, index) => ({ "@type": "ListItem", position: index + 1, name: content.technologies[id].title, ...(live(id) ? { url: new URL(localePath(lang, "technologies", id), site.url).href } : {}) })) } }];
+---
+<BaseLayout hidePendingFooter lang={lang} title={content.seo.title} description={content.seo.description} pathTemplate="/{lang}/technologies/" alternates={[...LANGS]} headerTheme="dark" current="technologies" breadcrumbs={breadcrumbs} structuredData={structuredData}>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={content.eyebrow} title={content.title} lead={content.lead} description={content.intro.join("\n\n")} imagePending={imageSlotLabel[lang]} />
+  <section class="section technology-overview" aria-label={content.title}>
+    <div class="container">
+      <ol class="technology-list" role="list">
+        {TECHNOLOGY_IDS.map((id, index) => <li class:list={["technology", { live: live(id) }]} data-technology-id={id} id={id}>
+          <span class="index t-tech" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+          <div class="copy"><h2 class="t-h2">{live(id) ? <a href={localePath(lang, "technologies", id)}>{content.technologies[id].title}</a> : content.technologies[id].title}</h2><p>{content.technologies[id].description}</p></div>
+          {live(id) && <a class="explore" href={localePath(lang, "technologies", id)} aria-label={`${labels[lang]} · ${content.technologies[id].title}`}>{labels[lang]} <span aria-hidden="true">↗</span></a>}
+        </li>)}
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .technology-list { border-top: 1px solid var(--divider); }
+  .technology { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: start; gap: var(--space-4); padding-block: var(--space-5); border-bottom: 1px solid var(--divider); }
+  .index { color: var(--ink-muted); padding-top: var(--space-1); }
+  .live .index { color: var(--bxr-text-red); }
+  h2 { margin-bottom: var(--space-2); }
+  h2 a { color: var(--ink); text-decoration: none; }
+  h2 a:hover { color: var(--bxr-text-red); }
+  .copy p { max-width: 46rem; color: var(--ink-muted); }
+  .explore { min-height: 44px; display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-small); }
+  @media (max-width: 767px) { .technology { grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-2); } .explore { grid-column: 2; } }
+</style>

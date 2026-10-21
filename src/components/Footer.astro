@@ -15,14 +15,16 @@ import { LinkedinLogo, FacebookLogo, InstagramLogo, YoutubeLogo, XLogo, LinkSimp
 import Logo from "./Logo.astro";
 import Text from "./Text.astro";
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props { lang: Lang; hidePending?: boolean }
+const { lang, hidePending = false } = Astro.props;
 const ui = getUi(lang);
 const year = new Date().getFullYear();
 const menu = navigation(lang);
 const legal = legalLinks(lang).filter((l) => l.href);
 const { contact } = site;
 const tel = phoneHref();
+const show = (value: string) => !hidePending || (!!value.trim() && !isPending(value));
+const hasContact = [contact.address[lang], contact.phone, contact.email].some(show);
 const holder = isPending(companyName(lang)) ? site.brand : companyName(lang);
 // Icon by host; any other network falls back to a generic link icon with its label.
 const ICONS = [
@@ -41,15 +43,15 @@ const plannedNote = `<span class="visually-hidden"> ${ui.nav.planned}</span>`;
   <div class="container cols">
     <div class="identity">
       <a href={localePath(lang)} aria-label={ui.logoHome} class="logo"><Logo theme="dark" /></a>
-      <address class="contact">
-        <p><span class="visually-hidden"><Text value={ui.footer.address} />: </span>
+      {hasContact && <address class="contact">
+        {show(contact.address[lang]) && <p><span class="visually-hidden"><Text value={ui.footer.address} />: </span>
           {isPending(contact.mapUrl) || isPending(contact.address[lang])
             ? <Text value={contact.address[lang]} />
             : <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><Text value={contact.address[lang]} /><span class="visually-hidden"> <Text value={ui.footer.mapLink} /><Text value={ui.buttons.opensInNewTab} /></span></a>}
-        </p>
-        <p><span class="visually-hidden"><Text value={ui.footer.phone} />: </span>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</p>
-        <p><span class="visually-hidden"><Text value={ui.footer.email} />: </span>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</p>
-      </address>
+        </p>}
+        {show(contact.phone) && <p><span class="visually-hidden"><Text value={ui.footer.phone} />: </span>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</p>}
+        {show(contact.email) && <p><span class="visually-hidden"><Text value={ui.footer.email} />: </span>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</p>}
+      </address>}
     </div>
 
     <nav class="menu" aria-label={ui.footer.navLabel}>

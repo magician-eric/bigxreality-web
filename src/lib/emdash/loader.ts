@@ -30,6 +30,7 @@ interface Ctx {
   refs: Refs;
   /** Field image → `./<key>` relative to ENTRY_FILE (downloaded before parsing). */
   image: (m: Json | undefined) => { src: string; alt: string } | undefined;
+  structural: Json;
   rich: (blocks: Json[] | undefined) => { html: string; text: string };
 }
 type Mapped = { data: Json; body?: string; html?: string };
@@ -275,7 +276,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
   },
   insights(ctx) {
     const body = ctx.rich(ctx.d.body);
-    return { body: body.text, html: body.html, data: omitEmpty({ ...article(ctx), author: ctx.d.author }) };
+    return { body: body.text, html: body.html, data: omitEmpty({ ...article(ctx), author: ctx.d.author, technologyTags: ctx.structural.technology_tags ?? [] }) };
   },
   case_studies(ctx) {
     const { d } = ctx;
@@ -357,15 +358,19 @@ export function emdashLoader(collection: string): Loader {
       });
 
       const slugByGroup = await groupSlugs(collection);
+      const sourceDataByGroup = new Map<string, Json>();
       const refsByGroup = new Map<string, Refs>();
-      for (const item of await listPublished(collection, SOURCE_LOCALE)) refsByGroup.set(item.translationGroup, await references(collection, item.id));
+      for (const item of await listPublished(collection, SOURCE_LOCALE)) {
+        refsByGroup.set(item.translationGroup, await references(collection, item.id));
+        sourceDataByGroup.set(item.translationGroup, item.data ?? {});
+      }
 
       store.clear();
       let count = 0;
       for (const [lang, locale] of Object.entries(CMS_LOCALES) as [UrlLang, string][]) {
         for (const item of await listPublished(collection, locale)) {
           const slug = slugByGroup.get(item.translationGroup) ?? item.slug;
-          const ctx: Ctx = { item, d: item.data ?? {}, refs: refsByGroup.get(item.translationGroup) ?? {}, image, rich };
+          const ctx: Ctx = { item, d: item.data ?? {}, refs: refsByGroup.get(item.translationGroup) ?? {}, structural: sourceDataByGroup.get(item.translationGroup) ?? {}, image, rich };
           const { data, body, html } = map(ctx);
           await Promise.all(downloads.values());
           const id = `${lang}/${slug}`;

@@ -1,4 +1,5 @@
 ---
+technologyTags: [xr, ai-simulation, digital-simulation, training-design, system-integration, decision-visualization, domain-expertise]
 # TEST FIXTURE — 測試資料，只在 BXR_CONTENT_SOURCE=fixtures 時使用，永遠不會部署
 translationStatus: source
 publishDate: 2026-08-01

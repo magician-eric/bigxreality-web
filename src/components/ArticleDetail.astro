@@ -5,6 +5,7 @@
  * case-study facts → body → tags → related products / solutions / articles → CTA.
  * The only red buttons are in the closing CTA band.
  */
+import { articleTechnologyLinks } from "../lib/technologies";
 import { Picture, getImage } from "astro:assets";
 import { getEntry } from "astro:content";
 import { HTML_LANG, INTL_LOCALE, localePath, segmentOf, type Lang } from "../i18n";
@@ -43,6 +44,8 @@ const cover = base.cover && { src: base.cover.src, alt: d.cover?.alt ?? base.cov
 const html = article.loc.rendered?.html ?? "";
 const minutes = readingMinutes(article.loc.body ?? "");
 
+const technologyLinks = articleTechnologyLinks(article);
+const technologyLabel = { tw: "相關核心技術", en: "Related Core Technologies", jp: "関連するコア技術" }[lang];
 const tags = await tagMap(lang);
 const tagLinks = base.tags.map((s) => ({ slug: s, name: tags.get(s)?.loc.data.name })).filter((x): x is { slug: string; name: string } => !!x.name);
 const products = (await getLocalized("products", lang)).filter((p) => base.relatedProducts.includes(p.slug));
@@ -165,6 +168,12 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
 
     <div class="container narrow body">
       <Prose html={html} />
+      {technologyLinks.length > 0 && (
+        <nav class="tags technology-links" aria-label={technologyLabel}>
+          <h2 class="t-h4">{technologyLabel}</h2>
+          <ul role="list">{technologyLinks.map((x) => <li><a href={x.href}>{x.name}</a></li>)}</ul>
+        </nav>
+      )}
       {tagLinks.length > 0 && (
         <div class="tags">
           <h2 class="visually-hidden"><Text value={t.tags} /></h2>

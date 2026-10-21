@@ -21,6 +21,7 @@ jobs:
       # Markdown backup content (production builds read EmDash in Workers Builds)
       - name: Build
         run: npm run build
+      - run: npm run qa:technologies
       - run: npm run check:sitemap
       - run: npm run qa:links
       - run: npm run qa:behaviour
@@ -34,6 +35,7 @@ jobs:
       # TEST FIXTURE content: pages, search and accessibility of phase 2 templates
       - name: Build test fixtures
         run: npm run build:fixtures
+      - run: QA_DIST=dist-fixtures/client npm run qa:technologies
       - run: npm run qa:phase2
       - run: QA_DIST=dist-fixtures/client npm run qa:company
       - run: npm run qa:search

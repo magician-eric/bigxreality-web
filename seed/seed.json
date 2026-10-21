@@ -2081,6 +2081,23 @@
      "type": "string"
     },
     {
+     "slug": "technology_tags",
+     "label": "核心技術標籤",
+     "type": "multiSelect",
+     "translatable": false,
+     "validation": {
+      "options": [
+       "xr",
+       "ai-simulation",
+       "digital-simulation",
+       "training-design",
+       "system-integration",
+       "decision-visualization",
+       "domain-expertise"
+      ]
+     }
+    },
+    {
      "slug": "tags",
      "label": "標籤",
      "type": "reference",
