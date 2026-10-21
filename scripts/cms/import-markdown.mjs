@@ -191,7 +191,7 @@ const MAP = {
         summary: d.summary,
         ...(await landingFields(d.landing, file)),
         overview: await toPortableText(body, file, upload),
-        capabilities: d.capabilities, how_it_works: d.howItWorks, scenarios: d.scenarios, components: d.components,
+        faq: d.faq, capabilities: d.capabilities, how_it_works: d.howItWorks, scenarios: d.scenarios, components: d.components,
         deploy_personnel: personnel, deploy_personnel_approx: personnel ? !!dep.personnel?.approx : undefined,
         deploy_area: dep.area === undefined ? undefined : String(dep.area),
         deploy_setup_time: dep.setupTime === undefined ? undefined : String(dep.setupTime),

@@ -147,6 +147,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         hero: omitEmpty({ name: d.title, englishName: d.english_name, code: d.code, tagline: d.tagline, image: ctx.image(d.hero_image) }),
         summary: d.summary,
         landing: landingFrom(d, ctx.image),
+        faq: d.faq?.length ? d.faq.map((x: Json) => ({ question: x.question, answer: x.answer })) : undefined,
         capabilities: titledList(d.capabilities),
         howItWorks: titledList(d.how_it_works),
         scenarios: titledList(d.scenarios),

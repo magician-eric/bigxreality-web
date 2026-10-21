@@ -1,0 +1,59 @@
+---
+/**
+ * FAQ block shared by every page that supplies a `faq` list (products today).
+ * Single-open accordion built on native <details name="…">: every question and its full answer is in the
+ * initial HTML (crawlers and AI search read it without running script), the browser handles keyboard,
+ * focus and the exclusive group, and a few lines of script keep older browsers to one open item.
+ * The matching FAQPage JSON-LD is built from the same list by lib/faq.ts.
+ */
+import Text from "./Text.astro";
+interface Props { id: string; title: string; items: { question: string; answer: string }[]; class?: string }
+const { id, title, items, class: cls = "section" } = Astro.props;
+---
+<section class={cls} aria-labelledby={`${id}-title`} data-faq>
+  <div class="container">
+    <div class="wrap">
+      <h2 class="t-h2" id={`${id}-title`}><Text value={title} /></h2>
+      <div class="list">
+        {items.map((it) => (
+          <details name={id} class="item">
+            <summary><h3 class="q"><Text value={it.question} /></h3><span class="mark" aria-hidden="true"></span></summary>
+            <div class="a"><p><Text value={it.answer} /></p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  // Native exclusive groups (the `name` attribute) are not available everywhere; enforce one open item per list.
+  document.querySelectorAll<HTMLElement>("[data-faq] .list").forEach((list) => {
+    list.addEventListener("toggle", (e) => {
+      const t = e.target as HTMLDetailsElement;
+      if (!t.open) return;
+      list.querySelectorAll<HTMLDetailsElement>("details[open]").forEach((d) => { if (d !== t) d.open = false; });
+    }, true);
+  });
+</script>
+<style>
+  .wrap { max-width: 52rem; }
+  h2 { margin-bottom: var(--space-5); }
+  .list { border-top: 1px solid var(--faq-line); }
+  .item { border-bottom: 1px solid var(--faq-line); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 3.5rem; padding-block: var(--space-2); cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  summary:hover .q { color: var(--bxr-text-red); }
+  .q { margin: 0; font-size: var(--fs-h4); line-height: var(--lh-h4); font-weight: 500; }
+  .mark { flex: none; width: 1.5rem; text-align: center; font-size: var(--fs-h3); line-height: 1; font-weight: 300; }
+  .mark::before { content: "＋"; }
+  .item[open] .mark::before { content: "－"; }
+  .a { padding: 0 var(--space-6) var(--space-3) 0; max-width: 46rem; color: var(--ink); }
+  .a p { margin: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .item[open] .a { animation: faq-in 0.2s ease-out; }
+  }
+  @keyframes faq-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 767px) { .a { padding-right: 0; } .q { font-size: var(--fs-body); line-height: var(--lh-body); } }
+  [data-faq] { --faq-line: color-mix(in srgb, var(--ink) 20%, transparent); }
+</style>

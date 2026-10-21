@@ -199,6 +199,8 @@ const products = defineCollection({
       }),
       summary: text.optional(),
       landing: landing(ctx).optional(),
+      /** Frequently asked questions (question + full answer). Rendered as a single-open accordion with FAQPage JSON-LD; the page shows them only in the language that supplies them. */
+      faq: z.array(z.object({ question: text, answer: text })).optional(),
       capabilities: z.array(titled).optional(),
       howItWorks: z.array(titled).optional(),
       scenarios: z.array(titled).optional(),
