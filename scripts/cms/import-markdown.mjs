@@ -215,6 +215,15 @@ const MAP = {
     }),
     seo: seoOf(d.seo),
   }),
+  milestones: async ({ fm: d, file }) => ({ data: clean({ title: d.title, translation_status: d.translationStatus, date: d.date, summary: d.summary, image: await image(d.image, file) }) }),
+  team_members: async ({ fm: d, file }) => ({ data: clean({ title: d.name, translation_status: d.translationStatus, role: d.role, bio: d.bio, sort_order: d.order, photo: await image(d.photo, file) }) }),
+  partners: async ({ fm: d, file }) => ({
+    data: clean({ title: d.name, translation_status: d.translationStatus, category: d.category, description: d.description, url: d.url, sort_order: d.order, approved: !!d.approval?.approved, logo: await image(d.logo, file) }),
+  }),
+  investor_items: async ({ fm: d }) => ({
+    data: clean({ title: d.title, translation_status: d.translationStatus, module: d.module, category: d.category, summary: d.summary, item_date: day(d.publishDate), sort_order: d.order, attachments: d.attachments }),
+    publishedAt: day(d.publishDate),
+  }),
   tags: async ({ fm: d }) => ({ data: clean({ title: d.name, translation_status: d.translationStatus, description: d.description }) }),
   news: async ({ fm: d, body, file }) => ({
     data: clean({
@@ -240,7 +249,7 @@ const MAP = {
   }),
 };
 // EmDash collection → Markdown folder
-const FOLDERS = { products: "products", solutions: "solutions", scenarios: "scenarios", pages: "pages", tags: "tags", news: "news", insights: "insights", case_studies: "case-studies" };
+const FOLDERS = { products: "products", solutions: "solutions", scenarios: "scenarios", pages: "pages", tags: "tags", news: "news", insights: "insights", case_studies: "case-studies", milestones: "milestones", team_members: "team", partners: "partners", investor_items: "investor-items" };
 const ARTICLE = ["news", "insights", "case_studies"];
 
 // ---------------------------------------------------------------- run
@@ -283,7 +292,7 @@ for (const [collection, folder] of Object.entries(FOLDERS)) {
       report.created++;
       // Publish unless the source says draft, or (case studies) the client has not approved publication.
       const tw = langs.tw.fm;
-      const hold = tw.draft === true ? "draft" : collection === "case_studies" && !tw.approval?.approved ? "no client approval" : null;
+      const hold = tw.draft === true ? "draft" : collection === "case_studies" && !tw.approval?.approved ? "no client approval" : collection === "partners" && !tw.approval?.approved ? "no partner authorisation" : null;
       if (hold) report.held.push(`${collection}/${lang}/${slug} (${hold})`);
       else {
         await api("POST", `/content/${collection}/${r.item.id}/publish`, {});

@@ -41,7 +41,7 @@ const browser = await chromium.launch({ executablePath: CHROMIUM });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(`${base}/tw/news/fixture-news-01/`, { waitUntil: "networkidle" });
-  const toggle = page.locator(".sub-toggle");
+  const toggle = page.locator('[aria-controls="sub-resources"]');
   check("Resources marked current on an article", (await toggle.getAttribute("class")).includes("is-current"));
   await toggle.focus();
   await page.keyboard.press("Enter");
@@ -50,7 +50,7 @@ try {
   await page.keyboard.press("Tab");
   check("Tab moves into the submenu", await page.evaluate(() => !!document.activeElement?.closest("#sub-resources")));
   await page.keyboard.press("Escape");
-  check("Esc closes and returns focus", (await toggle.getAttribute("aria-expanded")) === "false" && (await page.evaluate(() => document.activeElement?.classList.contains("sub-toggle"))));
+  check("Esc closes and returns focus", (await toggle.getAttribute("aria-expanded")) === "false" && (await page.evaluate(() => document.activeElement?.getAttribute("aria-controls") === "sub-resources")));
   await toggle.click();
   await page.mouse.click(1000, 600);
   check("click outside closes", (await toggle.getAttribute("aria-expanded")) === "false");
@@ -74,7 +74,7 @@ try {
   await page.click('[data-group=solution] [data-value="police"]');
   check("cases list: groups combine", (await cards()) === 1);
   check("header: 成功案例 is in the 資源中心 menu, not a top-level link", (await page.locator('#sub-resources a[href="/tw/cases/"]').count()) === 1 && (await page.locator('.nav-list > li > a[href="/tw/cases/"]').count()) === 0);
-  check("header: 資源中心 is current on the case list page", (await page.locator(".sub-toggle").getAttribute("class")).includes("is-current"));
+  check("header: 資源中心 is current on the case list page", (await page.locator('[aria-controls="sub-resources"]').getAttribute("class")).includes("is-current"));
 
   await page.goto(`${base}/tw/cases/fixture-case-1/`, { waitUntil: "networkidle" });
   const heads = await page.$$eval("main h2", (hs) => hs.map((h) => h.id));
@@ -101,7 +101,7 @@ try {
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await mobile.goto(`${base}/tw/news/`, { waitUntil: "networkidle" });
   await mobile.click(".menu-toggle");
-  await mobile.click(".sub-toggle");
+  await mobile.click('[aria-controls="sub-resources"]');
   check("mobile: Resources expands inside the menu", await mobile.locator("#sub-resources a").first().isVisible());
   check("mobile: 成功案例 is in the expanded 資源中心", await mobile.locator('#sub-resources a[href="/tw/cases/"]').isVisible());
   await mobile.goto(`${base}/tw/cases/`, { waitUntil: "networkidle" });

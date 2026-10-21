@@ -1,0 +1,42 @@
+---
+/**
+ * /[lang]/company/investors/ — investor relations entry. Lists only the modules that have
+ * published records; a module with none stays in the CMS and is neither shown nor linked.
+ * The module descriptions are the owner's wording; they appear only for enabled modules.
+ */
+import { LANGS, localePath, type Lang } from "../../../../i18n";
+import { INVESTOR_MODULES, companyContent, enabledModules } from "../../../../lib/company";
+import { getUi } from "../../../../lib/ui";
+import CompanyShell from "../../../../components/CompanyShell.astro";
+import Text from "../../../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const t = getUi(lang).companyPages;
+const modules = await enabledModules(lang);
+const alternates: Lang[] = [];
+for (const l of LANGS) if ((await companyContent(l)).investors) alternates.push(l);
+---
+<CompanyShell lang={lang} page="investors" currentCompany="investors" path="investors" empty={modules.length === 0} alternates={alternates}>
+  <ul role="list" class="grid" data-investor-modules>
+    {INVESTOR_MODULES.filter((m) => modules.includes(m)).map((m) => (
+      <li class="card">
+        <h2 class="t-h4"><a href={localePath(lang, "company", "investors", m)}><Text value={t.investorModules[m].title} /></a></h2>
+        <p class="t-small t-muted"><Text value={t.investorModules[m].description} /></p>
+      </li>
+    ))}
+  </ul>
+</CompanyShell>
+<style>
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .card { position: relative; display: grid; gap: var(--space-2); align-content: start; padding: var(--space-4); border: 1px solid var(--divider); border-top: 2px solid var(--ink); background: var(--surface); }
+  .card h2, .card p { margin: 0; }
+  .card a { color: var(--ink); text-decoration: none; }
+  .card a::after { content: ""; position: absolute; inset: 0; }
+  .card:hover a { color: var(--bxr-text-red); }
+  .card:has(a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
+</style>

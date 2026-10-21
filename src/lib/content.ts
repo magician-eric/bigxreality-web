@@ -14,7 +14,7 @@ export interface Localized<C extends CollectionKey> {
   pendingTranslation: boolean;
 }
 
-type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "tags" | "insights" | "news" | "case-studies";
+type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "tags" | "insights" | "news" | "case-studies" | "milestones" | "team" | "partners" | "investor-items";
 export const ARTICLE_COLLECTIONS = ["insights", "news", "case-studies"] as const;
 export type ArticleCollection = (typeof ARTICLE_COLLECTIONS)[number];
 

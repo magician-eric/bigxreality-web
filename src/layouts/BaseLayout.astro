@@ -3,7 +3,7 @@ import "../styles/global.css";
 import { HTML_LANG, LANGS, localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
 import SeoHead, { type Crumb, type ProductLd, type ArticleMeta } from "../components/SeoHead.astro";
-import Header, { type NavKey, type ResourceKey } from "../components/Header.astro";
+import Header, { type NavKey, type ResourceKey, type CompanyKey } from "../components/Header.astro";
 import { isNoIndexBuild } from "../lib/content-source";
 import Footer from "../components/Footer.astro";
 import Text from "../components/Text.astro";
@@ -22,6 +22,7 @@ interface Props {
   headerTheme: "light" | "dark";
   current?: NavKey;
   currentResource?: ResourceKey;
+  currentCompany?: CompanyKey;
   /** Where the language switch goes when this page does not exist in a language (`{lang}` template). Default: products overview. */
   fallbackPath?: string;
   breadcrumbs: Crumb[];
@@ -69,7 +70,7 @@ const langLinks = Object.fromEntries(
   </head>
   <body>
     <a class="skip-link" href="#main"><Text value={ui.skipToContent} /></a>
-    <Header lang={p.lang} theme={p.headerTheme} current={p.current} currentResource={p.currentResource} langLinks={langLinks} />
+    <Header lang={p.lang} theme={p.headerTheme} current={p.current} currentResource={p.currentResource} currentCompany={p.currentCompany} langLinks={langLinks} />
     {p.pendingTranslation && (
       <div class="translation-banner" role="note"><div class="container t-small"><Text value={ui.translationPending} /></div></div>
     )}

@@ -218,6 +218,46 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       }),
     };
   },
+  milestones(ctx) {
+    const { d } = ctx;
+    return { data: omitEmpty({ translationStatus: d.translation_status, draft: false, date: d.date, title: d.title, summary: d.summary, image: ctx.image(d.image) }) };
+  },
+  team_members(ctx) {
+    const { d } = ctx;
+    return { data: omitEmpty({ translationStatus: d.translation_status, draft: false, order: d.sort_order, name: d.title, role: d.role, bio: d.bio, photo: ctx.image(d.photo) }) };
+  },
+  partners(ctx) {
+    const { d } = ctx;
+    return {
+      data: omitEmpty({
+        translationStatus: d.translation_status,
+        draft: false,
+        order: d.sort_order,
+        approval: { approved: bool(d.approved, false) },
+        category: d.category,
+        name: d.title,
+        description: d.description,
+        logo: ctx.image(d.logo),
+        url: d.url,
+      }),
+    };
+  },
+  investor_items(ctx) {
+    const { d, item } = ctx;
+    return {
+      data: omitEmpty({
+        translationStatus: d.translation_status,
+        draft: false,
+        publishDate: d.item_date ?? item.publishedAt,
+        module: d.module,
+        category: d.category,
+        order: d.sort_order,
+        title: d.title,
+        summary: d.summary,
+        attachments: d.attachments?.map((a: Json) => ({ label: a.label, url: a.url })),
+      }),
+    };
+  },
   tags({ d }) {
     return { data: omitEmpty({ translationStatus: d.translation_status, name: d.title, description: d.description }) };
   },

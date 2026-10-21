@@ -5,6 +5,7 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { PENDING } from "./lib/pending";
 import { DOMAINS } from "./lib/domains";
+import { INVESTOR_MODULES, PARTNER_CATEGORIES } from "./lib/company";
 import { contentSource } from "./lib/content-source";
 import { emdashLoader } from "./lib/emdash/loader";
 
@@ -265,7 +266,7 @@ const pages = defineCollection({
         title: text,
         /** Sub-headline: one sentence under the title. */
         lead: text.optional(),
-        description: text,
+        description: text.optional(),
         image: picture(ctx).optional(),
         imageCaption: text.optional(),
       }),
@@ -347,4 +348,71 @@ const caseStudies = defineCollection({
     }),
 });
 
-export const collections = { products, solutions, scenarios, pages, tags, insights, news, "case-studies": caseStudies };
+/** Company history: one entry per milestone (date is YYYY or YYYY-MM). */
+const milestones = defineCollection({
+  loader: loader("milestones", "milestones"),
+  schema: (ctx) =>
+    z.object({
+      translationStatus,
+      draft: z.boolean().default(false),
+      date: z.string().regex(/^\d{4}(-\d{2})?$/, "date: YYYY or YYYY-MM"),
+      title: text,
+      summary: text.optional(),
+      image: picture(ctx).optional(),
+    }),
+});
+
+/** Management team: only people who agreed to be listed. */
+const team = defineCollection({
+  loader: loader("team", "team_members"),
+  schema: (ctx) =>
+    z.object({
+      translationStatus,
+      draft: z.boolean().default(false),
+      order: z.number().int(),
+      name: text,
+      role: text,
+      bio: text.optional(),
+      photo: picture(ctx).optional(),
+    }),
+});
+
+/** Partners. An entry is public only with the partner's authorisation (approval), like case studies. */
+const partners = defineCollection({
+  loader: loader("partners", "partners"),
+  schema: (ctx) =>
+    z.object({
+      translationStatus,
+      draft: z.boolean().default(false),
+      order: z.number().int(),
+      /** The partner authorised the public naming / logo; entries without it are never built. */
+      approval: z.object({ approved: z.boolean() }),
+      category: z.enum(PARTNER_CATEGORIES),
+      name: text,
+      description: text.optional(),
+      logo: picture(ctx).optional(),
+      url: z.url().optional(),
+    }),
+});
+
+/**
+ * Investor relations records, one collection for all seven modules. `publishDate` is the date of the
+ * record (announcement date, report date…); a future date keeps it off the site until then.
+ * Only officially approved, public material belongs here.
+ */
+const investorItems = defineCollection({
+  loader: loader("investor-items", "investor_items"),
+  schema: z.object({
+    translationStatus,
+    draft: z.boolean().default(false),
+    publishDate: z.coerce.date(),
+    module: z.enum(INVESTOR_MODULES),
+    category: text.optional(),
+    order: z.number().int().optional(),
+    title: text,
+    summary: text.optional(),
+    attachments: z.array(z.object({ label: text, url: z.url() })).optional(),
+  }),
+});
+
+export const collections = { products, solutions, scenarios, pages, tags, insights, news, "case-studies": caseStudies, milestones, team, partners, "investor-items": investorItems };

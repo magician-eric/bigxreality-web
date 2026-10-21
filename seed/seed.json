@@ -2617,6 +2617,325 @@
      "translatable": false
     }
    ]
+  },
+  {
+   "slug": "milestones",
+   "label": "發展歷程",
+   "labelSingular": "發展歷程",
+   "icon": "history",
+   "group": "關於 BXR",
+   "sortOrder": 20,
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "routable": false,
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "里程碑標題",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     }
+    },
+    {
+     "slug": "date",
+     "label": "日期（YYYY 或 YYYY-MM）",
+     "type": "string",
+     "required": true,
+     "translatable": false
+    },
+    {
+     "slug": "summary",
+     "label": "說明",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "圖片（選填）",
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "slug": "team_members",
+   "label": "經營團隊",
+   "labelSingular": "經營團隊",
+   "icon": "users",
+   "group": "關於 BXR",
+   "sortOrder": 21,
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "routable": false,
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "姓名",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     }
+    },
+    {
+     "slug": "role",
+     "label": "職稱",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "bio",
+     "label": "簡介（僅填本人同意公開的內容）",
+     "type": "text"
+    },
+    {
+     "slug": "photo",
+     "label": "照片（需本人同意公開）",
+     "type": "image"
+    },
+    {
+     "slug": "sort_order",
+     "label": "排序",
+     "type": "integer",
+     "translatable": false
+    }
+   ]
+  },
+  {
+   "slug": "partners",
+   "label": "合作夥伴",
+   "labelSingular": "合作夥伴",
+   "icon": "handshake",
+   "group": "關於 BXR",
+   "sortOrder": 22,
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "routable": false,
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "合作夥伴名稱",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     }
+    },
+    {
+     "slug": "review_status",
+     "label": "審核狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "draft",
+     "validation": {
+      "options": [
+       "draft",
+       "submitted",
+       "changes_requested",
+       "approved"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "category",
+     "label": "合作類型",
+     "type": "select",
+     "required": true,
+     "validation": {
+      "options": [
+       "technology",
+       "integration",
+       "international"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "approved",
+     "label": "已取得合作夥伴公開授權（名稱、Logo、合作關係；未勾選不會上線）",
+     "type": "boolean",
+     "defaultValue": false,
+     "translatable": false
+    },
+    {
+     "slug": "description",
+     "label": "合作說明（僅寫已確認、可公開的內容）",
+     "type": "text"
+    },
+    {
+     "slug": "logo",
+     "label": "Logo（需授權）",
+     "type": "image"
+    },
+    {
+     "slug": "url",
+     "label": "官方網址",
+     "type": "string",
+     "translatable": false
+    },
+    {
+     "slug": "sort_order",
+     "label": "排序",
+     "type": "integer",
+     "translatable": false
+    }
+   ]
+  },
+  {
+   "slug": "investor_items",
+   "label": "投資人專區資料",
+   "labelSingular": "投資人專區資料",
+   "icon": "landmark",
+   "group": "關於 BXR",
+   "sortOrder": 23,
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "routable": false,
+   "titleField": "title",
+   "fields": [
+    {
+     "slug": "title",
+     "label": "標題",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "translation_status",
+     "label": "翻譯狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "pending",
+     "validation": {
+      "options": [
+       "source",
+       "pending",
+       "translated"
+      ]
+     }
+    },
+    {
+     "slug": "review_status",
+     "label": "審核狀態",
+     "type": "select",
+     "required": true,
+     "defaultValue": "draft",
+     "validation": {
+      "options": [
+       "draft",
+       "submitted",
+       "changes_requested",
+       "approved"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "module",
+     "label": "所屬模組",
+     "type": "select",
+     "required": true,
+     "validation": {
+      "options": [
+       "profile",
+       "financials",
+       "governance",
+       "shareholders",
+       "announcements",
+       "briefings",
+       "contact"
+      ]
+     },
+     "translatable": false
+    },
+    {
+     "slug": "item_date",
+     "label": "日期（公告日、報告日…；未來日期會等到當天才顯示）",
+     "type": "datetime",
+     "translatable": false
+    },
+    {
+     "slug": "category",
+     "label": "分類（例：年報、季報、股利公告）",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "說明；「公司基本資料」「投資人聯絡窗口」模組請把標題當項目名稱、說明當內容",
+     "type": "text"
+    },
+    {
+     "slug": "attachments",
+     "label": "附件（只放已核准公開的文件）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "label",
+        "label": "附件名稱",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "url",
+        "label": "檔案網址",
+        "type": "string",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "sort_order",
+     "label": "排序（選填；沒有填就依日期，新的在前）",
+     "type": "integer",
+     "translatable": false
+    }
+   ]
   }
  ],
  "relations": [

@@ -6,10 +6,11 @@
 //    change made after a long burst still triggers within `maxDelayMinutes`.
 // 2. Review: Contributors and Authors cannot publish an entry until an Editor marks it
 //    "approved"; when they edit an approved entry it goes back to "submitted".
-//    Case studies additionally need the client-authorisation box ticked, for everyone.
+//    Case studies additionally need the client-authorisation box ticked, and partners the
+//    partner-authorisation box, for everyone. Investor items are reviewed like products.
 import { definePlugin } from "emdash";
 
-export const REVIEWED = ["products", "solutions", "news", "insights", "case_studies"];
+export const REVIEWED = ["products", "solutions", "news", "insights", "case_studies", "partners", "investor_items"];
 const EDITOR = 40;
 const TASK = "rebuild";
 
@@ -21,6 +22,9 @@ export function bxrCmsPlugin(options = {}) {
 export function publishDecision(collection, content, actor) {
   if (collection === "case_studies" && !truthy(content.approved)) {
     return { cancel: true, reason: "案例尚未勾選「已取得客戶公開授權」，不能發布。" };
+  }
+  if (collection === "partners" && !truthy(content.approved)) {
+    return { cancel: true, reason: "合作夥伴尚未勾選「已取得合作夥伴公開授權」，不能發布。" };
   }
   if (REVIEWED.includes(collection) && actor && actor.role < EDITOR && content.review_status !== "approved") {
     return { cancel: true, reason: "這篇內容尚未經編輯核准（審核狀態需為 approved），請改為「submitted」送審。" };

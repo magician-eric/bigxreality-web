@@ -134,7 +134,7 @@ try {
   await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click(".menu-toggle");
-  await page.click(".sub-toggle");
+  await page.click('[aria-controls="sub-resources"]');
   check("header: 成功案例 link in the phone menu", await page.locator('#sub-resources a[href="/tw/cases/"]').isVisible());
   await page.setViewportSize({ width: 1440, height: 900 });
   check("sitemap has no cases url while no case is published", !readFileSync(path.join(DIST, "sitemap.xml"), "utf8").includes("/cases/"));

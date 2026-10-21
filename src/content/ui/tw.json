@@ -7,11 +7,17 @@
     "products": "產品介紹",
     "technologies": "核心技術",
     "resources": "資源中心",
-    "company": "公司介紹",
+    "company": "關於 BXR",
     "news": "最新消息",
     "insights": "技術專欄",
     "caseStudies": "成功案例",
-    "resourcesMenu": "資源選單"
+    "resourcesMenu": "資源選單",
+    "aboutUs": "關於我們",
+    "history": "發展歷程",
+    "team": "經營團隊",
+    "partners": "合作夥伴",
+    "investors": "投資人專區",
+    "companyMenu": "關於 BXR 選單"
   },
   "contact": "聯絡我們",
   "search": "搜尋",
@@ -385,6 +391,50 @@
       "title": "與我們討論您的訓練需求",
       "description": "歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
       "button": "聯絡我們"
+    }
+  },
+  "companyPages": {
+    "empty": "資料整理中，目前尚無已公開的內容",
+    "hint": "如需進一步了解，歡迎與我們聯絡",
+    "cta": "聯絡我們",
+    "download": "下載",
+    "date": "日期",
+    "category": "分類",
+    "modulesLabel": "投資人專區模組",
+    "partnerCategories": {
+      "technology": "技術合作",
+      "integration": "系統整合",
+      "international": "國際通路合作"
+    },
+    "investorModules": {
+      "profile": {
+        "title": "公司基本資料",
+        "description": "公司名稱、登記資訊、設立日期、實收資本額及其他正式公開的企業基本資訊"
+      },
+      "financials": {
+        "title": "財務資訊",
+        "description": "年度財務報告、營收資訊、財務相關文件及下載功能"
+      },
+      "governance": {
+        "title": "公司治理",
+        "description": "公司治理架構、董事會資訊、重要治理政策及相關公開文件"
+      },
+      "shareholders": {
+        "title": "股東資訊",
+        "description": "股東會資訊、股務公告、股利資訊及相關文件"
+      },
+      "announcements": {
+        "title": "重大訊息與公告",
+        "description": "公司正式對外揭露的重要訊息、公告日期及附件"
+      },
+      "briefings": {
+        "title": "法人說明會",
+        "description": "投資人簡報、法人說明會資料及相關影音或文件"
+      },
+      "contact": {
+        "title": "投資人聯絡窗口",
+        "description": "投資人關係聯絡資訊及正式洽詢管道"
+      }
     }
   }
 }

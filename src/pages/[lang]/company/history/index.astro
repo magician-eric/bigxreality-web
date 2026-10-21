@@ -1,0 +1,46 @@
+---
+/** /[lang]/company/history/ — timeline of published milestones, oldest first. */
+import { Picture } from "astro:assets";
+import { LANGS, type Lang } from "../../../../i18n";
+import { getLocalized } from "../../../../lib/content";
+import { companyContent } from "../../../../lib/company";
+import CompanyShell from "../../../../components/CompanyShell.astro";
+import Text from "../../../../components/Text.astro";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const items = (await getLocalized("milestones", lang)).sort((a, b) => a.base.data.date.localeCompare(b.base.data.date));
+const alternates: Lang[] = [];
+for (const l of LANGS) if ((await companyContent(l)).history) alternates.push(l);
+---
+<CompanyShell lang={lang} page="history" currentCompany="history" path="history" empty={items.length === 0} alternates={alternates}>
+  <ol role="list" class="timeline">
+    {items.map((m) => (
+      <li class="item">
+        <p class="t-tech date"><time datetime={m.base.data.date}>{m.base.data.date}</time></p>
+        <div class="body">
+          <h2 class="t-h3"><Text value={m.loc.data.title} /></h2>
+          {m.loc.data.summary && <p class="t-muted"><Text value={m.loc.data.summary} /></p>}
+        </div>
+        {m.base.data.image && (
+          <figure class="pic">
+            <Picture src={m.base.data.image.src} alt={m.loc.data.image?.alt ?? m.base.data.image.alt} formats={["avif", "webp"]} widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" width={800} height={500} fit="cover" loading="lazy" />
+          </figure>
+        )}
+      </li>
+    ))}
+  </ol>
+</CompanyShell>
+<style>
+  .timeline { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .item { display: grid; grid-template-columns: 8rem minmax(0, 1fr) minmax(0, 22rem); gap: var(--gutter); align-items: start; padding-block: var(--space-4); border-top: 1px solid var(--bxr-line); }
+  .item:first-child { border-top: 2px solid var(--ink); }
+  .date { margin: 0; color: var(--ink-muted); }
+  .body { display: grid; gap: var(--space-1); }
+  .body h2, .body p { margin: 0; }
+  .pic { margin: 0; }
+  .pic :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; }
+  @media (max-width: 767px) { .item { grid-template-columns: 1fr; gap: var(--space-2); } }
+</style>

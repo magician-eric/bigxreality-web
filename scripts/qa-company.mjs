@@ -1,0 +1,78 @@
+// About BXR pages. With the normal build (no data yet): every page opens, shows a plain empty
+// state, is noindex and stays out of the sitemap. With the TEST FIXTURE build (QA_DIST=
+// dist-fixtures/client): modules, partner authorisation and ordering behave as documented.
+import { chromium } from "playwright-core";
+import { readFileSync, existsSync } from "node:fs";
+import path from "node:path";
+import { startPreview, CHROMIUM, DIST } from "./lib/serve.mjs";
+
+const fixtures = DIST.includes("fixtures");
+let failed = 0;
+const check = (name, ok, detail = "") => {
+  if (!ok) failed++;
+  console.log(`${ok ? "ok  " : "FAIL"} ${name}${ok || !detail ? "" : `  — ${detail}`}`);
+};
+const LEAK = ["待提供", "待翻譯", "不得"];
+const { base, stop } = await startPreview(4337);
+const browser = await chromium.launch({ executablePath: CHROMIUM });
+try {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const robots = async () => page.getAttribute('meta[name=robots]', "content");
+  const main = async () => page.locator("main").innerText();
+  const sm = readFileSync(path.join(DIST, "sitemap.xml"), "utf8");
+
+  await page.goto(`${base}/tw/company/`, { waitUntil: "networkidle" });
+  check("about us: heading and three paragraphs", (await page.locator("h1").innerText()).trim() === "虛擬訓練．真實應變．守護未來" && (await page.locator(".page-hero .desc").count()) === 3);
+
+  for (const slug of ["history", "team", "partners", "investors"]) {
+    await page.goto(`${base}/tw/company/${slug}/`, { waitUntil: "networkidle" });
+    const text = await main();
+    check(`${slug}: no placeholder text`, !LEAK.some((w) => text.includes(w)), LEAK.filter((w) => text.includes(w)).join(","));
+    if (!fixtures) {
+      check(`${slug}: plain empty state, noindex, not in the sitemap`, (await page.locator("[data-company-empty]").isVisible()) && (await robots()) === "noindex" && !sm.includes(`/tw/company/${slug}/`));
+      check(`${slug}: the contact page stays reachable from the empty state`, (await page.locator('[data-company-empty] a[href="/tw/contact/"]').count()) === 1);
+    }
+  }
+  if (!fixtures) {
+    await page.goto(`${base}/tw/company/investors/`, { waitUntil: "networkidle" });
+    check("investors: no module is offered without records", (await page.locator("[data-investor-modules]").count()) === 0);
+    check("investors: no module pages are built", ["profile", "financials", "governance", "shareholders", "announcements", "briefings", "contact"].every((m) => !existsSync(path.join(DIST, `tw/company/investors/${m}`))));
+    check("sitemap has the about page only", sm.includes("/tw/company/") && !/company\/(history|team|partners|investors)/.test(sm));
+  } else {
+    await page.goto(`${base}/tw/company/history/`, { waitUntil: "networkidle" });
+    const years = await page.$$eval(".timeline time", (ts) => ts.map((t) => t.textContent));
+    check("history: oldest first", JSON.stringify(years) === JSON.stringify(["2019", "2023-05"]), years.join());
+    await page.goto(`${base}/tw/company/team/`, { waitUntil: "networkidle" });
+    check("team: one published member", (await page.locator(".grid .card").count()) === 1);
+    await page.goto(`${base}/tw/company/partners/`, { waitUntil: "networkidle" });
+    const heads = await page.$$eval(".group h2", (hs) => hs.map((h) => h.textContent.trim()));
+    const text = await main();
+    check("partners: only groups with authorised partners", JSON.stringify(heads) === JSON.stringify(["技術合作", "國際通路合作"]), heads.join());
+    check("partners: an unauthorised partner is never shown", !text.includes("未授權夥伴") && !readFileSync(path.join(DIST, "tw/company/partners/index.html"), "utf8").includes("未授權夥伴"));
+    await page.goto(`${base}/tw/company/investors/`, { waitUntil: "networkidle" });
+    const cards = await page.$$eval("[data-investor-modules] h2", (hs) => hs.map((h) => h.textContent.trim()));
+    check("investors: only modules with published records, in the fixed order", JSON.stringify(cards) === JSON.stringify(["公司基本資料", "重大訊息與公告", "投資人聯絡窗口"]), cards.join());
+    check("investors: modules without records have no page (incl. a future-dated record)", ["financials", "governance", "shareholders", "briefings"].every((m) => !existsSync(path.join(DIST, `tw/company/investors/${m}`))));
+    await page.goto(`${base}/tw/company/investors/announcements/`, { waitUntil: "networkidle" });
+    const titles = await page.$$eval(".record h2", (hs) => hs.map((h) => h.textContent.trim()));
+    check("announcements: newest first", titles[0].includes("公告二") && titles[1].includes("公告一"), titles.join());
+    check("announcements: attachment is a download link", (await page.locator('.files a[href="https://example.com/fixture.pdf"]').count()) === 1);
+    check("module nav lists only enabled modules", (await page.locator(".modules a").count()) === 3);
+    await page.goto(`${base}/tw/company/investors/profile/`, { waitUntil: "networkidle" });
+    check("profile: facts list", (await page.locator(".facts > div").count()) === 2);
+  }
+
+  for (const [w, label] of [[390, "phone"], [820, "tablet"]]) {
+    const v = await browser.newPage({ viewport: { width: w, height: 900 } });
+    for (const p of ["company", "company/history", "company/team", "company/partners", "company/investors"]) {
+      await v.goto(`${base}/tw/${p}/`, { waitUntil: "networkidle" });
+      check(`${label} /${p}/: no horizontal scroll`, await v.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+    }
+    await v.close();
+  }
+} finally {
+  await browser.close();
+  stop();
+}
+console.log(failed ? `FAIL: ${failed}` : "PASS");
+process.exit(failed ? 1 : 0);

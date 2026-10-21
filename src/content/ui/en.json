@@ -7,11 +7,17 @@
     "products": "Products",
     "technologies": "Technology",
     "resources": "Resources",
-    "company": "Company",
+    "company": "About BXR",
     "news": "News",
     "insights": "Insights",
     "caseStudies": "Case Studies",
-    "resourcesMenu": "[待翻譯] 資源選單"
+    "resourcesMenu": "[待翻譯] 資源選單",
+    "aboutUs": "[待翻譯] 關於我們",
+    "history": "[待翻譯] 發展歷程",
+    "team": "[待翻譯] 經營團隊",
+    "partners": "[待翻譯] 合作夥伴",
+    "investors": "[待翻譯] 投資人專區",
+    "companyMenu": "[待翻譯] 關於 BXR 選單"
   },
   "contact": "Contact",
   "search": "[待翻譯] 搜尋",
@@ -385,6 +391,50 @@
       "title": "[待翻譯] 與我們討論您的訓練需求",
       "description": "[待翻譯] 歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
       "button": "[待翻譯] 聯絡我們"
+    }
+  },
+  "companyPages": {
+    "empty": "[待翻譯] 資料整理中，目前尚無已公開的內容",
+    "hint": "[待翻譯] 如需進一步了解，歡迎與我們聯絡",
+    "cta": "[待翻譯] 聯絡我們",
+    "download": "[待翻譯] 下載",
+    "date": "[待翻譯] 日期",
+    "category": "[待翻譯] 分類",
+    "modulesLabel": "[待翻譯] 投資人專區模組",
+    "partnerCategories": {
+      "technology": "[待翻譯] 技術合作",
+      "integration": "[待翻譯] 系統整合",
+      "international": "[待翻譯] 國際通路合作"
+    },
+    "investorModules": {
+      "profile": {
+        "title": "[待翻譯] 公司基本資料",
+        "description": "[待翻譯] 公司名稱、登記資訊、設立日期、實收資本額及其他正式公開的企業基本資訊"
+      },
+      "financials": {
+        "title": "[待翻譯] 財務資訊",
+        "description": "[待翻譯] 年度財務報告、營收資訊、財務相關文件及下載功能"
+      },
+      "governance": {
+        "title": "[待翻譯] 公司治理",
+        "description": "[待翻譯] 公司治理架構、董事會資訊、重要治理政策及相關公開文件"
+      },
+      "shareholders": {
+        "title": "[待翻譯] 股東資訊",
+        "description": "[待翻譯] 股東會資訊、股務公告、股利資訊及相關文件"
+      },
+      "announcements": {
+        "title": "[待翻譯] 重大訊息與公告",
+        "description": "[待翻譯] 公司正式對外揭露的重要訊息、公告日期及附件"
+      },
+      "briefings": {
+        "title": "[待翻譯] 法人說明會",
+        "description": "[待翻譯] 投資人簡報、法人說明會資料及相關影音或文件"
+      },
+      "contact": {
+        "title": "[待翻譯] 投資人聯絡窗口",
+        "description": "[待翻譯] 投資人關係聯絡資訊及正式洽詢管道"
+      }
     }
   }
 }
