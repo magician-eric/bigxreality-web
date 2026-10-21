@@ -66,7 +66,7 @@ QA_DIST=dist-fixtures/client npm run qa:technologies
 - `src/pages/[lang]/technologies/[slug].astro`、`src/components/TechnologySections.astro`：擴充原共用模板，依資料選擇 CTA 與資源，不新建四套頁面。
 - `src/components/RelatedTechnologies.astro`、`src/components/ProductLanding.astro`、`src/components/SolutionLanding.astro`、`src/pages/[lang]/products/[slug].astro`、`src/pages/[lang]/solutions/[slug].astro`：同一關聯表的反向連結，保留正式產品資料。
 - `src/lib/navigation.ts`：將核心技術由規劃項目改為已發布，Header／Footer 共用入口。
-- `scripts/qa-technologies.mjs`、`scripts/qa-behaviour.mjs`、`tests/technologies.test.ts`、`tests/cms/technology-tags.mjs`、`tests/fixtures/content/insights/tw/fixture-insight-1.md`：七項技術、標籤、雙向連結與新增相關區塊的驗收。
+- `scripts/qa-technologies.mjs`、`scripts/qa-behaviour.mjs`、`scripts/qa-header.mjs`、`tests/technologies.test.ts`、`tests/cms/technology-tags.mjs`、`tests/fixtures/content/insights/tw/fixture-insight-1.md`：七項技術、標籤、雙向連結與新增相關區塊的驗收。
 - `.github/workflows/ci.yml`：正式與 fixture build 後皆執行技術頁驗收。
 - `README.md`、`docs/TECHNOLOGIES.md`：文件入口與第一批紀錄的延續說明。
 - `docs/TECHNOLOGIES-BATCH-TWO-AUDIT.md`：本批四頁三語比對與最終驗收證據。
