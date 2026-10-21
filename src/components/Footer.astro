@@ -1,15 +1,17 @@
 ---
 /**
- * Site footer. The link columns are the Header menu itself: one column per top-level item of
- * src/lib/navigation.ts, with its submenu items below, so the Footer never keeps its own list.
- * Contact details, social links and the company name come from site settings (src/lib/site.ts).
- * Social links appear only once real URLs are set; planned pages show as plain text.
+ * Site footer, three columns: logo + contact details | the Header's top-level menu | social links
+ * and legal links. The menu comes from src/lib/navigation.ts (shared with the Header): items with
+ * a submenu open as a collapsed disclosure (<details>), the others are plain links. Contact
+ * details and social links come from site settings (src/lib/site.ts); social links show only once
+ * real URLs are set, legal links only once their page exists.
  */
 import { localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
 import { navigation, legalLinks } from "../lib/navigation";
 import { site, companyName, phoneDisplay, phoneHref } from "../lib/site";
 import { isPending } from "../lib/pending";
+import { LinkedinLogo, FacebookLogo, InstagramLogo, YoutubeLogo, XLogo, LinkSimple } from "@phosphor-icons/react/dist/ssr";
 import Logo from "./Logo.astro";
 import Text from "./Text.astro";
 
@@ -17,101 +19,148 @@ interface Props { lang: Lang; hidePending?: boolean }
 const { lang, hidePending = false } = Astro.props;
 const ui = getUi(lang);
 const year = new Date().getFullYear();
-const columns = navigation(lang);
-const legal = legalLinks(lang);
+const menu = navigation(lang);
+const legal = legalLinks(lang).filter((l) => l.href);
 const { contact } = site;
 const tel = phoneHref();
-const social = Array.isArray(site.social) ? site.social : [];
 const show = (value: string) => !hidePending || (!!value.trim() && !isPending(value));
-const hasContact = [contact.address[lang], contact.phone, contact.email].some(show) || social.length > 0;
+const hasContact = [contact.address[lang], contact.phone, contact.email].some(show);
 const holder = isPending(companyName(lang)) ? site.brand : companyName(lang);
+// Icon by host; any other network falls back to a generic link icon with its label.
+const ICONS = [
+  [/linkedin\.com$/, LinkedinLogo], [/facebook\.com$/, FacebookLogo], [/instagram\.com$/, InstagramLogo],
+  [/(youtube\.com|youtu\.be)$/, YoutubeLogo], [/(^|\.)(x|twitter)\.com$/, XLogo],
+] as const;
+const social = (Array.isArray(site.social) ? site.social : []).map((s) => ({
+  ...s,
+  Icon: ICONS.find(([re]) => re.test(new URL(s.url).hostname))?.[1] ?? LinkSimple,
+}));
+const asideEmpty = social.length === 0 && legal.length === 0;
+const chevron = '<svg class="chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" /></svg>';
+const plannedNote = `<span class="visually-hidden"> ${ui.nav.planned}</span>`;
 ---
 <footer class="site-footer" data-theme="dark">
-  <div class="container top">
-    <div class="brand">
+  <div class="container cols">
+    <div class="identity">
       <a href={localePath(lang)} aria-label={ui.logoHome} class="logo"><Logo theme="dark" /></a>
-      <p class="tagline">{site.tagline}</p>
-    </div>
-
-    {hasContact && <section class="contact" aria-labelledby="footer-contact">
-      <h2 id="footer-contact" class="t-label"><Text value={ui.footer.contactHeading} /></h2>
-      <dl>
-        {show(contact.address[lang]) && <div><dt><Text value={ui.footer.address} /></dt><dd>
+      {hasContact && <address class="contact">
+        {show(contact.address[lang]) && <p><span class="visually-hidden"><Text value={ui.footer.address} />: </span>
           {isPending(contact.mapUrl) || isPending(contact.address[lang])
             ? <Text value={contact.address[lang]} />
             : <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><Text value={contact.address[lang]} /><span class="visually-hidden"> <Text value={ui.footer.mapLink} /><Text value={ui.buttons.opensInNewTab} /></span></a>}
-        </dd></div>}
-        {show(contact.phone) && <div><dt><Text value={ui.footer.phone} /></dt><dd>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</dd></div>}
-        {show(contact.email) && <div><dt><Text value={ui.footer.email} /></dt><dd>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</dd></div>}
-      </dl>
+        </p>}
+        {show(contact.phone) && <p><span class="visually-hidden"><Text value={ui.footer.phone} />: </span>{tel ? <a href={tel}>{phoneDisplay(lang)}</a> : <Text value={contact.phone} />}</p>}
+        {show(contact.email) && <p><span class="visually-hidden"><Text value={ui.footer.email} />: </span>{isPending(contact.email) ? <Text value={contact.email} /> : <a href={`mailto:${contact.email}`}>{contact.email}</a>}</p>}
+      </address>}
+    </div>
+
+    <nav class="menu" aria-label={ui.footer.navLabel}>
+      <ul role="list" class="menu-list">
+        {menu.map((item) => (
+          <li>
+            {item.children.length > 0 ? (
+              <details class="group">
+                <summary class="item"><Text value={item.label} /><Fragment set:html={chevron} /></summary>
+                <ul role="list" class="sub">
+                  {item.children.map((c) => (
+                    <li>{c.href ? <a class="sub-item" href={c.href}><Text value={c.label} /></a> : <span class="sub-item is-planned"><Text value={c.label} /><Fragment set:html={plannedNote} /></span>}</li>
+                  ))}
+                </ul>
+              </details>
+            ) : item.href ? (
+              <a class="item" href={item.href}><Text value={item.label} /></a>
+            ) : (
+              <span class="item is-planned"><Text value={item.label} /><Fragment set:html={plannedNote} /></span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class:list={["aside", { "is-empty": asideEmpty }]}>
       {social.length > 0 && (
         <ul role="list" class="social" aria-label={ui.footer.social}>
-          {social.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}<span class="visually-hidden"><Text value={ui.buttons.opensInNewTab} /></span></a></li>)}
+          {social.map(({ label, url, Icon }) => (
+            <li><a href={url} target="_blank" rel="noopener noreferrer"><Icon size={24} aria-hidden="true" /><span class="visually-hidden">{label}<Text value={ui.buttons.opensInNewTab} /></span></a></li>
+          ))}
         </ul>
       )}
-    </section>}
+      {legal.length > 0 && (
+        <ul role="list" class="legal-links">
+          {legal.map((l) => <li><a href={l.href!}><Text value={l.label} /></a></li>)}
+        </ul>
+      )}
+    </div>
   </div>
 
-  <nav class="container cols" aria-label={ui.footer.navLabel}>
-    {columns.map((col) => (
-      <div class="col">
-        <h2 class="t-label col-head">
-          {col.href ? <a href={col.href}><Text value={col.label} /></a> : <span class:list={{ "is-planned": col.children.length === 0 }}><Text value={col.label} />{col.children.length === 0 && <span class="visually-hidden"> <Text value={ui.nav.planned} /></span>}</span>}
-        </h2>
-        {col.children.length > 0 && (
-          <ul role="list" class="links">
-            {col.children.map((l) => (
-              <li>{l.href ? <a href={l.href}><Text value={l.label} /></a> : <span class="is-planned"><Text value={l.label} /><span class="visually-hidden"> <Text value={ui.nav.planned} /></span></span>}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-    ))}
-  </nav>
-
-  <div class="container legal t-caption">
+  <div class="container copyright t-caption">
     <p>© {year} <Text value={holder} /> <Text value={ui.footer.rights} /></p>
-    {legal.some((l) => l.href) && (
-      <ul role="list" class="legal-links">
-        {legal.filter((l) => l.href).map((l) => <li><a href={l.href!}><Text value={l.label} /></a></li>)}
-      </ul>
-    )}
   </div>
 </footer>
 
+<script>
+  // One submenu open at a time; Esc or a click elsewhere closes it. On desktop with a mouse it also
+  // opens on hover (as a pop-out panel, see styles) and closes shortly after the pointer leaves.
+  const groups = [...document.querySelectorAll<HTMLDetailsElement>(".site-footer details.group")];
+  const hover = window.matchMedia("(min-width: 1024px) and (hover: hover)");
+  for (const d of groups) {
+    let timer: number | undefined;
+    let byHover = false;
+    d.addEventListener("toggle", () => { if (d.open) for (const o of groups) if (o !== d) o.open = false; });
+    // a click right after hover-opening keeps the menu open
+    d.querySelector("summary")!.addEventListener("click", (e) => { if (byHover) { e.preventDefault(); byHover = false; } });
+    d.addEventListener("pointerenter", (e) => {
+      if (e.pointerType !== "mouse" || !hover.matches) return;
+      clearTimeout(timer);
+      if (!d.open) { d.open = true; byHover = true; }
+    });
+    d.addEventListener("pointerleave", (e) => {
+      if (e.pointerType !== "mouse" || !hover.matches) return;
+      timer = window.setTimeout(() => { d.open = false; byHover = false; }, 160);
+    });
+    d.addEventListener("keydown", (e) => { if (e.key === "Escape" && d.open) { d.open = false; d.querySelector("summary")!.focus(); } });
+  }
+  document.addEventListener("click", (e) => { for (const d of groups) if (!d.contains(e.target as Node)) d.open = false; });
+</script>
+
 <style>
-  .site-footer { background: var(--surface); color: var(--ink); padding-block: var(--space-10) var(--space-5); }
-  .top { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-6); }
+  .site-footer { background: var(--surface); color: var(--ink); padding-block: var(--space-6) var(--space-3); }
+  .cols { display: grid; grid-template-columns: 5fr 4fr 3fr; gap: var(--space-6); align-items: start; }
   .logo { display: inline-flex; }
-  .tagline { margin-top: var(--space-2); color: var(--ink-muted); }
-  h2 { color: var(--bxr-mist); margin-bottom: var(--space-2); }
-  dl { display: grid; gap: var(--space-1); margin: 0; }
-  dl div { display: grid; grid-template-columns: 6em 1fr; gap: var(--space-2); }
-  dt { color: var(--ink-muted); }
-  dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-  dd a { color: var(--ink); display: inline-block; min-height: 24px; }
-  .social { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: var(--space-3) 0 0; padding: 0; }
-  .social a { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink); }
-  .cols {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-5) var(--space-4);
-    margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--divider);
+  .contact { margin-top: var(--space-3); font-style: normal; display: grid; gap: var(--space-1); }
+  .contact p { margin: 0; overflow-wrap: anywhere; }
+  .contact a { color: var(--ink); display: inline-block; min-height: 24px; }
+  .menu-list { display: grid; gap: 0; margin: 0; padding: 0; }
+  .item {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px;
+    color: var(--ink); text-decoration: none; font-weight: 500; cursor: pointer;
   }
-  .col-head a { color: var(--ink); text-decoration: none; }
-  .col-head a:hover { text-decoration: underline; }
-  .links { display: grid; gap: var(--space-1); margin: 0; padding: 0; }
-  .links a, .links span { display: inline-flex; min-height: 32px; align-items: center; color: var(--ink); text-decoration: none; }
-  .links a:hover { text-decoration: underline; }
-  .col-head .is-planned, .links .is-planned { color: var(--ink-muted); }
-  .legal {
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2);
-    margin-top: var(--space-8); padding-top: var(--space-3); border-top: 1px solid var(--divider); color: var(--ink-muted);
+  a.item:hover, summary.item:hover, .sub-item:is(a):hover { text-decoration: underline; }
+  summary.item { list-style: none; }
+  summary.item::-webkit-details-marker { display: none; }
+  :global(.site-footer .chev) { flex: none; transition: transform var(--dur-micro) var(--ease-precise); }
+  details[open] > summary :global(.chev) { transform: rotate(180deg); }
+  .sub { margin: 0 0 var(--space-1); padding: 0 0 0 var(--space-3); border-left: 1px solid var(--divider); }
+  .sub-item { display: inline-flex; align-items: center; min-height: 36px; color: var(--ink-muted); text-decoration: none; }
+  a.sub-item { color: var(--ink); }
+  .is-planned { color: var(--ink-muted); cursor: default; }
+  /* Desktop: the submenu pops out beside its item (growing upward) instead of making the footer taller. */
+  @media (min-width: 1024px) {
+    details.group { position: relative; width: fit-content; }
+    .sub {
+      position: absolute; left: calc(100% + var(--space-2)); bottom: 0; z-index: 10; min-width: 180px; margin: 0;
+      padding: var(--space-1) var(--space-3); border: 1px solid var(--divider); background: var(--surface);
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.4); white-space: nowrap;
+    }
+    .sub::before { content: ""; position: absolute; top: 0; bottom: 0; right: 100%; width: var(--space-2); }
   }
-  .legal p { margin: 0; }
+  .aside { display: grid; gap: var(--space-2); justify-items: end; }
+  .social { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; }
+  .social a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--ink); }
   .legal-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; }
-  .legal a { color: var(--ink); min-height: 24px; display: inline-flex; align-items: center; }
-  @media (max-width: 1023px) { .top { grid-template-columns: 1fr; } }
-  @media (max-width: 767px) {
-    .cols { grid-template-columns: 1fr 1fr; }
-    dl div { grid-template-columns: 1fr; gap: 0; }
-  }
+  .legal-links a { color: var(--ink); min-height: 24px; display: inline-flex; align-items: center; }
+  .copyright { margin-top: var(--space-5); padding-top: var(--space-2); border-top: 1px solid var(--divider); color: var(--ink-muted); }
+  .copyright p { margin: 0; }
+  @media (max-width: 1023px) { .cols { grid-template-columns: 1fr 1fr; } .aside { grid-column: 1 / -1; justify-items: start; } .aside.is-empty { display: none; } }
+  @media (max-width: 767px) { .cols { grid-template-columns: 1fr; gap: var(--space-4); } .item { min-height: 44px; } }
 </style>

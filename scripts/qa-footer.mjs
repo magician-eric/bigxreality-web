@@ -33,12 +33,13 @@ const TREES = () => {
     ...node(li.querySelector(":scope > .nav-link")),
     children: [...li.querySelectorAll(":scope > .sub > li > .sub-link")].map(node),
   }));
-  const footer = [...document.querySelectorAll(".site-footer .cols > .col")].map((col) => ({
-    ...node(col.querySelector(".col-head > a, .col-head > span")),
-    children: [...col.querySelectorAll(".links > li > a, .links > li > span")].map(node),
+  const footer = [...document.querySelectorAll(".site-footer .menu-list > li")].map((li) => ({
+    ...node(li.querySelector(":scope > .item, :scope > details > summary.item")),
+    children: [...li.querySelectorAll(".sub > li > .sub-item")].map(node),
   }));
+  const openGroups = document.querySelectorAll(".site-footer details[open]").length;
   const links = [...document.querySelectorAll(".site-footer a[href]")].map((a) => ({ href: a.getAttribute("href"), target: a.target, rel: a.rel }));
-  return { header, footer, links, lang: document.documentElement.lang };
+  return { header, footer, links, openGroups, lang: document.documentElement.lang };
 };
 
 const CONTACT = {
@@ -63,6 +64,7 @@ try {
     if (!t.header.length && !t.footer.length) continue; // redirect stubs
     check(`${p}: Footer columns = Header menu`, JSON.stringify(t.header) === JSON.stringify(t.footer), `header ${JSON.stringify(t.header)}\n      footer ${JSON.stringify(t.footer)}`);
     reference[l] ??= t.footer;
+    check(`${p}: Footer submenus start collapsed`, t.openGroups === 0);
     check(`${p}: same Footer as the other ${l} pages`, JSON.stringify(t.footer) === JSON.stringify(reference[l]));
     for (const a of t.links) {
       if (/^(tel:|mailto:|https?:)/.test(a.href)) continue;

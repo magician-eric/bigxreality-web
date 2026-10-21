@@ -18,7 +18,7 @@
 ## 實測結果
 
 - Node 22 下單元測試：28／28 通過。
-- Astro／TypeScript：152 個檔案，0 errors、0 warnings，7 個既有 hints。
+- Astro／TypeScript：152 個檔案，0 errors、0 warnings，19 個非阻擋 hints（含新版 Footer 的既有 SVG／React 提示）。
 - Markdown 備份模式與 fixture 模式完整 Astro Build、搜尋索引產生均通過。
 - 全模組正式 HTML／三語／SEO／FAQ／響應式／雙向資源連結：896／896 通過。
 - Fixture 多標籤、文章反向連結、Article JSON-LD、同語言與發布篩選等：938／938 通過。
@@ -35,3 +35,5 @@
 原有產品／解決方案正式內容與最新主分支的翻譯稽核成果未改動；只在共用呈現元件增加可驗證的技術反向連結。技術頁使用第一批共用模板，沒有新增四套模板、另一套文章系統或改動其他 CMS schema。
 
 正式 CMS、Deploy Hook HTTP、Workers Builds 與正式部署未操作。公開頁為靜態 HTML，需發布事件觸發重建並完成部署後更新；不宣稱即時生效。操作、十二個新頁路徑及檔案清單見 [第二批說明](TECHNOLOGIES-BATCH-TWO.md)。
+
+已整合主分支 PR #24 的三欄可收合 Footer；只保留技術頁的缺值隱藏選項，未回退對方版型。整合後完整 Build 與型別檢查通過。
