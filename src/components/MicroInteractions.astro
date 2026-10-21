@@ -1,35 +1,4 @@
 <script>
-  // Only heading groups below the initial viewport receive a single entrance. No hidden content,
-  // scroll listeners, stagger timers or page-sized transforms; keyboard focus always wins.
-  const preference = matchMedia("(prefers-reduced-motion: reduce)");
-  let observer: IntersectionObserver | undefined;
-  const clear = () => {
-    observer?.disconnect();
-    document.querySelectorAll(".motion-enter").forEach((el) => el.classList.remove("motion-enter"));
-  };
-  const initialize = () => {
-    clear();
-    if (preference.matches || !("IntersectionObserver" in window)) return;
-    observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        observer?.unobserve(entry.target);
-        if (!entry.target.contains(document.activeElement)) entry.target.classList.add("motion-enter");
-      }
-    }, { threshold: 0.15 });
-    document.querySelectorAll("main .section-head, main .section-grid > header").forEach((el) => {
-      if (el.getBoundingClientRect().top >= innerHeight) observer!.observe(el);
-    });
-  };
-  document.addEventListener("animationend", (event) => {
-    if (event.animationName === "bxr-enter") (event.target as Element).classList.remove("motion-enter");
-  });
-  document.addEventListener("focusin", (event) => {
-    const group = (event.target as Element).closest(".section-head, .section-grid > header");
-    if (group) { observer?.unobserve(group); group.classList.remove("motion-enter"); }
-  });
-  preference.addEventListener("change", () => preference.matches ? clear() : initialize());
-  window.addEventListener("pagehide", clear);
-  window.addEventListener("pageshow", initialize);
-  initialize();
+  import { installMotion } from '../scripts/micro-interactions';
+  installMotion();
 </script>
