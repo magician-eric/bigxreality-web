@@ -144,19 +144,20 @@ async function articleBase(fm, body, file) {
 /** Nested `landing` block of a product → flat EmDash landing_* fields (inverse of loader.ts landingFrom). */
 async function landingFields(L, file) {
   if (!L) return {};
-  const slot = async (x) => clean({ image: await image(x, file), need: x?.need, caption: x?.caption, ratio: x?.ratio });
+  const slot = async (x) => clean({ image: await image(x, file), need: x?.need, caption: x?.caption, ratio: x?.ratio, kind: x?.kind, status: x?.status, substitute: await image(x?.substitute, file) });
   const withSlot = async (x, keys) => ({ ...Object.fromEntries(keys.filter((k) => x[k] !== undefined).map((k) => [k, x[k]])), ...(x.image ? await slot(x.image) : {}) });
   const all = (list, f) => (list ? Promise.all(list.map(f)) : undefined);
   const hero = L.heroImage ? await slot(L.heroImage) : {};
   return clean({
     landing_headline: L.headline, landing_subheadline: L.subheadline, landing_intro: L.intro, landing_cta_label: L.ctaLabel,
-    landing_hero_image: hero.image, landing_hero_need: hero.need,
+    landing_hero_image: hero.image, landing_hero_need: hero.need, landing_hero_kind: hero.kind, landing_hero_status: hero.status, landing_hero_substitute: hero.substitute,
     landing_challenge_title: L.challenge?.title, landing_challenge_intro: L.challenge?.intro, landing_challenge_cards: L.challenge?.cards, landing_challenge_note: L.challenge?.note,
     landing_approach_title: L.approach?.title, landing_approach_intro: L.approach?.intro, landing_approach_images: await all(L.approach?.images, slot), landing_approach_pillars: L.approach?.pillars,
     landing_capabilities_title: L.capabilities?.title, landing_capabilities_intro: L.capabilities?.intro, landing_capabilities: await all(L.capabilities?.items, (x) => withSlot(x, ["title", "content", "value"])),
     landing_flow_title: L.flow?.title, landing_flow_intro: L.flow?.intro, landing_flow_steps: await all(L.flow?.steps, (x) => withSlot(x, ["title", "description", "icon"])), landing_flow_note: L.flow?.note,
     landing_scenarios_title: L.scenarios?.title, landing_scenarios_intro: L.scenarios?.intro, landing_scenarios: await all(L.scenarios?.items, (x) => withSlot(x, ["title", "description", "focus"])),
     landing_values_title: L.values?.title, landing_values_intro: L.values?.intro, landing_values_cards: L.values?.cards, landing_values_note: L.values?.note,
+    landing_cases_intro: L.casesIntro,
     landing_related_title: L.related?.title, landing_related_intro: L.related?.intro,
     landing_closing_title: L.closing?.title, landing_closing_description: L.closing?.description,
   });

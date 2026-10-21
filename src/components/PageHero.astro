@@ -24,8 +24,10 @@ interface Props {
   image?: { src: ImageMetadata; alt: string };
   imageCaption?: string;
   imagePending?: string;
+  /** Label drawn bottom-right on illustrations (情境示意圖). */
+  imageBadge?: string;
 }
-const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending } = Astro.props;
+const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending, imageBadge } = Astro.props;
 ---
 <section class="page-hero" data-theme="dark">
   <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
@@ -48,6 +50,7 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, de
           width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
         />
       ) : imagePending && <ImagePlaceholder label={imagePending} />}
+      {image && imageBadge && <span class="badge t-caption">{imageBadge}</span>}
       {image && imageCaption && <figcaption class="t-tech"><Text value={imageCaption} /></figcaption>}
     </figure>}
   </div>
@@ -66,6 +69,10 @@ const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, de
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
   .media { position: relative; margin: 0; }
   .media :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .badge {
+    position: absolute; right: var(--space-2); bottom: var(--space-2); padding: 2px var(--space-1);
+    background: rgb(10 12 16 / 0.72); color: var(--bxr-white); line-height: 1.5; pointer-events: none;
+  }
   figcaption { position: absolute; right: var(--space-2); bottom: var(--space-1); color: var(--bxr-mist); }
   @media (max-width: 1023px) { .grid { grid-template-columns: 1fr; } .page-hero { padding-block: var(--space-6) var(--space-8); } }
 </style>

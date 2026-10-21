@@ -130,6 +130,33 @@
      "type": "string"
     },
     {
+     "slug": "landing_hero_kind",
+     "label": "落地頁｜Hero 圖片類型（實際核准圖片／情境示意圖）",
+     "type": "select",
+     "validation": {
+      "options": [
+       "approved",
+       "illustration"
+      ]
+     }
+    },
+    {
+     "slug": "landing_hero_status",
+     "label": "落地頁｜Hero 圖片公開狀態（withheld＝未核准，不會公開）",
+     "type": "select",
+     "validation": {
+      "options": [
+       "public",
+       "withheld"
+      ]
+     }
+    },
+    {
+     "slug": "landing_hero_substitute",
+     "label": "落地頁｜Hero 替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+     "type": "image"
+    },
+    {
      "slug": "landing_challenge_title",
      "label": "落地頁｜訓練挑戰：標題",
      "type": "string"
@@ -209,6 +236,33 @@
           "1 / 1"
          ]
         }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
        }
       ]
      }
@@ -295,6 +349,33 @@
           "1 / 1"
          ]
         }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
        }
       ]
      }
@@ -371,6 +452,33 @@
           "1 / 1"
          ]
         }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
        }
       ]
      }
@@ -441,6 +549,33 @@
           "1 / 1"
          ]
         }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
        }
       ]
      }
@@ -479,6 +614,11 @@
     {
      "slug": "landing_values_note",
      "label": "落地頁｜導入價值：區塊結語",
+     "type": "text"
+    },
+    {
+     "slug": "landing_cases_intro",
+     "label": "落地頁｜實際應用案例：說明（案例本身由「案例」集合的關聯自動帶入，沒有案例時整塊隱藏）",
      "type": "text"
     },
     {

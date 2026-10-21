@@ -10,8 +10,8 @@ import Text from "./Text.astro";
 
 type Slot = { src?: ImageMetadata; alt?: string; need?: string; caption?: string; ratio?: string };
 type Item = { title: string; content: string; value?: string; image?: Slot };
-interface Props { items: Item[]; valueLabel: string; needPrefix: string; fallbackLabel: string }
-const { items, valueLabel, needPrefix, fallbackLabel } = Astro.props;
+interface Props { items: Item[]; valueLabel: string; needPrefix: string; fallbackLabel: string; badge?: string }
+const { items, valueLabel, needPrefix, fallbackLabel, badge } = Astro.props;
 
 type Entry = { item: Item; n: number };
 type Row = { kind: "feature"; entry: Entry; flip: boolean } | { kind: "plain"; entries: Entry[] };
@@ -35,7 +35,7 @@ const num = (n: number) => String(n).padStart(2, "0");
     row.kind === "feature" ? (
       <article class:list={["feature", { flip: row.flip }]}>
         <div class="pic">
-          <MediaSlot media={row.entry.item.image} ratio="3 / 2" fallbackLabel={fallbackLabel} needPrefix={needPrefix} sizes="(max-width: 1023px) 100vw, 58vw" />
+          <MediaSlot media={row.entry.item.image} ratio="3 / 2" fallbackLabel={fallbackLabel} needPrefix={needPrefix} badge={badge} sizes="(max-width: 1023px) 100vw, 58vw" />
         </div>
         <div class="text">
           <p class="t-tech num" aria-hidden="true">{num(row.entry.n)}</p>

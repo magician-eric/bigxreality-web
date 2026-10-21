@@ -13,8 +13,8 @@ import CaseCard from "./CaseCard.astro";
 import CaseVisual from "./CaseVisual.astro";
 import Text from "./Text.astro";
 
-interface Props { lang: Lang; cases: CaseView[]; alt?: boolean; id?: string }
-const { lang, cases, alt = false, id } = Astro.props;
+interface Props { lang: Lang; cases: CaseView[]; alt?: boolean; id?: string; description?: string }
+const { lang, cases, alt = false, id, description } = Astro.props;
 const ui = getUi(lang);
 const b = ui.cases.block;
 const shown = cases.slice(0, 3);
@@ -24,7 +24,7 @@ const listHref = localePath(lang, "case-studies");
 {cases.length > 0 && (
   <section class:list={["section", { "section--alt": alt }]} id={id} aria-labelledby="h-cases" data-related-cases>
     <div class="container">
-      <SectionHead id="h-cases" eyebrow="Case Studies" title={b.title} description={b.description} viewAll={cases.length > 1 ? { href: listHref, label: b.more } : undefined} />
+      <SectionHead id="h-cases" eyebrow="Case Studies" title={b.title} description={description ?? b.description} viewAll={cases.length > 1 ? { href: listHref, label: b.more } : undefined} />
       {one ? (
         <article class="feature">
           <CaseVisual cover={one.cover} sizes="(max-width: 1023px) 100vw, 640px" />

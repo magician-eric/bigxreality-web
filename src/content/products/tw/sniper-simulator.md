@@ -138,6 +138,7 @@ landing:
     title: 讓每一次模擬射擊，都成為理解環境與操作的練習
     description: 了解狙擊槍模擬系統如何配合單位的瞄準操作、環境判讀及射擊訓練需求
 relatedProducts:
+- machine-gun-simulator
 - sut
 relatedSolutions:
 - military
