@@ -40,6 +40,8 @@ const ui = getUi(lang);
 const t = ui.productLanding;
 const e = t.eyebrows;
 const cta = ctaSet(lang, { page: "productInquiry", code: base.hero.code ?? d.hero.name, label: L.ctaLabel });
+const backLabel = ui.backToProducts;
+const backHref = localePath(lang, "products");
 const need = t.mediaNeed;
 const badge = t.illustrationLabel;
 const hero = L.heroImage;
@@ -134,7 +136,19 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     </section>
   )}
 
+  {backLabel && (
+    <div class="container back"><a href={backHref}><span aria-hidden="true">←</span> <Text value={backLabel} /></a></div>
+  )}
+
   <CtaBand id="product-cta" title={L.closing.title} description={L.closing.description}>
     <CtaGroup actions={cta.footer} />
   </CtaBand>
 </BaseLayout>
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
+  .back { padding-block: var(--space-4); }
+  .back a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .back a:hover { color: var(--bxr-text-red); }
+</style>

@@ -150,6 +150,26 @@ const landing = (ctx: SchemaContext) => z.object({
       items: z.array(z.object({ title: text, description: paragraphs, ctaLabel: text, solution: slug })).min(1),
     })
     .optional(),
+  /**
+   * Free-form sections shown in order after the fixed sections above (used by the English pages, whose
+   * copy is a sequence of headline + text / list / bullet blocks):
+   * - prose: eyebrow, title and paragraphs
+   * - list: titled items with text (cards)
+   * - checks: short bullet items with a check mark
+   * - featured: side-by-side items linking to a solution or product page that exists
+   */
+  blocks: z
+    .array(
+      z.object({
+        kind: z.enum(["prose", "list", "checks", "featured"]),
+        eyebrow: text.optional(),
+        title: text,
+        intro: text.optional(),
+        body: paragraphs.optional(),
+        items: z.array(z.object({ title: text, content: paragraphs.optional(), cta: text.optional(), solution: slug.optional(), product: slug.optional() })).optional(),
+      }),
+    )
+    .optional(),
   /** "Who it is for": a short list of cards with an optional closing note, shown after the scenarios. */
   audience: z.object({ title: text, intro: text.optional(), cards: z.array(card).min(1), note: text.optional() }).optional(),
   /** One sentence under the "applied cases" heading; the cases themselves come from case relations (lib/cases.ts). */
@@ -222,6 +242,8 @@ const solutions = defineCollection({
       summary: text,
       /** Button text on the overview card (e.g. 探索軍事模擬). */
       cardLabel: text.optional(),
+      /** Headline shown on the overview card instead of the English name line. */
+      cardHeadline: text.optional(),
       /** Slug of the solution this one belongs to (MUM-T and NOVA belong to military); it is not a fifth category. */
       parent: slug.optional(),
       relatedSolutions: slugs,
@@ -275,7 +297,8 @@ const pages = defineCollection({
       /** A short list of principle cards (solutions overview). */
       highlights: z.object({ title: text, items: z.array(card).min(1) }).optional(),
       integrated: z.object({ eyebrow: text, title: text, description: text }).optional(),
-      cta: cta.optional(),
+      /** Closing band; `button` is the label of its contact button. */
+      cta: cta.extend({ button: text.optional() }).optional(),
     }),
 });
 
