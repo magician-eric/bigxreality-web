@@ -64,16 +64,16 @@ try {
   check("pillar text has no trailing full stop", (await page.locator(".pillar .text").allTextContents()).every((t) => !/[。.]$/.test(t.trim())));
   const slots = await page.locator("main .placeholder").evaluateAll((els) => els.map((e) => e.getAttribute("aria-label")));
   const need = slots.filter((l) => l.startsWith("素材需求｜"));
-  check("11 image positions on the page, each names the material needed", need.length === 11, `${need.length} of ${slots.length}`);
+  check("10 image positions on the page, each names the material needed", need.length === 10, `${need.length} of ${slots.length}`);
   check("capability rows: 3 picture rows and 2 text-only rows (02 and 05)", (await page.locator(".feature").count()) === 3 && (await page.locator(".plain .cap").count()) === 2);
   check("capability picture rows alternate sides", (await page.locator(".feature.flip").count()) === 1);
   check("approach shows a physical + virtual image pair", (await page.locator(".pair .media").count()) === 2);
   check("flow steps carry an icon each", (await page.locator(".flow .node svg").count()) === 4);
   const widths = await page.locator(".scenarios .card").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().width)));
-  check("five scenario cards, all the same width", widths.length === 5 && new Set(widths).size === 1, widths.join(","));
+  check("four scenario cards, all the same width", widths.length === 4 && new Set(widths).size === 1, widths.join(","));
   const before = await page.locator(".scenarios .card").first().evaluate((e) => e.firstElementChild.classList.contains("media"));
   check("scenario image sits above the title", before);
-  check("flow has four steps, scenarios five, values four", (await page.locator(".flow .step").count()) === 4 && (await page.locator(".scenarios .card").count()) === 5 && (await page.locator(".values .value").count()) === 4);
+  check("flow has four steps, scenarios four, values four", (await page.locator(".flow .step").count()) === 4 && (await page.locator(".scenarios .card").count()) === 4 && (await page.locator(".values .value").count()) === 4);
   check("no AIDA wording shown on the page", !/\bAIDA\b|Attention|Desire/.test(await page.locator("main").innerText()));
   check("no pending markers on the landing page body", (await page.locator("main section:not(.cta-band) mark.pending").count()) === 0);
 
@@ -88,10 +88,23 @@ try {
   const mail = await page.locator("[data-mailto]").getAttribute("href");
   check("contact page: topic + product in the e-mail subject", mail.startsWith("mailto:") && decodeURIComponent(mail).includes("產品洽詢 – SUT"), mail);
 
-  await page.goto(`${base}/tw/products/uav/`, { waitUntil: "networkidle" });
-  const integrated = await page.locator("#integratedOps .card h3").allTextContents();
-  check("reverse relation: UAV page shows SUT (stored only on SUT)", integrated.some((t) => t.includes("SUT")), integrated.join(", "));
-  check("UAV image placeholder", (await page.locator(".page-hero [role=img]").getAttribute("aria-label")) === "[產品圖・待提供]");
+  for (const [slug, h1, scen, related, cta] of [
+    ["uav", "從掌握空中任務，到應對低空威脅", 5, ["/tw/products/sut/", "/tw/products/usv/", "/tw/solutions/military/"], "UAV"],
+    ["usv", "讓無人船任務訓練，從虛擬海域開始", 3, ["/tw/products/sut/", "/tw/products/uav/", "/tw/solutions/military/"], "USV"],
+  ]) {
+    await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
+    check(`${slug}: H1 is the V2.0 headline`, (await page.locator("h1").innerText()).trim() === h1);
+    check(`${slug}: ${scen} scenario cards`, (await page.locator(".scenarios .card").count()) === scen);
+    check(`${slug}: 4 flow steps, 5 capabilities`, (await page.locator(".flow .step").count()) === 4 && (await page.locator(".cap .value, .feature .value").count()) === 5);
+    const hrefs = await page.locator("a[href]").evaluateAll((els) => els.map((e) => e.getAttribute("href")));
+    check(`${slug}: related links`, related.every((h) => hrefs.includes(h)), related.filter((h) => !hrefs.includes(h)).join(" "));
+    check(`${slug}: CTA goes to the contact page with the product code`, hrefs.some((h) => h.includes(`/tw/contact/?topic=product&item=${cta}`)));
+    check(`${slug}: no visible 待提供 text`, (await page.locator("main section:not(.cta-band):not(#related-products) mark.pending").count()) === 0);
+    check(`${slug}: hero image placeholder is designed`, (await page.locator(".page-hero [role=img]").count()) >= 1);
+    await page.setViewportSize({ width: 390, height: 844 });
+    check(`${slug}: phone has no horizontal scroll`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+    await page.setViewportSize({ width: 1440, height: 900 });
+  }
 
   await page.goto(`${base}/en/products/sut/`, { waitUntil: "networkidle" });
   check("pending translation → noindex", (await page.getAttribute('meta[name=robots]', "content")) === "noindex");

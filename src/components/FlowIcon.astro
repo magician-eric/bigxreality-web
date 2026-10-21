@@ -1,11 +1,14 @@
 ---
 /** Simple line icons for process steps. CIS: 2 px square-cap strokes, no fill. Decorative (aria-hidden). */
-interface Props { name: "target" | "team" | "variation" | "review"; size?: number }
+interface Props { name: "target" | "team" | "variation" | "review" | "route" | "headset" | "link"; size?: number }
 const { name, size = 28 } = Astro.props;
 ---
 <svg width={size} height={size} viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false">
   {name === "target" && (<><circle cx="14" cy="14" r="10" /><circle cx="14" cy="14" r="5" /><path d="M14 1v5M14 22v5M1 14h5M22 14h5" /></>)}
   {name === "team" && (<><circle cx="9" cy="9" r="3.5" /><circle cx="20" cy="10" r="3" /><path d="M2 23c0-4 3-7 7-7s7 3 7 7M16 21c.5-3 2.5-5 5-5s4 2 5 5" /></>)}
   {name === "variation" && (<><path d="M3 8h8l6 12h8" /><path d="M3 20h8l2-4M17 8l2 4M21 4l4 4-4 4M21 16l4 4-4 4" /></>)}
+  {name === "route" && (<><circle cx="5" cy="22" r="2.5" /><circle cx="23" cy="6" r="2.5" /><path d="M7 20c6-2 2-8 8-9s4-2 6-3" /></>)}
+  {name === "headset" && (<><path d="M3 12c0-6 4-9 11-9s11 3 11 9" /><rect x="2" y="12" width="5" height="9" /><rect x="21" y="12" width="5" height="9" /><path d="M24 21v3h-8" /></>)}
+  {name === "link" && (<><rect x="2" y="9" width="9" height="10" /><rect x="17" y="9" width="9" height="10" /><path d="M11 14h6M14 11l3 3-3 3" /></>)}
   {name === "review" && (<><rect x="4" y="3" width="20" height="22" /><path d="M9 10l2 2 4-4M9 18h10" /></>)}
 </svg>

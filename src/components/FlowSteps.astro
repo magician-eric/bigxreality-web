@@ -9,9 +9,9 @@ import FlowIcon from "./FlowIcon.astro";
 import MediaSlot from "./MediaSlot.astro";
 import Text from "./Text.astro";
 
-type Slot = { src?: ImageMetadata; alt?: string; need?: string; caption?: string };
+type Slot = { src?: ImageMetadata; alt?: string; need?: string; caption?: string; ratio?: string };
 interface Props {
-  steps: { title: string; description: string; icon?: "target" | "team" | "variation" | "review"; image?: Slot }[];
+  steps: { title: string; description: string; icon?: "target" | "team" | "variation" | "review" | "route" | "headset" | "link"; image?: Slot }[];
   stepLabel: string;
   needPrefix: string;
   fallbackLabel: string;

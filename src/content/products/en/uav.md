@@ -6,8 +6,7 @@ publishDate: 2026-10-01
 order: 2
 domains: [military]
 hero:
-  name: "[待翻譯] UAV 無人機戰術訓練系統"
-  englishName: "[待提供]"
+  name: "[待翻譯] 無人機戰術與反制無人機訓練系統"
   code: UAV
   tagline: "[待提供]"
 capabilities:
