@@ -41,7 +41,7 @@ const collectionLd = {
 <BaseLayout
   lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/cases/" alternates={alternates}
   pendingTranslation={copy.translationStatus === "pending"} noindex={cases.length === 0}
-  headerTheme="dark" current="caseStudies" fallbackPath="/{lang}/cases/" breadcrumbs={breadcrumbs}
+  headerTheme="dark" current="resources" currentResource="case-studies" fallbackPath="/{lang}/cases/" breadcrumbs={breadcrumbs}
   structuredData={cases.length ? [collectionLd] : []}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} lead={copy.hero.lead} description={copy.hero.description} />

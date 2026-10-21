@@ -73,8 +73,8 @@ try {
   check("cases list: product filter (a case may relate to several products)", (await cards()) === 2);
   await page.click('[data-group=solution] [data-value="police"]');
   check("cases list: groups combine", (await cards()) === 1);
-  check("header: 成功案例 is a top-level link, not in Resources", (await page.locator('.nav-list > li > a[href="/tw/cases/"]').count()) === 1 && (await page.locator('#sub-resources a[href="/tw/cases/"]').count()) === 0);
-  check("header: 成功案例 current on the list page", (await page.locator('.nav-list > li > a[href="/tw/cases/"]').getAttribute("aria-current")) === "page");
+  check("header: 成功案例 is in the 資源中心 menu, not a top-level link", (await page.locator('#sub-resources a[href="/tw/cases/"]').count()) === 1 && (await page.locator('.nav-list > li > a[href="/tw/cases/"]').count()) === 0);
+  check("header: 資源中心 is current on the case list page", (await page.locator(".sub-toggle").getAttribute("class")).includes("is-current"));
 
   await page.goto(`${base}/tw/cases/fixture-case-1/`, { waitUntil: "networkidle" });
   const heads = await page.$$eval("main h2", (hs) => hs.map((h) => h.id));
@@ -103,7 +103,7 @@ try {
   await mobile.click(".menu-toggle");
   await mobile.click(".sub-toggle");
   check("mobile: Resources expands inside the menu", await mobile.locator("#sub-resources a").first().isVisible());
-  check("mobile: 成功案例 is in the menu", await mobile.locator('.nav-list > li > a[href="/tw/cases/"]').isVisible());
+  check("mobile: 成功案例 is in the expanded 資源中心", await mobile.locator('#sub-resources a[href="/tw/cases/"]').isVisible());
   await mobile.goto(`${base}/tw/cases/`, { waitUntil: "networkidle" });
   check("mobile: cases grid is one column, no horizontal scroll", (await mobile.locator("#case-grid > li").evaluateAll((els) => new Set(els.map((e) => Math.round(e.getBoundingClientRect().left))).size)) === 1 && (await mobile.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)));
 } finally {

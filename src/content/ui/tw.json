@@ -4,12 +4,12 @@
   "nav": {
     "label": "主選單",
     "solutions": "解決方案",
-    "products": "產品",
-    "technologies": "技術",
-    "resources": "資源",
-    "company": "公司",
-    "news": "消息",
-    "insights": "技術文章",
+    "products": "產品介紹",
+    "technologies": "核心技術",
+    "resources": "資源中心",
+    "company": "公司介紹",
+    "news": "最新消息",
+    "insights": "技術專欄",
     "caseStudies": "成功案例",
     "resourcesMenu": "資源選單"
   },

@@ -114,7 +114,7 @@ try {
 
   // success cases: no real case is published yet, so the section must open cleanly and stay honest
   await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
-  check("header: 成功案例 link on desktop", (await page.locator('.nav-list > li > a[href="/tw/cases/"]').innerText()).trim() === "成功案例");
+  check("header: 成功案例 sits in the 資源中心 menu", (await page.locator('#sub-resources a[href="/tw/cases/"]').textContent()).trim() === "成功案例" && (await page.locator('.nav-list > li > a[href="/tw/cases/"]').count()) === 0);
   await page.goto(`${base}/tw/cases/`, { waitUntil: "networkidle" });
   check("cases list opens with an empty state and no cards", (await page.locator("[data-case-empty]").isVisible()) && (await page.locator("article.card").count()) === 0);
   check("cases list without cases is noindex", (await page.getAttribute('meta[name=robots]', "content")) === "noindex");
@@ -127,7 +127,8 @@ try {
   await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click(".menu-toggle");
-  check("header: 成功案例 link in the phone menu", await page.locator('.nav-list > li > a[href="/tw/cases/"]').isVisible());
+  await page.click(".sub-toggle");
+  check("header: 成功案例 link in the phone menu", await page.locator('#sub-resources a[href="/tw/cases/"]').isVisible());
   await page.setViewportSize({ width: 1440, height: 900 });
   check("sitemap has no cases url while no case is published", !readFileSync(path.join(DIST, "sitemap.xml"), "utf8").includes("/cases/"));
 
