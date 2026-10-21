@@ -30,7 +30,7 @@ const { lang, href, name, englishName, summary, domains, domainLabels, image, he
 const ui = getUi(lang);
 const H = `h${headingLevel}` as "h2" | "h3";
 ---
-<article class="card">
+<article data-interactive-card class="card">
   <div class="media">
     {image
       ? <Picture src={image.src} alt={image.alt} formats={["avif", "webp"]} widths={[400, 640, 960, 1280].filter((w) => w <= image.src.width)} sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 400px" width={640} height={360} fit="cover" />

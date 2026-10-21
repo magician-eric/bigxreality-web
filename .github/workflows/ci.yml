@@ -25,6 +25,7 @@ jobs:
       - run: npm run check:sitemap
       - run: npm run qa:links
       - run: npm run qa:behaviour
+      - run: npm run qa:motion
       - run: npm run qa:density-navigation
       - run: npm run qa:header
       - run: npm run qa:footer

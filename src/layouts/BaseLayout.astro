@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import "../styles/motion.css";
+import MicroInteractions from "../components/MicroInteractions.astro";
 import { HTML_LANG, LANGS, localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
 import SeoHead, { type Crumb, type ProductLd, type ArticleMeta } from "../components/SeoHead.astro";
@@ -87,6 +89,7 @@ const langLinks = Object.fromEntries(
     </main>
     <Footer lang={p.lang} hidePending={p.hidePendingFooter} />
     <BackToTop lang={p.lang} />
+    <MicroInteractions />
   </body>
 </html>
 
