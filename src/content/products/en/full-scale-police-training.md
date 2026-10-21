@@ -138,4 +138,7 @@ faq:
   answer: Depending on configuration, the system can use simulated police equipment and related interaction devices, such as training equipment corresponding to the operation of batons, pepper spray, conducted-energy weapons or handguns. This equipment is mainly for simulation training and should not be regarded as equipment with actual law-enforcement use.
 - question: Can trainee performance be reviewed after training?
   answer: Yes. The training records and results that the system actually supports can be used for review, helping instructors give feedback. What can be recorded may differ between configurations, and this does not mean that every system has complete physiological monitoring or the same assessment functions.
+seo:
+  title: "Full-Scale Police Training System | Immersive Police Simulation"
+  description: "The full-scale police training system integrates VR environments, physical interaction equipment, and scenario-based exercises for police observation, operational decisions, and response training."
 ---

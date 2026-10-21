@@ -155,4 +155,7 @@ landing:
   closing:
     title: Turning Disaster Prevention Knowledge into Real Operating Experience
     description: Find out how Big x Reality supports fire safety education and disaster prevention training through a realistic fire extinguisher, immersive fire scenes and an interactive training process
+seo:
+  title: "Fire & Disaster Prevention Training | VR Fire Safety Simulation"
+  description: "Combine immersive VR fire scenarios, realistic fire extinguisher operation, interactive lessons, scenario practice, and feedback for fire and disaster prevention education."
 ---

@@ -92,4 +92,7 @@ landing:
   closing:
     title: 從個別訓練需求出發，規劃更完整的軍事模擬環境
     description: 了解 Big x Reality 如何結合模擬設備、任務情境與整合架構，支援不同層級的軍事訓練
+seo:
+  title: "軍事模擬訓練解決方案｜XR 戰術與聯合訓練"
+  description: "從單兵武器操作、戰術訓練與載具模擬，到小隊協同、兵棋推演及跨系統整合，Big x Reality 提供多層級軍事模擬訓練解決方案。"
 ---

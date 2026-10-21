@@ -2,8 +2,8 @@
 # 繁中檔的 [待翻譯] 複本
 translationStatus: pending
 seo:
-  title: "[待翻譯] 發展歷程"
-  description: "[待翻譯] Big x Reality 全球動力科技的發展歷程"
+  title: "Company History｜Big x Reality"
+  description: "Explore the development of Big x Reality and its journey in XR simulation training, professional training systems, and integration technologies."
 hero:
   eyebrow: History
   title: "[待翻譯] 發展歷程"

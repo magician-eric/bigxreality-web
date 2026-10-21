@@ -106,4 +106,7 @@ landing:
   closing:
     title: Starting from Site Needs to Explore More Flexible Smart Integration
     description: Find out how Big x Reality uses 3D visualisation, digital simulation and system integration capabilities to plan smart applications for the needs of different industries
+seo:
+  title: "Smart City Solutions | Digital Twins & 3D Visualization"
+  description: "Explore smart city applications using digital twins, 3D visualization, and simulation technologies for buildings, transportation, port management, disaster response, and industrial training."
 ---

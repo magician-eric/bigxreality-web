@@ -148,7 +148,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         "cta": "洽詢 AI 模擬應用"
       },
       "seo": {
-        "title": "AI 智慧模擬｜人工智慧與 XR 模擬訓練應用｜BXR",
+        "title": "AI 智慧模擬｜人工智慧與 XR 訓練應用",
         "description": "了解 AI 如何應用於虛擬角色、情境互動與模擬資訊處理，以及 BXR 如何依軍事、警勤及消防防災訓練需求，評估 AI 與 XR 模擬系統的結合方式。"
       }
     },
@@ -297,7 +297,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         "cta": "Discuss AI simulation applications"
       },
       "seo": {
-        "title": "AI-Enhanced Simulation | AI and XR Simulation Training Applications | BXR",
+        "title": "AI-Enhanced Simulation｜AI & XR Training",
         "description": "Learn how AI can be applied to virtual characters, scenario interaction, and simulation information processing, and how BXR evaluates combining AI with XR simulation systems for military, policing, and fire and disaster response training needs."
       }
     },
@@ -446,7 +446,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         "cta": "AI シミュレーションの活用について相談する"
       },
       "seo": {
-        "title": "AI シミュレーション｜人工知能と XR シミュレーション訓練への活用｜BXR",
+        "title": "AI シミュレーション｜AI・XR 訓練への活用",
         "description": "仮想キャラクター、シナリオ内のインタラクション、模擬情報の処理への AI 活用と、BXR が軍事・警察業務・消防防災の訓練要件に応じて AI と XR シミュレーションシステムの組み合わせを検討する方法をご紹介します。"
       }
     }
@@ -598,7 +598,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         "cta": "洽詢數位模擬應用"
       },
       "seo": {
-        "title": "數位場景與模擬建構｜3D 模擬、數位孿生與訓練環境｜BXR",
+        "title": "數位場景與模擬建構｜3D 模擬與數位孿生",
         "description": "了解 BXR 如何運用三維場景、數位設備模型與互動模擬技術，建立軍事、警勤及消防防災訓練環境，並認識數位孿生與一般 3D 模擬的差異。"
       }
     },
@@ -748,7 +748,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         "cta": "Discuss digital simulation applications"
       },
       "seo": {
-        "title": "Digital Environment & Simulation | 3D Simulation, Digital Twins and Training Environments | BXR",
+        "title": "Digital Environments｜3D Simulation & Digital Twins",
         "description": "Learn how BXR uses 3D environments, digital equipment models, and interactive simulation technologies to build military, policing, and fire and disaster response training environments, and understand the difference between digital twins and conventional 3D simulation."
       }
     },
@@ -898,7 +898,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         "cta": "デジタルシミュレーションの活用について相談する"
       },
       "seo": {
-        "title": "デジタル環境・シミュレーション構築｜3D シミュレーション・デジタルツイン・訓練環境｜BXR",
+        "title": "デジタル環境構築｜3D 模擬・デジタルツイン",
         "description": "BXR が三次元環境、機器のデジタルモデル、インタラクティブなシミュレーション技術を活用して、軍事・警察業務・消防防災の訓練環境を構築する方法と、デジタルツインと一般的な 3D シミュレーションの違いをご紹介します。"
       }
     }

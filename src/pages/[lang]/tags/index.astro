@@ -27,7 +27,7 @@ const breadcrumbs = [
 ---
 <BaseLayout
   lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/tags/" alternates={[...LANGS]}
-  pendingTranslation={copy.translationStatus === "pending"} noindex={used.length === 0}
+  pendingTranslation={copy.translationStatus === "pending"} noindex={true}
   headerTheme="dark" current="resources" breadcrumbs={breadcrumbs}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />

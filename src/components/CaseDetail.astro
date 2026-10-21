@@ -73,7 +73,7 @@ const ldImage = cover ? new URL((await getImage({ src: cover.src, width: 1280, f
 const articleLd: Record<string, unknown> = {
   "@type": "Article",
   headline: clean(d.title),
-  description: clean(d.summary),
+  description: clean(d.seo?.description ?? d.summary),
   datePublished: base.publishDate.toISOString(),
   ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
   inLanguage: HTML_LANG[lang],

@@ -135,4 +135,7 @@ faq:
   answer: Not completely. Simulation training helps trainees become familiar with operating procedures and some situations beforehand, but the dynamic response of a real vehicle, road risks and the ability to operate a real vehicle still have to be built through physical training.
 - question: Which units is this system suitable for?
   answer: It is suitable for units that need training in military vehicle operating familiarisation, tactical mobility preparation and mission-related driving. Specific equipment and site requirements should be assessed according to the system configuration.
+seo:
+  title: "HMMWV Driving Simulator | Military Vehicle Training"
+  description: "The HMMWV simulator combines simulated driving, immersive environments, and mission scenarios to support military vehicle operation, terrain awareness, and task-based driving practice."
 ---

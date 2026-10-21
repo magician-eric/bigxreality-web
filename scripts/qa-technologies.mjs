@@ -81,7 +81,7 @@ try {
     check(`${url}: one H1 with localized title`, initial.h1 === 1 && text(await page.locator('h1').innerText()) === text(data.title));
     check(`${url}: unique localized SEO`, (await page.title()).includes(data.seo.title) && await page.locator('meta[name="description"]').getAttribute('content') === data.seo.description);
     check(`${url}: canonical`, await page.locator('link[rel="canonical"]').getAttribute('href') === `https://www.bigxreality.com${url}`);
-    check(`${url}: three matching hreflang alternates`, (await Promise.all(languages.map(async (l) => page.locator(`link[rel="alternate"][hreflang="${locale[l]}"]`).getAttribute('href')))).every((href, i) => href === `https://www.bigxreality.com/${languages[i]}/technologies/${slug ? `${slug}/` : ''}`));
+    check(`${url}: hreflang only targets indexable translations`, fixture ? await page.locator('link[rel="alternate"][hreflang]').count() === 0 : (await Promise.all(languages.map(async (l) => page.locator(`link[rel="alternate"][hreflang="${locale[l]}"]`).getAttribute('href')))).every((href, i) => href === `https://www.bigxreality.com/${languages[i]}/technologies/${slug ? `${slug}/` : ''}`));
     const robots = page.locator('meta[name="robots"]');
     const noindex = await robots.count() ? await robots.getAttribute('content') : '';
     check(`${url}: correct index/sitemap policy`, fixture ? /noindex/.test(noindex ?? '') && !sitemap.includes(`<loc>https://www.bigxreality.com${url}</loc>`) : !/noindex/.test(noindex ?? '') && sitemap.includes(`<loc>https://www.bigxreality.com${url}</loc>`));

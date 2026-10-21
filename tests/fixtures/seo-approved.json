@@ -1,0 +1,482 @@
+{
+  "/tw/": {
+    "title": "沉浸式模擬訓練與 XR 系統整合",
+    "description": "Big x Reality 全球動力科技結合 XR 延展實境、AI 智慧模擬、互動設備與系統整合，提供軍事、警勤、消防防災及智慧城市的專業模擬訓練與數位化應用解決方案。"
+  },
+  "/en/": {
+    "title": "XR Simulation Training & System Integration",
+    "description": "Big x Reality delivers XR simulation training, AI-assisted simulation, interactive equipment, and system integration solutions for military, police, fire and disaster response, and smart city applications."
+  },
+  "/jp/": {
+    "title": "XR シミュレーション訓練とシステム統合",
+    "description": "Big x Reality は、XR、AI シミュレーション、インタラクティブ機器、システム統合技術を活用し、軍事、警察、消防・防災、スマートシティ分野に向けた専門訓練・デジタル活用ソリューションを提供します。"
+  },
+  "/tw/products/": {
+    "title": "XR 模擬訓練產品與專業訓練設備",
+    "description": "探索 Big x Reality 的 XR 模擬訓練產品，涵蓋 SUT 小部隊戰術訓練、無人機與無人船模擬、兵棋圖台、軍用載具、警勤訓練及 VR 虛擬滅火訓練系統。"
+  },
+  "/en/products/": {
+    "title": "XR Simulation Training Products & Equipment",
+    "description": "Explore Big x Reality's XR training products, including SUT tactical training, UAV and USV simulators, wargaming tables, military vehicle simulators, police training systems, and VR fire extinguisher training."
+  },
+  "/jp/products/": {
+    "title": "XR シミュレーション訓練製品・専門訓練機器",
+    "description": "Big x Reality の XR 訓練製品をご紹介します。SUT 小部隊戦術訓練、UAV・USV シミュレーター、兵棋演習テーブル、軍用車両、警察訓練、VR 消火器訓練システムを掲載しています。"
+  },
+  "/tw/solutions/": {
+    "title": "XR 專業模擬訓練與系統整合解決方案",
+    "description": "Big x Reality 針對軍事、警勤、消防防災與智慧城市需求，整合 XR 沉浸式模擬、AI、互動設備及數位場景技術，規劃從單一操作到跨系統整合的多元應用。"
+  },
+  "/en/solutions/": {
+    "title": "XR Training & System Integration Solutions",
+    "description": "Big x Reality integrates XR simulation, AI, interactive equipment, and digital environments to support military, police, fire and disaster response, and smart city applications."
+  },
+  "/jp/solutions/": {
+    "title": "XR 専門訓練・システム統合ソリューション",
+    "description": "Big x Reality は、XR シミュレーション、AI、インタラクティブ機器、デジタル環境を統合し、軍事、警察、消防・防災、スマートシティの多様なニーズに対応します。"
+  },
+  "/tw/technologies/": {
+    "title": "核心技術｜XR、AI 與數位模擬系統整合",
+    "description": "了解 Big x Reality 七大核心技術，涵蓋 XR 延展實境、AI 智慧模擬、數位場景建構、模擬訓練設計、系統整合、指揮決策視覺化及專業訓練領域知識。"
+  },
+  "/en/technologies/": {
+    "title": "Core Technologies | XR, AI & Digital Simulation",
+    "description": "Explore Big x Reality's seven core technology areas: extended reality, AI simulation, digital environments, training design, system integration, decision visualization, and professional training expertise."
+  },
+  "/jp/technologies/": {
+    "title": "コア技術｜XR・AI・デジタルシミュレーション",
+    "description": "Big x Reality の7つのコア技術をご紹介します。XR、AI シミュレーション、デジタル環境構築、訓練設計、システム統合、指揮・意思決定の可視化、専門訓練分野の知識を網羅しています。"
+  },
+  "/tw/products/sut/": {
+    "title": "SUT 小部隊戰術訓練系統｜VR 戰術與小隊協同訓練",
+    "description": "SUT 小部隊戰術訓練系統以 1 至 4 人編組為核心，結合 VR 沉浸式環境、XR 任務資訊與 AI 行為模擬，支援隊形、掩護、移動及團隊協同演練。"
+  },
+  "/en/products/sut/": {
+    "title": "SUT Small Unit Tactical Training System | VR Tactical Training",
+    "description": "The SUT training system combines immersive VR environments, XR mission information, and AI behavior simulation for 1–4-person tactical teams to practice movement, cover, communication, and coordination."
+  },
+  "/jp/products/sut/": {
+    "title": "SUT 小部隊戦術訓練システム｜VR 戦術・チーム連携訓練",
+    "description": "SUT は1～4名の小部隊向け戦術訓練システムです。VR 環境、XR 任務情報、AI 行動シミュレーションを組み合わせ、隊形、遮蔽、移動、コミュニケーション、連携訓練を支援します。"
+  },
+  "/tw/products/uav/": {
+    "title": "無人機戰術與反制無人機訓練系統｜UAV、Counter-UAS",
+    "description": "結合 VR 無人機飛行模擬、XR 任務資訊及動態情境設計，涵蓋飛行操作、任務判斷、低空威脅辨識與反制無人機應變訓練。"
+  },
+  "/en/products/uav/": {
+    "title": "UAV Tactical & Counter-UAS Training Simulator",
+    "description": "Explore VR-based UAV flight simulation and counter-UAS training, combining XR mission information with scenarios for flight operations, tactical decisions, low-altitude threat identification, and response."
+  },
+  "/jp/products/uav/": {
+    "title": "UAV 戦術・対ドローン訓練システム｜飛行・脅威対応",
+    "description": "VR ドローン飛行シミュレーションと XR 任務情報を組み合わせ、基本操作、任務判断、低高度の脅威識別、対ドローン対応訓練を支援します。"
+  },
+  "/tw/products/usv/": {
+    "title": "USV 無人船 VR 訓練系統｜海上無人載具模擬訓練",
+    "description": "USV 無人船 VR 訓練系統以虛擬海域與沉浸式操作為基礎，協助訓練人員熟悉無人船操作、海上環境判讀及不同任務情境的應變方式。"
+  },
+  "/en/products/usv/": {
+    "title": "USV VR Training Simulator | Unmanned Surface Vessel Training",
+    "description": "The USV VR training system provides immersive maritime simulation environments for unmanned surface vessel operation, situational awareness, mission practice, and response training."
+  },
+  "/jp/products/usv/": {
+    "title": "USV 無人水上艇 VR 訓練システム｜海上任務シミュレーション",
+    "description": "USV VR 訓練システムは、仮想海域での没入型操作を通じて、無人水上艇の操縦、海上環境の把握、任務シナリオへの対応訓練を支援します。"
+  },
+  "/tw/products/wargaming-table/": {
+    "title": "兵棋圖台系統｜三維戰場態勢與指揮決策模擬",
+    "description": "兵棋圖台系統結合三維戰場環境、任務資訊與模擬推演，支援態勢理解、任務規劃、部署討論及跨系統聯合訓練應用。"
+  },
+  "/en/products/wargaming-table/": {
+    "title": "Wargaming Table System | 3D Battlefield & Decision Simulation",
+    "description": "The wargaming table system supports battlefield visualization, mission planning, deployment discussions, and simulation exercises through 3D environments and integrated mission information."
+  },
+  "/jp/products/wargaming-table/": {
+    "title": "兵棋演習テーブルシステム｜3D 戦場状況・指揮判断演習",
+    "description": "三次元の戦場環境と任務情報を活用し、状況把握、任務計画、部隊配置の検討、シミュレーション演習を支援する兵棋演習テーブルシステムです。"
+  },
+  "/tw/products/mortar-observation/": {
+    "title": "迫擊砲觀測模擬系統｜目標觀測與射擊結果判讀訓練",
+    "description": "迫擊砲觀測模擬系統透過數位模擬環境，協助觀測人員練習目標觀察、任務資訊判讀及射擊結果評估，延伸砲兵觀測與協同訓練。"
+  },
+  "/en/products/mortar-observation/": {
+    "title": "Mortar Observation Simulator | Target Observation Training",
+    "description": "The mortar observation simulator supports target observation, mission information interpretation, and firing-result assessment in simulated environments for artillery observation training."
+  },
+  "/jp/products/mortar-observation/": {
+    "title": "迫撃砲観測シミュレーター｜目標観測・射撃結果の判読訓練",
+    "description": "デジタルシミュレーション環境で、目標観測、任務情報の判読、射撃結果の評価を練習し、迫撃砲観測と連携訓練を支援します。"
+  },
+  "/tw/products/sniper-simulator/": {
+    "title": "狙擊槍模擬系統｜精準射擊與環境判斷訓練",
+    "description": "狙擊槍模擬系統將瞄準操作、射擊流程、距離與環境條件納入模擬訓練，協助學員熟悉精準射擊相關的操作與判斷。"
+  },
+  "/en/products/sniper-simulator/": {
+    "title": "Sniper Training Simulator | Precision Shooting Simulation",
+    "description": "The sniper training simulator combines aiming practice, shooting procedures, distance assessment, and environmental factors to support precision shooting skills and decision-making."
+  },
+  "/jp/products/sniper-simulator/": {
+    "title": "狙撃銃シミュレーター｜精密射撃・環境判断訓練",
+    "description": "照準操作、射撃手順、距離の把握、環境条件を組み合わせ、精密射撃に必要な操作と判断を模擬環境で練習できます。"
+  },
+  "/tw/products/machine-gun-simulator/": {
+    "title": "機槍模擬系統｜武器操作與射擊紀律訓練",
+    "description": "機槍模擬系統結合武器操作、射擊紀律與任務模擬情境，協助學員建立機槍操作熟悉度，並延伸至射擊流程及任務判斷練習。"
+  },
+  "/en/products/machine-gun-simulator/": {
+    "title": "Machine Gun Training Simulator | Weapon Handling & Firing Discipline",
+    "description": "The machine gun simulator supports weapon handling, firing discipline, shooting procedures, and mission-based practice in a simulated training environment."
+  },
+  "/jp/products/machine-gun-simulator/": {
+    "title": "機関銃シミュレーター｜武器操作・射撃規律訓練",
+    "description": "機関銃の操作、射撃規律、射撃手順、任務シナリオを組み合わせた模擬訓練を通じて、操作の習熟と状況判断を支援します。"
+  },
+  "/tw/products/hmmwv-simulator/": {
+    "title": "悍馬車載具訓練系統｜軍用車輛駕駛模擬",
+    "description": "悍馬車載具訓練系統結合模擬駕駛、沉浸式環境與任務情境，協助受訓人員練習車輛操作、道路與環境判讀及任務駕駛。"
+  },
+  "/en/products/hmmwv-simulator/": {
+    "title": "HMMWV Driving Simulator | Military Vehicle Training",
+    "description": "The HMMWV simulator combines simulated driving, immersive environments, and mission scenarios to support military vehicle operation, terrain awareness, and task-based driving practice."
+  },
+  "/jp/products/hmmwv-simulator/": {
+    "title": "HMMWV 車両訓練シミュレーター｜軍用車両運転訓練",
+    "description": "模擬運転、没入型環境、任務シナリオを組み合わせ、軍用車両の操作、道路・周辺環境の把握、任務に応じた運転訓練を支援します。"
+  },
+  "/tw/products/tactical-boat-simulator/": {
+    "title": "快艇載具訓練系統｜海上操艇與任務模擬訓練",
+    "description": "快艇載具訓練系統結合沉浸式海上環境與動態平台應用，協助訓練人員熟悉操艇操作、海況判讀及海上任務應變。"
+  },
+  "/en/products/tactical-boat-simulator/": {
+    "title": "Tactical Boat Simulator | Maritime Navigation & Mission Training",
+    "description": "The tactical boat simulator combines immersive maritime environments and motion-platform applications for boat handling, sea-condition awareness, and mission response training."
+  },
+  "/jp/products/tactical-boat-simulator/": {
+    "title": "高速艇訓練シミュレーター｜操艇・海上任務訓練",
+    "description": "没入型の海上環境と動揺プラットフォームを組み合わせ、操艇操作、海況の把握、海上任務への対応訓練を支援します。"
+  },
+  "/tw/products/full-scale-police-training/": {
+    "title": "全配式警勤訓練系統｜沉浸式警察勤務模擬",
+    "description": "全配式警勤訓練系統整合 VR 沉浸式場景、實體互動配置與警用操作訓練，支援環境觀察、勤務判斷及多元情境應變練習。"
+  },
+  "/en/products/full-scale-police-training/": {
+    "title": "Full-Scale Police Training System | Immersive Police Simulation",
+    "description": "The full-scale police training system integrates VR environments, physical interaction equipment, and scenario-based exercises for police observation, operational decisions, and response training."
+  },
+  "/jp/products/full-scale-police-training/": {
+    "title": "据置型警察訓練システム｜没入型警察業務シミュレーション",
+    "description": "VR 環境、実体的なインタラクション機器、警察業務シナリオを組み合わせ、現場観察、勤務判断、状況対応の訓練を支援します。"
+  },
+  "/tw/products/police-box/": {
+    "title": "攜帶式警勤訓練器 Police BOX｜可攜式 VR 警勤模擬",
+    "description": "Police BOX 攜帶式警勤訓練器將模擬訓練設備整合於便於移動的箱體配置，依場地與課程需求部署，延伸警具操作及勤務情境訓練。"
+  },
+  "/en/products/police-box/": {
+    "title": "Police BOX | Portable VR Police Training Simulator",
+    "description": "Police BOX is a portable police training simulator that integrates equipment into a transportable case, supporting flexible deployment for police equipment practice and operational scenarios."
+  },
+  "/jp/products/police-box/": {
+    "title": "Police BOX｜可搬型 VR 警察訓練シミュレーター",
+    "description": "Police BOX は、訓練機器を持ち運びやすいケースにまとめた可搬型システムです。設置場所や訓練課程に応じた導入と警察業務シナリオの練習を支援します。"
+  },
+  "/tw/products/fire-extinguisher-simulator/": {
+    "title": "VR 虛擬滅火訓練系統｜擬真滅火器與防災教育",
+    "description": "VR 虛擬滅火訓練系統結合擬真滅火器、沉浸式火場及互動教學，透過知識學習、操作練習與情境測驗，支援消防及防災教育。"
+  },
+  "/en/products/fire-extinguisher-simulator/": {
+    "title": "VR Fire Extinguisher Training Simulator | Fire Safety Education",
+    "description": "The VR fire extinguisher training system combines a realistic extinguisher device, immersive fire scenarios, and interactive lessons for fire safety education, operation practice, and assessment."
+  },
+  "/jp/products/fire-extinguisher-simulator/": {
+    "title": "VR 消火器訓練システム｜模擬消火器・防災教育",
+    "description": "模擬消火器と没入型火災シナリオ、インタラクティブな教材を組み合わせ、火災知識の学習、消火器操作の練習、状況別テストを支援します。"
+  },
+  "/tw/solutions/military/": {
+    "title": "軍事模擬訓練解決方案｜XR 戰術與聯合訓練",
+    "description": "從單兵武器操作、戰術訓練與載具模擬，到小隊協同、兵棋推演及跨系統整合，Big x Reality 提供多層級軍事模擬訓練解決方案。"
+  },
+  "/en/solutions/military/": {
+    "title": "Military Simulation Training | XR Tactical & Joint Training",
+    "description": "Explore military simulation training for weapon handling, tactical exercises, vehicle simulation, squad coordination, wargaming, and cross-system training integration."
+  },
+  "/jp/solutions/military/": {
+    "title": "軍事シミュレーション訓練｜XR 戦術・統合訓練",
+    "description": "個人の武器操作、戦術演習、車両シミュレーションから、小隊連携、兵棋演習、システム間統合まで、多層的な軍事訓練ソリューションを提供します。"
+  },
+  "/tw/solutions/police/": {
+    "title": "警勤模擬訓練解決方案｜VR 警察勤務與情境應變",
+    "description": "整合沉浸式勤務情境、警用裝備操作、言語降級、現場判斷與訓練管理，協助警勤單位規劃基礎與進階模擬訓練。"
+  },
+  "/en/solutions/police/": {
+    "title": "Police Simulation Training | VR Scenarios & De-escalation",
+    "description": "Combine immersive police scenarios, equipment handling, verbal de-escalation, operational decision-making, and training management for foundational and advanced police training."
+  },
+  "/jp/solutions/police/": {
+    "title": "警察業務シミュレーション｜VR・対話・状況対応訓練",
+    "description": "没入型の勤務シナリオ、警察装備の操作、言語による緊張緩和、現場判断、訓練管理を組み合わせ、基礎から応用までの訓練を支援します。"
+  },
+  "/tw/solutions/fire-rescue/": {
+    "title": "消防防災模擬訓練｜VR 滅火操作與防災教育",
+    "description": "透過 VR 沉浸式火場、擬真滅火器及互動教學，將火災知識、實際操作、情境練習及成果回饋結合，支援消防與防災教育。"
+  },
+  "/en/solutions/fire-rescue/": {
+    "title": "Fire & Disaster Prevention Training | VR Fire Safety Simulation",
+    "description": "Combine immersive VR fire scenarios, realistic fire extinguisher operation, interactive lessons, scenario practice, and feedback for fire and disaster prevention education."
+  },
+  "/jp/solutions/fire-rescue/": {
+    "title": "消防・防災シミュレーション訓練｜VR 消火訓練",
+    "description": "VR 火災シナリオ、模擬消火器、インタラクティブな教材を組み合わせ、火災知識、消火器操作、状況別演習、結果の振り返りを支援します。"
+  },
+  "/tw/solutions/smart-city/": {
+    "title": "智慧城市解決方案｜數位雙生、3D 視覺化與模擬應用",
+    "description": "結合數位雙生、三維場域視覺化及模擬技術，探索智慧建築、交通、港埠管理、災害應變及產業訓練等智慧城市應用方向。"
+  },
+  "/en/solutions/smart-city/": {
+    "title": "Smart City Solutions | Digital Twins & 3D Visualization",
+    "description": "Explore smart city applications using digital twins, 3D visualization, and simulation technologies for buildings, transportation, port management, disaster response, and industrial training."
+  },
+  "/jp/solutions/smart-city/": {
+    "title": "スマートシティソリューション｜デジタルツイン・3D 可視化",
+    "description": "デジタルツイン、3D 可視化、シミュレーション技術を活用し、スマートビル、交通、港湾管理、災害対応、産業訓練などの応用を検討します。"
+  },
+  "/tw/solutions/mum-t/": {
+    "title": "MUM-T 小隊戰術協同訓練｜胸掛板任務資訊整合",
+    "description": "MUM-T 以士兵與小隊長胸前的胸掛板作為任務資訊介面，將模擬資訊帶入小隊訓練，協助成員進行任務判斷、資訊掌握與協同練習。"
+  },
+  "/en/solutions/mum-t/": {
+    "title": "MUM-T Squad Tactical Teaming | Chest-Mounted Mission Displays",
+    "description": "MUM-T uses chest-mounted information displays for soldiers and squad leaders, bringing simulated mission information into squad training for situational awareness and team coordination."
+  },
+  "/jp/solutions/mum-t/": {
+    "title": "MUM-T 小隊戦術連携訓練｜胸部装着型任務情報表示",
+    "description": "MUM-T は兵士と小隊長の胸部装着型情報パネルを任務情報の表示インターフェースとして活用し、情報把握、任務判断、小隊連携訓練を支援します。"
+  },
+  "/tw/solutions/nova/": {
+    "title": "NOVA 聯戰模擬整合｜跨系統聯合訓練解決方案",
+    "description": "NOVA 以共同戰場環境、三維態勢呈現及跨系統整合為規劃核心，探索不同訓練系統、任務領域與指揮應用之間的聯合模擬訓練方式。"
+  },
+  "/en/solutions/nova/": {
+    "title": "NOVA Joint Simulation Integration | Cross-System Training",
+    "description": "NOVA is a joint simulation integration concept focused on shared battlefield environments, 3D situational visualization, and cross-system planning for larger-scale training and command applications."
+  },
+  "/jp/solutions/nova/": {
+    "title": "NOVA 統合作戦シミュレーション｜システム間訓練統合",
+    "description": "NOVA は共通の戦場環境、三次元状況表示、システム間統合を中心に、大規模な統合訓練や指揮への応用を計画するソリューションです。"
+  },
+  "/tw/company/": {
+    "title": "關於 Big x Reality｜全球動力科技",
+    "description": "認識全球動力科技 Big x Reality，專注軍事、警勤、消防防災及公共安全領域，結合 XR、AI、模擬技術與軟硬體系統整合，提供專業沉浸式訓練解決方案。"
+  },
+  "/en/company/": {
+    "title": "About Us｜XR Simulation Training Company",
+    "description": "Learn about Big x Reality, a Taiwan-based simulation training system integrator combining XR, AI, immersive technologies, and interactive equipment for military, police, fire, and public safety applications."
+  },
+  "/jp/company/": {
+    "title": "会社紹介｜Big x Reality",
+    "description": "Big x Reality は台湾を拠点とするシミュレーション訓練システムインテグレーターです。XR、AI、没入型技術、機器統合により、軍事、警察、消防・防災、公共安全分野の訓練を支援します。"
+  },
+  "/tw/company/history/": {
+    "title": "發展歷程｜全球動力科技",
+    "description": "了解全球動力科技 Big x Reality 的發展歷程，以及公司在 XR 模擬訓練、專業訓練系統與整合技術領域的發展方向。"
+  },
+  "/en/company/history/": {
+    "title": "Company History｜Big x Reality",
+    "description": "Explore the development of Big x Reality and its journey in XR simulation training, professional training systems, and integration technologies."
+  },
+  "/jp/company/history/": {
+    "title": "沿革｜Big x Reality",
+    "description": "Big x Reality の沿革と、XR シミュレーション訓練、専門訓練システム、統合技術に関する事業の歩みをご紹介します。"
+  },
+  "/tw/company/team/": {
+    "title": "經營團隊｜全球動力科技",
+    "description": "認識全球動力科技 Big x Reality 的經營團隊，以及公司在專業模擬訓練與虛實整合領域的發展方向。"
+  },
+  "/en/company/team/": {
+    "title": "Management Team｜Big x Reality",
+    "description": "Meet the management team of Big x Reality and learn about the company's focus on professional simulation training and XR system integration."
+  },
+  "/jp/company/team/": {
+    "title": "経営陣｜Big x Reality",
+    "description": "Big x Reality の経営陣と、専門シミュレーション訓練および XR システム統合に関する事業の方向性をご紹介します。"
+  },
+  "/tw/company/partners/": {
+    "title": "合作夥伴｜全球動力科技",
+    "description": "了解全球動力科技 Big x Reality 的合作夥伴專區，以及專業模擬訓練、技術整合與產業應用相關合作資訊。"
+  },
+  "/en/company/partners/": {
+    "title": "Partners｜Big x Reality",
+    "description": "Explore Big x Reality's partner information related to professional simulation training, technology integration, and industry applications."
+  },
+  "/jp/company/partners/": {
+    "title": "パートナー｜Big x Reality",
+    "description": "Big x Reality のパートナー情報と、専門シミュレーション訓練、技術統合、産業分野での協業情報をご紹介します。"
+  },
+  "/tw/company/investors/": {
+    "title": "投資人專區｜全球動力科技",
+    "description": "全球動力科技 Big x Reality 投資人資訊專區，提供已公開的公司與投資人相關資料。"
+  },
+  "/en/company/investors/": {
+    "title": "Investor Relations｜Big x Reality",
+    "description": "Access publicly available company and investor information from Big x Reality."
+  },
+  "/jp/company/investors/": {
+    "title": "投資家情報｜Big x Reality",
+    "description": "Big x Reality が公開している企業情報および投資家向け情報をご案内します。"
+  },
+  "/tw/contact/": {
+    "title": "聯絡我們｜XR 模擬訓練與系統整合諮詢",
+    "description": "聯絡全球動力科技 Big x Reality，洽詢 XR 模擬訓練設備、軍事與警勤訓練、消防防災模擬及系統整合需求，或安排產品展示與合作討論。"
+  },
+  "/en/contact/": {
+    "title": "Contact Us｜XR Simulation Training Consultation",
+    "description": "Contact Big x Reality to discuss XR simulation training systems, military and police training, fire safety simulation, system integration, product demonstrations, or partnership opportunities."
+  },
+  "/jp/contact/": {
+    "title": "お問い合わせ｜XR シミュレーション訓練のご相談",
+    "description": "XR シミュレーション訓練、軍事・警察訓練、消防・防災システム、機器統合、製品デモ、協業に関するご相談は Big x Reality までお問い合わせください。"
+  },
+  "/tw/news/": {
+    "title": "最新消息｜BXR 展會活動與企業動態",
+    "description": "掌握 Big x Reality 全球動力科技最新消息，了解專業展會、技術展示、企業活動與 XR 模擬訓練相關最新動態。"
+  },
+  "/en/news/": {
+    "title": "Latest News｜BXR Events & Company Updates",
+    "description": "Follow Big x Reality news, exhibition activities, technology demonstrations, company updates, and developments in XR simulation training."
+  },
+  "/jp/news/": {
+    "title": "ニュース｜展示会・企業活動・XR 訓練の最新情報",
+    "description": "Big x Reality の展示会、技術デモ、企業活動、XR シミュレーション訓練に関する最新情報をご案内します。"
+  },
+  "/tw/insights/": {
+    "title": "技術文章｜XR、AI 與專業模擬訓練知識",
+    "description": "閱讀 Big x Reality 技術文章，探索 XR、AI、數位模擬、訓練設計與系統整合在軍事、警勤、消防防災及智慧應用領域的知識與觀點。"
+  },
+  "/en/insights/": {
+    "title": "Technical Insights｜XR, AI & Simulation Training",
+    "description": "Explore Big x Reality insights on XR, AI, digital simulation, training design, and system integration for military, policing, fire safety, and smart applications."
+  },
+  "/jp/insights/": {
+    "title": "技術記事｜XR・AI・専門シミュレーション訓練",
+    "description": "XR、AI、デジタルシミュレーション、訓練設計、システム統合など、軍事、警察、消防・防災、スマート技術分野に関する記事をご紹介します。"
+  },
+  "/tw/cases/": {
+    "title": "成功案例｜XR 模擬訓練與專業應用實績",
+    "description": "探索 Big x Reality 的 XR 模擬訓練成功案例，了解沉浸式訓練、互動設備及數位化系統在不同專業場域的實際應用方式。"
+  },
+  "/en/cases/": {
+    "title": "Case Studies｜XR Simulation Training Applications",
+    "description": "Explore Big x Reality case studies covering immersive simulation training, interactive equipment, and digital system applications across professional environments."
+  },
+  "/jp/cases/": {
+    "title": "導入事例｜XR シミュレーション訓練の活用",
+    "description": "Big x Reality の XR シミュレーション訓練、インタラクティブ機器、デジタルシステムが専門分野でどのように活用されているかをご紹介します。"
+  },
+  "/tw/search/": {
+    "title": "站內搜尋",
+    "description": "搜尋 Big x Reality 官網的產品、解決方案、核心技術、最新消息與專業文章。"
+  },
+  "/en/search/": {
+    "title": "Site Search",
+    "description": "Search Big x Reality products, solutions, core technologies, news, and technical articles."
+  },
+  "/jp/search/": {
+    "title": "サイト内検索",
+    "description": "Big x Reality の製品、ソリューション、コア技術、ニュース、技術記事を検索できます。"
+  },
+  "/tw/tags/": {
+    "title": "文章主題標籤",
+    "description": "依照技術與應用主題，瀏覽 Big x Reality 官網的專業文章及最新消息。"
+  },
+  "/en/tags/": {
+    "title": "Article Topics & Tags",
+    "description": "Browse Big x Reality articles and news by technology and application topics."
+  },
+  "/jp/tags/": {
+    "title": "記事テーマ・タグ",
+    "description": "技術・応用テーマ別に Big x Reality の記事やニュースを閲覧できます。"
+  },
+  "/tw/technologies/xr/": {
+    "title": "XR 延展實境技術｜VR、AR、MR 專業模擬訓練",
+    "description": "了解 BXR 如何運用 XR 延展實境、VR、AR 與 MR 技術，建立軍事、警勤及消防防災領域的互動式模擬訓練情境，支援操作練習與任務應變。"
+  },
+  "/en/technologies/xr/": {
+    "title": "Extended Reality (XR) Technology｜VR, AR & MR Training",
+    "description": "Discover how BXR uses XR, VR, AR, and MR to create interactive simulation training scenarios for military, police, and fire and disaster response, supporting operational practice and mission response."
+  },
+  "/jp/technologies/xr/": {
+    "title": "XR 技術｜VR・AR・MR 専門シミュレーション訓練",
+    "description": "BXR が XR（エクステンデッド・リアリティ）、VR、AR、MR 技術を活用し、軍事、警察業務、消防・防災分野で操作練習と任務への対応を支援する、インタラクティブなシミュレーション訓練シナリオを構築する方法をご紹介します。"
+  },
+  "/tw/technologies/ai-simulation/": {
+    "title": "AI 智慧模擬｜人工智慧與 XR 訓練應用",
+    "description": "了解 AI 如何應用於虛擬角色、情境互動與模擬資訊處理，以及 BXR 如何依軍事、警勤及消防防災訓練需求，評估 AI 與 XR 模擬系統的結合方式。"
+  },
+  "/en/technologies/ai-simulation/": {
+    "title": "AI-Enhanced Simulation｜AI & XR Training",
+    "description": "Learn how AI can be applied to virtual characters, scenario interaction, and simulation information processing, and how BXR evaluates combining AI with XR simulation systems for military, policing, and fire and disaster response training needs."
+  },
+  "/jp/technologies/ai-simulation/": {
+    "title": "AI シミュレーション｜AI・XR 訓練への活用",
+    "description": "仮想キャラクター、シナリオ内のインタラクション、模擬情報の処理への AI 活用と、BXR が軍事・警察業務・消防防災の訓練要件に応じて AI と XR シミュレーションシステムの組み合わせを検討する方法をご紹介します。"
+  },
+  "/tw/technologies/digital-simulation/": {
+    "title": "數位場景與模擬建構｜3D 模擬與數位孿生",
+    "description": "了解 BXR 如何運用三維場景、數位設備模型與互動模擬技術，建立軍事、警勤及消防防災訓練環境，並認識數位孿生與一般 3D 模擬的差異。"
+  },
+  "/en/technologies/digital-simulation/": {
+    "title": "Digital Environments｜3D Simulation & Digital Twins",
+    "description": "Learn how BXR uses 3D environments, digital equipment models, and interactive simulation technologies to build military, policing, and fire and disaster response training environments, and understand the difference between digital twins and conventional 3D simulation."
+  },
+  "/jp/technologies/digital-simulation/": {
+    "title": "デジタル環境構築｜3D 模擬・デジタルツイン",
+    "description": "BXR が三次元環境、機器のデジタルモデル、インタラクティブなシミュレーション技術を活用して、軍事・警察業務・消防防災の訓練環境を構築する方法と、デジタルツインと一般的な 3D シミュレーションの違いをご紹介します。"
+  },
+  "/tw/technologies/training-design/": {
+    "title": "模擬訓練設計｜嚴肅遊戲與 XR 訓練",
+    "description": "了解 BXR 如何結合模擬訓練設計、嚴肅遊戲（Serious Games）與 XR 互動技術，將軍事、警勤及消防防災的訓練需求轉換為可操作、可重複練習的模擬情境。"
+  },
+  "/en/technologies/training-design/": {
+    "title": "Simulation-Based Training Design｜Serious Games & XR",
+    "description": "Discover how BXR combines simulation-based training design, serious games, and interactive XR technology to translate military, police, and fire and disaster response training requirements into actionable, repeatable simulated scenarios."
+  },
+  "/jp/technologies/training-design/": {
+    "title": "シミュレーション訓練設計｜シリアスゲーム・XR",
+    "description": "BXR がシミュレーション訓練設計、シリアスゲーム（Serious Games）、XR インタラクション技術を組み合わせ、軍事、警察業務、消防・防災の訓練要件を、操作でき、繰り返し練習できる模擬シナリオに変換する方法をご紹介します。"
+  },
+  "/tw/technologies/system-integration/": {
+    "title": "通訊與系統整合｜XR 訓練設備與資訊介接",
+    "description": "了解 BXR 如何依專業訓練需求評估設備介接、影像資訊傳遞及模擬系統整合，並認識 SUT、USV、MUM-T 與 NOVA 等不同應用架構的關係。"
+  },
+  "/en/technologies/system-integration/": {
+    "title": "Communication & System Integration｜XR Training",
+    "description": "Learn how BXR assesses equipment interfaces, video information transfer, and simulation system integration for professional training, and understand the relationships between SUT, USV, MUM-T, and NOVA application architectures."
+  },
+  "/jp/technologies/system-integration/": {
+    "title": "通信・システム統合｜XR 訓練機器の接続",
+    "description": "BXR が専門訓練の要件に応じて機器の接続、映像情報の伝達、シミュレーションシステム統合を検討する方法と、SUT、USV、MUM-T、NOVA などの異なる活用構成の関係をご紹介します。"
+  },
+  "/tw/technologies/decision-visualization/": {
+    "title": "指揮決策與資訊視覺化｜兵棋圖台與模擬推演",
+    "description": "了解 BXR 如何運用數位地圖、兵棋圖台及三維資訊視覺化技術，支援任務情境理解、部署討論與專業模擬訓練中的決策演練。"
+  },
+  "/en/technologies/decision-visualization/": {
+    "title": "Command & Decision Visualization｜Wargaming Simulation",
+    "description": "Learn how BXR uses digital maps, wargaming tables, and three-dimensional information visualization to support understanding mission scenarios, deployment discussions, and decision-making exercises in professional simulation training."
+  },
+  "/jp/technologies/decision-visualization/": {
+    "title": "指揮・意思決定の可視化｜兵棋演習・模擬推演",
+    "description": "BXR がデジタル地図、兵棋演習テーブル、三次元の情報可視化技術を活用し、任務シナリオの理解、配置に関する議論、専門的なシミュレーション訓練の意思決定演習を支援する方法をご紹介します。"
+  },
+  "/tw/technologies/domain-expertise/": {
+    "title": "專業訓練領域知識｜軍警消模擬系統設計",
+    "description": "了解 BXR 如何結合軍事、警勤與消防防災的訓練需求理解、專案經驗及 XR 模擬技術，將專業任務情境轉換為適合的模擬訓練系統設計。"
+  },
+  "/en/technologies/domain-expertise/": {
+    "title": "Professional Training Expertise｜Military, Police & Fire",
+    "description": "Discover how BXR combines an understanding of military, police, and fire and disaster response training requirements, project experience, and XR simulation technology to translate professional mission scenarios into suitable simulation training system designs."
+  },
+  "/jp/technologies/domain-expertise/": {
+    "title": "専門訓練分野の知識｜軍事・警察・消防の模擬訓練",
+    "description": "BXR が軍事、警察業務、消防・防災の訓練要件への理解、プロジェクト経験、XR シミュレーション技術を組み合わせ、専門的な任務シナリオを適切なシミュレーション訓練システムの設計に変換する方法をご紹介します。"
+  }
+}

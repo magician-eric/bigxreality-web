@@ -94,4 +94,7 @@ landing:
     title: Related Products and Solutions
   closing:
     title: Starting from Individual Training Systems to Plan a More Complete Joint Simulation Architecture
+seo:
+  title: "NOVA Joint Simulation Integration | Cross-System Training"
+  description: "NOVA is a joint simulation integration concept focused on shared battlefield environments, 3D situational visualization, and cross-system planning for larger-scale training and command applications."
 ---

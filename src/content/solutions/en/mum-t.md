@@ -78,4 +78,7 @@ landing:
     title: Related Products and Solutions
   closing:
     title: Taking Squad Training from Individual Operation to Coordinated Shared Missions
+seo:
+  title: "MUM-T Squad Tactical Teaming | Chest-Mounted Mission Displays"
+  description: "MUM-T uses chest-mounted information displays for soldiers and squad leaders, bringing simulated mission information into squad training for situational awareness and team coordination."
 ---

@@ -142,7 +142,7 @@ export const batchTwoB = {
         "cta": "洽詢系統整合需求"
       },
       "seo": {
-        "title": "通訊與系統整合｜XR 模擬訓練設備介接與資訊整合｜BXR",
+        "title": "通訊與系統整合｜XR 訓練設備與資訊介接",
         "description": "了解 BXR 如何依專業訓練需求評估設備介接、影像資訊傳遞及模擬系統整合，並認識 SUT、USV、MUM-T 與 NOVA 等不同應用架構的關係。"
       }
     },
@@ -285,7 +285,7 @@ export const batchTwoB = {
         "cta": "Discuss your system integration requirements"
       },
       "seo": {
-        "title": "Communication & System Integration | XR Training Interfaces and Information Integration | BXR",
+        "title": "Communication & System Integration｜XR Training",
         "description": "Learn how BXR assesses equipment interfaces, video information transfer, and simulation system integration for professional training, and understand the relationships between SUT, USV, MUM-T, and NOVA application architectures."
       }
     },
@@ -428,7 +428,7 @@ export const batchTwoB = {
         "cta": "システム統合の要件について相談する"
       },
       "seo": {
-        "title": "通信・システム統合｜XR シミュレーション訓練機器の接続と情報統合｜BXR",
+        "title": "通信・システム統合｜XR 訓練機器の接続",
         "description": "BXR が専門訓練の要件に応じて機器の接続、映像情報の伝達、シミュレーションシステム統合を検討する方法と、SUT、USV、MUM-T、NOVA などの異なる活用構成の関係をご紹介します。"
       }
     }
@@ -547,7 +547,7 @@ export const batchTwoB = {
         "cta": "洽詢資訊視覺化應用"
       },
       "seo": {
-        "title": "指揮決策與資訊視覺化｜兵棋圖台與模擬推演技術｜BXR",
+        "title": "指揮決策與資訊視覺化｜兵棋圖台與模擬推演",
         "description": "了解 BXR 如何運用數位地圖、兵棋圖台及三維資訊視覺化技術，支援任務情境理解、部署討論與專業模擬訓練中的決策演練。"
       }
     },
@@ -664,7 +664,7 @@ export const batchTwoB = {
         "cta": "Discuss information visualization applications"
       },
       "seo": {
-        "title": "Command & Decision Visualization | Wargaming Tables and Simulation Exercises | BXR",
+        "title": "Command & Decision Visualization｜Wargaming Simulation",
         "description": "Learn how BXR uses digital maps, wargaming tables, and three-dimensional information visualization to support understanding mission scenarios, deployment discussions, and decision-making exercises in professional simulation training."
       }
     },
@@ -781,7 +781,7 @@ export const batchTwoB = {
         "cta": "情報可視化の活用について相談する"
       },
       "seo": {
-        "title": "指揮・意思決定と情報の可視化｜兵棋演習テーブルとシミュレーション演習の技術｜BXR",
+        "title": "指揮・意思決定の可視化｜兵棋演習・模擬推演",
         "description": "BXR がデジタル地図、兵棋演習テーブル、三次元の情報可視化技術を活用し、任務シナリオの理解、配置に関する議論、専門的なシミュレーション訓練の意思決定演習を支援する方法をご紹介します。"
       }
     }

@@ -135,4 +135,7 @@ faq:
   answer: Not completely. The simulation system is suitable for repeated practice of some procedures and situational judgement, but real sea states, the dynamics of a real boat and on-site operating experience still have to be gained through real maritime training.
 - question: Is the speedboat training system the same as the USV Unmanned Surface Vessel VR Training System?
   answer: No. The Speedboat Vehicle Training System focuses on handling and mission training for crewed boats; the USV VR Training System focuses on unmanned surface vessel missions and a virtual operating environment. The two differ in who they train and in their objectives.
+seo:
+  title: "Tactical Boat Simulator | Maritime Navigation & Mission Training"
+  description: "The tactical boat simulator combines immersive maritime environments and motion-platform applications for boat handling, sea-condition awareness, and mission response training."
 ---

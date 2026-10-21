@@ -147,4 +147,7 @@ faq:
   answer: Some cross-system integration can be achieved depending on the project configuration. One integration application confirmed so far is that image information from the USV system can be sent to the SUT training environment. Connection methods for other drone, unmanned vessel or external systems must be confirmed based on the actual interfaces and project conditions.
 - question: Which units is SUT suitable for?
   answer: SUT is mainly suitable for military or related professional units that need training in small-unit tactics, team coordination and situational response. Adoption should be assessed based on the number of trainees, training objectives, site conditions and equipment configuration.
+seo:
+  title: "SUT Small Unit Tactical Training System | VR Tactical Training"
+  description: "The SUT training system combines immersive VR environments, XR mission information, and AI behavior simulation for 1–4-person tactical teams to practice movement, cover, communication, and coordination."
 ---

@@ -33,9 +33,9 @@ const breadcrumbs = [
 ];
 ---
 <BaseLayout
-  lang={lang} title={`#${name}`} description={tag.loc.data.description ?? format(ui.listing.count, { n: articles.length })}
+  lang={lang} title={`${name}${{ tw: "相關文章", en: " Related Articles", jp: "の関連記事" }[lang]}`} description={tag.loc.data.description ?? format(ui.listing.count, { n: articles.length })}
   pathTemplate={`/{lang}/tags/${slug}/`} alternates={await availableLangs("tags", slug)}
-  pendingTranslation={tag.pendingTranslation} noindex={articles.length < TAG_INDEX_MIN}
+  pendingTranslation={tag.pendingTranslation} noindex={articles.length < TAG_INDEX_MIN || !tag.loc.data.description}
   headerTheme="dark" current="resources" fallbackPath="/{lang}/tags/" breadcrumbs={breadcrumbs}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={ui.tags.eyebrow} title={`#${name}`} description={tag.loc.data.description ?? format(ui.listing.count, { n: articles.length })} />

@@ -94,4 +94,7 @@ faq:
   answer: The wargaming table can be operated interactively through a touch map and supports VR-related spatial visualisation. Whether VR equipment is actually required should be confirmed according to the mode of use and the system configuration.
 - question: Can the wargaming table connect directly to all BXR training products?
   answer: That cannot be assumed. Data formats, interfaces and connection methods may differ between products; whether a product can be integrated with the wargaming table requires item-by-item confirmation of technical compatibility and project requirements.
+seo:
+  title: "Wargaming Table System | 3D Battlefield & Decision Simulation"
+  description: "The wargaming table system supports battlefield visualization, mission planning, deployment discussions, and simulation exercises through 3D environments and integrated mission information."
 ---

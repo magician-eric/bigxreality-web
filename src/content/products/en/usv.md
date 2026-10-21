@@ -148,4 +148,7 @@ faq:
   answer: The USV VR system focuses on mission awareness for unmanned surface vessels and related simulated scenarios; the Speedboat Vehicle Training System focuses on handling and navigation training for crewed boats. The two differ in what is operated, training purpose and system positioning.
 - question: Which training uses is the USV VR system suitable for?
   answer: It is suitable for unmanned surface vessel mission familiarisation, maritime situational awareness and specific coordinated simulation training. Supported missions, interfaces and cross-system connection methods must be confirmed according to the deployment configuration.
+seo:
+  title: "USV VR Training Simulator | Unmanned Surface Vessel Training"
+  description: "The USV VR training system provides immersive maritime simulation environments for unmanned surface vessel operation, situational awareness, mission practice, and response training."
 ---

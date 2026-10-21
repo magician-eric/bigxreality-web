@@ -148,4 +148,7 @@ faq:
   answer: The product can be used for distance-related shooting and observation practice within the supported training scenarios. The actual range of distance settings and the details of environmental simulation must be confirmed according to the system's functions.
 - question: Which units is this system suitable for?
   answer: It is suitable for military or specific training units that need basic precision shooting education, observation training and practice of related professional skills. Specific courses should still match the unit's training objectives.
+seo:
+  title: "Sniper Training Simulator | Precision Shooting Simulation"
+  description: "The sniper training simulator combines aiming practice, shooting procedures, distance assessment, and environmental factors to support precision shooting skills and decision-making."
 ---

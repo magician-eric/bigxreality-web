@@ -151,4 +151,7 @@ faq:
   answer: It mainly helps trainees become familiar with target observation, information judgement, procedures related to fire correction and the communication requirements of the mission. Actual training content is subject to the items the system supports.
 - question: Can courses be adjusted for different training needs?
   answer: Course configuration can be assessed according to the scenarios the product actually supports and the project conditions; not all training parameters can be adjusted freely. The specific scope of adjustment must be confirmed before adoption.
+seo:
+  title: "Mortar Observation Simulator | Target Observation Training"
+  description: "The mortar observation simulator supports target observation, mission information interpretation, and firing-result assessment in simulated environments for artillery observation training."
 ---
