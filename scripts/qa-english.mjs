@@ -41,7 +41,7 @@ try {
 
   // navigation labels
   await page.goto(`${base}/en/solutions/`, { waitUntil: "networkidle" });
-  const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => (li.querySelector("a,button")?.textContent ?? "").trim()));
+  const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => { const el = li.querySelector("a,button,span.nav-link")?.cloneNode(true); el?.querySelectorAll(".visually-hidden").forEach((n) => n.remove()); return (el?.textContent ?? "").trim(); }));
   check("nav: Solutions / Products / Core Technology / Resources / About BXR", JSON.stringify(top) === JSON.stringify(["Solutions", "Products", "Core Technology", "Resources", "About BXR"]), top.join(" | "));
   check("nav: Resources lists News, Insights, Case Studies", JSON.stringify(await page.$$eval("#sub-resources a", (as) => as.map((a) => a.textContent.trim()))) === JSON.stringify(["News", "Insights", "Case Studies"]));
   check("nav: contact button reads Contact Us", (await page.locator("a.contact").innerText()).trim() === "Contact Us");

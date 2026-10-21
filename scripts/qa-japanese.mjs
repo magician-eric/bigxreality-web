@@ -39,7 +39,7 @@ try {
   const html = (p) => readFileSync(path.join(DIST, p, "index.html"), "utf8");
 
   await page.goto(`${base}/jp/solutions/`, { waitUntil: "networkidle" });
-  const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => (li.querySelector("a,button")?.textContent ?? "").trim()));
+  const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => { const el = li.querySelector("a,button,span.nav-link")?.cloneNode(true); el?.querySelectorAll(".visually-hidden").forEach((n) => n.remove()); return (el?.textContent ?? "").trim(); }));
   check("nav: ソリューション / 製品情報 / コア技術 / リソース / BXRについて", JSON.stringify(top) === JSON.stringify(["ソリューション", "製品情報", "コア技術", "リソース", "BXRについて"]), top.join(" | "));
   check("nav: リソース lists ニュース, 技術コラム, 導入事例", JSON.stringify(await page.$$eval("#sub-resources a", (as) => as.map((a) => a.textContent.trim()))) === JSON.stringify(["ニュース", "技術コラム", "導入事例"]));
   check("nav: contact button reads お問い合わせ", (await page.locator("a.contact").innerText()).trim() === "お問い合わせ");
