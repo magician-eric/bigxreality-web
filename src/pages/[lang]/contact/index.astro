@@ -71,7 +71,7 @@ const breadcrumbs = [
     const params = new URLSearchParams(location.search);
     const topic = topics[params.get("topic") ?? ""] ? params.get("topic")! : "general";
     // Product codes / solution names only: letters, digits, CJK and a few separators.
-    const item = (params.get("item") ?? "").replace(/[^\p{L}\p{N} &·\-–]/gu, "").slice(0, 60);
+    const item = (params.get("item") ?? "").replace(/[^\p{L}\p{N} &·()（）\-–]/gu, "").slice(0, 60);
     const { title, subject } = topics[topic];
     box.querySelector("[data-topic-title]")!.textContent = title;
     const itemEl = box.querySelector<HTMLElement>("[data-topic-item]")!;

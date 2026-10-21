@@ -102,7 +102,7 @@ const landing = (ctx: SchemaContext) => z.object({
     title: text,
     intro: paragraphs.optional(),
     /** Image positions beside the text, e.g. [physical training photo, virtual scene]. */
-    images: z.array(slot(ctx)).max(2).optional(),
+    images: z.array(slot(ctx)).max(3).optional(),
     /** Value pillars: title + description (a technology may appear in the text, not as the title). */
     pillars: z.array(card).optional(),
   }).optional(),
