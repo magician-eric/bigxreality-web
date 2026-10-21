@@ -78,9 +78,9 @@
     },
     {
      "slug": "code",
-     "label": "代號（同時用於表單預填）",
+     "label": "代號（同時用於表單預填；尚無確認代號的產品留空）",
      "type": "string",
-     "required": true,
+     "required": false,
      "translatable": false
     },
     {

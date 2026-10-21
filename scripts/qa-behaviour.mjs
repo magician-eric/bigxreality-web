@@ -18,13 +18,13 @@ const visibleCards = () => page.locator("#product-grid > li:not([hidden])").coun
 
 try {
   await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
-  check("overview lists 3 products", (await visibleCards()) === 3);
+  check("overview lists 6 products", (await visibleCards()) === 6);
   await page.getByRole("button", { name: "警勤" }).click();
   check("domain filter: Police → 0 cards + empty message", (await visibleCards()) === 0 && (await page.locator("[data-filter-empty]").isVisible()));
   check("filter state announced", (await page.locator("[data-status]").textContent()) === "共 0 項產品");
   check("filter state in URL", new URL(page.url()).searchParams.get("domain") === "police");
   await page.getByRole("button", { name: "軍事" }).click();
-  check("domain filter: Military → 3 cards", (await visibleCards()) === 3);
+  check("domain filter: Military → 6 cards", (await visibleCards()) === 6);
   check("pressed state", (await page.getByRole("button", { name: "軍事" }).getAttribute("aria-pressed")) === "true");
   await page.getByLabel("搜尋產品").fill("usv");
   check("text filter: 'usv' → 1 card", (await visibleCards()) === 1);
@@ -91,6 +91,9 @@ try {
   for (const [slug, h1, scen, related, cta] of [
     ["uav", "從掌握空中任務，到應對低空威脅", 5, ["/tw/products/sut/", "/tw/products/usv/", "/tw/solutions/military/"], "UAV"],
     ["usv", "讓無人船任務訓練，從虛擬海域開始", 3, ["/tw/products/sut/", "/tw/products/uav/", "/tw/solutions/military/"], "USV"],
+    ["wargaming-table", "在部署兵力之前，先看見不同決策的可能", 4, ["/tw/products/sut/", "/tw/solutions/military/"], "兵棋圖台系統"],
+    ["mortar-observation", "讓砲兵觀測訓練，不再受限於單一戰場情境", 4, ["/tw/products/wargaming-table/", "/tw/solutions/military/"], "迫擊砲觀測模擬系統"],
+    ["sniper-simulator", "精準射擊的訓練，從理解每一項環境變因開始", 4, ["/tw/products/sut/", "/tw/solutions/military/"], "狙擊槍模擬系統"],
   ]) {
     await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
     check(`${slug}: H1 is the V2.0 headline`, (await page.locator("h1").innerText()).trim() === h1);
@@ -98,7 +101,7 @@ try {
     check(`${slug}: 4 flow steps, 5 capabilities`, (await page.locator(".flow .step").count()) === 4 && (await page.locator(".cap .value, .feature .value").count()) === 5);
     const hrefs = await page.locator("a[href]").evaluateAll((els) => els.map((e) => e.getAttribute("href")));
     check(`${slug}: related links`, related.every((h) => hrefs.includes(h)), related.filter((h) => !hrefs.includes(h)).join(" "));
-    check(`${slug}: CTA goes to the contact page with the product code`, hrefs.some((h) => h.includes(`/tw/contact/?topic=product&item=${cta}`)));
+    check(`${slug}: CTA goes to the contact page with the product code`, hrefs.some((h) => h.includes(`/tw/contact/?topic=product&${new URLSearchParams({ item: cta })}`)));
     check(`${slug}: no visible 待提供 text`, (await page.locator("main section:not(.cta-band):not(#related-products) mark.pending").count()) === 0);
     check(`${slug}: hero image placeholder is designed`, (await page.locator(".page-hero [role=img]").count()) >= 1);
     await page.setViewportSize({ width: 390, height: 844 });
