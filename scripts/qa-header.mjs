@@ -26,7 +26,7 @@ try {
     for (const width of [1440, 1280, 1100, 1024]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(`${base}/${l}/products/`, { waitUntil: "networkidle" });
-      const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => (li.querySelector("a,button")?.textContent ?? "").trim()));
+      const top = await page.$$eval(".nav-list > li", (lis) => lis.map((li) => { const el = li.querySelector("a,button,span.nav-link")?.cloneNode(true); el?.querySelectorAll(".visually-hidden").forEach((n) => n.remove()); return (el?.textContent ?? "").trim(); }));
       if (width === 1440) {
         check(`${l}: five top-level items in order`, JSON.stringify(top) === JSON.stringify(want.top), top.join(" | "));
         const sub = await page.$$eval("#sub-resources a", (as) => as.map((a) => [a.textContent.trim(), a.getAttribute("href")]));
@@ -89,7 +89,7 @@ try {
   const current = async (p) => {
     await page.goto(`${base}${p}`, { waitUntil: "networkidle" });
     return page.evaluate(() => [...document.querySelectorAll(".nav-list > li")].map((li) => {
-      const el = li.querySelector("a,button");
+      const el = li.querySelector("a,button,span.nav-link");
       return el.getAttribute("aria-current") === "page" || el.classList.contains("is-current") ? el.textContent.trim() : null;
     }).filter(Boolean));
   };
@@ -112,14 +112,15 @@ try {
   check("Active: the open menu marks 成功案例", (await page.locator('#sub-resources a[aria-current="page"]').getAttribute("href")) === "/tw/cases/");
 
   // existing URLs unchanged
-  check("links: the three direct items keep their URLs", (await page.locator('.nav-list > li > a').evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join() === "/tw/solutions/,/tw/products/,/tw/technologies/");
+  check("links: the direct items keep their URLs", (await page.locator('.nav-list > li > a').evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join() === "/tw/solutions/,/tw/products/");
+  check("links: 核心技術 (page not built yet) is text, not a link", (await page.locator('.nav-list > li > span.nav-link.is-planned').count()) === 1);
 
   // phone
   for (const l of ["tw", "en", "jp"]) {
     const phone = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
     await phone.goto(`${base}/${l}/products/`, { waitUntil: "networkidle" });
     await phone.click(".menu-toggle");
-    const top = await phone.$$eval(".nav-list > li", (lis) => lis.map((li) => (li.querySelector("a,button")?.textContent ?? "").trim()));
+    const top = await phone.$$eval(".nav-list > li", (lis) => lis.map((li) => { const el = li.querySelector("a,button,span.nav-link")?.cloneNode(true); el?.querySelectorAll(".visually-hidden").forEach((n) => n.remove()); return (el?.textContent ?? "").trim(); }));
     check(`phone ${l}: menu shows the five items`, JSON.stringify(top) === JSON.stringify(LABELS[l].top), top.join(" | "));
     await phone.tap('[aria-controls="sub-resources"]');
     const subs = await phone.$$eval("#sub-resources a", (as) => as.filter((a) => a.getBoundingClientRect().width > 0).map((a) => a.textContent.trim()));
