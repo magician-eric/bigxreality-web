@@ -276,7 +276,8 @@
     "focusLabel": "訓練重點",
     "stepLabel": "STEP",
     "mediaNeed": "素材需求｜",
-    "mediaPending": "圖片待提供"
+    "mediaPending": "圖片待提供",
+    "illustrationLabel": "情境示意圖"
   },
   "contactPage": {
     "topicLabel": "洽詢項目",

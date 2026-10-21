@@ -65,7 +65,8 @@ function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
   /** Image position: the CMS image (downloaded for optimisation) plus its material note and caption. */
   const slot = (x: Json | undefined, img?: Json) => {
     const pic = image(img ?? x?.image);
-    return omitEmpty({ src: pic?.src, alt: pic?.alt, need: x?.need, caption: x?.caption, ratio: x?.ratio });
+    const stand = image(x?.substitute);
+    return omitEmpty({ src: pic?.src, alt: pic?.alt, need: x?.need, caption: x?.caption, ratio: x?.ratio, kind: x?.kind, status: x?.status, substitute: stand?.src ? { src: stand.src, alt: stand.alt } : undefined });
   };
   const withSlot = (x: Json, keys: string[]) => {
     const base = Object.fromEntries(keys.map((k) => [k, x[k]]).filter(([, v]) => v !== undefined && v !== null && v !== ""));
@@ -78,7 +79,7 @@ function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
     headline: d.landing_headline,
     subheadline: d.landing_subheadline,
     intro: d.landing_intro,
-    heroImage: slot({ need: d.landing_hero_need }, d.landing_hero_image),
+    heroImage: slot({ need: d.landing_hero_need, kind: d.landing_hero_kind, status: d.landing_hero_status, substitute: d.landing_hero_substitute }, d.landing_hero_image),
     ctaLabel: d.landing_cta_label,
     challenge: opt({ title: d.landing_challenge_title, intro: d.landing_challenge_intro, cards: list(d.landing_challenge_cards, ["title", "description"]), note: d.landing_challenge_note }),
     approach: opt({ title: d.landing_approach_title, intro: d.landing_approach_intro, images: d.landing_approach_images?.map((x: Json) => slot(x)), pillars: list(d.landing_approach_pillars, ["title", "description"]) }),

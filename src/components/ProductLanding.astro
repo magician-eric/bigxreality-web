@@ -46,6 +46,7 @@ const t = ui.productLanding;
 const e = t.eyebrows;
 const cta = ctaSet(lang, { page: "productInquiry", code: base.hero.code ?? d.hero.name, label: L.ctaLabel });
 const need = t.mediaNeed;
+const badge = t.illustrationLabel;
 const pending = t.mediaPending;
 const hero = L.heroImage;
 const heroReady = hero?.src && hero.alt;
@@ -100,6 +101,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     description={L.intro}
     image={heroReady ? { src: hero!.src!, alt: hero!.alt! } : undefined}
     imageCaption={hero?.caption}
+    imageBadge={hero?.illustration ? badge : undefined}
     imagePending={hero?.need ? `${need}${hero.need}` : t.placeholders.hero}
   >
     <CtaGroup slot="actions" actions={cta.hero} />
@@ -128,14 +130,14 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
         <div class:list={["split", { solo: images.length === 0 }]}>
           <div class="copy">
             <SectionHead id="h-approach" eyebrow={e.approach} title={L.approach.title} />
-            <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>
+            {L.approach.intro && <div class="prose">{paras(L.approach.intro).map((p) => <p><Text value={p} /></p>)}</div>}
           </div>
           {images.length > 0 && (
             <div class:list={["pair", { single: images.length === 1, stack: images[0]?.ratio === "16 / 9" }]}>
               {images.map((img, i) => (
                 <>
                   {i === 1 && <span class="link" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 11h16M13 5l6 6-6 6" /></svg></span>}
-                  <MediaSlot media={img} ratio={images.length === 1 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} sizes="(max-width: 767px) 50vw, 28vw" />
+                  <MediaSlot media={img} ratio={images.length === 1 ? "4 / 3" : "4 / 5"} fallbackLabel={pending} needPrefix={need} badge={badge} sizes="(max-width: 767px) 50vw, 28vw" />
                 </>
               ))}
             </div>
@@ -151,7 +153,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     <section class={alt()} aria-labelledby="h-capabilities">
       <div class="container">
         <SectionHead id="h-capabilities" eyebrow={e.capabilities} title={L.capabilities.title} description={L.capabilities.intro} />
-        <CapabilityShowcase items={L.capabilities.items} valueLabel={t.valueLabel} needPrefix={need} fallbackLabel={pending} />
+        <CapabilityShowcase items={L.capabilities.items} valueLabel={t.valueLabel} needPrefix={need} fallbackLabel={pending} badge={badge} />
       </div>
     </section>
   )}
@@ -161,7 +163,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     <section class={alt()} aria-labelledby="h-flow">
       <div class="container">
         <SectionHead id="h-flow" eyebrow={e.flow} title={L.flow.title} description={L.flow.intro} />
-        <FlowSteps steps={L.flow.steps} stepLabel={t.stepLabel} needPrefix={need} fallbackLabel={pending} />
+        <FlowSteps steps={L.flow.steps} stepLabel={t.stepLabel} needPrefix={need} fallbackLabel={pending} badge={badge} />
         {L.flow.note && <p class="note t-small"><Text value={L.flow.note} /></p>}
       </div>
     </section>
@@ -172,7 +174,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
     <section class={alt()} aria-labelledby="h-scenarios">
       <div class="container">
         <SectionHead id="h-scenarios" eyebrow={e.scenarios} title={L.scenarios.title} description={L.scenarios.intro} />
-        <ScenarioCards items={L.scenarios.items} focusLabel={t.focusLabel} needPrefix={need} fallbackLabel={pending} />
+        <ScenarioCards items={L.scenarios.items} focusLabel={t.focusLabel} needPrefix={need} fallbackLabel={pending} badge={badge} />
       </div>
     </section>
   )}

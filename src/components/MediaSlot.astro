@@ -10,7 +10,7 @@ import Text from "./Text.astro";
 import ImagePlaceholder from "./ImagePlaceholder.astro";
 
 interface Props {
-  media?: { src?: ImageMetadata; alt?: string; need?: string; caption?: string; ratio?: string };
+  media?: { src?: ImageMetadata; alt?: string; need?: string; caption?: string; ratio?: string; illustration?: boolean };
   /** Default CSS aspect ratio, e.g. "16 / 9"; a ratio set on the position itself wins. */
   ratio: string;
   /** Label of the placeholder when the slot has no `need`. */
@@ -19,19 +19,24 @@ interface Props {
   needPrefix: string;
   sizes?: string;
   eager?: boolean;
+  /** Label drawn bottom-right on illustrations (情境示意圖). */
+  badge?: string;
 }
-const { media, ratio, fallbackLabel, needPrefix, sizes = "(max-width: 767px) 100vw, 50vw", eager = false } = Astro.props;
+const { media, ratio, fallbackLabel, needPrefix, sizes = "(max-width: 767px) 100vw, 50vw", eager = false, badge } = Astro.props;
 const useRatio = media?.ratio ?? ratio;
 const ready = media?.src && media.alt;
 const label = media?.need ? `${needPrefix}${media.need}` : fallbackLabel;
 ---
 <figure class="media" style={`--ratio: ${useRatio}`}>
   {ready ? (
+    <div class="frame">
     <Picture
       src={media!.src!} alt={media!.alt!} formats={["avif", "webp"]}
       widths={[480, 800, 1200, 1600].filter((w) => w <= media!.src!.width)} sizes={sizes}
       fit="cover" loading={eager ? "eager" : "lazy"}
     />
+    {media?.illustration && badge && <span class="badge t-caption">{badge}</span>}
+    </div>
   ) : (
     <ImagePlaceholder label={label} ratio={useRatio} />
   )}
@@ -39,6 +44,11 @@ const label = media?.need ? `${needPrefix}${media.need}` : fallbackLabel;
 </figure>
 <style>
   .media { margin: 0; }
+  .frame { position: relative; }
+  .badge {
+    position: absolute; right: var(--space-1); bottom: var(--space-1); padding: 2px var(--space-1);
+    background: rgb(10 12 16 / 0.72); color: var(--bxr-white); font-size: var(--fs-caption, 0.75rem); line-height: 1.5; pointer-events: none;
+  }
   .media :global(img) { display: block; width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; }
   figcaption { margin-top: var(--space-1); color: var(--ink-muted); }
 </style>

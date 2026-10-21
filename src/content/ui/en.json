@@ -276,7 +276,8 @@
     "focusLabel": "[待翻譯] 訓練重點",
     "stepLabel": "STEP",
     "mediaNeed": "[待翻譯] 素材需求｜",
-    "mediaPending": "[待翻譯] 圖片待提供"
+    "mediaPending": "[待翻譯] 圖片待提供",
+    "illustrationLabel": "[待翻譯] 情境示意圖"
   },
   "contactPage": {
     "topicLabel": "[待翻譯] 洽詢項目",

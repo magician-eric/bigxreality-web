@@ -94,14 +94,14 @@ try {
     ["wargaming-table", "整合多元訓練資訊，建構更完整的指揮決策視野", 4, ["/tw/products/sut/", "/tw/solutions/military/"], "兵棋圖台系統", 0],
     ["mortar-observation", "讓砲兵觀測訓練，不再受限於單一戰場情境", 4, ["/tw/products/wargaming-table/", "/tw/solutions/military/"], "迫擊砲觀測模擬系統"],
     ["sniper-simulator", "精準射擊的訓練，從理解每一項環境變因開始", 4, ["/tw/products/machine-gun-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "狙擊槍模擬系統"],
-    ["machine-gun-simulator", "讓每一次射擊訓練，都建立在更完整的任務判斷之上", 4, ["/tw/products/sniper-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "機槍模擬系統"],
-    ["hmmwv-simulator", "讓軍用車輛駕駛訓練，不再受限於實際道路條件", 4, ["/tw/products/tactical-boat-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "悍馬車載具訓練系統"],
+    ["machine-gun-simulator", "讓射擊訓練，從操作熟悉延伸至任務判斷", 4, ["/tw/products/sniper-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "機槍模擬系統"],
+    ["hmmwv-simulator", "讓軍用車輛駕駛訓練，延伸至更多任務情境", 4, ["/tw/products/tactical-boat-simulator/", "/tw/products/sut/", "/tw/solutions/military/"], "悍馬車載具訓練系統"],
     ["tactical-boat-simulator", "讓海上操艇訓練，從可控的模擬環境開始", 4, ["/tw/products/usv/", "/tw/products/hmmwv-simulator/", "/tw/solutions/military/"], "快艇載具訓練系統"],
   ]) {
     await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
     check(`${slug}: H1 is the V2.0 headline`, (await page.locator("h1").innerText()).trim() === h1);
     check(`${slug}: ${scen} scenario cards`, (await page.locator(".scenarios .card").count()) === scen);
-    check(`${slug}: ${flowCount} flow steps, 5 capabilities`, (await page.locator(".flow .step").count()) === flowCount && (await page.locator(flowCount === 0 ? ".feature, .plain .cap" : ".cap .value, .feature .value").count()) === 5);
+    check(`${slug}: ${flowCount} flow steps, 5 capabilities`, (await page.locator(".flow .step").count()) === flowCount && (await page.locator(".feature, .plain .cap").count()) === 5);
     const hrefs = await page.locator("a[href]").evaluateAll((els) => els.map((e) => e.getAttribute("href")));
     check(`${slug}: related links`, related.every((h) => hrefs.includes(h)), related.filter((h) => !hrefs.includes(h)).join(" "));
     check(`${slug}: CTA goes to the contact page with the product code`, hrefs.some((h) => h.includes(`/tw/contact/?topic=product&${new URLSearchParams({ item: cta })}`)));

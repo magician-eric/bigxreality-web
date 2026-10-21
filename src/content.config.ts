@@ -1,3 +1,4 @@
+import { resolveSlot } from "./lib/slot";
 import { existsSync } from "node:fs";
 import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
@@ -59,15 +60,26 @@ const card = z.object({ title: text, description: text });
  * replaces the placeholder with no layout change.
  */
 const RATIOS = ["16 / 9", "3 / 2", "4 / 3", "4 / 5", "1 / 1"] as const;
+/** Image type: an approved real photo (default) or an illustration of the scene, which the site labels 情境示意圖. */
+const IMAGE_KINDS = ["approved", "illustration"] as const;
+/** Publication status: only "public" (default) images are ever shown. */
+const IMAGE_STATUS = ["public", "withheld"] as const;
 const slot = (ctx: SchemaContext) =>
-  z.object({
-    src: ctx.image().optional(),
-    alt: text.optional(),
-    need: text.optional(),
-    caption: text.optional(),
-    /** Recommended aspect ratio of the photo for this position (the page lays the position out at this ratio). */
-    ratio: z.enum(RATIOS).optional(),
-  });
+  z
+    .object({
+      src: ctx.image().optional(),
+      alt: text.optional(),
+      need: text.optional(),
+      caption: text.optional(),
+      /** Recommended aspect ratio of the photo for this position (the page lays the position out at this ratio). */
+      ratio: z.enum(RATIOS).optional(),
+      kind: z.enum(IMAGE_KINDS).optional(),
+      status: z.enum(IMAGE_STATUS).optional(),
+      /** Stand-in used instead of the original while it is withheld (shown with the 情境示意圖 label). */
+      substitute: z.object({ src: ctx.image(), alt: text }).optional(),
+    })
+    // A withheld original is dropped here, so it is never rendered, optimised or deployed.
+    .transform((v) => resolveSlot(v));
 /** Step / feature icons drawn by the site (components/FlowIcon.astro). */
 const FLOW_ICONS = ["target", "team", "variation", "review", "route", "headset", "link"] as const;
 const landing = (ctx: SchemaContext) => z.object({
@@ -88,7 +100,7 @@ const landing = (ctx: SchemaContext) => z.object({
   }).optional(),
   approach: z.object({
     title: text,
-    intro: paragraphs,
+    intro: paragraphs.optional(),
     /** Image positions beside the text, e.g. [physical training photo, virtual scene]. */
     images: z.array(slot(ctx)).max(2).optional(),
     /** Value pillars: title + description (a technology may appear in the text, not as the title). */
