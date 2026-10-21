@@ -29,4 +29,4 @@ jobs:
         run: npm run build:fixtures
       - run: npm run qa:phase2
       - run: npm run qa:search
-      - run: QA_DIST=dist-fixtures/client npm run qa:a11y -- /tw/solutions/police/ /tw/news/ /tw/news/fixture-news-02/ /tw/case-studies/fixture-case-1/ /tw/tags/xr-training/ /tw/search/
+      - run: QA_DIST=dist-fixtures/client npm run qa:a11y -- /tw/solutions/police/ /tw/news/ /tw/news/fixture-news-02/ /tw/cases/fixture-case-1/ /tw/tags/xr-training/ /tw/search/

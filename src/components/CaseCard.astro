@@ -1,0 +1,45 @@
+---
+/**
+ * Case card: 16:9 picture, domain, case name, client (name only when public, otherwise the unit
+ * type), summary, related-product tags and a "了解完整案例" link. The link covers the whole card;
+ * the product tags are plain text so no link sits inside another.
+ */
+import type { Lang } from "../i18n";
+import type { CaseView } from "../lib/cases";
+import { getUi } from "../lib/ui";
+import CaseVisual from "./CaseVisual.astro";
+import Text from "./Text.astro";
+
+interface Props { lang: Lang; item: CaseView; headingLevel?: "h2" | "h3" }
+const { lang, item, headingLevel: H = "h3" } = Astro.props;
+const ui = getUi(lang);
+const c = ui.cases;
+---
+<article class="card">
+  <CaseVisual cover={item.cover} />
+  <div class="body">
+    {item.domains.length > 0 && <p class="t-tech meta">{item.domains.map((d, i) => <>{i > 0 && " · "}<Text value={ui.domains[d]} /></>)}</p>}
+    <H class="t-h4 title"><Text value={item.title} /></H>
+    {item.client && <p class="t-small client"><span class="visually-hidden"><Text value={c.client} />：</span><Text value={item.client} /></p>}
+    <p class="t-small summary"><Text value={item.summary} /></p>
+    {item.products.length > 0 && <ul role="list" class="tags t-caption" aria-label={c.products}>{item.products.map((p) => <li><Text value={p.name} /></li>)}</ul>}
+    <a class="more" href={item.href}><Text value={c.learnMore} /><span class="visually-hidden">：<Text value={item.title} /></span> <span aria-hidden="true">→</span></a>
+  </div>
+</article>
+<style>
+  .card { position: relative; display: flex; flex-direction: column; height: 100%; border: 1px solid var(--divider); background: var(--surface); }
+  .card :global(img) { transition: transform var(--dur-standard) var(--ease-precise); }
+  .card:hover :global(img) { transform: scale(1.02); }
+  .body { display: grid; gap: var(--space-1); align-content: start; flex: 1; padding: var(--space-3); }
+  .meta, .client, .summary, .tags { color: var(--ink-muted); }
+  .title { margin: 0; }
+  .client { margin: 0; font-weight: 500; color: var(--ink); }
+  .summary { margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-1) 0 0; padding: 0; list-style: none; }
+  .tags li { padding: 2px var(--space-1); border: 1px solid var(--bxr-ash); }
+  .more { align-self: end; margin-top: var(--space-2); color: var(--ink); font-weight: 500; text-decoration: none; }
+  .more::after { content: ""; position: absolute; inset: 0; }
+  .card:hover .more { color: var(--bxr-text-red); }
+  .more:focus-visible { outline: none; }
+  .card:has(.more:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+</style>

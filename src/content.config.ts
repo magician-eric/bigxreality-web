@@ -228,6 +228,8 @@ const pages = defineCollection({
       hero: z.object({
         eyebrow: text,
         title: text,
+        /** Sub-headline: one sentence under the title. */
+        lead: text.optional(),
         description: text,
         image: picture(ctx).optional(),
         imageCaption: text.optional(),
@@ -279,17 +281,30 @@ const insights = defineCollection({
   schema: (ctx) => articleBase(ctx).extend({ author: text.optional() }),
 });
 
+/** Application fields of a case study: the four market domains plus "other". */
+const CASE_DOMAINS = [...DOMAINS, "other"] as const;
+
 const caseStudies = defineCollection({
   loader: loader("case-studies", "case_studies"),
   schema: (ctx) =>
     articleBase(ctx).extend({
-      client: z.object({ name: text, disclosure: z.enum(["public", "anonymized"]) }),
+      /**
+       * `name` is shown only when `disclosure` is "public"; otherwise `type` (e.g. a unit type)
+       * is shown, falling back to `name` which then must already be an anonymised description.
+       */
+      client: z.object({ name: text, type: text.optional(), disclosure: z.enum(["public", "anonymized"]) }),
       /** Client authorisation to publish; entries without it are never built. */
       approval: z.object({ approved: z.boolean() }),
-      challenge: text.optional(),
-      solution: text.optional(),
+      /** Detail page sections; each is optional and a section without data is not shown. Paragraphs are separated by a blank line. */
+      background: paragraphs.optional(),
+      challenge: paragraphs.optional(),
+      solution: paragraphs.optional(),
+      application: paragraphs.optional(),
+      /** Confirmed, publishable results only: a narrative and/or labelled figures. */
+      results: paragraphs.optional(),
       outcomes: z.array(z.object({ label: text, value: text })).optional(),
-      domains: z.array(z.enum(DOMAINS)).default([]),
+      gallery: z.array(picture(ctx).extend({ caption: text.optional() })).optional(),
+      domains: z.array(z.enum(CASE_DOMAINS)).default([]),
     }),
 });
 

@@ -1,9 +1,9 @@
 ---
-/** /[lang]/case-studies/[slug]/ — see components/ArticleDetail.astro. */
+/** /[lang]/cases/[slug]/ — one template for every published case (components/CaseDetail.astro). */
 import { LANGS } from "../../../i18n";
 import { getArticles } from "../../../lib/articles";
 import { validateRelations } from "../../../lib/content";
-import ArticleDetail from "../../../components/ArticleDetail.astro";
+import CaseDetail from "../../../components/CaseDetail.astro";
 
 export async function getStaticPaths() {
   const paths = [];
@@ -13,4 +13,4 @@ export async function getStaticPaths() {
 await validateRelations();
 const { article } = Astro.props;
 ---
-<ArticleDetail article={article} />
+<CaseDetail article={article} />

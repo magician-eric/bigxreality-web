@@ -7,7 +7,7 @@
  */
 import { Picture, getImage } from "astro:assets";
 import { getEntry } from "astro:content";
-import { HTML_LANG, INTL_LOCALE, localePath, type Lang } from "../i18n";
+import { HTML_LANG, INTL_LOCALE, localePath, segmentOf, type Lang } from "../i18n";
 import { availableLangs, getLocalized } from "../lib/content";
 import { articleHref, readingMinutes, relatedToArticle, tagMap, tagNames, type Article } from "../lib/articles";
 import { getUi, format } from "../lib/ui";
@@ -80,13 +80,13 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
   lang={lang}
   title={d.seo?.title ?? d.title}
   description={d.seo?.description ?? d.summary}
-  pathTemplate={`/{lang}/${collection}/${slug}/`}
+  pathTemplate={`/{lang}/${segmentOf(collection)}/${slug}/`}
   alternates={await availableLangs(collection, slug)}
   pendingTranslation={article.pendingTranslation}
   headerTheme="light"
   current="resources"
   currentResource={collection}
-  fallbackPath={`/{lang}/${collection}/`}
+  fallbackPath={`/{lang}/${segmentOf(collection)}/`}
   breadcrumbs={breadcrumbs}
   ogImage={base.seo?.ogImage ?? cover?.src}
   ogImageAlt={cover?.alt}

@@ -32,7 +32,7 @@ try {
   check("type filter keeps only news", r.length > 0 && r.every((x) => x.url.startsWith("/tw/news/")), JSON.stringify(r));
   r = await search("tw", "TEST FIXTURE");
   check("tw results never link to other languages", r.length > 0 && r.every((x) => x.url.startsWith("/tw/")), JSON.stringify(r));
-  check("list pages are not indexed", r.every((x) => !/\/(news|insights|case-studies|tags)\/(page\/\d+\/)?$/.test(x.url)), JSON.stringify(r));
+  check("list pages are not indexed", r.every((x) => !/\/(news|insights|cases|tags)\/(page\/\d+\/)?$/.test(x.url)), JSON.stringify(r));
   r = await search("en", "English body");
   check("en: English article found", r.some((x) => x.url === "/en/news/fixture-news-01/"), JSON.stringify(r));
   r = await search("jp", "TEST FIXTURE");

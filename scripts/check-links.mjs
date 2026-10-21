@@ -4,7 +4,7 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { DIST, resolveDist } from "./lib/serve.mjs";
 
-const PLANNED = /^\/(en|tw|jp)\/(|solutions\/.*|technologies\/|insights\/|news\/|case-studies\/|company\/|contact\/|privacy\/|search\/)$/;
+const PLANNED = /^\/(en|tw|jp)\/(|solutions\/.*|technologies\/|insights\/|news\/|cases\/|company\/|contact\/|privacy\/|search\/)$/;
 
 async function* htmlFiles(dir) {
   for (const e of await readdir(dir, { withFileTypes: true })) {

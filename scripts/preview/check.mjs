@@ -74,7 +74,7 @@ try {
   page.on("response", (r) => { if (r.status() >= 400) missing.push(r.url()); });
   await page.goto(`${origin}${base}`, { waitUntil: "networkidle" });
   check("root opens the site", /\/(tw\/|tw\/products\/)$/.test(page.url()), page.url());
-  for (const p of ["tw/products/", "tw/products/sut/", "tw/solutions/police/", "tw/news/", "jp/case-studies/", "en/solutions/"]) {
+  for (const p of ["tw/products/", "tw/products/sut/", "tw/solutions/police/", "tw/news/", "jp/cases/", "en/solutions/"]) {
     await page.goto(`${origin}${base}${p}`, { waitUntil: "networkidle" });
   }
   check("no 404 while browsing (pages, images, fonts, scripts)", missing.length === 0, missing.slice(0, 5).join(" "));

@@ -1,0 +1,56 @@
+---
+/**
+ * "實際應用案例" block shared by product and solution pages. The cases come from the relations
+ * stored on the case (lib/cases.ts casesAbout), so nothing is typed per page. No published
+ * related case → nothing is rendered (no heading, no placeholder text).
+ * One case: a wide picture + text layout. Two or more: cards, at most three, with a link to the list.
+ */
+import { localePath, type Lang } from "../i18n";
+import type { CaseView } from "../lib/cases";
+import { getUi } from "../lib/ui";
+import SectionHead from "./SectionHead.astro";
+import CaseCard from "./CaseCard.astro";
+import CaseVisual from "./CaseVisual.astro";
+import Text from "./Text.astro";
+
+interface Props { lang: Lang; cases: CaseView[]; alt?: boolean; id?: string }
+const { lang, cases, alt = false, id } = Astro.props;
+const ui = getUi(lang);
+const b = ui.cases.block;
+const shown = cases.slice(0, 3);
+const one = cases.length === 1 ? cases[0] : undefined;
+const listHref = localePath(lang, "case-studies");
+---
+{cases.length > 0 && (
+  <section class:list={["section", { "section--alt": alt }]} id={id} aria-labelledby="h-cases" data-related-cases>
+    <div class="container">
+      <SectionHead id="h-cases" eyebrow="Case Studies" title={b.title} description={b.description} viewAll={cases.length > 1 ? { href: listHref, label: b.more } : undefined} />
+      {one ? (
+        <article class="feature">
+          <CaseVisual cover={one.cover} sizes="(max-width: 1023px) 100vw, 640px" />
+          <div class="copy">
+            {one.domains.length > 0 && <p class="t-tech meta">{one.domains.map((d, i) => <>{i > 0 && " · "}<Text value={ui.domains[d]} /></>)}</p>}
+            <h3 class="t-h3"><Text value={one.title} /></h3>
+            {one.client && <p class="client"><Text value={one.client} /></p>}
+            <p class="t-muted"><Text value={one.summary} /></p>
+            <a class="btn btn--secondary" href={one.href}><Text value={b.learnMore} /><span class="visually-hidden">：<Text value={one.title} /></span></a>
+          </div>
+        </article>
+      ) : (
+        <ul role="list" class="grid" style={`--cols: ${shown.length}`}>
+          {shown.map((item) => <li><CaseCard lang={lang} item={item} /></li>)}
+        </ul>
+      )}
+    </div>
+  </section>
+)}
+<style>
+  .feature { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter); align-items: center; }
+  .copy { display: grid; gap: var(--space-2); justify-items: start; }
+  .copy h3, .copy p { margin: 0; }
+  .meta { color: var(--ink-muted); }
+  .client { font-weight: 500; }
+  .grid { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feature { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
+</style>

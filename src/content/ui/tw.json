@@ -10,7 +10,7 @@
     "company": "公司",
     "news": "消息",
     "insights": "技術文章",
-    "caseStudies": "案例",
+    "caseStudies": "成功案例",
     "resourcesMenu": "資源選單"
   },
   "contact": "聯絡我們",
@@ -46,13 +46,15 @@
     "military": "軍事",
     "police": "警勤",
     "fire-rescue": "消防與防救災",
-    "smart-city": "智慧城市"
+    "smart-city": "智慧城市",
+    "other": "其他"
   },
   "domainCodes": {
     "military": "MILITARY",
     "police": "POLICE",
     "fire-rescue": "FIRE & RESCUE",
-    "smart-city": "SMART CITY"
+    "smart-city": "SMART CITY",
+    "other": "OTHER"
   },
   "product": {
     "onThisPage": "頁內導覽",
@@ -111,7 +113,7 @@
   "articleTypes": {
     "insights": "技術文章",
     "news": "消息",
-    "case-studies": "案例"
+    "case-studies": "成功案例"
   },
   "footer": {
     "navLabel": "頁尾選單",
@@ -145,7 +147,7 @@
       },
       "caseStudies": {
         "eyebrow": "Case Studies",
-        "title": "相關案例"
+        "title": "實際應用案例"
       },
       "insights": {
         "eyebrow": "Insights",
@@ -227,7 +229,7 @@
       "solutions": "解決方案",
       "news": "消息",
       "insights": "技術文章",
-      "case-studies": "案例"
+      "case-studies": "成功案例"
     },
     "results": "找到 {n} 筆結果",
     "empty": "找不到符合「{q}」的結果。",
@@ -338,5 +340,48 @@
       "需求說明："
     ],
     "noEmail": "聯絡信箱尚未設定。"
+  },
+  "cases": {
+    "filterLabel": "篩選成功案例",
+    "domain": "應用領域",
+    "product": "關聯產品",
+    "solution": "關聯解決方案",
+    "all": "全部",
+    "learnMore": "了解完整案例",
+    "count": "共 {n} 個案例",
+    "filterResults": "共 {n} 個案例",
+    "filterEmpty": "沒有符合條件的案例",
+    "empty": "成功案例整理中，目前尚無已發布的案例",
+    "emptyHint": "如需了解沉浸式模擬訓練如何配合您的任務需求，歡迎與我們聯絡",
+    "emptyCta": "聯絡我們",
+    "client": "導入單位",
+    "domains": "應用領域",
+    "products": "關聯產品",
+    "solutions": "關聯解決方案",
+    "anonymized": "（單位資訊匿名）",
+    "section": {
+      "background": "專案背景",
+      "challenge": "面臨的訓練挑戰",
+      "solution": "導入解決方案",
+      "application": "實際應用方式",
+      "results": "專案成果與效益",
+      "gallery": "現場影像",
+      "details": "專案詳述",
+      "relatedItems": "相關產品與解決方案",
+      "more": "延伸閱讀"
+    },
+    "viewProduct": "前往產品頁",
+    "viewSolution": "前往解決方案頁",
+    "block": {
+      "title": "實際應用案例",
+      "description": "了解 Big x Reality 如何將相關模擬訓練技術應用於實際任務與訓練環境",
+      "more": "查看更多成功案例",
+      "learnMore": "了解完整案例"
+    },
+    "cta": {
+      "title": "與我們討論您的訓練需求",
+      "description": "歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
+      "button": "聯絡我們"
+    }
   }
 }

@@ -8,6 +8,8 @@ import { getEntry } from "astro:content";
 import { LANGS, localePath, type Lang } from "../../../i18n";
 import { getLocalized, availableLangs, validateRelations } from "../../../lib/content";
 import { articlesAbout, articleHref, tagNames, type Article } from "../../../lib/articles";
+import { casesAbout } from "../../../lib/cases";
+import RelatedCases from "../../../components/RelatedCases.astro";
 import { hasContent } from "../../../lib/pending";
 import { getUi } from "../../../lib/ui";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
@@ -38,8 +40,8 @@ const d = solution.loc.data;
 const overviewHtml = solution.loc.rendered?.html ?? "";
 const heroImage = base.image && { src: base.image.src, alt: d.image?.alt ?? base.image.alt };
 const products = (await getLocalized("products", lang)).filter((p) => (p.base.data.relatedSolutions ?? []).includes(slug));
-const groups: { id: "caseStudies" | "insights" | "news"; items: Article[] }[] = [
-  { id: "caseStudies", items: (await articlesAbout("relatedSolutions", slug, lang, ["case-studies"])).slice(0, 6) },
+const cases = await casesAbout("relatedSolutions", slug, lang);
+const groups: { id: "insights" | "news"; items: Article[] }[] = [
   { id: "insights", items: (await articlesAbout("relatedSolutions", slug, lang, ["insights"])).slice(0, 6) },
   { id: "news", items: (await articlesAbout("relatedSolutions", slug, lang, ["news"])).slice(0, 6) },
 ];
@@ -51,6 +53,7 @@ const sections = [
   { id: "challenges", show: hasContent(d.challenges) },
   { id: "capabilities", show: hasContent(d.capabilities) },
   { id: "relatedProducts", show: products.length > 0 },
+  { id: "caseStudies", show: cases.length > 0 },
   ...groups.map((g) => ({ id: g.id, show: g.items.length > 0 })),
 ].filter((s) => s.show).map((s) => ({ id: s.id, title: t[s.id as keyof typeof t].title }));
 const has = (id: string) => sections.some((s) => s.id === id);
@@ -136,6 +139,8 @@ const cta = d.cta ?? page?.cta;
       </div>
     </section>
   )}
+
+  <RelatedCases lang={lang} cases={cases} id="caseStudies" alt={order.indexOf("caseStudies") % 2 === 1} />
 
   {groups.filter((g) => has(g.id)).map((g) => (
     <section class={alt(order.indexOf(g.id))} id={g.id} aria-labelledby={`h-${g.id}`}>

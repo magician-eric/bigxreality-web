@@ -1,0 +1,92 @@
+---
+/**
+ * Case filters: application domain, related product, related solution. Only options that
+ * at least one published case uses are offered (lib/cases.ts facets). Each group is a single
+ * choice with "全部"; combined groups narrow the list. State is mirrored in the URL
+ * (?domain=…&product=…&solution=…). Without JavaScript the bar is hidden and every card stays visible.
+ * Cards opt in with data-filter-item and data-domains / data-products / data-solutions.
+ */
+import type { Lang } from "../i18n";
+import type { CaseDomain } from "../lib/domains";
+import { getUi } from "../lib/ui";
+import Text from "./Text.astro";
+
+interface Props { lang: Lang; target: string; domains: readonly CaseDomain[]; products: { slug: string; name: string }[]; solutions: { slug: string; name: string }[] }
+const { lang, target, domains, products, solutions } = Astro.props;
+const c = getUi(lang).cases;
+const ui = getUi(lang);
+const groups = [
+  { key: "domain", label: c.domain, options: domains.map((d) => ({ value: d as string, label: ui.domains[d] })) },
+  { key: "product", label: c.product, options: products.map((p) => ({ value: p.slug, label: p.name })) },
+  { key: "solution", label: c.solution, options: solutions.map((s) => ({ value: s.slug, label: s.name })) },
+].filter((g) => g.options.length > 0);
+---
+{groups.length > 0 && (
+  <div class="filters" data-case-filters data-target={target} data-results={c.filterResults} role="group" aria-label={c.filterLabel}>
+    {groups.map((g) => (
+      <div class="group" role="group" aria-label={g.label} data-group={g.key}>
+        <span class="t-label gname" aria-hidden="true"><Text value={g.label} /></span>
+        <div class="chips">
+          <button type="button" class="chip" data-value="" aria-pressed="true"><Text value={c.all} /></button>
+          {g.options.map((o) => <button type="button" class="chip" data-value={o.value} aria-pressed="false"><Text value={o.label} /></button>)}
+        </div>
+      </div>
+    ))}
+    <p class="status t-small" aria-live="polite" data-status></p>
+  </div>
+)}
+
+<script>
+  for (const bar of document.querySelectorAll<HTMLElement>("[data-case-filters]")) {
+    const grid = document.getElementById(bar.dataset.target!);
+    if (!grid) continue;
+    const items = [...grid.querySelectorAll<HTMLElement>("[data-filter-item]")];
+    const empty = document.querySelector<HTMLElement>(`[data-filter-empty="${grid.id}"]`);
+    const status = bar.querySelector<HTMLElement>("[data-status]")!;
+    const groups = [...bar.querySelectorAll<HTMLElement>("[data-group]")];
+    const params = new URLSearchParams(location.search);
+    const state: Record<string, string> = {};
+    for (const g of groups) {
+      const key = g.dataset.group!;
+      const want = params.get(key) ?? "";
+      state[key] = [...g.querySelectorAll<HTMLButtonElement>("button")].some((b) => b.dataset.value === want) ? want : "";
+    }
+    const apply = (announce: boolean) => {
+      let shown = 0;
+      for (const item of items) {
+        const ok = groups.every((g) => {
+          const key = g.dataset.group!;
+          return !state[key] || (item.dataset[`${key}s`] ?? "").split(" ").includes(state[key]);
+        });
+        item.hidden = !ok;
+        if (ok) shown++;
+      }
+      for (const g of groups) for (const b of g.querySelectorAll<HTMLButtonElement>("button")) b.setAttribute("aria-pressed", String(b.dataset.value === state[g.dataset.group!]));
+      if (empty) empty.hidden = shown > 0;
+      if (announce) status.textContent = bar.dataset.results!.replace("{n}", String(shown));
+      const url = new URL(location.href);
+      for (const [k, v] of Object.entries(state)) v ? url.searchParams.set(k, v) : url.searchParams.delete(k);
+      history.replaceState(null, "", url);
+    };
+    for (const g of groups) for (const b of g.querySelectorAll<HTMLButtonElement>("button")) b.addEventListener("click", () => { state[g.dataset.group!] = b.dataset.value ?? ""; apply(true); });
+    apply(false);
+  }
+</script>
+
+<style>
+  .filters { display: grid; gap: var(--space-2); margin-bottom: var(--space-5); }
+  :global(.no-js) .filters { display: none; }
+  .group { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+  .gname { flex: none; min-width: 7rem; color: var(--ink-muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .chip {
+    display: inline-flex; align-items: center; min-height: var(--btn-sm-h); padding: 0 var(--space-2);
+    background: var(--surface); color: var(--ink); border: 1px solid var(--bxr-ash); border-radius: var(--radius-sm);
+    font-size: var(--fs-small); font-weight: 500; cursor: pointer;
+    transition: border-color var(--dur-micro) var(--ease-precise), background-color var(--dur-micro) var(--ease-precise);
+  }
+  .chip:hover { border-color: var(--bxr-black); }
+  .chip[aria-pressed="true"] { background: var(--bxr-black); color: var(--bxr-white); border-color: var(--bxr-black); }
+  .status { margin: 0; color: var(--ink-muted); min-height: 1lh; }
+  @media (max-width: 767px) { .gname { flex-basis: 100%; } }
+</style>
