@@ -7,16 +7,16 @@
  * Five top-level items: Solutions, Products, Technology, Resources, About BXR. "Resources" (News /
  * Insights / Case Studies) and "About BXR" (About Us / History / Team / Partners / Investors /
  * Contact) are disclosure buttons (not ARIA menus); pages in their lists mark the button as
- * current. The same data and styles serve all three languages.
+ * current. The items come from src/lib/navigation.ts, shared with the Footer; the same data and
+ * styles serve all three languages. A page that is not built yet shows as plain text, not a link.
  */
 import { LANGS, LANG_LABEL, HREFLANG, localePath, type Lang } from "../i18n";
 import { getUi } from "../lib/ui";
+import { navigation, type NavKey, type ResourceKey, type CompanyKey } from "../lib/navigation";
 import Logo from "./Logo.astro";
 import Text from "./Text.astro";
 
-export type NavKey = "solutions" | "products" | "technologies" | "resources" | "company";
-export type ResourceKey = "news" | "insights" | "case-studies";
-export type CompanyKey = "about" | "history" | "team" | "partners" | "investors" | "contact";
+export type { NavKey, ResourceKey, CompanyKey };
 interface Props {
   lang: Lang;
   theme: "light" | "dark";
@@ -30,29 +30,10 @@ interface Props {
 }
 const { lang, theme, current, currentResource, currentCompany, langLinks } = Astro.props;
 const ui = getUi(lang);
-const resources: { key: ResourceKey; label: string; href: string }[] = [
-  { key: "news", label: ui.nav.news, href: localePath(lang, "news") },
-  { key: "insights", label: ui.nav.insights, href: localePath(lang, "insights") },
-  { key: "case-studies", label: ui.nav.caseStudies, href: localePath(lang, "case-studies") },
-];
-const about: { key: CompanyKey; label: string; href: string }[] = [
-  { key: "about", label: ui.nav.aboutUs, href: localePath(lang, "company") },
-  { key: "history", label: ui.nav.history, href: localePath(lang, "company", "history") },
-  { key: "team", label: ui.nav.team, href: localePath(lang, "company", "team") },
-  { key: "partners", label: ui.nav.partners, href: localePath(lang, "company", "partners") },
-  { key: "investors", label: ui.nav.investors, href: localePath(lang, "company", "investors") },
-  { key: "contact", label: ui.contact, href: localePath(lang, "contact") },
-];
-type Entry =
-  | { type: "link"; key: NavKey; href: string }
-  | { type: "menu"; key: NavKey; id: string; items: { key: string; label: string; href: string }[]; currentSub?: string };
-const entries: Entry[] = [
-  { type: "link", key: "solutions", href: localePath(lang, "solutions") },
-  { type: "link", key: "products", href: localePath(lang, "products") },
-  { type: "link", key: "technologies", href: localePath(lang, "technologies") },
-  { type: "menu", key: "resources", id: "sub-resources", items: resources, currentSub: currentResource },
-  { type: "menu", key: "company", id: "sub-company", items: about, currentSub: currentCompany },
-];
+// Menu items come from src/lib/navigation.ts (shared with the Footer). Child ids are unique
+// across groups, so one value marks the current submenu item whichever group it is in.
+const currentSub: string | undefined = currentResource ?? currentCompany;
+const entries = navigation(lang);
 const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp: "日本語" };
 ---
 <header class="site-header" data-theme={theme}>
@@ -69,21 +50,25 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
       <nav aria-label={ui.nav.label}>
         <ul role="list" class="nav-list">
           {entries.map((item) =>
-            item.type === "link" ? (
+            item.children.length === 0 ? (
               <li>
-                <a class="nav-link" href={item.href} aria-current={item.key === current ? "page" : undefined}>
-                  <Text value={ui.nav[item.key]} />
-                </a>
+                {item.href
+                  ? <a class="nav-link" href={item.href} aria-current={item.id === current ? "page" : undefined}><Text value={item.label} /></a>
+                  : <span class="nav-link is-planned"><Text value={item.label} /><span class="visually-hidden"> <Text value={ui.nav.planned} /></span></span>}
               </li>
             ) : (
               <li class="has-sub" data-disclosure>
-                <button type="button" class:list={["nav-link", "sub-toggle", { "is-current": current === item.key }]} aria-expanded="false" aria-controls={item.id}>
-                  <Text value={ui.nav[item.key]} />
+                <button type="button" class:list={["nav-link", "sub-toggle", { "is-current": current === item.id }]} aria-expanded="false" aria-controls={`sub-${item.id}`}>
+                  <Text value={item.label} />
                   <svg class="chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" /></svg>
                 </button>
-                <ul role="list" class="sub" id={item.id}>
-                  {item.items.map((r) => (
-                    <li><a class="sub-link" href={r.href} aria-current={r.key === item.currentSub ? "page" : undefined}><Text value={r.label} /></a></li>
+                <ul role="list" class="sub" id={`sub-${item.id}`}>
+                  {item.children.map((r) => (
+                    <li>
+                      {r.href
+                        ? <a class="sub-link" href={r.href} aria-current={r.id === currentSub ? "page" : undefined}><Text value={r.label} /></a>
+                        : <span class="sub-link is-planned"><Text value={r.label} /><span class="visually-hidden"> <Text value={ui.nav.planned} /></span></span>}
+                    </li>
                   ))}
                 </ul>
               </li>
@@ -210,6 +195,9 @@ const langNames: Record<Lang, string> = { en: "English", tw: "繁體中文", jp:
   }
   .nav-link:hover { border-bottom-color: var(--divider); }
   .nav-link[aria-current="page"], .nav-link.is-current { border-bottom-color: var(--bxr-red); }
+  .is-planned { color: var(--ink-muted); cursor: default; }
+  .nav-link.is-planned:hover { border-bottom-color: transparent; }
+  .sub-link.is-planned:hover { background: none; }
   .sub-toggle { gap: 6px; background: none; border-top: 0; border-inline: 0; padding-inline: 0; cursor: pointer; font-family: inherit; }
   .chev { display: block; flex: none; transform-origin: 50% 50%; transition: transform var(--dur-micro) var(--ease-precise); }
   .sub-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
