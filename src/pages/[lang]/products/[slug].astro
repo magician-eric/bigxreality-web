@@ -115,7 +115,7 @@ const deploymentRows = [
   <PageHero
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
-    eyebrow={`Product · ${base.hero.code}`}
+    eyebrow={base.hero.code ? `Product · ${base.hero.code}` : "Product"}
     title={d.hero.name}
     subtitle={d.hero.englishName}
     description={d.hero.tagline}

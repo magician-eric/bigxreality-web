@@ -144,7 +144,8 @@ const products = defineCollection({
       hero: z.object({
         name: text,
         englishName: text.optional(),
-        code: text,
+        /** Short product code, only where the company has confirmed one (shown as "Product · CODE", used as the inquiry item). */
+        code: text.optional(),
         tagline: text,
         image: picture(ctx).optional(),
       }),

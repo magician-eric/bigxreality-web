@@ -42,7 +42,7 @@ const L = d.landing!;
 const ui = getUi(lang);
 const t = ui.productLanding;
 const e = t.eyebrows;
-const cta = ctaSet(lang, { page: "productInquiry", code: base.hero.code, label: L.ctaLabel });
+const cta = ctaSet(lang, { page: "productInquiry", code: base.hero.code ?? d.hero.name, label: L.ctaLabel });
 const need = t.mediaNeed;
 const pending = t.mediaPending;
 const hero = L.heroImage;
@@ -89,7 +89,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   <PageHero
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
-    eyebrow={`Product · ${base.hero.code}`}
+    eyebrow={base.hero.code ? `Product · ${base.hero.code}` : "Product"}
     kicker={d.hero.name}
     title={L.headline}
     lead={L.subheadline}

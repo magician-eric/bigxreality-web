@@ -7,7 +7,7 @@ import { isPending } from "../lib/pending";
 import { plain } from "../lib/text";
 
 export interface Crumb { name: string; path: string }
-export interface ProductLd { name: string; description: string; code: string; image?: string }
+export interface ProductLd { name: string; description: string; code?: string; image?: string }
 /** Article metadata: og:type=article tags. */
 export interface ArticleMeta { published: Date; modified?: Date; tags: string[] }
 
@@ -63,7 +63,7 @@ if (product) {
   const p: Record<string, unknown> = {
     "@type": "Product",
     name: plain(product.name),
-    sku: product.code,
+    ...(product.code ? { sku: product.code } : {}),
     brand: { "@id": `${site.url}/#organization` },
     url: canonical,
   };
