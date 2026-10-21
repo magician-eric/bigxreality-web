@@ -25,6 +25,7 @@
     "qa:company": "node scripts/qa-company.mjs",
     "qa:english": "node scripts/qa-english.mjs",
     "qa:japanese": "node scripts/qa-japanese.mjs",
+    "qa:faq": "node scripts/qa-faq.mjs",
     "test": "node --test \"tests/**/*.test.ts\"",
     "qa:lighthouse": "node scripts/qa-lighthouse.mjs",
     "cms:import": "node scripts/cms/import-markdown.mjs",

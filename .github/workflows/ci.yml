@@ -29,6 +29,7 @@ jobs:
       - run: npm run qa:company
       - run: npm run qa:english
       - run: npm run qa:japanese
+      - run: npm run qa:faq
       # TEST FIXTURE content: pages, search and accessibility of phase 2 templates
       - name: Build test fixtures
         run: npm run build:fixtures

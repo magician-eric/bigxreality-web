@@ -438,5 +438,8 @@
     }
   },
   "backToSolutions": "Back to Solutions",
-  "backToProducts": "Back to Products"
+  "backToProducts": "Back to Products",
+  "faq": {
+    "title": "[待翻譯] 常見問題"
+  }
 }

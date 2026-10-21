@@ -438,5 +438,8 @@
     }
   },
   "backToSolutions": "ソリューション一覧へ戻る",
-  "backToProducts": "製品一覧へ戻る"
+  "backToProducts": "製品一覧へ戻る",
+  "faq": {
+    "title": "[待翻譯] 常見問題"
+  }
 }
