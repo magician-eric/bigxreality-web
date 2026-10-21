@@ -138,11 +138,24 @@ const landing = (ctx: SchemaContext) => z.object({
       note: text.optional(),
     })
     .optional(),
+  /**
+   * Featured items shown side by side (e.g. the two integration solutions under Military Simulation).
+   * Each links to a solution page by slug, only when that page exists in the language.
+   */
+  featured: z
+    .object({
+      title: text,
+      intro: text.optional(),
+      items: z.array(z.object({ title: text, description: paragraphs, ctaLabel: text, solution: slug })).min(1),
+    })
+    .optional(),
+  /** "Who it is for": a short list of cards with an optional closing note, shown after the scenarios. */
+  audience: z.object({ title: text, intro: text.optional(), cards: z.array(card).min(1), note: text.optional() }).optional(),
   /** One sentence under the "applied cases" heading; the cases themselves come from case relations (lib/cases.ts). */
   casesIntro: text.optional(),
   /** Related products / solutions: intro text only; the cards come from relations that have real pages. */
   related: z.object({ title: text, intro: text.optional() }).optional(),
-  closing: z.object({ title: text, description: text }),
+  closing: z.object({ title: text, description: text.optional() }),
 });
 
 const products = defineCollection({
@@ -206,6 +219,14 @@ const solutions = defineCollection({
       name: text,
       englishName: text,
       summary: text,
+      /** Button text on the overview card (e.g. 探索軍事模擬). */
+      cardLabel: text.optional(),
+      /** Slug of the solution this one belongs to (MUM-T and NOVA belong to military); it is not a fifth category. */
+      parent: slug.optional(),
+      relatedSolutions: slugs,
+      /** Products shown on the page in addition to those that list this solution (products.relatedSolutions). */
+      relatedProducts: slugs,
+      landing: landing(ctx).optional(),
       heroDescription: text.optional(),
       image: picture(ctx).optional(),
       challenges: z.array(titled).optional(),
@@ -248,6 +269,8 @@ const pages = defineCollection({
         image: picture(ctx).optional(),
         imageCaption: text.optional(),
       }),
+      /** A short list of principle cards (solutions overview). */
+      highlights: z.object({ title: text, items: z.array(card).min(1) }).optional(),
       integrated: z.object({ eyebrow: text, title: text, description: text }).optional(),
       cta: cta.optional(),
     }),

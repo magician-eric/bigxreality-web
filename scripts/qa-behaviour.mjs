@@ -23,7 +23,7 @@ try {
   check("domain filter: Police → 2 cards", (await visibleCards()) === 2);
   check("filter state announced", (await page.locator("[data-status]").textContent()) === "共 2 項產品");
   check("filter state in URL", new URL(page.url()).searchParams.get("domain") === "police");
-  await page.getByRole("button", { name: "消防與防救災" }).click();
+  await page.getByRole("button", { name: "消防防災" }).click();
   check("domain filter: Fire & rescue → 1 card", (await visibleCards()) === 1);
   await page.getByRole("button", { name: "智慧城市" }).click();
   check("domain filter: Smart city → 0 cards + empty message", (await visibleCards()) === 0 && (await page.locator("[data-filter-empty]").isVisible()));

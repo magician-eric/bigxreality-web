@@ -12,6 +12,8 @@ type Slot = { src?: ImageMetadata; alt?: string; need?: string; caption?: string
 type Item = { title: string; content: string; value?: string; image?: Slot };
 interface Props { items: Item[]; valueLabel: string; needPrefix: string; fallbackLabel: string; badge?: string }
 const { items, valueLabel, needPrefix, fallbackLabel, badge } = Astro.props;
+/** A capability text may have several paragraphs, separated by a blank line. */
+const paras = (s: string) => s.split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
 
 type Entry = { item: Item; n: number };
 type Row = { kind: "feature"; entry: Entry; flip: boolean } | { kind: "plain"; entries: Entry[] };
@@ -40,7 +42,7 @@ const num = (n: number) => String(n).padStart(2, "0");
         <div class="text">
           <p class="t-tech num" aria-hidden="true">{num(row.entry.n)}</p>
           <h3 class="t-h3"><Text value={row.entry.item.title} /></h3>
-          <p class="content"><Text value={row.entry.item.content} /></p>
+          {paras(row.entry.item.content).map((x) => <p class="content"><Text value={x} /></p>)}
           {row.entry.item.value && <p class="value t-small"><span class="t-label"><Text value={valueLabel} /></span><Text value={row.entry.item.value} /></p>}
         </div>
       </article>
@@ -49,7 +51,7 @@ const num = (n: number) => String(n).padStart(2, "0");
         {row.entries.map(({ item, n }) => (
           <li class="cap">
             <div class="head"><span class="num t-tech" aria-hidden="true">{num(n)}</span><h3 class="t-h4"><Text value={item.title} /></h3></div>
-            <p class="content"><Text value={item.content} /></p>
+            {paras(item.content).map((x) => <p class="content"><Text value={x} /></p>)}
             {item.value && <p class="value t-small"><span class="t-label"><Text value={valueLabel} /></span><Text value={item.value} /></p>}
           </li>
         ))}

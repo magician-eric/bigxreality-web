@@ -22,6 +22,7 @@ import CardProduct from "../../../components/CardProduct.astro";
 import CardArticle from "../../../components/CardArticle.astro";
 import CtaBand from "../../../components/CtaBand.astro";
 import FormButton from "../../../components/FormButton.astro";
+import SolutionLanding from "../../../components/SolutionLanding.astro";
 
 export async function getStaticPaths() {
   const paths = [];
@@ -38,6 +39,7 @@ const solution = (await getLocalized("solutions", lang)).find((s) => s.slug === 
 const base = solution.base.data;
 const d = solution.loc.data;
 const overviewHtml = solution.loc.rendered?.html ?? "";
+const useLanding = !!d.landing;
 const heroImage = base.image && { src: base.image.src, alt: d.image?.alt ?? base.image.alt };
 const products = (await getLocalized("products", lang)).filter((p) => (p.base.data.relatedSolutions ?? []).includes(slug));
 const cases = await casesAbout("relatedSolutions", slug, lang);
@@ -68,6 +70,9 @@ const breadcrumbs = [
 const page = (await getEntry("pages", `${lang}/solutions`))?.data;
 const cta = d.cta ?? page?.cta;
 ---
+{useLanding ? (
+  <SolutionLanding lang={lang} slug={slug} base={base} data={d} pendingTranslation={solution.pendingTranslation} />
+) : (
 <BaseLayout
   lang={lang}
   title={d.seo?.title ?? d.name}
@@ -169,6 +174,7 @@ const cta = d.cta ?? page?.cta;
     </CtaBand>
   )}
 </BaseLayout>
+)}
 <style>
   .two-col { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8); align-items: start; }
   .two-col :global(.section-head) { margin-bottom: 0; }
