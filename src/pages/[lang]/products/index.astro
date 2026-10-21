@@ -1,17 +1,17 @@
 ---
 /**
- * /[lang]/products/ — PageHero → FilterBar → product grid → integrated training
- * scenarios → CtaBand. Every product comes from the products collection.
+ * /[lang]/products/ — PageHero → FilterBar → product grid → CtaBand. Lists the
+ * products collection only (the twelve products); integration solutions such as
+ * MUM-T and NOVA belong to Solutions, and Smart City is a solution, not a product category.
  */
 import { getEntry } from "astro:content";
 import { LANGS, SOURCE_LANG, localePath, type Lang } from "../../../i18n";
-import { DOMAINS } from "../../../lib/domains";
+import { PRODUCT_DOMAINS } from "../../../lib/domains";
 import { getLocalized, validateRelations } from "../../../lib/content";
 import { getUi } from "../../../lib/ui";
 import { plain } from "../../../lib/text";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageHero from "../../../components/PageHero.astro";
-import SectionHead from "../../../components/SectionHead.astro";
 import FilterBar from "../../../components/FilterBar.astro";
 import CardProduct from "../../../components/CardProduct.astro";
 import CtaBand from "../../../components/CtaBand.astro";
@@ -33,8 +33,6 @@ const copy = page.data;
 const heroImage = pageBase.data.hero.image && { src: pageBase.data.hero.image.src, alt: copy.hero.image?.alt ?? pageBase.data.hero.image.alt };
 
 const products = await getLocalized("products", lang);
-const productNames = new Map(products.map((p) => [p.slug, p.loc.data.hero.name]));
-const scenarios = await getLocalized("scenarios", lang);
 
 const breadcrumbs = [
   { name: ui.home, path: localePath(lang) },
@@ -68,7 +66,7 @@ const pending = copy.translationStatus === "pending";
   <section class="section" aria-labelledby="all-products">
     <div class="container">
       <h2 id="all-products" class="visually-hidden"><Text value={copy.hero.title} /></h2>
-      <FilterBar lang={lang} domains={DOMAINS} target="product-grid" />
+      <FilterBar lang={lang} domains={PRODUCT_DOMAINS} domainLabels={ui.productDomains} target="product-grid" />
       <ul role="list" class="grid" id="product-grid">
         {products.map((p) => {
           const d = p.loc.data;
@@ -82,6 +80,7 @@ const pending = copy.translationStatus === "pending";
                 englishName={d.hero.englishName}
                 summary={d.summary ?? d.hero.tagline}
                 domains={p.base.data.domains}
+                domainLabels={ui.productDomains}
                 image={img}
               />
             </li>
@@ -91,30 +90,6 @@ const pending = copy.translationStatus === "pending";
       <p class="empty" data-filter-empty="product-grid" hidden><Text value={ui.filter.empty} /></p>
     </div>
   </section>
-
-  {copy.integrated && scenarios.length > 0 && (
-    <section class="section section--alt" aria-labelledby="integrated">
-      <div class="container">
-        <SectionHead id="integrated" eyebrow={copy.integrated.eyebrow} title={copy.integrated.title} description={copy.integrated.description} />
-        <ul role="list" class="scenarios">
-          {scenarios.map((s) => (
-            <li class="scenario">
-              <p class="t-tech code">{s.base.data.code}</p>
-              <h3 class="t-h3"><Text value={s.loc.data.name} /></h3>
-              {s.loc.data.englishName && <p class="t-tech english"><Text value={s.loc.data.englishName} /></p>}
-              <p class="summary"><Text value={s.loc.data.summary} /></p>
-              <p class="t-label participants-label"><Text value={ui.product.participants} /></p>
-              <ul role="list" class="participants">
-                {s.base.data.products.filter((slug) => productNames.has(slug)).map((slug) => (
-                  <li><a href={localePath(lang, "products", slug)}><Text value={productNames.get(slug)!} /></a></li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )}
 
   {copy.cta && (
     <CtaBand id="products-cta" title={copy.cta.title} description={copy.cta.description}>
@@ -128,13 +103,6 @@ const pending = copy.translationStatus === "pending";
   .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
   .grid > li[hidden] { display: none; }
   .empty { padding-block: var(--space-6); color: var(--ink-muted); }
-  .scenarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
-  .scenario { display: grid; gap: var(--space-1); align-content: start; padding: var(--space-4); background: var(--bxr-white); border-top: 2px solid var(--bxr-black); }
-  .code, .english { color: var(--ink-muted); }
-  .summary { margin-top: var(--space-1); }
-  .participants-label { margin-top: var(--space-2); color: var(--ink-muted); }
-  .participants { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; }
-  .participants a { min-height: 24px; display: inline-flex; align-items: center; }
   @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 767px) { .grid, .scenarios { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
 </style>

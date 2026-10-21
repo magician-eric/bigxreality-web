@@ -216,15 +216,11 @@ const MAP = {
     }),
     seo: seoOf(d.seo),
   }),
-  scenarios: async ({ fm: d }) => ({
-    data: clean({ title: d.name, code: d.code, english_name: d.englishName, summary: d.summary, sort_order: d.order, translation_status: d.translationStatus }),
-  }),
   pages: async ({ fm: d, file }) => ({
     data: clean({
       title: d.hero.title, translation_status: d.translationStatus, eyebrow: d.hero.eyebrow, lead: d.hero.lead, description: d.hero.description,
       hero_image: await image(d.hero.image, file), image_caption: d.hero.imageCaption,
       closing_title: d.closing?.title, highlights_title: d.highlights?.title, highlights_items: d.highlights?.items,
-      integrated_eyebrow: d.integrated?.eyebrow, integrated_title: d.integrated?.title, integrated_description: d.integrated?.description,
       cta_title: d.cta?.title, cta_description: d.cta?.description, cta_button: d.cta?.button,
     }),
     seo: seoOf(d.seo),
@@ -263,7 +259,7 @@ const MAP = {
   }),
 };
 // EmDash collection → Markdown folder
-const FOLDERS = { products: "products", solutions: "solutions", scenarios: "scenarios", pages: "pages", tags: "tags", news: "news", insights: "insights", case_studies: "case-studies", milestones: "milestones", team_members: "team", partners: "partners", investor_items: "investor-items" };
+const FOLDERS = { products: "products", solutions: "solutions", pages: "pages", tags: "tags", news: "news", insights: "insights", case_studies: "case-studies", milestones: "milestones", team_members: "team", partners: "partners", investor_items: "investor-items" };
 const ARTICLE = ["news", "insights", "case_studies"];
 
 // ---------------------------------------------------------------- run
@@ -336,8 +332,6 @@ for (const [slug, d] of Object.entries(source.solutions ?? {})) {
   // stored on the product side (products.related_solutions); solutions read it back as related_products
   for (const p of d.relatedProducts ?? []) add("products", p, "related_solutions", [slug]);
 }
-for (const [slug, d] of Object.entries(source.scenarios ?? {})) add("scenarios", slug, "products", d.products);
-for (const [slug, d] of Object.entries(source.products ?? {})) for (const s of d.integratedScenarios ?? []) add("scenarios", s, "products", [slug]);
 const RANK = { news: 0, insights: 1, case_studies: 2 };
 const FIELD_OF = { news: "relatedNews", insights: "relatedInsights", case_studies: "relatedCaseStudies" };
 for (const coll of ARTICLE) {

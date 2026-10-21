@@ -14,7 +14,7 @@ export interface Localized<C extends CollectionKey> {
   pendingTranslation: boolean;
 }
 
-type LocalizableKey = "products" | "solutions" | "scenarios" | "pages" | "tags" | "insights" | "news" | "case-studies" | "milestones" | "team" | "partners" | "investor-items";
+type LocalizableKey = "products" | "solutions" | "pages" | "tags" | "insights" | "news" | "case-studies" | "milestones" | "team" | "partners" | "investor-items";
 export const ARTICLE_COLLECTIONS = ["insights", "news", "case-studies"] as const;
 export type ArticleCollection = (typeof ARTICLE_COLLECTIONS)[number];
 
@@ -93,7 +93,6 @@ export function validateRelations(): Promise<void> {
       new Set((await getCollection(c)).filter((e) => split(e.id).lang === SOURCE_LANG).map((e) => split(e.id).slug));
     const products = await slugs("products");
     const solutions = await slugs("solutions");
-    const scenarios = await slugs("scenarios");
     const errors: string[] = [];
     const expect = (file: string, field: string, list: string[] | undefined, known: Set<string>) => {
       for (const s of list ?? []) if (!known.has(s)) errors.push(`${file}: ${field} → "${s}" does not exist`);
@@ -105,7 +104,6 @@ export function validateRelations(): Promise<void> {
       expect(file, "relatedProducts", e.data.relatedProducts, products);
       if (e.data.relatedProducts?.includes(split(e.id).slug)) errors.push(`${file}: relatedProducts lists itself`);
       expect(file, "relatedSolutions", e.data.relatedSolutions, solutions);
-      expect(file, "integratedScenarios", e.data.integratedScenarios, scenarios);
       if (e.data.integratedOps?.products?.includes(split(e.id).slug)) errors.push(`${file}: integratedOps.products lists itself`);
     }
     for (const e of await getCollection("solutions")) {
@@ -119,9 +117,6 @@ export function validateRelations(): Promise<void> {
       expect(file, "relatedSolutions", e.data.relatedSolutions, solutions);
       expect(file, "relatedProducts", e.data.relatedProducts, products);
       for (const it of e.data.landing?.featured?.items ?? []) expect(file, "landing.featured", [it.solution], solutions);
-    }
-    for (const e of await getCollection("scenarios")) {
-      if (split(e.id).lang === SOURCE_LANG) expect(`scenarios/${e.id}.md`, "products", e.data.products, products);
     }
     const tags = await slugs("tags");
     const articles = { news: await slugs("news"), insights: await slugs("insights"), "case-studies": await slugs("case-studies") };

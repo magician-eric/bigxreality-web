@@ -19,8 +19,8 @@ test("[待提供] counts as content, so the section shows with the marker", () =
   assert.deepEqual(s, ["capabilities", "deployment", "integratedOps"]);
 });
 
-test("sections keep template order and integrated scenarios alone enable the scenarios block", () => {
-  const s = visibleProductSections({ relatedArticles: ["a"], integratedScenarios: ["mum-t"], overview: "x", relatedSolutions: ["military"] });
+test("sections keep template order", () => {
+  const s = visibleProductSections({ relatedArticles: ["a"], scenarios: [{ title: "x", description: "y" }], overview: "x", relatedSolutions: ["military"] });
   assert.deepEqual(s, ["overview", "scenarios", "relatedSolutions", "relatedArticles"]);
 });
 

@@ -62,6 +62,11 @@
     "smart-city": "SMART CITY",
     "other": "OTHER"
   },
+  "productDomains": {
+    "military": "軍事訓練",
+    "police": "警察訓練",
+    "fire-rescue": "消防・防災"
+  },
   "product": {
     "onThisPage": "このページの内容",
     "sections": {
@@ -112,9 +117,7 @@
       "minuteUnit": "[待翻譯] 分鐘",
       "approx": "[待翻譯] 約"
     },
-    "integratedScenario": "[待翻譯] 整合訓練情境",
-    "integratesWith": "[待翻譯] 可整合的產品",
-    "participants": "[待翻譯] 參與產品"
+    "integratesWith": "[待翻譯] 可整合的產品"
   },
   "articleTypes": {
     "insights": "[待翻譯] 技術文章",
@@ -248,7 +251,6 @@
     "findSolutions": "ソリューションを見る",
     "viewProducts": "製品を見る",
     "viewSolutions": "ソリューションを見る",
-    "viewIntegrated": "ソリューションを見る",
     "bookDemo": "担当者に相談する",
     "requestInfo": "資料請求",
     "productInquiry": "担当者に相談する",

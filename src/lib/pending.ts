@@ -49,7 +49,6 @@ export interface ProductSectionInput {
   capabilities?: unknown[];
   howItWorks?: unknown[];
   scenarios?: unknown[];
-  integratedScenarios?: unknown[];
   components?: unknown[];
   deployment?: Record<string, unknown>;
   integratedOps?: { description?: string; products?: unknown[] };
@@ -63,7 +62,7 @@ export function visibleProductSections(p: ProductSectionInput): ProductSection[]
     overview: hasContent(p.overview),
     capabilities: hasContent(p.capabilities),
     howItWorks: hasContent(p.howItWorks),
-    scenarios: hasContent(p.scenarios) || hasContent(p.integratedScenarios),
+    scenarios: hasContent(p.scenarios),
     components: hasContent(p.components),
     deployment: hasContent(p.deployment),
     integratedOps: hasContent(p.integratedOps?.description) || hasContent(p.integratedOps?.products),

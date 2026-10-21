@@ -2,6 +2,7 @@
 /**
  * Domain label (DS P.13): Label style + sector color, Deep on light / Light on dark.
  * Military, Police and Fire use the official 16 px CIS sector icon; Smart City has none.
+ * `label` replaces the solution name (products use their own category wording).
  */
 import army from "../../design-source/04_Graphics/Sector/BXR_ICON_SECTOR_ARMY_v3.2.svg?url";
 import police from "../../design-source/04_Graphics/Sector/BXR_ICON_SECTOR_POLICE_v3.2.svg?url";
@@ -11,8 +12,8 @@ import { getUi } from "../lib/ui";
 import Text from "./Text.astro";
 
 type Domain = "military" | "police" | "fire-rescue" | "smart-city";
-interface Props { domain: Domain; lang: Lang; icon?: boolean }
-const { domain, lang, icon = true } = Astro.props;
+interface Props { domain: Domain; lang: Lang; icon?: boolean; label?: string }
+const { domain, lang, icon = true, label } = Astro.props;
 const ui = getUi(lang);
 const icons: Partial<Record<Domain, string>> = { military: army, police, "fire-rescue": fire };
 const src = icon ? icons[domain] : undefined;
@@ -21,7 +22,7 @@ const src = icon ? icons[domain] : undefined;
   {src && <img src={src} alt="" width="16" height="16" />}
   <span>{ui.domainCodes[domain]}</span>
   <span aria-hidden="true">·</span>
-  <span><Text value={ui.domains[domain]} /></span>
+  <span><Text value={label ?? ui.domains[domain]} /></span>
 </span>
 <style>
   .sector-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--sector-color); }

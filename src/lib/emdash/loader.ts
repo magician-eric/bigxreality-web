@@ -37,10 +37,10 @@ type Mapped = { data: Json; body?: string; html?: string };
 /** Reference field → target collection: `related_news_by` → news, `tags` → tags, … */
 function targetOf(field: string): string | undefined {
   if (field === "tags") return "tags";
-  const m = /^(?:related|integrated)_(products|solutions|scenarios|news|insights|case_studies)(?:_by)?$/.exec(field);
+  const m = /^(?:related|integrated)_(products|solutions|news|insights|case_studies)(?:_by)?$/.exec(field);
   return m?.[1];
 }
-const REF_TARGET: Record<string, string> = { integrated_products: "products", integrated_by: "products", integrated_scenarios: "scenarios", parent_solution: "solutions" };
+const REF_TARGET: Record<string, string> = { integrated_products: "products", integrated_by: "products", parent_solution: "solutions" };
 
 const omitEmpty = (o: Json) =>
   Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)));
@@ -152,7 +152,6 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         howItWorks: titledList(d.how_it_works),
         scenarios: titledList(d.scenarios),
         components: d.components?.map((x: Json) => ({ name: x.name, description: x.description })),
-        integratedScenarios: refs.integrated_scenarios,
         deployment: hasDeploy
           ? omitEmpty({
               personnel: personnel(d.deploy_personnel, d.deploy_personnel_approx),
@@ -204,20 +203,6 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       }),
     };
   },
-  scenarios({ d, refs }) {
-    return {
-      data: omitEmpty({
-        translationStatus: d.translation_status,
-        draft: false,
-        order: d.sort_order,
-        code: d.code,
-        name: d.title,
-        englishName: d.english_name,
-        summary: d.summary,
-        products: refs.products,
-      }),
-    };
-  },
   pages(ctx) {
     const { d, item } = ctx;
     return {
@@ -227,9 +212,6 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         closing: d.closing_title ? { title: d.closing_title } : undefined,
         highlights: d.highlights_title ? { title: d.highlights_title, items: titledList(d.highlights_items) } : undefined,
         hero: omitEmpty({ eyebrow: d.eyebrow, title: d.title, lead: d.lead, description: d.description, image: ctx.image(d.hero_image), imageCaption: d.image_caption }),
-        integrated: d.integrated_title
-          ? { eyebrow: d.integrated_eyebrow, title: d.integrated_title, description: d.integrated_description }
-          : undefined,
         cta: d.cta_title ? { title: d.cta_title, description: d.cta_description, button: d.cta_button } : undefined,
       }),
     };
@@ -328,7 +310,7 @@ async function references(collection: string, id: string): Promise<Refs> {
   const full = await cmsGet(`/content/${collection}/${id}`);
   const out: Refs = {};
   for (const [field, ref] of Object.entries((full.item.references ?? {}) as Record<string, Json>)) {
-    const target = REF_TARGET[field] ?? (collection === "scenarios" && field === "products" ? "products" : targetOf(field));
+    const target = REF_TARGET[field] ?? targetOf(field);
     if (!target) continue;
     const published = await groupSlugs(target);
     out[field] = (ref.children ?? [])

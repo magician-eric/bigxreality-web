@@ -9,7 +9,7 @@ test("authors cannot publish unapproved content; editors can", () => {
   assert.ok(publishDecision("news", { review_status: "submitted" }, AUTHOR)?.cancel);
   assert.equal(publishDecision("news", { review_status: "approved" }, AUTHOR), undefined);
   assert.equal(publishDecision("news", { review_status: "draft" }, EDITOR), undefined);
-  assert.equal(publishDecision("scenarios", {}, AUTHOR), undefined);
+  assert.equal(publishDecision("tags", {}, AUTHOR), undefined);
 });
 
 test("case studies need client authorisation for everyone", () => {
