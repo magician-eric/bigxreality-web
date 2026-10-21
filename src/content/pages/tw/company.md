@@ -2,7 +2,7 @@
 # 公司介紹頁文案：業主提供（2026-10-21），逐字使用，僅移除段落結尾句號
 translationStatus: source
 seo:
-  title: "公司介紹"
+  title: "關於我們"
   description: "Big x Reality（BXR）全球動力科技是一家專注於軍事、警勤、消防防災及公共安全領域的虛實整合模擬訓練系統整合商，致力於提供高擬真、沉浸式的專業訓練解決方案"
 hero:
   eyebrow: About Big x Reality

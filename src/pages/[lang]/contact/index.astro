@@ -34,7 +34,7 @@ const breadcrumbs = [
 ---
 <BaseLayout
   lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/contact/" alternates={[...LANGS]}
-  pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" breadcrumbs={breadcrumbs}
+  pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" current="company" currentCompany="contact" breadcrumbs={breadcrumbs}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
   <section class="section">

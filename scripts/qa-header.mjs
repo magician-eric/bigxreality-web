@@ -5,9 +5,9 @@ import { chromium } from "playwright-core";
 import { startPreview, CHROMIUM } from "./lib/serve.mjs";
 
 const LABELS = {
-  tw: { top: ["解決方案", "產品介紹", "核心技術", "資源中心", "公司介紹"], sub: ["最新消息", "技術專欄", "成功案例"] },
-  en: { top: ["Solutions", "Products", "Technology", "Resources", "Company"], sub: ["News", "Insights", "Case Studies"] },
-  jp: { top: ["ソリューション", "製品情報", "コア技術", "リソース", "会社概要"], sub: ["ニュース", "技術コラム", "導入事例"] },
+  tw: { top: ["解決方案", "產品介紹", "核心技術", "資源中心", "關於 BXR"], sub: ["最新消息", "技術專欄", "成功案例"] },
+  en: { top: ["Solutions", "Products", "Technology", "Resources", "About BXR"], sub: ["News", "Insights", "Case Studies"] },
+  jp: { top: ["ソリューション", "製品情報", "コア技術", "リソース", "BXRについて"], sub: ["ニュース", "技術コラム", "導入事例"] },
 };
 const SUB_HREFS = (l) => [`/${l}/news/`, `/${l}/insights/`, `/${l}/cases/`];
 let failed = 0;
@@ -31,6 +31,8 @@ try {
         check(`${l}: five top-level items in order`, JSON.stringify(top) === JSON.stringify(want.top), top.join(" | "));
         const sub = await page.$$eval("#sub-resources a", (as) => as.map((a) => [a.textContent.trim(), a.getAttribute("href")]));
         check(`${l}: Resources menu has three items in order`, JSON.stringify(sub.map((x) => x[0])) === JSON.stringify(want.sub) && JSON.stringify(sub.map((x) => x[1])) === JSON.stringify(SUB_HREFS(l)), JSON.stringify(sub));
+        const about = await page.$$eval("#sub-company a", (as) => as.map((a) => [a.textContent.trim(), a.getAttribute("href")]));
+        check(`${l}: About BXR menu has six items in order`, JSON.stringify(about.map((x) => x[1])) === JSON.stringify([`/${l}/company/`, `/${l}/company/history/`, `/${l}/company/team/`, `/${l}/company/partners/`, `/${l}/company/investors/`, `/${l}/contact/`]) && (l !== "tw" || JSON.stringify(about.map((x) => x[0])) === JSON.stringify(["關於我們", "發展歷程", "經營團隊", "合作夥伴", "投資人專區", "聯絡我們"])), JSON.stringify(about));
       }
       const m = await page.evaluate(() => {
         const bar = document.querySelector(".site-header .bar");
@@ -55,7 +57,7 @@ try {
   // behaviour (zh-TW, desktop)
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`${base}/tw/products/`, { waitUntil: "networkidle" });
-  const toggle = page.locator(".sub-toggle");
+  const toggle = page.locator('[aria-controls="sub-resources"]');
   const inView = (sel) => page.$$eval(sel, (els) => els.every((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.left >= 0 && r.right <= window.innerWidth && r.bottom <= window.innerHeight; }));
   await toggle.hover();
   await page.waitForTimeout(100);
@@ -81,7 +83,7 @@ try {
   await page.keyboard.press("Tab");
   check("keyboard: Tab moves into the list", await page.evaluate(() => !!document.activeElement?.closest("#sub-resources")));
   await page.keyboard.press("Escape");
-  check("keyboard: Esc closes and returns focus", (await toggle.getAttribute("aria-expanded")) === "false" && (await page.evaluate(() => document.activeElement?.classList.contains("sub-toggle"))));
+  check("keyboard: Esc closes and returns focus", (await toggle.getAttribute("aria-expanded")) === "false" && (await page.evaluate(() => document.activeElement?.getAttribute("aria-controls") === "sub-resources")));
 
   // Active states
   const current = async (p) => {
@@ -96,16 +98,21 @@ try {
   check("Active: 解決方案 on a solution page", JSON.stringify(await current("/tw/solutions/military/")) === '["解決方案"]');
   await page.goto(`${base}/tw/company/`, { waitUntil: "networkidle" });
   check("company page: heading, three paragraphs and slogan", (await page.locator("h1").innerText()).trim() === "虛擬訓練．真實應變．守護未來" && (await page.locator(".page-hero .desc").count()) === 3 && (await page.locator("#company-slogan").innerText()).includes("Turn Every Drill into Real"));
-  check("Active: 公司介紹 on the company page", JSON.stringify(await current("/tw/company/")) === '["公司介紹"]');
+  check("Active: 關於 BXR on a sub-page and on the contact page", JSON.stringify(await current("/tw/company/history/")) === '["關於 BXR"]' && JSON.stringify(await current("/tw/contact/")) === '["關於 BXR"]');
+  await page.goto(`${base}/tw/company/investors/`, { waitUntil: "networkidle" });
+  await page.locator('[aria-controls="sub-company"]').click();
+  check("Active: the open About BXR menu marks 投資人專區", (await page.locator('#sub-company a[aria-current="page"]').textContent()).trim() === "投資人專區");
+  await page.mouse.click(700, 600);
+  check("Active: 關於 BXR on the company page", JSON.stringify(await current("/tw/company/")) === '["關於 BXR"]');
   check("Active: 資源中心 on the case list", JSON.stringify(await current("/tw/cases/")) === '["資源中心"]');
   check("Active: 資源中心 on the news list", JSON.stringify(await current("/tw/news/")) === '["資源中心"]');
   check("Active: 資源中心 on the insights list", JSON.stringify(await current("/tw/insights/")) === '["資源中心"]');
   await page.goto(`${base}/tw/cases/`, { waitUntil: "networkidle" });
-  await page.locator(".sub-toggle").click();
+  await page.locator('[aria-controls="sub-resources"]').click();
   check("Active: the open menu marks 成功案例", (await page.locator('#sub-resources a[aria-current="page"]').getAttribute("href")) === "/tw/cases/");
 
   // existing URLs unchanged
-  check("links: Technology and Company keep their URLs", (await page.locator('.nav-list > li > a').evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join() === "/tw/solutions/,/tw/products/,/tw/technologies/,/tw/company/");
+  check("links: the three direct items keep their URLs", (await page.locator('.nav-list > li > a').evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join() === "/tw/solutions/,/tw/products/,/tw/technologies/");
 
   // phone
   for (const l of ["tw", "en", "jp"]) {
@@ -114,7 +121,7 @@ try {
     await phone.click(".menu-toggle");
     const top = await phone.$$eval(".nav-list > li", (lis) => lis.map((li) => (li.querySelector("a,button")?.textContent ?? "").trim()));
     check(`phone ${l}: menu shows the five items`, JSON.stringify(top) === JSON.stringify(LABELS[l].top), top.join(" | "));
-    await phone.tap(".sub-toggle");
+    await phone.tap('[aria-controls="sub-resources"]');
     const subs = await phone.$$eval("#sub-resources a", (as) => as.filter((a) => a.getBoundingClientRect().width > 0).map((a) => a.textContent.trim()));
     check(`phone ${l}: Resources expands to three items`, JSON.stringify(subs) === JSON.stringify(LABELS[l].sub), subs.join(" | "));
     check(`phone ${l}: no horizontal scroll`, await phone.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));

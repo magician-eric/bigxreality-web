@@ -20,12 +20,12 @@ const ui = getUi(lang);
 const copy = (await getEntry("pages", `${lang}/company`))!.data;
 const breadcrumbs = [
   { name: ui.home, path: localePath(lang) },
-  { name: ui.nav.company, path: localePath(lang, "company") },
+  { name: ui.nav.aboutUs, path: localePath(lang, "company") },
 ];
 ---
 <BaseLayout
   lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/company/" alternates={[...LANGS]}
-  pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" current="company" breadcrumbs={breadcrumbs}
+  pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" current="company" currentCompany="about" breadcrumbs={breadcrumbs}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
   {copy.closing && (

@@ -1,0 +1,65 @@
+---
+/**
+ * Shared frame of the About BXR sub-pages (history, team, partners, investors): dark hero with
+ * breadcrumb, then the content. A page with no published content shows a plain empty state, is
+ * noindex and stays out of the sitemap; nothing is invented to fill it.
+ */
+import { getEntry } from "astro:content";
+import { LANGS, localePath, type Lang } from "../i18n";
+import type { CompanyKey } from "./Header.astro";
+import { getUi } from "../lib/ui";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "./PageHero.astro";
+import Text from "./Text.astro";
+
+interface Props {
+  lang: Lang;
+  /** `pages` entry that holds the hero copy. */
+  page: "history" | "team" | "partners" | "investors";
+  currentCompany: CompanyKey;
+  /** Path below /{lang}/company/, e.g. "history" or "investors/profile". */
+  path: string;
+  empty: boolean;
+  alternates: Lang[];
+  /** Overrides for a sub-page (an investor module). */
+  title?: string;
+  description?: string;
+  crumbs?: { name: string; path: string }[];
+}
+const { lang, page, currentCompany, path, empty, alternates, title, description, crumbs = [] } = Astro.props;
+const ui = getUi(lang);
+const t = ui.companyPages;
+const copy = (await getEntry("pages", `${lang}/${page}`))!.data;
+const heroTitle = title ?? copy.hero.title;
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: copy.hero.title, path: localePath(lang, "company", page) },
+  ...crumbs,
+];
+---
+<BaseLayout
+  lang={lang} title={title ?? copy.seo.title} description={description ?? copy.seo.description}
+  pathTemplate={`/{lang}/company/${path}/`} alternates={alternates} fallbackPath="/{lang}/company/"
+  pendingTranslation={copy.translationStatus === "pending"} noindex={empty}
+  headerTheme="dark" current="company" currentCompany={currentCompany} breadcrumbs={breadcrumbs}
+>
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={heroTitle} description={description ?? copy.hero.description} />
+  <section class="section">
+    <div class="container">
+      {empty ? (
+        <div class="empty" role="status" data-company-empty>
+          <p class="t-h4"><Text value={t.empty} /></p>
+          <p class="t-muted"><Text value={t.hint} /></p>
+          <a class="btn btn--secondary" href={localePath(lang, "contact")}><Text value={t.cta} /></a>
+        </div>
+      ) : (
+        <slot />
+      )}
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .empty { display: grid; gap: var(--space-2); justify-items: start; padding: var(--space-8) var(--space-5); border: 1px solid var(--bxr-line); background: var(--bxr-paper); }
+  .empty p { margin: 0; }
+  @media (max-width: 767px) { .empty { padding: var(--space-5) var(--space-3); } }
+</style>

@@ -1,0 +1,90 @@
+---
+/**
+ * /[lang]/company/investors/[module]/ — one investor module. Built only for modules that have
+ * published records. Basic information and the contact window show as a list of facts; the other
+ * modules show dated records, newest first, with their attachments as downloads.
+ */
+import { LANGS, localePath, type Lang } from "../../../../i18n";
+import { INVESTOR_MODULES, companyContent, enabledModules, investorItems, type InvestorModule } from "../../../../lib/company";
+import { getUi } from "../../../../lib/ui";
+import { INTL_LOCALE } from "../../../../i18n";
+import CompanyShell from "../../../../components/CompanyShell.astro";
+import Text from "../../../../components/Text.astro";
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of LANGS) for (const module of await enabledModules(lang)) paths.push({ params: { lang, module } });
+  return paths;
+}
+const lang = Astro.params.lang as Lang;
+const module = Astro.params.module as InvestorModule;
+const ui = getUi(lang);
+const t = ui.companyPages;
+const items = await investorItems(lang, module);
+const modules = await enabledModules(lang);
+const alternates: Lang[] = [];
+for (const l of LANGS) if ((await companyContent(l)).modules.includes(module)) alternates.push(l);
+const facts = module === "profile" || module === "contact";
+const fmt = (d: Date) => new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const info = t.investorModules[module];
+---
+<CompanyShell
+  lang={lang} page="investors" currentCompany="investors" path={`investors/${module}`} empty={items.length === 0} alternates={alternates}
+  title={info.title} description={info.description}
+  crumbs={[{ name: info.title, path: localePath(lang, "company", "investors", module) }]}
+>
+  <nav class="modules" aria-label={t.modulesLabel}>
+    <ul role="list">
+      {INVESTOR_MODULES.filter((m) => modules.includes(m)).map((m) => (
+        <li><a href={localePath(lang, "company", "investors", m)} aria-current={m === module ? "page" : undefined}><Text value={t.investorModules[m].title} /></a></li>
+      ))}
+    </ul>
+  </nav>
+  {facts ? (
+    <dl class="facts">
+      {items.map((i) => (
+        <div><dt><Text value={i.loc.data.title} /></dt><dd>{i.loc.data.summary && <Text value={i.loc.data.summary} />}</dd></div>
+      ))}
+    </dl>
+  ) : (
+    <ul role="list" class="records">
+      {items.map((i) => (
+        <li class="record">
+          <p class="t-tech meta">
+            <time datetime={iso(i.base.data.publishDate)}>{fmt(i.base.data.publishDate)}</time>
+            {i.loc.data.category && <> · <Text value={i.loc.data.category} /></>}
+          </p>
+          <h2 class="t-h4"><Text value={i.loc.data.title} /></h2>
+          {i.loc.data.summary && <p class="t-muted"><Text value={i.loc.data.summary} /></p>}
+          {i.loc.data.attachments && i.loc.data.attachments.length > 0 && (
+            <ul role="list" class="files">
+              {i.loc.data.attachments.map((a) => (
+                <li><a class="btn btn--secondary btn--sm" href={a.url} rel="noopener" target="_blank" download><span class="visually-hidden"><Text value={t.download} />：</span><Text value={a.label} /></a></li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  )}
+</CompanyShell>
+<style>
+  .modules { margin-bottom: var(--space-5); }
+  .modules ul { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .modules a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-2); border: 1px solid var(--bxr-ash); color: var(--ink); text-decoration: none; font-size: var(--fs-small); font-weight: 500; }
+  .modules a:hover { border-color: var(--bxr-black); }
+  .modules a[aria-current="page"] { background: var(--bxr-black); color: var(--bxr-white); border-color: var(--bxr-black); }
+  .facts { display: grid; margin: 0; }
+  .facts div { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: var(--gutter); padding-block: var(--space-2); border-top: 1px solid var(--bxr-line); }
+  .facts div:first-child { border-top: 2px solid var(--ink); }
+  .facts dt { color: var(--ink-muted); }
+  .facts dd { margin: 0; }
+  .records { display: grid; margin: 0; padding: 0; list-style: none; }
+  .record { display: grid; gap: var(--space-1); padding-block: var(--space-3); border-top: 1px solid var(--bxr-line); }
+  .record:first-child { border-top: 2px solid var(--ink); }
+  .record h2, .record p { margin: 0; }
+  .meta { color: var(--ink-muted); }
+  .files { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-1) 0 0; padding: 0; list-style: none; }
+  @media (max-width: 767px) { .facts div { grid-template-columns: 1fr; gap: 4px; } }
+</style>

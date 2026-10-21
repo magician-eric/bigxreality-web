@@ -1,0 +1,10 @@
+---
+# 關於 BXR 子頁的頁首文案（頁名依官方選單；沒有提供其他文案，內容由 CMS 的「經營團隊」資料產生）
+translationStatus: source
+seo:
+  title: "經營團隊"
+  description: "Big x Reality 全球動力科技的經營團隊"
+hero:
+  eyebrow: Management
+  title: "經營團隊"
+---
