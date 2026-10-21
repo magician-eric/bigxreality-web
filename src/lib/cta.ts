@@ -26,6 +26,8 @@ type Ctx =
   /** Product landing page: one inquiry button (owner decision 2026-10-20: demo / brochure
    *  buttons stay off until those services are confirmed). */
   | { page: "productInquiry"; code: string; label: string }
+  /** Solution landing page: one inquiry button with the solution name filled in. */
+  | { page: "solutionInquiry"; name: string; label: string }
   | { page: "solution"; name: string };
 
 export function ctaSet(lang: Lang, ctx: Ctx): CtaSet {
@@ -59,6 +61,11 @@ export function ctaSet(lang: Lang, ctx: Ctx): CtaSet {
       return {
         hero: [p(ctx.label, contactHref(lang, "product", ctx.code))],
         footer: [p(ctx.label, contactHref(lang, "product", ctx.code))],
+      };
+    case "solutionInquiry":
+      return {
+        hero: [p(ctx.label, contactHref(lang, "solution", ctx.name))],
+        footer: [p(ctx.label, contactHref(lang, "solution", ctx.name))],
       };
     case "solution":
       return {

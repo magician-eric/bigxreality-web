@@ -43,10 +43,10 @@
     "reset": "[待翻譯] 清除篩選"
   },
   "domains": {
-    "military": "[待翻譯] 軍事",
-    "police": "[待翻譯] 警勤",
-    "fire-rescue": "[待翻譯] 消防與防救災",
-    "smart-city": "[待翻譯] 智慧城市",
+    "military": "軍事シミュレーション",
+    "police": "警察訓練シミュレーション",
+    "fire-rescue": "消防・防災",
+    "smart-city": "スマートシティ",
     "other": "[待翻譯] 其他"
   },
   "domainCodes": {
@@ -270,7 +270,9 @@
       "flow": "Training Flow",
       "scenarios": "Applications",
       "values": "Value",
-      "related": "Related"
+      "related": "Related",
+      "featured": "Integration",
+      "audience": "Suited For"
     },
     "valueLabel": "[待翻譯] 訓練價值",
     "focusLabel": "[待翻譯] 訓練重點",

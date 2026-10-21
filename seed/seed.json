@@ -957,6 +957,11 @@
      "type": "text"
     },
     {
+     "slug": "card_label",
+     "label": "總覽卡片按鈕文字（例：探索軍事模擬）",
+     "type": "string"
+    },
+    {
      "slug": "hero_image",
      "label": "主圖",
      "type": "image"
@@ -1037,6 +1042,645 @@
      "type": "integer",
      "required": true,
      "translatable": false
+    },
+    {
+     "slug": "landing_headline",
+     "label": "落地頁｜Hero 主標題（有填才使用銷售落地頁版型）",
+     "type": "string"
+    },
+    {
+     "slug": "landing_subheadline",
+     "label": "落地頁｜Hero 副標題",
+     "type": "text"
+    },
+    {
+     "slug": "landing_intro",
+     "label": "落地頁｜Hero 產品簡介",
+     "type": "text"
+    },
+    {
+     "slug": "landing_cta_label",
+     "label": "落地頁｜CTA 按鈕文字（Hero 與頁尾共用）",
+     "type": "string"
+    },
+    {
+     "slug": "landing_hero_image",
+     "label": "落地頁｜Hero 圖片（16:9）",
+     "type": "image"
+    },
+    {
+     "slug": "landing_hero_need",
+     "label": "落地頁｜Hero 素材需求（圖片尚未提供時顯示）",
+     "type": "string"
+    },
+    {
+     "slug": "landing_hero_kind",
+     "label": "落地頁｜Hero 圖片類型（實際核准圖片／情境示意圖）",
+     "type": "select",
+     "validation": {
+      "options": [
+       "approved",
+       "illustration"
+      ]
+     }
+    },
+    {
+     "slug": "landing_hero_status",
+     "label": "落地頁｜Hero 圖片公開狀態（withheld＝未核准，不會公開）",
+     "type": "select",
+     "validation": {
+      "options": [
+       "public",
+       "withheld"
+      ]
+     }
+    },
+    {
+     "slug": "landing_hero_substitute",
+     "label": "落地頁｜Hero 替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+     "type": "image"
+    },
+    {
+     "slug": "landing_challenge_title",
+     "label": "落地頁｜訓練挑戰：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_challenge_intro",
+     "label": "落地頁｜訓練挑戰：導言（段落之間空一行）",
+     "type": "text"
+    },
+    {
+     "slug": "landing_challenge_cards",
+     "label": "落地頁｜訓練挑戰：卡片",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_challenge_note",
+     "label": "落地頁｜訓練挑戰：區塊結語",
+     "type": "text"
+    },
+    {
+     "slug": "landing_approach_title",
+     "label": "落地頁｜解決方式：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_approach_intro",
+     "label": "落地頁｜解決方式：導言（段落之間空一行）",
+     "type": "text"
+    },
+    {
+     "slug": "landing_approach_images",
+     "label": "落地頁｜解決方式：圖片（最多 2 張，例：實際操作照片＋虛擬場景）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_approach_pillars",
+     "label": "落地頁｜解決方式：技術價值（VR／XR／AI 等）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_capabilities_title",
+     "label": "落地頁｜核心能力：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_capabilities_intro",
+     "label": "落地頁｜核心能力：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_capabilities",
+     "label": "落地頁｜核心能力：項目",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "content",
+        "label": "內容",
+        "type": "text",
+        "required": true
+       },
+       {
+        "slug": "value",
+        "label": "訓練價值",
+        "type": "text"
+       },
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_flow_title",
+     "label": "落地頁｜訓練流程：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_flow_intro",
+     "label": "落地頁｜訓練流程：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_flow_steps",
+     "label": "落地頁｜訓練流程：步驟",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       },
+       {
+        "slug": "icon",
+        "label": "圖示",
+        "type": "select",
+        "validation": {
+         "options": [
+          "target",
+          "team",
+          "variation",
+          "review",
+          "route",
+          "headset",
+          "link"
+         ]
+        }
+       },
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_flow_note",
+     "label": "落地頁｜訓練流程：補充說明",
+     "type": "text"
+    },
+    {
+     "slug": "landing_scenarios_title",
+     "label": "落地頁｜應用情境：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_scenarios_intro",
+     "label": "落地頁｜應用情境：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_scenarios",
+     "label": "落地頁｜應用情境：項目",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "情境說明",
+        "type": "text",
+        "required": true
+       },
+       {
+        "slug": "focus",
+        "label": "訓練重點",
+        "type": "text"
+       },
+       {
+        "slug": "image",
+        "label": "圖片",
+        "type": "image"
+       },
+       {
+        "slug": "need",
+        "label": "素材需求（圖片尚未提供時顯示在預留區）",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "圖說（選填）",
+        "type": "string"
+       },
+       {
+        "slug": "ratio",
+        "label": "建議比例",
+        "type": "select",
+        "validation": {
+         "options": [
+          "16 / 9",
+          "3 / 2",
+          "4 / 3",
+          "4 / 5",
+          "1 / 1"
+         ]
+        }
+       },
+       {
+        "slug": "kind",
+        "label": "圖片類型（實際核准圖片／情境示意圖；示意圖會自動標示「情境示意圖」）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "approved",
+          "illustration"
+         ]
+        }
+       },
+       {
+        "slug": "status",
+        "label": "公開狀態（withheld＝未核准，不會公開，改用替代圖片或預留視覺）",
+        "type": "select",
+        "validation": {
+         "options": [
+          "public",
+          "withheld"
+         ]
+        }
+       },
+       {
+        "slug": "substitute",
+        "label": "替代圖片（原圖未核准時改用，會標示「情境示意圖」）",
+        "type": "image"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_values_title",
+     "label": "落地頁｜導入價值：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_values_intro",
+     "label": "落地頁｜導入價值：導言",
+     "type": "text"
+    },
+    {
+     "slug": "landing_values_cards",
+     "label": "落地頁｜導入價值：卡片",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_values_note",
+     "label": "落地頁｜導入價值：區塊結語",
+     "type": "text"
+    },
+    {
+     "slug": "landing_cases_intro",
+     "label": "落地頁｜實際應用案例：說明（案例本身由「案例」集合的關聯自動帶入，沒有案例時整塊隱藏）",
+     "type": "text"
+    },
+    {
+     "slug": "landing_featured_title",
+     "label": "落地頁｜重點整合方案：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_featured_intro",
+     "label": "落地頁｜重點整合方案：說明",
+     "type": "text"
+    },
+    {
+     "slug": "landing_featured_items",
+     "label": "落地頁｜重點整合方案：項目（並列卡片，連到對應解決方案頁）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明（段落以空白行分隔）",
+        "type": "text",
+        "required": true
+       },
+       {
+        "slug": "ctaLabel",
+        "label": "按鈕文字",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "solution",
+        "label": "對應解決方案的代稱（slug）",
+        "type": "string",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_audience_title",
+     "label": "落地頁｜適用訓練需求：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_audience_intro",
+     "label": "落地頁｜適用訓練需求：說明",
+     "type": "text"
+    },
+    {
+     "slug": "landing_audience_cards",
+     "label": "落地頁｜適用訓練需求：卡片",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "landing_audience_note",
+     "label": "落地頁｜適用訓練需求：結語",
+     "type": "text"
+    },
+    {
+     "slug": "landing_related_title",
+     "label": "落地頁｜關聯產品與解決方案：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_related_intro",
+     "label": "落地頁｜關聯產品與解決方案：說明",
+     "type": "text"
+    },
+    {
+     "slug": "landing_closing_title",
+     "label": "落地頁｜頁尾 CTA：標題",
+     "type": "string"
+    },
+    {
+     "slug": "landing_closing_description",
+     "label": "落地頁｜頁尾 CTA：說明",
+     "type": "text"
+    },
+    {
+     "slug": "parent_solution",
+     "label": "所屬解決方案（MUM-T、NOVA 填「軍事模擬」；它們不是第五個分類）",
+     "type": "reference",
+     "validation": {
+      "relation": "solution_parent",
+      "relationSide": "parent"
+     }
+    },
+    {
+     "slug": "related_solutions",
+     "label": "相關解決方案",
+     "type": "reference",
+     "validation": {
+      "relation": "solution_related",
+      "relationSide": "parent"
+     }
     }
    ]
   },
@@ -1808,6 +2452,32 @@
      "type": "string"
     },
     {
+     "slug": "highlights_title",
+     "label": "重點卡片：標題（解決方案總覽頁）",
+     "type": "string"
+    },
+    {
+     "slug": "highlights_items",
+     "label": "重點卡片：項目",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "標題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "description",
+        "label": "說明",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
      "slug": "integrated_eyebrow",
      "label": "整合訓練情境：小標（產品總覽頁用）",
      "type": "string",
@@ -2077,6 +2747,20 @@
    "childCollection": "products",
    "parentLabel": "被列為相關產品",
    "childLabel": "其他相關產品"
+  },
+  {
+   "slug": "solution_parent",
+   "parentCollection": "solutions",
+   "childCollection": "solutions",
+   "parentLabel": "包含的解決方案",
+   "childLabel": "所屬解決方案"
+  },
+  {
+   "slug": "solution_related",
+   "parentCollection": "solutions",
+   "childCollection": "solutions",
+   "parentLabel": "被列為相關",
+   "childLabel": "相關解決方案"
   }
  ]
 }

@@ -22,8 +22,8 @@
   "logoHome": "Big x Reality 首頁",
   "breadcrumbLabel": "麵包屑",
   "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
-  "imagePending": "[產品圖・待提供]",
-  "solutionImagePending": "[解決方案圖・待提供]",
+  "imagePending": "產品圖片",
+  "solutionImagePending": "解決方案圖片",
   "syntheticImage": "合成示意",
   "buttons": {
     "brochure": "型錄申請 Request brochure",
@@ -43,9 +43,9 @@
     "reset": "清除篩選"
   },
   "domains": {
-    "military": "軍事",
-    "police": "警勤",
-    "fire-rescue": "消防與防救災",
+    "military": "軍事模擬",
+    "police": "警勤模擬",
+    "fire-rescue": "消防防災",
     "smart-city": "智慧城市",
     "other": "其他"
   },
@@ -126,7 +126,7 @@
     "privacy": "隱私權政策",
     "rights": "版權所有"
   },
-  "coverPending": "[封面・待提供]",
+  "coverPending": "封面圖片",
   "solution": {
     "sections": {
       "overview": {
@@ -260,8 +260,8 @@
       }
     },
     "placeholders": {
-      "hero": "產品主視覺（圖片待提供）",
-      "showcase": "產品展示圖（圖片待提供）"
+      "hero": "產品主視覺",
+      "showcase": "產品展示圖"
     },
     "eyebrows": {
       "challenge": "Training Challenge",
@@ -270,13 +270,15 @@
       "flow": "Training Flow",
       "scenarios": "Applications",
       "values": "Value",
-      "related": "Related"
+      "related": "Related",
+      "featured": "Integration",
+      "audience": "Suited For"
     },
     "valueLabel": "訓練價值",
     "focusLabel": "訓練重點",
     "stepLabel": "STEP",
     "mediaNeed": "素材需求｜",
-    "mediaPending": "圖片待提供",
+    "mediaPending": "圖片",
     "illustrationLabel": "情境示意圖"
   },
   "contactPage": {

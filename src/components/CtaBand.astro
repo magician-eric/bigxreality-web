@@ -1,14 +1,14 @@
 ---
 /** Dark call-to-action band: title, description, red primary + outline secondary (passed as slot content). */
 import Text from "./Text.astro";
-interface Props { title: string; description: string; id?: string }
+interface Props { title: string; description?: string; id?: string }
 const { title, description, id } = Astro.props;
 ---
 <section class="cta-band" data-theme="dark" aria-labelledby={id}>
   <div class="container inner">
     <div class="copy">
       <h2 class="t-h2" id={id}><Text value={title} /></h2>
-      <p class="desc"><Text value={description} /></p>
+      {description && <p class="desc"><Text value={description} /></p>}
     </div>
     <div class="actions"><slot /></div>
   </div>

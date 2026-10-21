@@ -158,6 +158,8 @@ async function landingFields(L, file) {
     landing_scenarios_title: L.scenarios?.title, landing_scenarios_intro: L.scenarios?.intro, landing_scenarios: await all(L.scenarios?.items, (x) => withSlot(x, ["title", "description", "focus"])),
     landing_values_title: L.values?.title, landing_values_intro: L.values?.intro, landing_values_cards: L.values?.cards, landing_values_note: L.values?.note,
     landing_cases_intro: L.casesIntro,
+    landing_featured_title: L.featured?.title, landing_featured_intro: L.featured?.intro, landing_featured_items: L.featured?.items,
+    landing_audience_title: L.audience?.title, landing_audience_intro: L.audience?.intro, landing_audience_cards: L.audience?.cards, landing_audience_note: L.audience?.note,
     landing_related_title: L.related?.title, landing_related_intro: L.related?.intro,
     landing_closing_title: L.closing?.title, landing_closing_description: L.closing?.description,
   });
@@ -195,6 +197,7 @@ const MAP = {
       hero_description: d.heroDescription, hero_image: await image(d.image, file),
       overview: body ? await toPortableText(body, file, upload) : undefined,
       challenges: d.challenges, capabilities: d.capabilities,
+      card_label: d.cardLabel, ...(await landingFields(d.landing, file)),
       cta_title: d.cta?.title, cta_description: d.cta?.description, source_note: d.sourceNote,
     }),
     seo: seoOf(d.seo),
@@ -206,6 +209,7 @@ const MAP = {
     data: clean({
       title: d.hero.title, translation_status: d.translationStatus, eyebrow: d.hero.eyebrow, lead: d.hero.lead, description: d.hero.description,
       hero_image: await image(d.hero.image, file), image_caption: d.hero.imageCaption,
+      highlights_title: d.highlights?.title, highlights_items: d.highlights?.items,
       integrated_eyebrow: d.integrated?.eyebrow, integrated_title: d.integrated?.title, integrated_description: d.integrated?.description,
       cta_title: d.cta?.title, cta_description: d.cta?.description,
     }),
@@ -303,6 +307,12 @@ for (const [slug, d] of Object.entries(source.products ?? {})) {
   add("products", slug, "related_solutions", d.relatedSolutions);
   add("products", slug, "related_products", d.relatedProducts);
 }
+for (const [slug, d] of Object.entries(source.solutions ?? {})) {
+  add("solutions", slug, "parent_solution", d.parent ? [d.parent] : undefined);
+  add("solutions", slug, "related_solutions", d.relatedSolutions);
+  // stored on the product side (products.related_solutions); solutions read it back as related_products
+  for (const p of d.relatedProducts ?? []) add("products", p, "related_solutions", [slug]);
+}
 for (const [slug, d] of Object.entries(source.scenarios ?? {})) add("scenarios", slug, "products", d.products);
 for (const [slug, d] of Object.entries(source.products ?? {})) for (const s of d.integratedScenarios ?? []) add("scenarios", s, "products", [slug]);
 const RANK = { news: 0, insights: 1, case_studies: 2 };
@@ -321,7 +331,7 @@ for (const coll of ARTICLE) {
     }
   }
 }
-const TARGET = (coll, field) => (field === "tags" ? "tags" : field === "products" || field === "integrated_products" || field === "related_products" ? "products" : field.replace(/^related_/, ""));
+const TARGET = (coll, field) => (field === "tags" ? "tags" : field === "parent_solution" ? "solutions" : field === "products" || field === "integrated_products" || field === "related_products" ? "products" : field.replace(/^related_/, ""));
 let linked = 0;
 for (const [k, fields] of edges) {
   const [coll, slug] = k.split("/");

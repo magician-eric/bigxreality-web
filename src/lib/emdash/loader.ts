@@ -40,7 +40,7 @@ function targetOf(field: string): string | undefined {
   const m = /^(?:related|integrated)_(products|solutions|scenarios|news|insights|case_studies)(?:_by)?$/.exec(field);
   return m?.[1];
 }
-const REF_TARGET: Record<string, string> = { integrated_products: "products", integrated_by: "products", integrated_scenarios: "scenarios" };
+const REF_TARGET: Record<string, string> = { integrated_products: "products", integrated_by: "products", integrated_scenarios: "scenarios", parent_solution: "solutions" };
 
 const omitEmpty = (o: Json) =>
   Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)));
@@ -88,6 +88,8 @@ function landingFrom(d: Json, image: Ctx["image"]): Json | undefined {
     scenarios: d.landing_scenarios?.length ? opt({ title: d.landing_scenarios_title, intro: d.landing_scenarios_intro, items: d.landing_scenarios.map((x: Json) => withSlot(x, ["title", "description", "focus"])) }) : undefined,
     values: d.landing_values_cards?.length ? opt({ title: d.landing_values_title, intro: d.landing_values_intro, cards: list(d.landing_values_cards, ["title", "description"]), note: d.landing_values_note }) : undefined,
     casesIntro: d.landing_cases_intro,
+    featured: d.landing_featured_title ? opt({ title: d.landing_featured_title, intro: d.landing_featured_intro, items: list(d.landing_featured_items, ["title", "description", "ctaLabel", "solution"]) }) : undefined,
+    audience: d.landing_audience_title ? opt({ title: d.landing_audience_title, intro: d.landing_audience_intro, cards: list(d.landing_audience_cards, ["title", "description"]), note: d.landing_audience_note }) : undefined,
     related: d.landing_related_title ? opt({ title: d.landing_related_title, intro: d.landing_related_intro }) : undefined,
     closing: opt({ title: d.landing_closing_title, description: d.landing_closing_description }),
   });
@@ -158,7 +160,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
     };
   },
   solutions(ctx) {
-    const { d } = ctx;
+    const { d, refs } = ctx;
     const overview = ctx.rich(d.overview);
     return {
       body: overview.text,
@@ -171,6 +173,11 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
         name: d.title,
         englishName: d.english_name,
         summary: d.summary,
+        cardLabel: d.card_label,
+        parent: refs.parent_solution?.[0],
+        relatedSolutions: refs.related_solutions,
+        relatedProducts: refs.related_products,
+        landing: landingFrom(d, ctx.image),
         heroDescription: d.hero_description,
         image: ctx.image(d.hero_image),
         challenges: titledList(d.challenges),
@@ -201,6 +208,7 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       data: omitEmpty({
         translationStatus: d.translation_status,
         seo: { title: item.seo?.title || d.title, description: item.seo?.description || d.description },
+        highlights: d.highlights_title ? { title: d.highlights_title, items: titledList(d.highlights_items) } : undefined,
         hero: omitEmpty({ eyebrow: d.eyebrow, title: d.title, lead: d.lead, description: d.description, image: ctx.image(d.hero_image), imageCaption: d.image_caption }),
         integrated: d.integrated_title
           ? { eyebrow: d.integrated_eyebrow, title: d.integrated_title, description: d.integrated_description }

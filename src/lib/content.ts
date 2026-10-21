@@ -108,6 +108,18 @@ export function validateRelations(): Promise<void> {
       expect(file, "integratedScenarios", e.data.integratedScenarios, scenarios);
       if (e.data.integratedOps?.products?.includes(split(e.id).slug)) errors.push(`${file}: integratedOps.products lists itself`);
     }
+    for (const e of await getCollection("solutions")) {
+      if (split(e.id).lang !== SOURCE_LANG) continue;
+      const file = `solutions/${e.id}.md`;
+      const self = split(e.id).slug;
+      if (e.data.parent) {
+        expect(file, "parent", [e.data.parent], solutions);
+        if (e.data.parent === self) errors.push(`${file}: parent lists itself`);
+      }
+      expect(file, "relatedSolutions", e.data.relatedSolutions, solutions);
+      expect(file, "relatedProducts", e.data.relatedProducts, products);
+      for (const it of e.data.landing?.featured?.items ?? []) expect(file, "landing.featured", [it.solution], solutions);
+    }
     for (const e of await getCollection("scenarios")) {
       if (split(e.id).lang === SOURCE_LANG) expect(`scenarios/${e.id}.md`, "products", e.data.products, products);
     }

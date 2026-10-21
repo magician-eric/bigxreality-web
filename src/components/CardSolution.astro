@@ -7,8 +7,8 @@ import ImagePlaceholder from "./ImagePlaceholder.astro";
 import Text from "./Text.astro";
 
 type Domain = "military" | "police" | "fire-rescue" | "smart-city";
-interface Props { lang: Lang; href: string; domain: Domain; name: string; englishName: string; summary: string; image?: { src: ImageMetadata; alt: string } }
-const { lang, href, domain, name, englishName, summary, image } = Astro.props;
+interface Props { lang: Lang; href: string; domain: Domain; name: string; englishName: string; summary: string; image?: { src: ImageMetadata; alt: string }; label?: string }
+const { lang, href, domain, name, englishName, summary, image, label } = Astro.props;
 const ui = getUi(lang);
 ---
 <article class={`card sector--${domain}`}>
@@ -22,9 +22,12 @@ const ui = getUi(lang);
     <h3 class="t-h4 title"><a href={href}><Text value={name} /></a></h3>
     <p class="t-tech english"><Text value={englishName} /></p>
     <p class="t-small summary"><Text value={summary} /></p>
+    {label && <p class="more" aria-hidden="true"><Text value={label} /> →</p>}
   </div>
 </article>
 <style>
+  .more { margin: var(--space-2) 0 0; font-weight: 500; color: var(--ink); }
+  .card:hover .more { color: var(--bxr-text-red); }
   .card { position: relative; display: flex; flex-direction: column; height: 100%; border: 1px solid var(--divider); background: var(--surface); }
   .media { overflow: hidden; aspect-ratio: 16 / 9; }
   .media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-standard) var(--ease-precise); }

@@ -1,0 +1,138 @@
+---
+/**
+ * Solution landing page, shared by every solution that has a `landing` block (the four categories
+ * and the solutions under them, MUM-T and NOVA). Same sections and components as the product
+ * landing: hero (+CTA) → LandingSections → applied cases → related products and solutions → closing CTA.
+ * Related products are those that list this solution (products.relatedSolutions) plus the ones the
+ * solution names itself; with none, the block shows only related solutions, or nothing.
+ */
+import type { CollectionEntry } from "astro:content";
+import { localePath, type Lang } from "../i18n";
+import { availableLangs, getLocalized } from "../lib/content";
+import { ctaSet } from "../lib/cta";
+import { alternatingSections } from "../lib/landing";
+import { casesAbout } from "../lib/cases";
+import { isPending } from "../lib/pending";
+import { getUi } from "../lib/ui";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "./PageHero.astro";
+import SectionHead from "./SectionHead.astro";
+import LandingSections from "./LandingSections.astro";
+import CardProduct from "./CardProduct.astro";
+import CardSolution from "./CardSolution.astro";
+import CtaBand from "./CtaBand.astro";
+import CtaGroup from "./CtaGroup.astro";
+import RelatedCases from "./RelatedCases.astro";
+
+interface Props {
+  lang: Lang;
+  slug: string;
+  base: CollectionEntry<"solutions">["data"];
+  data: CollectionEntry<"solutions">["data"];
+  pendingTranslation: boolean;
+}
+const { lang, slug, base, data: d, pendingTranslation } = Astro.props;
+const L = d.landing!;
+const ui = getUi(lang);
+const t = ui.productLanding;
+const e = t.eyebrows;
+const cta = ctaSet(lang, { page: "solutionInquiry", name: d.name, label: L.ctaLabel });
+const hero = L.heroImage;
+const heroReady = hero?.src && hero.alt;
+
+const allSolutions = await getLocalized("solutions", lang);
+const parent = base.parent ? allSolutions.find((s) => s.slug === base.parent) : undefined;
+const relatedProducts = (await getLocalized("products", lang)).filter(
+  (p) => (p.base.data.relatedSolutions ?? []).includes(slug) || (base.relatedProducts ?? []).includes(p.slug),
+);
+const relatedSolutions = [
+  ...(parent ? [parent] : []),
+  ...allSolutions.filter((s) => s.slug !== slug && (base.relatedSolutions ?? []).includes(s.slug) && s.slug !== parent?.slug),
+];
+const known = (v?: string) => (v && !isPending(v) ? v : undefined);
+const showRelated = !!L.related && (relatedProducts.length > 0 || relatedSolutions.length > 0);
+const cases = await casesAbout("relatedSolutions", slug, lang);
+
+const breadcrumbs = [
+  { name: ui.home, path: localePath(lang) },
+  { name: ui.nav.solutions, path: localePath(lang, "solutions") },
+  ...(parent ? [{ name: parent.loc.data.name, path: localePath(lang, "solutions", parent.slug) }] : []),
+  { name: d.name, path: localePath(lang, "solutions", slug) },
+];
+let n = alternatingSections(L);
+const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
+const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
+---
+<BaseLayout
+  lang={lang}
+  title={d.seo?.title ?? d.name}
+  description={d.seo?.description ?? L.subheadline}
+  pathTemplate={`/{lang}/solutions/${slug}/`}
+  alternates={await availableLangs("solutions", slug)}
+  pendingTranslation={pendingTranslation}
+  headerTheme="dark"
+  current="solutions"
+  fallbackPath="/{lang}/solutions/"
+  breadcrumbs={breadcrumbs}
+  ogImage={ogImage}
+  ogImageAlt={heroReady ? hero!.alt : undefined}
+  search={{ type: "solutions" }}
+>
+  <PageHero
+    breadcrumbs={breadcrumbs}
+    breadcrumbLabel={ui.breadcrumbLabel}
+    eyebrow={`Solution · ${ui.domainCodes[base.domain]}`}
+    kicker={d.name}
+    title={L.headline}
+    lead={L.subheadline}
+    description={L.intro}
+    image={heroReady ? { src: hero!.src!, alt: hero!.alt! } : undefined}
+    imageCaption={hero?.caption}
+    imageBadge={hero?.illustration ? t.illustrationLabel : undefined}
+    imagePending={hero?.need ? `${t.mediaNeed}${hero.need}` : t.placeholders.hero}
+  >
+    <CtaGroup slot="actions" actions={cta.hero} />
+  </PageHero>
+
+  <LandingSections lang={lang} L={L} />
+
+  <RelatedCases lang={lang} cases={cases} description={L.casesIntro} alt={cases.length > 0 && n++ % 2 === 1} />
+
+  {showRelated && (
+    <section class={alt()} aria-labelledby="h-related">
+      <div class="container">
+        <SectionHead id="h-related" eyebrow={e.related} title={L.related!.title} description={L.related!.intro} />
+        <ul role="list" class="cards">
+          {relatedProducts.map((p) => (
+            <li>
+              <CardProduct
+                lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
+                englishName={known(p.loc.data.hero.englishName)} summary={known(p.loc.data.summary) ?? known(p.loc.data.hero.tagline)}
+                domains={p.base.data.domains}
+                image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
+              />
+            </li>
+          ))}
+          {relatedSolutions.map((s) => (
+            <li>
+              <CardSolution
+                lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
+                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary}
+                image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <CtaBand id="solution-cta" title={L.closing.title} description={L.closing.description}>
+    <CtaGroup actions={cta.footer} />
+  </CtaBand>
+</BaseLayout>
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
+</style>
