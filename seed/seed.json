@@ -780,6 +780,27 @@
      }
     },
     {
+     "slug": "faq",
+     "label": "常見問題（繁中；每題一組問題與完整答案，顯示在最終洽詢 CTA 之前）",
+     "type": "repeater",
+     "validation": {
+      "subFields": [
+       {
+        "slug": "question",
+        "label": "問題",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "answer",
+        "label": "答案",
+        "type": "text",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
      "slug": "deploy_personnel",
      "label": "部署人數（例：1-4）或 [待提供]",
      "type": "string",

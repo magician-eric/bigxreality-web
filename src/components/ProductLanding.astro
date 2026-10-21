@@ -26,6 +26,10 @@ import LandingSections from "./LandingSections.astro";
 import { alternatingSections } from "../lib/landing";
 import { casesAbout } from "../lib/cases";
 import Text from "./Text.astro";
+import FaqAccordion from "./FaqAccordion.astro";
+import { faqLd } from "../lib/faq";
+import { site } from "../lib/site";
+import { HTML_LANG } from "../i18n";
 
 interface Props {
   lang: Lang;
@@ -71,6 +75,8 @@ const breadcrumbs = [
 const cases = await casesAbout("relatedProducts", slug, lang);
 let n = alternatingSections(L);
 const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
+const faq = d.faq?.length ? d.faq : undefined;
+const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products", slug)}`, HTML_LANG[lang])] : [];
 ---
 <BaseLayout
   lang={lang}
@@ -83,6 +89,7 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
   current="products"
   breadcrumbs={breadcrumbs}
   search={{ type: "products" }}
+  structuredData={faqStructured}
   product={{ name: d.hero.name, description: d.seo?.description ?? L.subheadline, code: base.hero.code }}
 >
   <PageHero
@@ -135,6 +142,8 @@ const alt = () => (n++ % 2 === 1 ? "section section--alt" : "section");
       </div>
     </section>
   )}
+
+  {faq && <FaqAccordion id="product-faq" title={ui.faq.title} items={faq} class={alt()} />}
 
   {backLabel && (
     <div class="container back"><a href={backHref}><span aria-hidden="true">←</span> <Text value={backLabel} /></a></div>
