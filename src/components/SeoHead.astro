@@ -58,13 +58,14 @@ if (!isPending(site.contact.email)) org.email = site.contact.email;
 if (!isPending(site.contact.phone)) org.telephone = site.contact.phone;
 if (Array.isArray(site.social) && site.social.length) org.sameAs = site.social.map((s) => s.url);
 
-const graph: Record<string, unknown>[] = [
-  org,
-  {
+const graph: Record<string, unknown>[] = [org];
+// An untranslated crumb ("[待翻譯] …") would put another language's text into this page's data; leave the list out until it is translated.
+if (!breadcrumbs.some((c) => c.name.includes("[待"))) {
+  graph.push({
     "@type": "BreadcrumbList",
     itemListElement: breadcrumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: plain(c.name), item: abs(c.path) })),
-  },
-];
+  });
+}
 if (product) {
   const p: Record<string, unknown> = {
     "@type": "Product",
@@ -80,6 +81,15 @@ if (product) {
 }
 const principal = structuredData.some(node => ["WebPage", "CollectionPage", "Article", "NewsArticle"].includes(String(node["@type"])));
 if (!product && !principal) graph.push({ "@type": /\/(products|solutions|technologies|news|insights|cases|tags)\/(?:page\/\d+\/)?$/.test(pathFor(lang)) ? "CollectionPage" : "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: fullTitle, description: desc, inLanguage: HTML_LANG[lang] });
+// Page-level nodes share the page language, and list/web pages fall back to the meta description.
+for (const node of structuredData) {
+  const type = String(node["@type"]);
+  if (!["WebPage", "CollectionPage", "Article", "NewsArticle"].includes(type)) continue;
+  node.inLanguage ??= HTML_LANG[lang];
+  // An untranslated heading ("[待翻譯] …") is not this page's language; url and description still identify the page.
+  if (typeof node.name === "string" && node.name.includes("[待")) delete node.name;
+  if (type === "WebPage" || type === "CollectionPage") node.description ??= desc;
+}
 graph.push(...structuredData);
 const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 ---

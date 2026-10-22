@@ -6,7 +6,7 @@
  * and routes are read from the products / solutions collections and the technology data.
  */
 import { Picture } from "astro:assets";
-import { LANGS, localePath, type Lang } from "../../i18n";
+import { HTML_LANG, LANGS, localePath, type Lang } from "../../i18n";
 import { getLocalized } from "../../lib/content";
 import { getUi } from "../../lib/ui";
 import { site } from "../../lib/site";
@@ -50,10 +50,10 @@ const news = await latestNews(lang);
 const breadcrumbs = [{ name: ui.home, path: localePath(lang) }];
 const website = {
   "@type": "WebSite",
-  "@id": `${site.url}/#website`,
+  "@id": `${new URL(localePath(lang), site.url)}#website`,
   name: site.brand,
   url: new URL(localePath(lang), site.url).toString(),
-  inLanguage: lang,
+  inLanguage: HTML_LANG[lang],
   publisher: { "@id": `${site.url}/#organization` },
 };
 ---

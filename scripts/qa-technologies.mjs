@@ -19,7 +19,7 @@ const related = {
   'system-integration': { products: ['sut', 'usv'], solutions: ['military', 'mum-t', 'nova'] },
   'decision-visualization': { products: ['wargaming-table'], solutions: ['military', 'nova'] },
 };
-const locale = { tw: 'zh-Hant-TW', en: 'en', jp: 'ja' };
+const locale = { tw: 'zh-TW', en: 'en', jp: 'ja' };
 const fixture = DIST.includes('dist-fixtures');
 let failed = 0, checked = 0;
 const check = (name, ok, detail = '') => {

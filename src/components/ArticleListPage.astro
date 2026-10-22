@@ -94,6 +94,7 @@ const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: pa
                   lang={lang} href={articleHref(a)} type={ui.articleTypes[collection]}
                   date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary} tags={tags[i]}
                   cover={a.base.data.cover && { src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt }}
+                  headingLevel={2}
                 />
               </li>
             ))}
