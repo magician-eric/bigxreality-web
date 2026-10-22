@@ -56,13 +56,6 @@
     "smart-city": "スマートシティ",
     "other": "その他"
   },
-  "domainCodes": {
-    "military": "MILITARY",
-    "police": "POLICE",
-    "fire-rescue": "FIRE & RESCUE",
-    "smart-city": "SMART CITY",
-    "other": "OTHER"
-  },
   "productDomains": {
     "military": "軍事訓練",
     "police": "警察訓練",
@@ -88,15 +81,15 @@
         "title": "活用分野"
       },
       "components": {
-        "eyebrow": "System Components",
+        "eyebrow": "",
         "title": "[待翻譯] 系統組成"
       },
       "deployment": {
-        "eyebrow": "Deployment / Configuration",
+        "eyebrow": "",
         "title": "[待翻譯] 部署方式"
       },
       "integratedOps": {
-        "eyebrow": "Integrated Operations",
+        "eyebrow": "",
         "title": "[待翻譯] 整合作戰"
       },
       "relatedSolutions": {
@@ -104,7 +97,7 @@
         "title": "関連ソリューション"
       },
       "relatedArticles": {
-        "eyebrow": "Related Insights / News",
+        "eyebrow": "",
         "title": "[待翻譯] 相關文章"
       }
     },
@@ -134,7 +127,7 @@
     "social": "ソーシャルメディア",
     "mapLink": "Google マップで見る",
     "privacy": "プライバシーポリシー",
-    "rights": "All rights reserved"
+    "rights": "無断転載を禁じます"
   },
   "coverPending": "カバー画像",
   "solution": {
@@ -144,11 +137,11 @@
         "title": "ソリューション概要"
       },
       "challenges": {
-        "eyebrow": "Challenges",
+        "eyebrow": "",
         "title": "[待翻譯] 面臨的挑戰"
       },
       "capabilities": {
-        "eyebrow": "Capabilities",
+        "eyebrow": "",
         "title": "[待翻譯] 方案能力"
       },
       "relatedProducts": {
@@ -160,15 +153,16 @@
         "title": "関連導入事例"
       },
       "insights": {
-        "eyebrow": "Insights",
+        "eyebrow": "",
         "title": "[待翻譯] 相關技術文章"
       },
       "news": {
-        "eyebrow": "News",
+        "eyebrow": "",
         "title": "[待翻譯] 相關消息"
       }
     },
-    "explore": "ソリューションを見る"
+    "explore": "ソリューションを見る",
+    "eyebrow": "ソリューション"
   },
   "article": {
     "published": "[待翻譯] 發布",
@@ -177,15 +171,15 @@
     "readingTime": "[待翻譯] 閱讀時間約 {n} 分鐘",
     "tags": "[待翻譯] 標籤",
     "related": {
-      "eyebrow": "Related",
+      "eyebrow": "関連記事",
       "title": "[待翻譯] 延伸閱讀"
     },
     "relatedProducts": {
-      "eyebrow": "Related Products",
+      "eyebrow": "関連製品",
       "title": "[待翻譯] 相關產品"
     },
     "relatedSolutions": {
-      "eyebrow": "Related Solutions",
+      "eyebrow": "関連ソリューション",
       "title": "[待翻譯] 相關解決方案"
     },
     "categories": {
@@ -223,7 +217,7 @@
     "filterSearchPlaceholder": "[待翻譯] 輸入客戶、產品或關鍵字"
   },
   "tags": {
-    "eyebrow": "Tags",
+    "eyebrow": "タグ",
     "title": "[待翻譯] 標籤",
     "count": "[待翻譯] {n} 篇",
     "allTags": "[待翻譯] 所有標籤"
@@ -261,10 +255,10 @@
     "learnMore": "詳しく見る"
   },
   "productLanding": {
-    "eyebrow": "Product",
+    "eyebrow": "製品",
     "sections": {
       "challenge": {
-        "eyebrow": "Training Challenge",
+        "eyebrow": "訓練課題",
         "title": "訓練課題"
       }
     },
@@ -273,19 +267,19 @@
       "showcase": "製品紹介画像"
     },
     "eyebrows": {
-      "challenge": "Training Challenge",
-      "approach": "Our Approach",
-      "capabilities": "Key Capabilities",
-      "flow": "Training Flow",
-      "scenarios": "Applications",
-      "values": "Value",
-      "related": "Related",
-      "featured": "Integration",
-      "audience": "Suited For"
+      "challenge": "訓練課題",
+      "approach": "アプローチ",
+      "capabilities": "主な機能",
+      "flow": "訓練の流れ",
+      "scenarios": "活用分野",
+      "values": "導入メリット",
+      "related": "関連製品・ソリューション",
+      "featured": "システム連携",
+      "audience": "導入対象"
     },
     "valueLabel": "訓練価値",
     "focusLabel": "訓練の重点",
-    "stepLabel": "STEP",
+    "stepLabel": "ステップ",
     "mediaNeed": "画像素材｜",
     "mediaPending": "画像",
     "illustrationLabel": "シナリオのイメージ図"
@@ -324,7 +318,7 @@
     },
     "about": "[待翻譯] 關於",
     "steps": {
-      "eyebrow": "How to Reach Us",
+      "eyebrow": "お問い合わせの流れ",
       "title": "[待翻譯] 以 Email 與我們聯繫",
       "items": [
         {

@@ -4,7 +4,7 @@ import type { TechnologyPageContent } from "./technologies-content.ts";
 export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"tw" | "en" | "jp", TechnologyPageContent>> = {
   "ai-simulation": {
     "tw": {
-      "eyebrow": "AI-ENHANCED SIMULATION",
+      "eyebrow": "核心技術",
       "title": "AI 智慧模擬",
       "lead": "讓模擬情境不只呈現任務，也能探索更具變化的互動方式",
       "intro": [
@@ -153,7 +153,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
       }
     },
     "en": {
-      "eyebrow": "AI-ENHANCED SIMULATION",
+      "eyebrow": "Core Technology",
       "title": "AI-Enhanced Simulation",
       "lead": "Let simulation scenarios do more than present a mission: explore more varied forms of interaction",
       "intro": [
@@ -302,7 +302,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
       }
     },
     "jp": {
-      "eyebrow": "AI-ENHANCED SIMULATION",
+      "eyebrow": "コア技術",
       "title": "AI シミュレーション",
       "lead": "任務を再現するだけでなく、より多様なインタラクションを模擬シナリオで探求する",
       "intro": [
@@ -453,7 +453,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
   },
   "digital-simulation": {
     "tw": {
-      "eyebrow": "DIGITAL ENVIRONMENT & SIMULATION",
+      "eyebrow": "核心技術",
       "title": "數位場景與模擬建構",
       "lead": "將真實世界的訓練需求，轉化為可互動的數位環境",
       "intro": [
@@ -603,7 +603,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
       }
     },
     "en": {
-      "eyebrow": "DIGITAL ENVIRONMENT & SIMULATION",
+      "eyebrow": "Core Technology",
       "title": "Digital Environment & Simulation",
       "lead": "Turn real-world training needs into interactive digital environments",
       "intro": [
@@ -753,7 +753,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
       }
     },
     "jp": {
-      "eyebrow": "DIGITAL ENVIRONMENT & SIMULATION",
+      "eyebrow": "コア技術",
       "title": "デジタル環境・シミュレーション構築",
       "lead": "現実の訓練要件を、インタラクティブなデジタル環境へ",
       "intro": [

@@ -25,7 +25,7 @@ landing:
 
     MUM-T 的核心不是建立大型指揮中心，而是讓資訊更貼近第一線人員的實際操作環境'
   heroImage:
-    need: 小隊訓練 Hero 主視覺（16:9）
+    need: 小隊訓練主視覺（16:9）
     ratio: 16 / 9
   ctaLabel: 洽詢 MUM-T 解決方案
   challenge:

@@ -5,6 +5,6 @@ seo:
   title: "投資人專區｜全球動力科技"
   description: "全球動力科技 Big x Reality 投資人資訊專區，提供已公開的公司與投資人相關資料。"
 hero:
-  eyebrow: Investor Relations
+  eyebrow: 投資人專區
   title: "投資人專區"
 ---

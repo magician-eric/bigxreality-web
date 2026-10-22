@@ -57,7 +57,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       posterAlt: "三名身穿警察制服的學員頭戴 VR 頭盔、手持訓練用槍械進行沉浸式警勤訓練",
     },
     value: {
-      eyebrow: "Why Simulation",
+      eyebrow: "為什麼需要模擬訓練",
       title: "真實任務無法預演，但專業能力可以反覆鍛鍊。",
       paragraphs: [
         "面對複雜環境、突發狀況與高風險任務，專業訓練不只需要熟悉設備操作，更需要持續練習觀察、判斷與應變。",
@@ -70,7 +70,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       ],
     },
     products: {
-      eyebrow: "Featured Products",
+      eyebrow: "精選產品",
       title: "不只是模擬場景，更是可以實際參與的訓練。",
       description: "從戰術行動、警勤應變到無人系統與消防操作，BXR 將模擬環境與實體互動結合，讓訓練不只停留在觀看，而能進一步延伸至操作、判斷與任務練習。",
       viewAll: "探索所有產品",
@@ -83,7 +83,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       },
     },
     technologies: {
-      eyebrow: "Core Technologies",
+      eyebrow: "核心技術",
       title: "技術的價值，不只在於呈現，而在於實際應用。",
       paragraphs: [
         "沉浸式畫面只是開始。",
@@ -98,7 +98,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       },
     },
     solutions: {
-      eyebrow: "Solutions",
+      eyebrow: "解決方案",
       title: "不同任務，同樣需要更好的準備。",
       description: "每個專業領域都有不同的任務環境與訓練挑戰。BXR 從實際使用需求出發，將模擬技術與系統整合能力應用於不同場域，協助使用單位探索更合適的訓練與數位化應用方式。",
       viewAll: "查看所有解決方案",
@@ -110,14 +110,14 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       },
     },
     cases: {
-      eyebrow: "Case Studies",
+      eyebrow: "成功案例",
       title: "從實際需求出發，讓技術走進應用現場。",
       description: "每一項專業訓練與數位化應用，都始於不同的任務需求。透過實際專案與應用經驗，持續探索模擬技術在不同場域中的可能性。",
       viewAll: "查看所有成功案例",
       placeholder: "【開發用佔位】成功案例資料尚未建立，正式網站不顯示此卡片",
     },
     news: {
-      eyebrow: "Latest News",
+      eyebrow: "最新消息",
       title: "持續探索，讓更多可能成為現實。",
       description: "從技術發展、專業展會到最新應用，掌握 BXR 在沉浸式模擬與專業訓練領域的最新動態。",
       viewAll: "查看所有最新消息",
@@ -239,7 +239,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       posterAlt: "警察の制服を着た 3 名の訓練生が VR ヘッドセットを装着し、訓練用銃器を構えて没入型警察訓練を行う様子",
     },
     value: {
-      eyebrow: "Why Simulation",
+      eyebrow: "シミュレーション訓練の意義",
       title: "実際の任務は予行演習できない。しかし、専門能力は繰り返し鍛えられる。",
       paragraphs: [
         "複雑な環境、突発的な事態、高リスクな任務に向き合う専門訓練には、機器操作に慣れるだけでなく、観察・判断・対応を継続して練習することが求められます。",
@@ -252,7 +252,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       ],
     },
     products: {
-      eyebrow: "Featured Products",
+      eyebrow: "主要製品",
       title: "単なるシミュレーション映像ではなく、実際に参加できる訓練へ。",
       description: "戦術行動、警察対応から無人システム、消防操作まで、BXR はシミュレーション環境と実機によるインタラクションを組み合わせ、訓練を「見る」だけで終わらせず、操作・判断・任務演習へと広げます。",
       viewAll: "すべての製品を見る",
@@ -265,7 +265,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       },
     },
     technologies: {
-      eyebrow: "Core Technologies",
+      eyebrow: "コア技術",
       title: "技術の価値は、見せることではなく、実際に活かすことにある。",
       paragraphs: [
         "没入型の映像は、始まりにすぎません。",
@@ -280,7 +280,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       },
     },
     solutions: {
-      eyebrow: "Solutions",
+      eyebrow: "ソリューション",
       title: "任務は違っても、より良い備えが必要なことは同じ。",
       description: "専門分野ごとに、任務環境と訓練の課題は異なります。BXR は実際の利用ニーズから出発し、シミュレーション技術とシステム統合力をさまざまな現場に活かし、利用機関がより適した訓練とデジタル活用の方法を見いだせるよう支援します。",
       viewAll: "すべてのソリューションを見る",
@@ -292,14 +292,14 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       },
     },
     cases: {
-      eyebrow: "Case Studies",
+      eyebrow: "導入事例",
       title: "実際のニーズから出発し、技術を活用の現場へ。",
       description: "あらゆる専門訓練とデジタル活用は、それぞれの任務ニーズから始まります。実際のプロジェクトと活用経験を通じて、さまざまな現場におけるシミュレーション技術の可能性を探り続けています。",
       viewAll: "すべての導入事例を見る",
       placeholder: "【開発用プレースホルダー】導入事例データは未登録です。公開サイトには表示されません。",
     },
     news: {
-      eyebrow: "Latest News",
+      eyebrow: "ニュース",
       title: "探求を続け、より多くの可能性を現実に。",
       description: "技術開発や専門展示会から最新の活用事例まで、没入型シミュレーションと専門訓練の分野における BXR の最新情報をお届けします。",
       viewAll: "すべてのニュースを見る",

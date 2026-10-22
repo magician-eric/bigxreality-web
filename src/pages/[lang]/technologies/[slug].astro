@@ -47,7 +47,7 @@ const structuredData = [{ "@type": "WebPage", name: content.title, description: 
         {products.length > 0 && solutions.length > 0 && <p class="t-label resource-heading">{relatedLabels[lang].products}</p>}
         {products.length > 0 && <ul class="resources" role="list" data-related-products>{products.map((product) => <li><CardProduct lang={lang} href={localePath(lang, "products", product.slug)} name={product.loc.data.hero.name} summary={product.loc.data.summary ?? product.loc.data.hero.tagline} domains={product.base.data.domains} /></li>)}</ul>}
         {products.length > 0 && solutions.length > 0 && <p class="t-label resource-heading">{relatedLabels[lang].solutions}</p>}
-        {solutions.length > 0 && <ul class="resources" role="list" data-related-solutions>{solutions.map((solution) => <li><CardSolution lang={lang} href={localePath(lang, "solutions", solution.slug)} domain={solution.base.data.domain} name={solution.loc.data.name} englishName={solution.loc.data.englishName} summary={solution.loc.data.summary} /></li>)}
+        {solutions.length > 0 && <ul class="resources" role="list" data-related-solutions>{solutions.map((solution) => <li><CardSolution lang={lang} href={localePath(lang, "solutions", solution.slug)} domain={solution.base.data.domain} name={solution.loc.data.name} summary={solution.loc.data.summary} /></li>)}
         </ul>}
       </div>
     </section>

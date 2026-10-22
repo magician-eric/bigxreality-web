@@ -41,7 +41,8 @@
     "check:sitemap": "node scripts/check-sitemap.mjs",
     "qa:phase2": "QA_DIST=dist-fixtures/client node scripts/qa-phase2.mjs",
     "preview:build": "BXR_PREVIEW=1 npm run build && node scripts/preview/rebase.mjs",
-    "preview:check": "node scripts/preview/check.mjs"
+    "preview:check": "node scripts/preview/check.mjs",
+    "qa:ui-language": "node scripts/qa-ui-language.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",

@@ -5,7 +5,7 @@ seo:
   title: "XR 模擬訓練產品與專業訓練設備"
   description: "探索 Big x Reality 的 XR 模擬訓練產品，涵蓋 SUT 小部隊戰術訓練、無人機與無人船模擬、兵棋圖台、軍用載具、警勤訓練及 VR 虛擬滅火訓練系統。"
 hero:
-  eyebrow: Products
+  eyebrow: 產品
   title: 產品
   description: "[待提供]"
   image:

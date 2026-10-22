@@ -33,8 +33,8 @@
   "solutionImagePending": "解決方案圖片",
   "syntheticImage": "合成示意",
   "buttons": {
-    "brochure": "型錄申請 Request brochure",
-    "demo": "預約展示 Book a demo",
+    "brochure": "型錄申請",
+    "demo": "預約展示",
     "viewAll": "查看全部",
     "explore": "了解產品",
     "formPending": "表單網址待提供",
@@ -56,13 +56,6 @@
     "smart-city": "智慧城市",
     "other": "其他"
   },
-  "domainCodes": {
-    "military": "MILITARY",
-    "police": "POLICE",
-    "fire-rescue": "FIRE & RESCUE",
-    "smart-city": "SMART CITY",
-    "other": "OTHER"
-  },
   "productDomains": {
     "military": "軍事訓練",
     "police": "警勤訓練",
@@ -72,39 +65,39 @@
     "onThisPage": "頁內導覽",
     "sections": {
       "overview": {
-        "eyebrow": "Overview",
+        "eyebrow": "",
         "title": "產品概述"
       },
       "capabilities": {
-        "eyebrow": "Key Capabilities",
+        "eyebrow": "",
         "title": "核心能力"
       },
       "howItWorks": {
-        "eyebrow": "How It Works",
+        "eyebrow": "",
         "title": "運作方式"
       },
       "scenarios": {
-        "eyebrow": "Training Scenarios",
+        "eyebrow": "",
         "title": "訓練情境"
       },
       "components": {
-        "eyebrow": "System Components",
+        "eyebrow": "",
         "title": "系統組成"
       },
       "deployment": {
-        "eyebrow": "Deployment / Configuration",
+        "eyebrow": "",
         "title": "部署方式"
       },
       "integratedOps": {
-        "eyebrow": "Integrated Operations",
+        "eyebrow": "",
         "title": "整合作戰"
       },
       "relatedSolutions": {
-        "eyebrow": "Related Solutions",
+        "eyebrow": "",
         "title": "關聯解決方案"
       },
       "relatedArticles": {
-        "eyebrow": "Related Insights / News",
+        "eyebrow": "",
         "title": "相關文章"
       }
     },
@@ -140,35 +133,36 @@
   "solution": {
     "sections": {
       "overview": {
-        "eyebrow": "Overview",
+        "eyebrow": "",
         "title": "方案概述"
       },
       "challenges": {
-        "eyebrow": "Challenges",
+        "eyebrow": "",
         "title": "面臨的挑戰"
       },
       "capabilities": {
-        "eyebrow": "Capabilities",
+        "eyebrow": "",
         "title": "方案能力"
       },
       "relatedProducts": {
-        "eyebrow": "Related Products",
+        "eyebrow": "",
         "title": "相關產品"
       },
       "caseStudies": {
-        "eyebrow": "Case Studies",
+        "eyebrow": "",
         "title": "實際應用案例"
       },
       "insights": {
-        "eyebrow": "Insights",
+        "eyebrow": "",
         "title": "相關技術文章"
       },
       "news": {
-        "eyebrow": "News",
+        "eyebrow": "",
         "title": "相關消息"
       }
     },
-    "explore": "了解方案"
+    "explore": "了解方案",
+    "eyebrow": "解決方案"
   },
   "article": {
     "published": "發布",
@@ -177,15 +171,15 @@
     "readingTime": "閱讀時間約 {n} 分鐘",
     "tags": "標籤",
     "related": {
-      "eyebrow": "Related",
+      "eyebrow": "延伸閱讀",
       "title": "延伸閱讀"
     },
     "relatedProducts": {
-      "eyebrow": "Related Products",
+      "eyebrow": "相關產品",
       "title": "相關產品"
     },
     "relatedSolutions": {
-      "eyebrow": "Related Solutions",
+      "eyebrow": "相關解決方案",
       "title": "相關解決方案"
     },
     "categories": {
@@ -223,7 +217,7 @@
     "filterSearchPlaceholder": "輸入客戶、產品或關鍵字"
   },
   "tags": {
-    "eyebrow": "Tags",
+    "eyebrow": "標籤",
     "title": "標籤",
     "count": "{n} 篇",
     "allTags": "所有標籤"
@@ -261,10 +255,10 @@
     "learnMore": "了解更多"
   },
   "productLanding": {
-    "eyebrow": "Product",
+    "eyebrow": "產品",
     "sections": {
       "challenge": {
-        "eyebrow": "Training Challenge",
+        "eyebrow": "訓練挑戰",
         "title": "訓練挑戰"
       }
     },
@@ -273,19 +267,19 @@
       "showcase": "產品展示圖"
     },
     "eyebrows": {
-      "challenge": "Training Challenge",
-      "approach": "Our Approach",
-      "capabilities": "Key Capabilities",
-      "flow": "Training Flow",
-      "scenarios": "Applications",
-      "values": "Value",
-      "related": "Related",
-      "featured": "Integration",
-      "audience": "Suited For"
+      "challenge": "訓練挑戰",
+      "approach": "我們的做法",
+      "capabilities": "核心能力",
+      "flow": "訓練流程",
+      "scenarios": "應用情境",
+      "values": "導入價值",
+      "related": "相關產品與方案",
+      "featured": "系統整合",
+      "audience": "適用對象"
     },
     "valueLabel": "訓練價值",
     "focusLabel": "訓練重點",
-    "stepLabel": "STEP",
+    "stepLabel": "步驟",
     "mediaNeed": "素材需求｜",
     "mediaPending": "圖片",
     "illustrationLabel": "情境示意圖"
@@ -324,7 +318,7 @@
     },
     "about": "關於",
     "steps": {
-      "eyebrow": "How to Reach Us",
+      "eyebrow": "聯絡方式",
       "title": "以 Email 與我們聯繫",
       "items": [
         {

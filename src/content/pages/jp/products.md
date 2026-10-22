@@ -5,7 +5,7 @@ seo:
   title: "XR シミュレーション訓練製品・専門訓練機器"
   description: "Big x Reality の XR 訓練製品をご紹介します。SUT 小部隊戦術訓練、UAV・USV シミュレーター、兵棋演習テーブル、軍用車両、警察訓練、VR 消火器訓練システムを掲載しています。"
 hero:
-  eyebrow: Products
+  eyebrow: 製品情報
   title: 製品情報
   description: "[待提供]"
   image:

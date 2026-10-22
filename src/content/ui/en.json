@@ -56,13 +56,6 @@
     "smart-city": "Smart City",
     "other": "Other"
   },
-  "domainCodes": {
-    "military": "MILITARY",
-    "police": "POLICE",
-    "fire-rescue": "FIRE & RESCUE",
-    "smart-city": "SMART CITY",
-    "other": "OTHER"
-  },
   "productDomains": {
     "military": "Military Training",
     "police": "Police Training",
@@ -168,7 +161,8 @@
         "title": "[待翻譯] 相關消息"
       }
     },
-    "explore": "[待翻譯] 了解方案"
+    "explore": "[待翻譯] 了解方案",
+    "eyebrow": "Solution"
   },
   "article": {
     "published": "[待翻譯] 發布",

@@ -4,7 +4,7 @@ import type { TechnologyPageContent } from './technologies-content.ts';
 export const batchTwoB = {
   "system-integration": {
     "tw": {
-      "eyebrow": "COMMUNICATION & SYSTEM INTEGRATION",
+      "eyebrow": "核心技術",
       "title": "通訊與系統整合",
       "lead": "讓訓練設備、操作介面與資訊系統，在適當的架構中協同運作",
       "intro": [
@@ -147,7 +147,7 @@ export const batchTwoB = {
       }
     },
     "en": {
-      "eyebrow": "COMMUNICATION & SYSTEM INTEGRATION",
+      "eyebrow": "Core Technology",
       "title": "Communication & System Integration",
       "lead": "Enable training equipment, operating interfaces, and information systems to work together within an appropriate architecture",
       "intro": [
@@ -290,7 +290,7 @@ export const batchTwoB = {
       }
     },
     "jp": {
-      "eyebrow": "COMMUNICATION & SYSTEM INTEGRATION",
+      "eyebrow": "コア技術",
       "title": "通信・システム統合",
       "lead": "適切な構成のもとで、訓練機器、操作インターフェース、情報システムの連携を支える",
       "intro": [
@@ -435,7 +435,7 @@ export const batchTwoB = {
   },
   "decision-visualization": {
     "tw": {
-      "eyebrow": "COMMAND & DECISION VISUALIZATION",
+      "eyebrow": "核心技術",
       "title": "指揮決策與資訊視覺化",
       "lead": "讓複雜的任務資訊，更容易被理解、討論與運用",
       "intro": [
@@ -552,7 +552,7 @@ export const batchTwoB = {
       }
     },
     "en": {
-      "eyebrow": "COMMAND & DECISION VISUALIZATION",
+      "eyebrow": "Core Technology",
       "title": "Command & Decision Visualization",
       "lead": "Make complex mission information easier to understand, discuss, and use",
       "intro": [
@@ -669,7 +669,7 @@ export const batchTwoB = {
       }
     },
     "jp": {
-      "eyebrow": "COMMAND & DECISION VISUALIZATION",
+      "eyebrow": "コア技術",
       "title": "指揮・意思決定と情報の可視化",
       "lead": "複雑な任務情報を、理解し、議論し、活用しやすくする",
       "intro": [
