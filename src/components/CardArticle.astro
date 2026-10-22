@@ -7,8 +7,9 @@ import { getUi } from "../lib/ui";
 import ImagePlaceholder from "./ImagePlaceholder.astro";
 import Text from "./Text.astro";
 
-interface Props { lang: Lang; href: string; type: string; date: Date; title: string; summary: string; tags: string[]; cover?: { src: ImageMetadata; alt: string } }
-const { lang, href, type, date, title, summary, tags, cover } = Astro.props;
+interface Props { lang: Lang; href: string; type: string; date: Date; title: string; summary: string; tags: string[]; cover?: { src: ImageMetadata; alt: string }; headingLevel?: 2 | 3 }
+const { lang, href, type, date, title, summary, tags, cover, headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as "h2" | "h3";
 const ui = getUi(lang);
 const iso = date.toISOString().slice(0, 10);
 const shown = new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
@@ -21,7 +22,7 @@ const shown = new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", mont
   </div>
   <div class="body">
     <p class="t-tech meta"><Text value={type} /> · <time datetime={iso}>{shown}</time></p>
-    <h3 class="t-h4 title"><a href={href}><Text value={title} /></a></h3>
+    <H class="t-h4 title"><a href={href}><Text value={title} /></a></H>
     <p class="t-small summary"><Text value={summary} /></p>
     {tags.length > 0 && <ul role="list" class="tags t-caption">{tags.map((t) => <li>#{t}</li>)}</ul>}
   </div>

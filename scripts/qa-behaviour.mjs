@@ -66,7 +66,7 @@ try {
 
   await page.goto(`${base}/tw/products/sut/`, { waitUntil: "networkidle" });
   const alt = await page.$$eval('link[rel=alternate][hreflang]', (ls) => ls.map((l) => `${l.hreflang} ${l.href}`));
-  check("hreflang en / zh-Hant-TW / ja / x-default", ["en", "zh-Hant-TW", "ja", "x-default"].every((h) => alt.some((a) => a.startsWith(h + " "))), alt.join(", "));
+  check("hreflang en / zh-TW / ja / x-default", ["en", "zh-TW", "ja", "x-default"].every((h) => alt.some((a) => a.startsWith(h + " "))), alt.join(", "));
   check("canonical", (await page.$eval("link[rel=canonical]", (l) => l.href)) === "https://www.bigxreality.com/tw/products/sut/");
   check("html lang zh-Hant-TW", (await page.getAttribute("html", "lang")) === "zh-Hant-TW");
   check("source page is indexable", (await page.locator('meta[name=robots]').count()) === 0);

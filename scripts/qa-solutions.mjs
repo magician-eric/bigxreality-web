@@ -26,7 +26,7 @@ const browser = await chromium.launch({ executablePath: CHROMIUM });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(`${base}/tw/solutions/`, { waitUntil: "networkidle" });
-  const cards = await page.$$eval("#solution-list article.card", (as) => as.map((a) => ({ name: a.querySelector("h3")?.textContent.trim(), href: a.querySelector("h3 a")?.getAttribute("href"), more: a.querySelector(".more")?.textContent.replace(/\s+/g, " ").trim() })));
+  const cards = await page.$$eval("#solution-list article.card", (as) => as.map((a) => ({ name: a.querySelector(".title")?.textContent.trim(), href: a.querySelector(".title a")?.getAttribute("href"), more: a.querySelector(".more")?.textContent.replace(/\s+/g, " ").trim() })));
   check("overview: exactly the four categories in order", JSON.stringify(cards.map((c) => c.name)) === JSON.stringify(["軍事模擬", "警勤模擬", "消防防災", "智慧城市"]), JSON.stringify(cards.map((c) => c.name)));
   check("overview: card buttons", JSON.stringify(cards.map((c) => c.more)) === JSON.stringify(["探索軍事模擬 →", "探索警勤模擬 →", "探索消防防災 →", "探索智慧城市 →"]), JSON.stringify(cards.map((c) => c.more)));
   check("overview: MUM-T and NOVA are not cards (not a fifth category)", !cards.some((c) => /mum-t|nova/.test(c.href ?? "")));
@@ -43,7 +43,7 @@ try {
     const text = await page.locator("main").innerText();
     check(`${slug}: no placeholder or instruction wording`, !LEAK.some((w) => text.includes(w)), LEAK.filter((w) => text.includes(w)).join(","));
     check(`${slug}: breadcrumb`, (await page.locator(".breadcrumb, nav[aria-label] ol").first().innerText()).includes(name));
-    check(`${slug}: Solutions is the current header item`, (await page.locator('.nav-list > li > a[aria-current="page"]').innerText()).trim() === "解決方案");
+    check(`${slug}: Solutions is the current header item`, (await page.locator('.nav-list a.nav-link[aria-current="page"]').innerText()).trim() === "解決方案");
     const noCases = (await page.locator("[data-related-cases]").count()) === 0;
     check(`${slug}: no cases block without published cases`, noCases);
   }
