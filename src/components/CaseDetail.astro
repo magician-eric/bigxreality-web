@@ -200,13 +200,13 @@ const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...r
   {(products.length > 0 || solutions.length > 0) && (
     <section class="section section--alt" aria-labelledby="h-related-items">
       <div class="container">
-        <SectionHead id="h-related-items" eyebrow="Related" title={s.relatedItems} />
+        <SectionHead id="h-related-items" eyebrow={ui.article.related.eyebrow} title={s.relatedItems} />
         <ul role="list" class="cards">
           {products.map((p) => (
             <li>
               <CardProduct
                 lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
-                englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
                 domains={p.base.data.domains}
                 image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
               />
@@ -216,7 +216,7 @@ const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...r
             <li>
               <CardSolution
                 lang={lang} href={localePath(lang, "solutions", x.slug)} domain={x.base.data.domain}
-                name={x.loc.data.name} englishName={x.loc.data.englishName} summary={x.loc.data.summary}
+                name={x.loc.data.name} summary={x.loc.data.summary}
                 image={x.base.data.image && { src: x.base.data.image.src, alt: x.loc.data.image?.alt ?? x.base.data.image.alt }}
               />
             </li>
@@ -229,7 +229,7 @@ const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...r
   {more.length > 0 && (
     <section class="section" aria-labelledby="h-more">
       <div class="container">
-        <SectionHead id="h-more" eyebrow="Case Studies" title={s.more} viewAll={{ href: localePath(lang, "case-studies"), label: c.block.more }} />
+        <SectionHead id="h-more" eyebrow={ui.nav.caseStudies} title={s.more} viewAll={{ href: localePath(lang, "case-studies"), label: c.block.more }} />
         <ul role="list" class="cards">
           {more.map((item) => <li><CaseCard lang={lang} item={item} /></li>)}
         </ul>

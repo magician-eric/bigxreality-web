@@ -5,6 +5,6 @@ seo:
   title: "合作夥伴｜全球動力科技"
   description: "了解全球動力科技 Big x Reality 的合作夥伴專區，以及專業模擬訓練、技術整合與產業應用相關合作資訊。"
 hero:
-  eyebrow: Partners
+  eyebrow: 合作夥伴
   title: "合作夥伴"
 ---

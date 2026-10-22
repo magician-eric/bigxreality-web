@@ -52,7 +52,7 @@ const itemList = {
           <li>
             <CardSolution
               lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
-              name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary} label={s.loc.data.cardLabel} headline={s.loc.data.cardHeadline} headingLevel={2}
+              name={s.loc.data.name} summary={s.loc.data.summary} label={s.loc.data.cardLabel} headline={s.loc.data.cardHeadline} headingLevel={2}
               image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
             />
           </li>
@@ -63,7 +63,7 @@ const itemList = {
   {page.highlights && (
     <section class="section section--alt" aria-labelledby="h-highlights">
       <div class="container">
-        <SectionHead id="h-highlights" eyebrow="Our Approach" title={page.highlights.title} />
+        <SectionHead id="h-highlights" eyebrow={ui.productLanding.eyebrows.approach} title={page.highlights.title} />
         <ValueCards items={page.highlights.items} />
       </div>
     </section>

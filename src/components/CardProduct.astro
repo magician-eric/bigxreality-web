@@ -17,16 +17,15 @@ interface Props {
   lang: Lang;
   href: string;
   name: string;
-  englishName?: string;
   summary?: string;
   /** Product categories (lib/domains.ts PRODUCT_DOMAINS). */
   domains: ProductDomain[];
-  /** Tag names; the products overview passes ui.productDomains, other pages keep ui.domains. */
+  /** Tag names; default: the product categories (ui.productDomains), the same wording on every page. */
   domainLabels?: Partial<Record<ProductDomain, string>>;
   image?: { src: ImageMetadata; alt: string };
   headingLevel?: 2 | 3;
 }
-const { lang, href, name, englishName, summary, domains, domainLabels, image, headingLevel = 3 } = Astro.props;
+const { lang, href, name, summary, domains, domainLabels, image, headingLevel = 3 } = Astro.props;
 const ui = getUi(lang);
 const H = `h${headingLevel}` as "h2" | "h3";
 ---
@@ -37,9 +36,8 @@ const H = `h${headingLevel}` as "h2" | "h3";
       : <ImagePlaceholder label={ui.imagePending} />}
   </div>
   <div class="body">
-    <ul role="list" class="tags">{domains.map((d) => <li><SectorTag domain={d} lang={lang} label={domainLabels?.[d]} /></li>)}</ul>
+    <ul role="list" class="tags">{domains.map((d) => <li><SectorTag domain={d} lang={lang} label={(domainLabels ?? ui.productDomains)[d as keyof typeof ui.productDomains]} /></li>)}</ul>
     <H class="t-h4 title"><a href={href}><Text value={name} /></a></H>
-    {englishName && <p class="t-tech english"><Text value={englishName} /></p>}
     {summary && <p class="t-small summary"><Text value={summary} /></p>}
   </div>
 </article>
@@ -55,7 +53,6 @@ const H = `h${headingLevel}` as "h2" | "h3";
   .card:hover .title a { color: var(--bxr-text-red); }
   .title a:focus-visible { outline: none; }
   .card:has(.title a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-  .english { color: var(--ink-muted); }
   .summary { color: var(--ink-muted); margin-top: var(--space-1); }
   .tags :global(li) { position: relative; z-index: 1; }
   .media:has(:global(.placeholder)) { aspect-ratio: auto; height: auto; }

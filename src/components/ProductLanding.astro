@@ -96,7 +96,7 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
   <PageHero
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
-    eyebrow={base.hero.code ? `Product · ${base.hero.code}` : "Product"}
+    eyebrow={ui.productLanding.eyebrow}
     kicker={d.hero.name}
     title={L.headline}
     lead={L.subheadline}
@@ -124,7 +124,7 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
             <li>
               <CardProduct
                 lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
-                englishName={known(p.loc.data.hero.englishName)} summary={known(p.loc.data.summary) ?? known(p.loc.data.hero.tagline)}
+                summary={known(p.loc.data.summary) ?? known(p.loc.data.hero.tagline)}
                 domains={p.base.data.domains}
                 image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
               />
@@ -134,7 +134,7 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
             <li>
               <CardSolution
                 lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
-                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary}
+                name={s.loc.data.name} summary={s.loc.data.summary}
                 image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
               />
             </li>

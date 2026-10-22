@@ -5,7 +5,7 @@ seo:
   title: "站內搜尋"
   description: "搜尋 Big x Reality 官網的產品、解決方案、核心技術、最新消息與專業文章。"
 hero:
-  eyebrow: Search
+  eyebrow: 搜尋
   title: "搜尋"
   description: "[待提供]"
 ---

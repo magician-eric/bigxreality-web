@@ -5,7 +5,7 @@ seo:
   title: "文章主題標籤"
   description: "依照技術與應用主題，瀏覽 Big x Reality 官網的專業文章及最新消息。"
 hero:
-  eyebrow: Tags
+  eyebrow: 標籤
   title: "標籤"
   description: "[待提供]"
 ---

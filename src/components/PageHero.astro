@@ -9,11 +9,13 @@ import type { Crumb } from "./SeoHead.astro";
 import Breadcrumb from "./Breadcrumb.astro";
 import ImagePlaceholder from "./ImagePlaceholder.astro";
 import Text from "./Text.astro";
+import { distinctLabel } from "../lib/eyebrow";
 
 interface Props {
   breadcrumbs: Crumb[];
   breadcrumbLabel: string;
-  eyebrow: string;
+  /** Short page-type label; left out when it repeats the kicker or H1. */
+  eyebrow?: string;
   /** Line above the H1 (e.g. the product name when the H1 is a headline). */
   kicker?: string;
   title: string;
@@ -28,15 +30,17 @@ interface Props {
   imageBadge?: string;
 }
 const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending, imageBadge } = Astro.props;
+const label = distinctLabel(eyebrow, kicker, title);
+const sub = distinctLabel(subtitle, kicker, title);
 ---
 <section class="page-hero" data-theme="dark">
   <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
     <div class="copy">
       <Breadcrumb items={breadcrumbs} label={breadcrumbLabel} />
-      <p class="t-label eyebrow">{eyebrow}</p>
+      {label && <p class="t-label eyebrow">{label}</p>}
       {kicker && <p class="kicker t-h4"><Text value={kicker} /></p>}
       <h1 class="t-h1"><Text value={title} /></h1>
-      {subtitle && <p class="subtitle"><Text value={subtitle} /></p>}
+      {sub && <p class="subtitle"><Text value={sub} /></p>}
       {lead && <p class="lead"><Text value={lead} /></p>}
       {description && description.split(/\n\s*\n/).map((para) => <p class="desc"><Text value={para.trim()} /></p>)}
       {Astro.slots.has("actions") && <div class="actions"><slot name="actions" /></div>}

@@ -85,7 +85,7 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
   <PageHero
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
-    eyebrow={`Solution · ${ui.domainCodes[base.domain]}`}
+    eyebrow={d.name === ui.domains[base.domain] ? ui.solution.eyebrow : `${ui.solution.eyebrow} · ${ui.domains[base.domain]}`}
     kicker={d.name}
     title={L.headline}
     lead={L.subheadline}
@@ -111,7 +111,7 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
             <li>
               <CardProduct
                 lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
-                englishName={known(p.loc.data.hero.englishName)} summary={known(p.loc.data.summary) ?? known(p.loc.data.hero.tagline)}
+                summary={known(p.loc.data.summary) ?? known(p.loc.data.hero.tagline)}
                 domains={p.base.data.domains}
                 image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
               />
@@ -121,7 +121,7 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
             <li>
               <CardSolution
                 lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
-                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary}
+                name={s.loc.data.name} summary={s.loc.data.summary}
                 image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
               />
             </li>

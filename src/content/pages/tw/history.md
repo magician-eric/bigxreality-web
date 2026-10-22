@@ -5,6 +5,6 @@ seo:
   title: "發展歷程｜全球動力科技"
   description: "了解全球動力科技 Big x Reality 的發展歷程，以及公司在 XR 模擬訓練、專業訓練系統與整合技術領域的發展方向。"
 hero:
-  eyebrow: History
+  eyebrow: 發展歷程
   title: "發展歷程"
 ---

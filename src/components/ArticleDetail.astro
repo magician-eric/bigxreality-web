@@ -192,7 +192,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
             <li>
               <CardProduct
                 lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
-                englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
                 domains={p.base.data.domains}
                 image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
               />
@@ -212,7 +212,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
             <li>
               <CardSolution
                 lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
-                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={s.loc.data.summary}
+                name={s.loc.data.name} summary={s.loc.data.summary}
                 image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
               />
             </li>

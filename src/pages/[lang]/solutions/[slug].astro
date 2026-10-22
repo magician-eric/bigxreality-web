@@ -91,7 +91,7 @@ const cta = d.cta ?? page?.cta;
 >
   <PageHero
     breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel}
-    eyebrow={`Solution · ${ui.domainCodes[base.domain]}`} title={d.name} subtitle={d.englishName}
+    eyebrow={d.name === ui.domains[base.domain] ? ui.solution.eyebrow : `${ui.solution.eyebrow} · ${ui.domains[base.domain]}`} title={d.name} subtitle={d.englishName}
     description={d.heroDescription ?? d.summary} image={heroImage} imagePending={ui.solutionImagePending}
   >
     <FormButton slot="actions" kind="demo" lang={lang} variant="primary" />
@@ -135,7 +135,7 @@ const cta = d.cta ?? page?.cta;
             <li>
               <CardProduct
                 lang={lang} href={localePath(lang, "products", p.slug)} name={p.loc.data.hero.name}
-                englishName={p.loc.data.hero.englishName} summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
+                summary={p.loc.data.summary ?? p.loc.data.hero.tagline}
                 domains={p.base.data.domains}
                 image={p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: p.loc.data.hero.image?.alt ?? p.base.data.hero.image.alt }}
               />

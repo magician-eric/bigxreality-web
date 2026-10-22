@@ -162,7 +162,7 @@ const website = {
             <li>
               <CardSolution
                 lang={lang} href={localePath(lang, "solutions", s.slug)} domain={s.base.data.domain}
-                name={s.loc.data.name} englishName={s.loc.data.englishName} summary={copy.solutions.items[s.slug] ?? s.loc.data.summary} label={s.loc.data.cardLabel}
+                name={s.loc.data.name} summary={copy.solutions.items[s.slug] ?? s.loc.data.summary} label={s.loc.data.cardLabel}
                 image={s.base.data.image && { src: s.base.data.image.src, alt: s.loc.data.image?.alt ?? s.base.data.image.alt }}
               />
             </li>
@@ -220,7 +220,7 @@ const website = {
   .feature h3 a:focus-visible { outline: none; }
   .feature:has(h3 a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
   .more { font-weight: 500; margin-top: var(--space-1); }
-  .side { display: grid; gap: var(--gutter); grid-auto-rows: 1fr; }
+  .side { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gutter); grid-auto-rows: 1fr; }
   .feature--row { flex-direction: row; }
   .feature--row .feature-media { flex: 0 0 38%; aspect-ratio: auto; }
   .feature--row .feature-media :global(.placeholder) { height: 100%; max-height: none; }

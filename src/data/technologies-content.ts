@@ -39,7 +39,7 @@ export interface TechnologyOverviewContent {
 const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", Record<"tw" | "en" | "jp", TechnologyPageContent>> = {
   "xr": {
     "tw": {
-      "eyebrow": "EXTENDED REALITY",
+      "eyebrow": "核心技術",
       "title": "XR 延展實境技術",
       "lead": "讓訓練不再受限於實際場地與單一情境",
       "intro": [
@@ -162,7 +162,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       }
     },
     "en": {
-      "eyebrow": "EXTENDED REALITY",
+      "eyebrow": "Core Technology",
       "title": "Extended Reality (XR) Technology",
       "lead": "Expand training beyond the limits of physical locations and individual scenarios",
       "intro": [
@@ -285,7 +285,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       }
     },
     "jp": {
-      "eyebrow": "EXTENDED REALITY",
+      "eyebrow": "コア技術",
       "title": "XR（エクステンデッド・リアリティ）技術",
       "lead": "実際の場所や一つのシナリオに縛られない訓練へ",
       "intro": [
@@ -410,7 +410,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
   },
   "training-design": {
     "tw": {
-      "eyebrow": "SIMULATION-BASED TRAINING DESIGN",
+      "eyebrow": "核心技術",
       "title": "模擬訓練設計",
       "lead": "好的模擬訓練，不是讓畫面更像遊戲，而是讓每一次操作都有訓練目的",
       "intro": [
@@ -556,7 +556,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       }
     },
     "en": {
-      "eyebrow": "SIMULATION-BASED TRAINING DESIGN",
+      "eyebrow": "Core Technology",
       "title": "Simulation-Based Training Design",
       "lead": "Effective simulation training gives every action a training purpose, rather than simply making the visuals more game-like",
       "intro": [
@@ -702,7 +702,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       }
     },
     "jp": {
-      "eyebrow": "SIMULATION-BASED TRAINING DESIGN",
+      "eyebrow": "コア技術",
       "title": "シミュレーション訓練設計",
       "lead": "優れたシミュレーション訓練とは、映像をゲームらしくすることではなく、一つひとつの操作に訓練上の目的を持たせること",
       "intro": [
@@ -850,7 +850,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
   },
   "domain-expertise": {
     "tw": {
-      "eyebrow": "DOMAIN EXPERTISE IN PROFESSIONAL TRAINING",
+      "eyebrow": "核心技術",
       "title": "專業訓練領域知識",
       "lead": "理解專業訓練需求，是開發模擬系統的重要起點",
       "intro": [
@@ -984,7 +984,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       }
     },
     "en": {
-      "eyebrow": "DOMAIN EXPERTISE IN PROFESSIONAL TRAINING",
+      "eyebrow": "Core Technology",
       "title": "Domain Expertise in Professional Training",
       "lead": "Understanding professional training requirements is an essential starting point for simulation system development",
       "intro": [
@@ -1118,7 +1118,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       }
     },
     "jp": {
-      "eyebrow": "DOMAIN EXPERTISE IN PROFESSIONAL TRAINING",
+      "eyebrow": "コア技術",
       "title": "専門訓練分野の知識",
       "lead": "専門訓練の要件を理解することが、シミュレーションシステム開発の重要な出発点",
       "intro": [
@@ -1258,7 +1258,7 @@ export const technologyContent = { ...firstBatchContent, ...batchTwoA, ...batchT
 
 export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewContent> = {
   "tw": {
-    "eyebrow": "CORE TECHNOLOGIES",
+    "eyebrow": "核心技術",
     "title": "核心技術",
     "lead": "從虛擬情境到實際訓練，讓技術回應專業需求",
     "intro": [
@@ -1302,7 +1302,7 @@ export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewConte
     }
   },
   "en": {
-    "eyebrow": "CORE TECHNOLOGIES",
+    "eyebrow": "Core Technologies",
     "title": "Core Technologies",
     "lead": "From virtual scenarios to practical training: technology that responds to professional requirements",
     "intro": [
@@ -1346,7 +1346,7 @@ export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewConte
     }
   },
   "jp": {
-    "eyebrow": "CORE TECHNOLOGIES",
+    "eyebrow": "コア技術",
     "title": "コア技術",
     "lead": "仮想シナリオから実際の訓練へ、専門的な要件に応える技術",
     "intro": [

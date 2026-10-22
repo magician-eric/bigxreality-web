@@ -5,7 +5,7 @@ seo:
   title: "導入事例｜XR シミュレーション訓練の活用"
   description: "Big x Reality の XR シミュレーション訓練、インタラクティブ機器、デジタルシステムが専門分野でどのように活用されているかをご紹介します。"
 hero:
-  eyebrow: Case Studies
+  eyebrow: 導入事例
   title: "導入事例"
   description: "[待提供]"
 cta:
