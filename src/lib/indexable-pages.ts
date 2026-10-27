@@ -29,6 +29,7 @@ async function collect(): Promise<IndexablePage[]> {
     add("/{lang}/products/", await filter((l) => copyOk("products", l)));
     add("/{lang}/solutions/", await filter((l) => copyOk("solutions", l)));
     add("/{lang}/contact/", await filter((l) => copyOk("contact", l)));
+    add("/{lang}/company/csr/", [...LANGS]);
     add("/{lang}/company/", await filter((l) => copyOk("company", l)));
     // About BXR sub-pages: only languages in which they have published content (otherwise noindex).
     const companyByLang = new Map<Lang, Awaited<ReturnType<typeof companyContent>>>();
