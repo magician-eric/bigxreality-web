@@ -1,14 +1,18 @@
 ---
 import { clientLogoGroups } from '../lib/client-logos';
+import { getUi } from '../lib/ui';
 import type { Lang } from '../i18n';
 interface Props { lang: Lang }
 const groups = clientLogoGroups(Astro.props.lang);
+const title = getUi(Astro.props.lang).nav.partners;
 ---
-<section class="partner-statistics" data-partner-statistics>
+<section class="partner-statistics" data-partner-statistics aria-labelledby="partner-statistics-title">
+  <h2 id="partner-statistics-title" class="t-h3">{title}</h2>
   <dl>{groups.map(group => <div><dt>{group.label}</dt><dd>{group.items.length}</dd></div>)}</dl>
 </section>
 <style>
 .partner-statistics { max-width: 760px; width: calc(100% - 2 * var(--margin)); margin-inline: auto; padding-block: 40px; }
+h2 { text-align: center; margin: 0 0 var(--space-4); }
 dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 0; }
 dl > div { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; gap: 8px; }
 dt { font-size: .875rem; line-height: 1.6; overflow-wrap: break-word; }
