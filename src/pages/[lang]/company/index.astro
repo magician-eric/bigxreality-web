@@ -9,7 +9,6 @@ import { getUi } from "../../../lib/ui";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageHero from "../../../components/PageHero.astro";
 import CtaBand from "../../../components/CtaBand.astro";
-import ClientLogos from "../../../components/ClientLogos.astro";
 import Text from "../../../components/Text.astro";
 
 export function getStaticPaths() {
@@ -29,7 +28,6 @@ const breadcrumbs = [
   pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" current="company" currentCompany="about" breadcrumbs={breadcrumbs}
 >
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
-  <ClientLogos lang={lang} mode="grid" />
   {copy.closing && (
     <CtaBand id="company-slogan" title={copy.closing.title}>
       <a class="btn btn--primary" href={localePath(lang, "contact")}><Text value={ui.contact} /></a>

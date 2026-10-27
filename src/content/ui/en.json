@@ -442,5 +442,11 @@
   "backToProducts": "",
   "faq": {
     "title": "Frequently Asked Questions"
+  },
+  "clientCategories": {
+    "defense-public-safety": "Defense & Public Safety",
+    "research-technology": "Research & Technology Institutions",
+    "government-public-enterprises": "Government & Public Enterprises",
+    "industry-professional-associations": "Industry & Professional Associations"
   }
 }

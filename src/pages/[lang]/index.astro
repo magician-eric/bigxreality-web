@@ -17,7 +17,7 @@ import { homeConfig, homeCopy } from "../../data/home";
 import poster from "../../assets/images/home/hero-poster.jpg";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import HomeHero from "../../components/home/HomeHero.astro";
-import ClientLogos from "../../components/ClientLogos.astro";
+import PartnerStatistics from "../../components/PartnerStatistics.astro";
 import SectionHead from "../../components/SectionHead.astro";
 import CardSolution from "../../components/CardSolution.astro";
 import FeaturedCases from "../../components/FeaturedCases.astro";
@@ -173,7 +173,7 @@ const website = {
       </div>
     </section>
 
-    <ClientLogos lang={lang} mode="marquee" />
+    <PartnerStatistics lang={lang} />
 
     <!-- 06 Case studies (hidden on built pages until published cases exist) -->
     <FeaturedCases lang={lang} items={cases} copy={copy.cases} viewAllHref={localePath(lang, "case-studies")} alt />

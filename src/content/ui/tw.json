@@ -442,5 +442,11 @@
   "backToProducts": "",
   "faq": {
     "title": "常見問題"
+  },
+  "clientCategories": {
+    "defense-public-safety": "國防與公共安全",
+    "research-technology": "研究與技術機構",
+    "government-public-enterprises": "政府與公共事業",
+    "industry-professional-associations": "產業與專業協會"
   }
 }
