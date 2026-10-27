@@ -4,7 +4,7 @@ import path from 'node:path';
 import { chromium } from 'playwright-core';
 import { CHROMIUM, DIST } from './lib/serve.mjs';
 const approved = JSON.parse(await fs.readFile(new URL('../tests/fixtures/seo-approved.json', import.meta.url), 'utf8'));
-const newsImages = JSON.parse(await fs.readFile(new URL('../src/data/news-images.json', import.meta.url), 'utf8'));
+const newsImages = JSON.parse(await fs.readFile(new URL('../src/data/news-media.json', import.meta.url), 'utf8'));
 const site = JSON.parse(await fs.readFile(new URL('../src/data/site.json', import.meta.url), 'utf8'));
 const browser = await chromium.launch({ executablePath: CHROMIUM });
 const pages = [], errors = [];

@@ -2,8 +2,10 @@
 translationStatus: "translated"
 draft: false
 publishDate: "2025-04-09"
+dateReviewNote: "原文使用「去年」，依發文日推定活動為2024年，但請保留為待確認，不將其視為已查證。"
 articleId: "news-09-seecat-earlier"
 imageId: "news-09-seecat-earlier"
+mediaId: "news-09-seecat-earlier"
 title: "Big x Reality Expands Security Training Partnerships at Japan's SEECAT"
 summary: "Big x Reality (Global Power Technologies) was invited to participate in SEECAT (Special Equipment Exhibition & Conference for Anti-Terrorism) in Tokyo, Japan, in the year preceding the original announcement, showcasing Taiwan's innovation in security and defense technology and expanding its international engagement."
 category: "media"

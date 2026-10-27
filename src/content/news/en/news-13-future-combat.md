@@ -2,8 +2,10 @@
 translationStatus: "translated"
 draft: false
 publishDate: "2025-09-26"
+dateReviewNote: "這是英文舊站的獨立文章。原文標題2025，但內文展期為2024-09-18～20，年份不一致；不可與 news-05 自動合併。"
 articleId: "news-13-future-combat"
 imageId: "news-13-future-combat"
+mediaId: "news-13-future-combat"
 title: "Building Realistic Training for Future Combat"
 summary: "Big x Reality is gearing up for the Taipei Aerospace & Defense Industry Exhibition. Together with the Defense Industry Association, we plan to present advanced training solutions based on LVC (Live-Virtual-Constructive) simulation, enhanced by AI XR integration, modular design, and real-time physical feedback."
 category: "media"

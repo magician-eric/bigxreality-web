@@ -2,8 +2,10 @@
 translationStatus: "translated"
 draft: false
 publishDate: "2025-09-26"
+dateReviewNote: "這是英文舊站的獨立文章。原文標題2025，但內文展期為2024-09-18～20，年份不一致；不可與 news-05 自動合併。"
 articleId: "news-13-future-combat"
 imageId: "news-13-future-combat"
+mediaId: "news-13-future-combat"
 title: "未来の戦闘に向けたリアルな訓練環境を構築"
 summary: "Big x Reality（全球動力科技）は、台北国際航空宇宙・防衛産業展への出展に向けて準備を進めています。防衛産業協会とともに、LVC（Live-Virtual-Constructive）シミュレーションを基盤とし、AI XRの統合、モジュール式設計、リアルタイムの物理フィードバックを組み合わせた先進的な訓練ソリューションを紹介する予定です。"
 category: "media"

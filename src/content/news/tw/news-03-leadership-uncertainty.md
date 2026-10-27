@@ -1,13 +1,16 @@
 ---
 translationStatus: "source"
 draft: false
-publishDate: "2025-10-30"
+publishDate: "2025-10-29"
+dateReviewNote: "FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期 FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期"
 articleId: "news-03-leadership-uncertainty"
 imageId: "news-03-leadership-uncertainty"
+mediaId: "news-03-leadership-uncertainty"
 title: "在不確定中，找出前進的力量"
 summary: "中美科技競爭、供應鏈重組與 AI 浪潮，正在重塑全球產業版圖。過去的成功公式未必適用於未來，唯一不變的就是「變」。"
 category: "media"
 sourceCategory: "媒體消息 / Media / メディア"
+importNote: "FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期"
 seo:
   title: "在不確定中，找出前進的力量"
   description: "中美科技競爭、供應鏈重組與 AI 浪潮，正在重塑全球產業版圖。過去的成功公式未必適用於未來，唯一不變的就是「變」。"

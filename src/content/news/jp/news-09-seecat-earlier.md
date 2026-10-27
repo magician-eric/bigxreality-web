@@ -2,8 +2,10 @@
 translationStatus: "translated"
 draft: false
 publishDate: "2025-04-09"
+dateReviewNote: "原文使用「去年」，依發文日推定活動為2024年，但請保留為待確認，不將其視為已查證。"
 articleId: "news-09-seecat-earlier"
 imageId: "news-09-seecat-earlier"
+mediaId: "news-09-seecat-earlier"
 title: "Big x Reality、日本のSEECATでXR警備訓練技術を紹介"
 summary: "Big x Reality（全球動力科技）は、元の発表の前年に東京で開催された「SEECAT（テロ対策特殊装備展）」に招かれ、台湾の安全保障・防衛技術分野における取り組みを紹介するとともに、国際的な事業展開を進めました。"
 category: "media"

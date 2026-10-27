@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-11-11"
 articleId: "news-02-gbp-cover"
 imageId: "news-02-gbp-cover"
+mediaId: "news-02-gbp-cover"
 title: "Big x Reality 登上《GBP Daily News》封面報導"
 summary: "Big x Reality 全球動力科技很榮幸在泰國曼谷舉辦的 Defense & Security 2025 國防展期間，登上 GBP Aerospace & Defence 發行的《GBP Daily News》第二天封面。"
 category: "media"

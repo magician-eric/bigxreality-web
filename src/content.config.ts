@@ -314,7 +314,7 @@ const articleBase = (ctx: SchemaContext) =>
     seo: seo(ctx),
   });
 
-export const NEWS_CATEGORIES = ["event", "company", "exhibition", "award", "product-launch", "partnership", "media"] as const;
+export const NEWS_CATEGORIES = ["event", "product", "insight", "company", "exhibition", "award", "product-launch", "partnership", "media"] as const;
 
 const news = defineCollection({
   loader: loader("news", "news"),
@@ -324,8 +324,12 @@ const news = defineCollection({
       publishDate: z.preprocess(value => value === null ? undefined : value, z.coerce.date().optional()),
       dateUnconfirmed: z.boolean().default(false),
       dateNote: text.optional(),
+      dateCandidate: text.optional(),
+      dateSource: text.optional(),
+      dateReviewNote: text.optional(),
       articleId: slug.optional(),
       imageId: slug.optional(),
+      mediaId: slug.optional(),
       sourceCategory: text.optional(),
       importNote: text.optional(),
       category: z.enum(NEWS_CATEGORIES),

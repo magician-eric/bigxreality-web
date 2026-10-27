@@ -1,13 +1,16 @@
 ---
 translationStatus: "translated"
 draft: false
-publishDate: "2025-10-30"
+publishDate: "2025-10-29"
+dateReviewNote: "FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期 FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期"
 articleId: "news-03-leadership-uncertainty"
 imageId: "news-03-leadership-uncertainty"
+mediaId: "news-03-leadership-uncertainty"
 title: "Finding a Way Forward in Uncertain Times"
 summary: "Competition between China and the United States in technology, supply-chain restructuring, and the rapid rise of AI are reshaping industries worldwide. Yesterday's formulas for success may no longer apply; change is the only constant."
 category: "media"
 sourceCategory: "媒體消息 / Media / メディア"
+importNote: "FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期"
 seo:
   title: "Finding a Way Forward in Uncertain Times"
   description: "Competition between China and the United States in technology, supply-chain restructuring, and the rapid rise of AI are reshaping industries worldwide. Yesterday's formulas for success may no longer apply; change is the only constant."

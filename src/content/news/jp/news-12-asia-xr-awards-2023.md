@@ -2,8 +2,10 @@
 translationStatus: "translated"
 draft: false
 publishDate: "2023-08-20"
+dateReviewNote: "原文是獎項及活動介紹，沒有明確敘述 BXR 得獎；不得改寫成 BXR 獲獎。"
 articleId: "news-12-asia-xr-awards-2023"
 imageId: "news-12-asia-xr-awards-2023"
+mediaId: "news-12-asia-xr-awards-2023"
 title: "アジアXRアワード受賞チーム、東京のXR KAIGIへ"
 summary: "台湾の国家発展委員会の指導、Startup Island TAIWANの支援のもと、台湾VR・AR産業協会（TAVAR）とXR EXPRESS Taiwanが推進する第2回「アジアXR創星金点大賞」の授賞式が8月11日に開催されました。"
 category: "media"

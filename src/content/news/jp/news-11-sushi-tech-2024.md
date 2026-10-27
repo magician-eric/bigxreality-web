@@ -3,8 +3,10 @@ translationStatus: "translated"
 draft: false
 dateUnconfirmed: true
 dateNote: "[待確認；原文僅有2024年5月15日至16日活動日期]"
+dateReviewNote: "[待確認；原文僅有2024年5月15日至16日活動日期]"
 articleId: "news-11-sushi-tech-2024"
 imageId: "news-11-sushi-tech-2024"
+mediaId: "news-11-sushi-tech-2024"
 title: "Big x Reality、Startup Island TAIWANとともにSusHi Tech Tokyo 2024に参加"
 summary: "東京都が主催する「SusHi Tech Tokyo Global Startup Program 2024」は、2024年5月15日から16日まで東京ビッグサイトで開催されました。世界各地のスタートアップや企業が集まり、持続可能なイノベーションについて交流する機会となりました。"
 category: "event"

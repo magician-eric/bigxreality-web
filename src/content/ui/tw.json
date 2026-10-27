@@ -189,7 +189,9 @@
       "product-launch": "產品發表",
       "partnership": "合作夥伴",
       "media": "媒體消息",
-      "event": "活動消息"
+      "event": "活動消息",
+      "product": "產品消息",
+      "insight": "技術觀點"
     },
     "event": "活動",
     "location": "地點",

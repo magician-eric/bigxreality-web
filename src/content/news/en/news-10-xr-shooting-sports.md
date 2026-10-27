@@ -4,6 +4,7 @@ draft: false
 publishDate: "2024-08-16"
 articleId: "news-10-xr-shooting-sports"
 imageId: "news-10-xr-shooting-sports"
+mediaId: "news-10-xr-shooting-sports"
 title: "Media Report: Big x Reality Introduces an XR Shooting Sports Simulation System"
 summary: "As VR esports and immersive sports experiences gain attention, Big x Reality (Global Power Technologies) is expanding its XR simulation technology into sports technology with a Shooting Sports XR Simulation System designed around Olympic clay-target shooting rules."
 category: "media"

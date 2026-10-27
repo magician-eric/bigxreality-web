@@ -1,9 +1,7 @@
-# 新聞圖片上傳資料夾
+# 新聞圖片上傳
 
-請依專案根目錄 `NEWS-IMAGE-MANIFEST.csv` 上傳 13 篇新聞的正式圖片。
-支援 `.jpg`、`.jpeg`、`.png`，必須保留檔案實際格式；不需要轉成 WebP。
-目前沒有圖片，網站保留共用佔位框，不會下載舊站圖片。
-
-上傳後請再執行 Codex，核對實際檔名、圖片內容與三語 Alt，並將
-`src/data/news-images.json` 的對應記錄設為 `approved: true` 且提供三語 `alt`。
-未核對的圖片不會自動顯示於文章。日期不明的新聞不得以檔名年份或活動日期代替發布日期。
+依根目錄 NEWS-MEDIA-MANIFEST.csv 與 docs/NEWS-MEDIA-UPLOAD.md 上傳實際JPG/JPEG/PNG。
+封面與圖集都放在此處，保留原檔與真實副檔名；不要求WebP、不自行壓縮或裁切。
+尚未看圖不填Alt，不預設每篇圖集張數。上傳後再請Codex確認授權、內容、三語Alt與caption，
+並更新 src/data/news-media.json 的cover/gallery。未核准或不存在的素材不會自動顯示。
+本地影片請放在 public/media/news/，不要放入圖片資料夾。

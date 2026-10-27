@@ -1,13 +1,16 @@
 ---
 translationStatus: "translated"
 draft: false
-publishDate: "2025-10-30"
+publishDate: "2025-10-29"
+dateReviewNote: "FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期 FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期"
 articleId: "news-03-leadership-uncertainty"
 imageId: "news-03-leadership-uncertainty"
+mediaId: "news-03-leadership-uncertainty"
 title: "不確実な時代に前進する力を見いだす"
 summary: "米中間の技術競争、サプライチェーンの再編、AIの急速な普及が、世界の産業構造を変えつつあります。過去の成功法則が今後も通用するとは限りません。変化こそが唯一の不変の要素です。"
 category: "media"
 sourceCategory: "媒體消息 / Media / メディア"
+importNote: "FB 2025-10-29，舊網站標示 2025-10-30；採 FB 發文日期"
 seo:
   title: "不確実な時代に前進する力を見いだす"
   description: "米中間の技術競争、サプライチェーンの再編、AIの急速な普及が、世界の産業構造を変えつつあります。過去の成功法則が今後も通用するとは限りません。変化こそが唯一の不変の要素です。"

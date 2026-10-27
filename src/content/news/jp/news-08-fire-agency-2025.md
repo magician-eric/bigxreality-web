@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-04-22"
 articleId: "news-08-fire-agency-2025"
 imageId: "news-08-fire-agency-2025"
+mediaId: "news-08-fire-agency-2025"
 title: "Big x RealityのCEO、台湾消防署でXR防災・災害対応技術を紹介"
 summary: "2025年4月22日、全球動力科技（Big x Reality）の陳俊男（Hanson Chen）CEOは、台湾内政部消防署の南投訓練センターに招かれ、「スマートシティにおけるAI XR多次元防災・災害対応可視化ソリューション」をテーマに講演しました。"
 category: "event"

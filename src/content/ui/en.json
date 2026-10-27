@@ -183,13 +183,15 @@
       "title": "[待翻譯] 相關解決方案"
     },
     "categories": {
-      "company": "[待翻譯] 公司消息",
+      "company": "Company",
       "exhibition": "[待翻譯] 展覽活動",
       "award": "[待翻譯] 獲獎",
       "product-launch": "[待翻譯] 產品發表",
       "partnership": "[待翻譯] 合作夥伴",
       "media": "Media",
-      "event": "Event"
+      "event": "Event",
+      "product": "Product",
+      "insight": "Insight"
     },
     "event": "[待翻譯] 活動",
     "location": "[待翻譯] 地點",

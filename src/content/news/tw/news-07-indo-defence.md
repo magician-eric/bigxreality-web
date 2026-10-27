@@ -1,14 +1,18 @@
 ---
 translationStatus: "source"
 draft: false
-publishDate: "2025-06-20"
+dateUnconfirmed: true
+dateNote: "FB 2025-09-04，舊網站標示 2025-06-20；兩者為不同來源日期，活動年份原文寫 2024，待核實 原文標題稱2025年6月參展，但活動名稱為「2024 Indo Defence Expo & Forum」；請保留原始兩者，待確認展會正式屆次。 TXT候選日期：2025-09-04 FB 2025-09-04，舊網站標示 2025-06-20；兩者為不同來源日期，活動年份原文寫 2024，待核實 原文標題稱2025年6月參展，但活動名稱為「2024 Indo Defence Expo & Forum」；請保留原始兩者，待確認展會正式屆次。"
+dateCandidate: "2025-09-04"
+dateReviewNote: "FB 2025-09-04，舊網站標示 2025-06-20；兩者為不同來源日期，活動年份原文寫 2024，待核實 原文標題稱2025年6月參展，但活動名稱為「2024 Indo Defence Expo & Forum」；請保留原始兩者，待確認展會正式屆次。 TXT候選日期：2025-09-04 FB 2025-09-04，舊網站標示 2025-06-20；兩者為不同來源日期，活動年份原文寫 2024，待核實 原文標題稱2025年6月參展，但活動名稱為「2024 Indo Defence Expo & Forum」；請保留原始兩者，待確認展會正式屆次。"
 articleId: "news-07-indo-defence"
 imageId: "news-07-indo-defence"
+mediaId: "news-07-indo-defence"
 title: "Big x Reality 參與印尼 Indo Defence 展示 CQB 模擬訓練系統"
 summary: "Big x Reality 全球動力科技於六月參加印尼國防展「2024 Indo Defence Expo & Forum」，向東南亞市場展示近身距離作戰（CQB）模擬訓練系統。"
 category: "event"
 sourceCategory: "活動消息 / Event / イベント"
-importNote: "原文標題稱2025年6月參展，但活動名稱為「2024 Indo Defence Expo & Forum」；請保留原始兩者，待確認展會正式屆次。"
+importNote: "FB 2025-09-04，舊網站標示 2025-06-20；兩者為不同來源日期，活動年份原文寫 2024，待核實 原文標題稱2025年6月參展，但活動名稱為「2024 Indo Defence Expo & Forum」；請保留原始兩者，待確認展會正式屆次。"
 seo:
   title: "Big x Reality 參與印尼 Indo Defence 展示 CQB 模擬訓練系統"
   description: "Big x Reality 全球動力科技於六月參加印尼國防展「2024 Indo Defence Expo & Forum」，向東南亞市場展示近身距離作戰（CQB）模擬訓練系統。"

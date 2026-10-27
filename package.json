@@ -20,6 +20,8 @@
     "qa:shots": "node scripts/qa-screenshots.mjs",
     "favicons": "node scripts/make-favicons.mjs",
     "qa:behaviour": "node scripts/qa-behaviour.mjs",
+    "qa:news-preview": "node scripts/preview/rebase.mjs && node scripts/qa-news-preview.mjs",
+    "qa:news-media": "node scripts/qa-news-media.mjs",
     "qa:news-import": "node scripts/qa-historical-news.mjs",
     "qa:images": "node scripts/qa-uploaded-images.mjs",
     "qa:seo": "node scripts/qa-seo.mjs",

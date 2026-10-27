@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-09-26"
 articleId: "news-05-tadte-2025"
 imageId: "news-05-tadte-2025"
+mediaId: "news-05-tadte-2025"
 title: "Big x Reality Showcases AI XR Training at Taipei Aerospace & Defense Exhibition 2025"
 summary: "Big x Reality (Global Power Technologies) participated in the 2025 Taipei Aerospace & Defense Industry Exhibition, presenting a range of simulation training systems built around AI and XR technologies."
 category: "media"

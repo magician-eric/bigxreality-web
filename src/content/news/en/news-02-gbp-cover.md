@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-11-11"
 articleId: "news-02-gbp-cover"
 imageId: "news-02-gbp-cover"
+mediaId: "news-02-gbp-cover"
 title: "Big x Reality Featured on the Cover of GBP Daily News"
 summary: "Big x Reality (Global Power Technologies) was honored to appear on the second-day cover of GBP Daily News, published by GBP Aerospace & Defence during Defense & Security 2025 in Bangkok, Thailand."
 category: "media"

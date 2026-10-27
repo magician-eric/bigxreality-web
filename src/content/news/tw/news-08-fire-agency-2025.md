@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-04-22"
 articleId: "news-08-fire-agency-2025"
 imageId: "news-08-fire-agency-2025"
+mediaId: "news-08-fire-agency-2025"
 title: "全球動力科技執行長應邀至消防署分享 XR 智慧防救災應用"
 summary: "2025 年 4 月 22 日，全球動力科技股份有限公司執行長陳俊男（Hanson Chen）應邀前往內政部消防署南投訓練中心擔任專題講座講師，分享「智慧城市 AI XR 多維度防救災可視化解決方案」。"
 category: "event"

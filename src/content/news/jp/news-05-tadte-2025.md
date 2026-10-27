@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-09-26"
 articleId: "news-05-tadte-2025"
 imageId: "news-05-tadte-2025"
+mediaId: "news-05-tadte-2025"
 title: "2025年台北国際航空宇宙・防衛産業展でAI XR訓練技術を展示"
 summary: "Big x Reality（全球動力科技）は、「2025年台北国際航空宇宙・防衛産業展」に出展し、AIとXRを中核とした各種シミュレーション訓練システムを紹介しました。"
 category: "media"

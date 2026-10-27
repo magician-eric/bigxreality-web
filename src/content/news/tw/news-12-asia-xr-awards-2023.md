@@ -2,8 +2,10 @@
 translationStatus: "source"
 draft: false
 publishDate: "2023-08-20"
+dateReviewNote: "原文是獎項及活動介紹，沒有明確敘述 BXR 得獎；不得改寫成 BXR 獲獎。"
 articleId: "news-12-asia-xr-awards-2023"
 imageId: "news-12-asia-xr-awards-2023"
+mediaId: "news-12-asia-xr-awards-2023"
 title: "亞洲 XR 創星金點大賞得獎者將閃耀東京"
 summary: "由國家發展委員會指導、Startup Island TAIWAN 支持，並由 TAVAR 台灣虛擬及擴增實境產業協會與 XR EXPRESS Taiwan 共同推動的第二屆「亞洲 XR 創星金點大賞頒獎典禮」，於 8 月 11 日登場。"
 category: "media"

@@ -4,6 +4,7 @@ draft: false
 publishDate: "2025-04-22"
 articleId: "news-08-fire-agency-2025"
 imageId: "news-08-fire-agency-2025"
+mediaId: "news-08-fire-agency-2025"
 title: "Big x Reality CEO Shares XR Disaster Response Innovations at Taiwan's Fire Agency"
 summary: "On April 22, 2025, Hanson Chen, CEO of Global Power Technologies (Big x Reality), was invited to speak at the Ministry of the Interior Fire Agency's Training Center in Nantou, Taiwan. His presentation, “AI XR Multi-Dimensional Visualization Solutions for Smart City Disaster Prevention and Response,” explored how immersive technology can support emergency preparedness."
 category: "event"
