@@ -1989,6 +1989,27 @@
      "validation": {
       "relation": "news_case_studies"
      }
+    },
+    {
+     "slug": "featured_in_csr",
+     "label": "CSR 案例",
+     "type": "boolean",
+     "defaultValue": false,
+     "translatable": false
+    },
+    {
+     "slug": "csr_categories",
+     "label": "CSR 主題",
+     "type": "multiSelect",
+     "translatable": false,
+     "validation": {
+      "options": [
+       "defense-education",
+       "disaster-resilience",
+       "technology-education",
+       "community-engagement"
+      ]
+     }
     }
    ]
   },

@@ -1,6 +1,8 @@
 ---
 translationStatus: "source"
 draft: false
+featuredInCSR: true
+csrCategories: ["defense-education", "technology-education"]
 publishDate: "2026-06-06"
 dateReviewNote: "上傳檔有兩段高度重複的教育博覽會貼文，合併為一篇新聞。"
 articleId: "news-20-taipei-education-expo-2026"

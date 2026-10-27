@@ -1,6 +1,8 @@
 ---
 translationStatus: "translated"
 draft: false
+featuredInCSR: true
+csrCategories: ["defense-education"]
 publishDate: "2025-12-30"
 dateReviewNote: "依使用者提供貼文改寫為官網新聞，僅擴寫已有資訊及背景脈絡；未新增未經證實的事實。"
 articleId: "news-23-songshan-school-2025"

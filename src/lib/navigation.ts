@@ -47,6 +47,7 @@ export const NAVIGATION = [
     id: "company", label: "nav.company", order: 50, enabled: true, status: "published",
     children: [
       { id: "about", label: "nav.aboutUs", route: ["company"], order: 10, enabled: true, status: "published" },
+      { id: "csr", label: "nav.csr", route: ["company", "csr"], order: 15, enabled: true, status: "published" },
       { id: "history", label: "nav.history", route: ["company", "history"], order: 20, enabled: true, status: "published" },
       { id: "team", label: "nav.team", route: ["company", "team"], order: 30, enabled: true, status: "published" },
       { id: "partners", label: "nav.partners", route: ["company", "partners"], order: 40, enabled: true, status: "published" },

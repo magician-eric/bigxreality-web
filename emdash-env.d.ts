@@ -131,6 +131,8 @@ export interface New {
   updated_on?: string;
   review_status: "draft" | "submitted" | "changes_requested" | "approved";
   category: "company" | "exhibition" | "award" | "product-launch" | "partnership" | "media";
+  featured_in_csr?: boolean;
+  csr_categories?: ("defense-education" | "disaster-resilience" | "technology-education" | "community-engagement")[];
   event_name?: string;
   event_location?: string;
   event_start?: string;
