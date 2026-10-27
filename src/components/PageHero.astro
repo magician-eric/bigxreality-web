@@ -3,7 +3,7 @@
  * Dark page hero (DS P.16): breadcrumb, English label, H1, description, image on
  * the right, at most two buttons (passed in the "actions" slot).
  */
-import { Picture } from "astro:assets";
+import ProductImage from './ProductImage.astro';
 import type { ImageMetadata } from "astro";
 import type { Crumb } from "./SeoHead.astro";
 import Breadcrumb from "./Breadcrumb.astro";
@@ -47,12 +47,7 @@ const sub = distinctLabel(subtitle, kicker, title);
     </div>
     {(image || imagePending) && <figure class="media">
       {image ? (
-        <Picture
-          src={image.src} alt={image.alt} formats={["avif", "webp"]}
-          widths={[640, 960, 1280, 1920, 2560].filter((w) => w <= image.src.width)}
-          sizes="(max-width: 1023px) calc(100vw - 2 * var(--margin)), 50vw"
-          width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
-        />
+        <ProductImage src={image.src} alt={image.alt} loading="eager" priority />
       ) : imagePending && <ImagePlaceholder label={imagePending} />}
       {image && imageBadge && <span class="badge t-caption">{imageBadge}</span>}
       {image && imageCaption && <figcaption class="t-tech"><Text value={imageCaption} /></figcaption>}

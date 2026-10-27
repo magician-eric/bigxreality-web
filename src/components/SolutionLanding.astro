@@ -24,6 +24,7 @@ import CardSolution from "./CardSolution.astro";
 import CtaBand from "./CtaBand.astro";
 import CtaGroup from "./CtaGroup.astro";
 import RelatedCases from "./RelatedCases.astro";
+import { primaryImage } from '../data/primary-images';
 import Text from "./Text.astro";
 
 interface Props {
@@ -39,7 +40,8 @@ const ui = getUi(lang);
 const t = ui.productLanding;
 const e = t.eyebrows;
 const cta = ctaSet(lang, { page: "solutionInquiry", name: d.name, label: L.ctaLabel });
-const hero = L.heroImage;
+const uploadedHero = primaryImage('solutions', slug, lang);
+const hero = uploadedHero ? { ...L.heroImage, ...uploadedHero } : L.heroImage;
 const heroReady = hero?.src && hero.alt;
 
 const allSolutions = await getLocalized("solutions", lang);

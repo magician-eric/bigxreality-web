@@ -26,6 +26,7 @@ import RelatedCases from "./RelatedCases.astro";
 import LandingSections from "./LandingSections.astro";
 import { alternatingSections } from "../lib/landing";
 import { casesAbout } from "../lib/cases";
+import { primaryImage } from '../data/primary-images';
 import Text from "./Text.astro";
 import FaqAccordion from "./FaqAccordion.astro";
 import { faqLd } from "../lib/faq";
@@ -49,7 +50,8 @@ const backLabel = ui.backToProducts;
 const backHref = localePath(lang, "products");
 const need = t.mediaNeed;
 const badge = t.illustrationLabel;
-const hero = L.heroImage;
+const uploadedHero = primaryImage('products', slug, lang);
+const hero = uploadedHero ? { ...L.heroImage, ...uploadedHero } : L.heroImage;
 const heroReady = hero?.src && hero.alt;
 
 // Related products / solutions: only entries that have a built page in this language.
