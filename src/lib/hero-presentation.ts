@@ -1,8 +1,10 @@
 export type HeroVariant = 'split' | 'scene' | 'equipment' | 'interface';
-/** Opt-in after inspecting existing sources; absent/unfit media keeps the text/image layout. */
-export function heroPresentation(collection: 'products' | 'solutions', slug: string, hasImage: boolean): HeroVariant {
- if (!hasImage) return 'split';
- if (collection === 'solutions') return ['military','police'].includes(slug) ? 'scene' : slug === 'smart-city' ? 'interface' : 'split';
- if (slug === 'sut') return 'scene';
- return slug === 'wargaming-table' ? 'interface' : 'equipment';
+/** All supplied product/solution Hero images share the approved SUT scene treatment. */
+export function heroPresentation(_collection: 'products' | 'solutions', _slug: string, hasImage: boolean): HeroVariant {
+ return hasImage ? 'scene' : 'split';
+}
+
+/** Preserve complete equipment/interface subjects while keeping the shared background composition. */
+export function heroSceneFit(collection: 'products' | 'solutions', slug: string): 'cover' | 'contain' {
+ return (collection === 'products' && slug === 'sut') || (collection === 'solutions' && ['military','police'].includes(slug)) ? 'cover' : 'contain';
 }

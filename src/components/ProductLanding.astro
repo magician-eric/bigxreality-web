@@ -16,7 +16,7 @@ import { isPending } from "../lib/pending";
 import { getUi } from "../lib/ui";
 import RelatedTechnologies from "./RelatedTechnologies.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { heroPresentation } from "../lib/hero-presentation";
+import { heroPresentation, heroSceneFit } from "../lib/hero-presentation";
 import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
 import CardProduct from "./CardProduct.astro";
@@ -98,6 +98,7 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
 >
   <PageHero
     variant={heroPresentation("products", slug, !!heroReady)}
+    sceneFit={heroSceneFit("products", slug)}
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
     eyebrow={ui.productLanding.eyebrow}

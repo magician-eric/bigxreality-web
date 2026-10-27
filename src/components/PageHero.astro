@@ -12,6 +12,7 @@ import Text from "./Text.astro";
 import { distinctLabel } from "../lib/eyebrow";
 
 interface Props {
+  sceneFit?: "cover" | "contain";
   variant?: "split" | "scene" | "equipment" | "interface";
   breadcrumbs: Crumb[];
   breadcrumbLabel: string;
@@ -30,11 +31,11 @@ interface Props {
   /** Label drawn bottom-right on illustrations (情境示意圖). */
   imageBadge?: string;
 }
-const { variant = "split", breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending, imageBadge } = Astro.props;
+const { sceneFit = "cover", variant = "split", breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending, imageBadge } = Astro.props;
 const label = distinctLabel(eyebrow, kicker, title);
 const sub = distinctLabel(subtitle, kicker, title);
 ---
-<section class:list={["page-hero", `hero--${variant}`]} data-theme="dark" data-hero-variant={variant}>
+<section class:list={["page-hero", `hero--${variant}`]} data-theme="dark" data-hero-variant={variant} style={`--hero-scene-fit:${sceneFit}`}>
   <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
     <div class="copy">
       <Breadcrumb items={breadcrumbs} label={breadcrumbLabel} />
@@ -85,7 +86,7 @@ const sub = distinctLabel(subtitle, kicker, title);
 .hero--scene .grid { display: block; }
 .hero--scene .copy { position: relative; z-index: 2; max-width: 46%; }
 .hero--scene .media { position: absolute; inset: 0 0 0 auto; width: 72%; z-index: 0; }
-.hero--scene .media :global(img) { height: 100%; width: 100%; object-fit: cover !important; object-position: 60% 50% !important; aspect-ratio: auto; }
+.hero--scene .media :global(img) { height: 100%; width: 100%; object-fit: var(--hero-scene-fit, cover) !important; object-position: 60% 50% !important; aspect-ratio: auto; }
 .hero--scene::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg,var(--bxr-black) 12%,rgb(10 12 16 / .94) 28%,rgb(10 12 16 / .7) 43%,transparent 72%); }
 @media(max-width:1023px) { .hero--equipment .grid,.hero--interface .grid { grid-template-columns: 1fr; } }
 @media(max-width:1023px) { .hero--scene { min-height: 0; padding-bottom: 0; } .hero--scene::before { display: none; } .hero--scene .grid { display: grid; } .hero--scene .copy { max-width: 100%; } .hero--scene .media { position: relative; inset: auto; width: 100%; } .hero--scene .media :global(img) { height: auto; aspect-ratio: 3/2; object-fit: contain !important; } }
