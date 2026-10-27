@@ -29,7 +29,7 @@
   "home": "ホーム",
   "logoHome": "Big x Reality ホーム",
   "breadcrumbLabel": "パンくずリスト",
-  "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
+  "translationPending": "この言語の追加コンテンツを準備しています。",
   "imagePending": "製品画像",
   "solutionImagePending": "ソリューション画像",
   "syntheticImage": "合成イメージ",
@@ -208,7 +208,7 @@
     "outcomes": "[待翻譯] 成果"
   },
   "listing": {
-    "empty": "[待翻譯] 目前還沒有內容。",
+    "empty": "公開済みの記事はまだありません。",
     "count": "{n} 件の記事",
     "pagination": "ページ切り替え",
     "previous": "前へ",
@@ -289,67 +289,67 @@
     "illustrationLabel": "シナリオのイメージ図"
   },
   "contactPage": {
-    "topicLabel": "[待翻譯] 洽詢項目",
+    "topicLabel": "お問い合わせ内容",
     "topics": {
       "general": {
-        "title": "[待翻譯] 一般洽詢",
-        "subject": "[待翻譯] 一般洽詢"
+        "title": "一般のお問い合わせ",
+        "subject": "一般のお問い合わせ"
       },
       "demo": {
-        "title": "[待翻譯] 預約產品展示",
-        "subject": "[待翻譯] 預約產品展示"
+        "title": "製品デモのご依頼",
+        "subject": "製品デモのご依頼"
       },
       "info": {
-        "title": "[待翻譯] 索取產品資料",
-        "subject": "[待翻譯] 索取產品資料"
+        "title": "製品資料のご請求",
+        "subject": "製品資料のご請求"
       },
       "product": {
-        "title": "[待翻譯] 洽詢產品",
-        "subject": "[待翻譯] 產品洽詢"
+        "title": "製品についてのご相談",
+        "subject": "製品についてのご相談"
       },
       "solution": {
-        "title": "[待翻譯] 洽詢解決方案",
-        "subject": "[待翻譯] 解決方案洽詢"
+        "title": "ソリューションについてのご相談",
+        "subject": "ソリューションについてのご相談"
       },
       "solution-demo": {
-        "title": "[待翻譯] 預約展示",
-        "subject": "[待翻譯] 預約解決方案展示"
+        "title": "ソリューションデモのご依頼",
+        "subject": "ソリューションデモのご依頼"
       },
       "needs": {
-        "title": "[待翻譯] 討論訓練需求",
-        "subject": "[待翻譯] 訓練需求討論"
+        "title": "訓練要件についてのご相談",
+        "subject": "訓練要件についてのご相談"
       }
     },
-    "about": "[待翻譯] 關於",
+    "about": "対象",
     "steps": {
       "eyebrow": "お問い合わせの流れ",
-      "title": "[待翻譯] 以 Email 與我們聯繫",
+      "title": "メールでお問い合わせください",
       "items": [
         {
-          "title": "[待翻譯] 按下「寄送 Email」",
-          "description": "[待翻譯] 系統會開啟您的郵件軟體，主旨與信件格式已依洽詢項目填好。"
+          "title": "「メールを送信」を選択",
+          "description": "メールソフトが開き、お問い合わせ内容に応じた件名と本文のひな形が入力されます。"
         },
         {
-          "title": "[待翻譯] 補上聯絡資料與需求",
-          "description": "[待翻譯] 請填寫姓名、單位、職稱、國家、電話，以及希望了解的內容。"
+          "title": "連絡先とご要望を記入",
+          "description": "お名前、所属、役職、国・地域、電話番号、ご相談内容をご記入ください。"
         },
         {
-          "title": "[待翻譯] 寄出後由業務聯繫",
-          "description": "[待翻譯] 我們收到來信後，將由業務人員與您聯繫，確認需求與後續安排。"
+          "title": "担当者からご連絡",
+          "description": "メールを確認後、営業担当者がご要望と今後の進め方についてご連絡します。"
         }
       ]
     },
-    "sendEmail": "[待翻譯] 寄送 Email",
-    "orWrite": "[待翻譯] 或直接寄信至",
+    "sendEmail": "メールを送信",
+    "orWrite": "直接メールする場合：",
     "bodyFields": [
-      "[待翻譯] 姓名：",
-      "[待翻譯] 公司／單位：",
-      "[待翻譯] 職稱：",
-      "[待翻譯] 國家：",
-      "[待翻譯] 電話：",
-      "[待翻譯] 需求說明："
+      "お名前：",
+      "会社・所属：",
+      "役職：",
+      "国・地域：",
+      "電話番号：",
+      "ご相談内容："
     ],
-    "noEmail": "[待翻譯] 聯絡信箱尚未設定。"
+    "noEmail": "お問い合わせ先メールアドレスは未設定です。"
   },
   "cases": {
     "filterLabel": "[待翻譯] 篩選成功案例",
@@ -361,9 +361,9 @@
     "count": "[待翻譯] 共 {n} 個案例",
     "filterResults": "[待翻譯] 共 {n} 個案例",
     "filterEmpty": "[待翻譯] 沒有符合條件的案例",
-    "empty": "[待翻譯] 成功案例整理中，目前尚無已發布的案例",
-    "emptyHint": "[待翻譯] 如需了解沉浸式模擬訓練如何配合您的任務需求，歡迎與我們聯絡",
-    "emptyCta": "[待翻譯] 聯絡我們",
+    "empty": "公開承認済みの導入事例はまだありません。",
+    "emptyHint": "ご要望に応じたシミュレーション訓練について、お気軽にお問い合わせください。",
+    "emptyCta": "お問い合わせ",
     "client": "[待翻譯] 導入單位",
     "domains": "[待翻譯] 應用領域",
     "products": "[待翻譯] 關聯產品",
@@ -448,5 +448,21 @@
     "research-technology": "研究・技術機関",
     "government-public-enterprises": "政府機関・公共事業",
     "industry-professional-associations": "産業・専門団体"
+  },
+  "newsListing": {
+    "intro": "展示会、企業動向、シミュレーション訓練の最新情報。",
+    "all": "すべて",
+    "allYears": "すべての年",
+    "categories": "ニュース分類",
+    "years": "公開年",
+    "undated": "日付未確認",
+    "categoryLabels": {
+      "event": "展示会・イベント",
+      "exhibition": "展示会",
+      "media": "メディア掲載"
+    }
+  },
+  "homeSections": {
+    "products": "注目の製品"
   }
 }

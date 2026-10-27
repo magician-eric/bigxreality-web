@@ -3,10 +3,12 @@
 import { LANGS, type Lang } from '../../../../i18n';
 import { clientLogos } from '../../../../lib/client-logos';
 import CompanyShell from '../../../../components/CompanyShell.astro';
+import PartnerStatistics from '../../../../components/PartnerStatistics.astro';
 import ClientLogos from '../../../../components/ClientLogos.astro';
 export const getStaticPaths = () => LANGS.map(lang => ({ params: { lang } }));
 const lang = Astro.params.lang as Lang;
 ---
 <CompanyShell lang={lang} page="partners" currentCompany="partners" path="partners" empty={clientLogos(lang).length === 0} alternates={[...LANGS]}>
+  <PartnerStatistics lang={lang} />
   <ClientLogos lang={lang} />
 </CompanyShell>

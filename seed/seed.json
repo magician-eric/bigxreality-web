@@ -2010,6 +2010,20 @@
        "community-engagement"
       ]
      }
+    },
+    {
+     "slug": "featured",
+     "label": "焦點新聞",
+     "type": "boolean",
+     "defaultValue": false,
+     "translatable": false
+    },
+    {
+     "slug": "featured_priority",
+     "label": "焦點優先序（數字較大優先）",
+     "type": "integer",
+     "defaultValue": 0,
+     "translatable": false
     }
    ]
   },

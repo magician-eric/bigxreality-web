@@ -17,7 +17,7 @@ try {
    await page.goto(`${server.base}/${lang}/company/csr/`);
    assert.equal(await page.locator('h1').count(),1);
    assert.equal(await page.locator('section.topic').count(),4);
-   assert.equal(await page.locator('.csr-cards .card').count(),3);
+   assert.equal(await page.locator('.csr-cards .card').count(),2);
    assert.equal(await page.locator('#disaster-resilience .card, #community-engagement .card').count(),0);
    for (const slug of slugs) assert.ok(await page.locator(`.csr-cards a[href="/${lang}/news/${slug}/"]`).count());
    assert.equal(await page.locator('link[rel="alternate"][hreflang]').count(),4);

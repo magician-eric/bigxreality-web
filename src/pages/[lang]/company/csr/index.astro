@@ -20,7 +20,7 @@ const breadcrumbs = [{ name: ui.home, path: localePath(lang) }, { name: ui.nav.a
     <section class="section topic" id={category}><div class="container">
       <h2 class="t-h2">{copy.topics[index]}</h2>
       <p class="description">{copy.descriptions[index]}</p>
-      <ul role="list" class="csr-cards">{articles.filter(a => csrCategories(a.base.data).includes(category)).map(a => <li>
+      <ul role="list" class="csr-cards">{articles.filter(a => csrCategories(a.base.data)[0] === category).map(a => <li>
         <CardArticle lang={lang} href={articleHref(a)} type={copy.title} date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary} tags={csrCategories(a.base.data).map(c => csrLabel(c, lang))} cover={a.base.data.cover && {src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt}} />
         <a class="read" href={articleHref(a)}>{copy.read}<span class="visually-hidden"> — {a.loc.data.title}</span></a>
       </li>)}</ul>

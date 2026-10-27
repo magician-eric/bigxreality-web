@@ -16,6 +16,7 @@ import { isPending } from "../lib/pending";
 import { getUi } from "../lib/ui";
 import RelatedTechnologies from "./RelatedTechnologies.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { heroPresentation } from "../lib/hero-presentation";
 import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
 import CardProduct from "./CardProduct.astro";
@@ -96,13 +97,12 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
   product={{ name: d.hero.name, description: d.seo?.description ?? L.subheadline, code: base.hero.code }}
 >
   <PageHero
+    variant={heroPresentation("products", slug, !!heroReady)}
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
     eyebrow={ui.productLanding.eyebrow}
-    kicker={d.hero.name}
-    title={L.headline}
+    title={d.hero.name}
     lead={L.subheadline}
-    description={L.intro}
     image={heroReady ? { src: hero!.src!, alt: hero!.alt! } : undefined}
     imageCaption={hero?.caption}
     imageBadge={hero?.illustration ? badge : undefined}
@@ -110,6 +110,8 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
   >
     <CtaGroup slot="actions" actions={cta.hero} />
   </PageHero>
+
+  <section class="section landing-overview" aria-labelledby="landing-overview-title"><div class="container narrow"><h2 class="t-h2" id="landing-overview-title">{L.headline}</h2>{L.intro?.split(/\n\s*\n/).map(paragraph => <p>{paragraph}</p>)}</div></section>
 
   <LandingSections lang={lang} L={L} />
 
@@ -166,3 +168,5 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
   .back a { color: var(--ink); text-decoration: none; font-weight: 500; }
   .back a:hover { color: var(--bxr-text-red); }
 </style>
+
+<style>.landing-overview .narrow { display: grid; gap: var(--space-3); } .landing-overview p { line-height: 1.8; }</style>

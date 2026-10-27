@@ -269,6 +269,8 @@ const MAPPERS: Record<string, (ctx: Ctx) => Mapped> = {
       data: omitEmpty({
         ...article(ctx),
         category: d.category,
+        featured: bool(ctx.structural.featured, false),
+        featuredPriority: ctx.structural.featured_priority ?? 0,
         featuredInCSR: bool(ctx.structural.featured_in_csr, false),
         csrCategories: ctx.structural.csr_categories ?? [],
         event: d.event_name && d.event_start ? omitEmpty({ name: d.event_name, location: d.event_location, startDate: d.event_start, endDate: date(d.event_end) }) : undefined,

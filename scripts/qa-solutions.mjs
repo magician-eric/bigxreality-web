@@ -37,7 +37,7 @@ try {
 
   for (const [slug, h1, cta, name] of PAGES) {
     await page.goto(`${base}/tw/solutions/${slug}/`, { waitUntil: "networkidle" });
-    check(`${slug}: H1`, (await page.locator("h1").innerText()).trim() === h1);
+    check(`${slug}: H1 identifies solution and retains value headline`, (await page.locator("h1").innerText()).trim() === name && (await page.locator(".landing-overview h2").innerText()).trim() === h1);
     const hrefs = await page.locator("a[href]").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
     check(`${slug}: CTA goes to the contact page with the solution name`, hrefs.some((h) => h.startsWith("/tw/contact/?topic=solution&item=")) && (await page.locator(`.page-hero a.btn`).first().innerText()).trim() === cta);
     const text = await page.locator("main").innerText();

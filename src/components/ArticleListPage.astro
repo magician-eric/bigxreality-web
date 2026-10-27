@@ -23,7 +23,7 @@ import FormButton from "./FormButton.astro";
 import FilterBar from "./FilterBar.astro";
 import Pagination from "./Pagination.astro";
 import EmptyState from "./EmptyState.astro";
-import { isPending } from "../lib/pending";
+import { isEditorialPlaceholder as isPending } from "../lib/pending";
 import Text from "./Text.astro";
 
 interface Props { lang: Lang; collection: ArticleCollection; page: number }
@@ -84,7 +84,7 @@ const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: pa
             />
           )}
           <p class="t-small t-muted count"><Text value={format(ui.listing.count, { n: all.length })} /></p>
-          <ul role="list" class="cards" id="article-grid">
+          <ul role="list" class:list={["cards", { "topic-cards": collection === "insights", "case-cards": collection === "case-studies" }]} id="article-grid">
             {items.map((a, i) => (
               <li
                 data-filter-item={filterable ? "" : undefined}
@@ -120,3 +120,5 @@ const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: pa
   @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
 </style>
+
+<style>.topic-cards,.case-cards { grid-template-columns: repeat(2,minmax(0,1fr)); } .case-cards :global(.media) { aspect-ratio: 3 / 2; } @media(max-width:767px) { .topic-cards,.case-cards { grid-template-columns: 1fr; } }</style>

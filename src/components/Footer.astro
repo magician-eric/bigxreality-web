@@ -59,7 +59,7 @@ const plannedNote = `<span class="visually-hidden"> ${ui.nav.planned}</span>`;
         {menu.map((item) => (
           <li>
             {item.children.length > 0 ? (
-              <details class="group">
+              <details class="group" open>
                 <summary class="item"><Text value={item.label} /><Fragment set:html={chevron} /></summary>
                 <ul role="list" class="sub">
                   {item.href && <li><a class="sub-item" href={item.href}><Text value={item.label} /></a></li>}
@@ -100,28 +100,16 @@ const plannedNote = `<span class="visually-hidden"> ${ui.nav.planned}</span>`;
 </footer>
 
 <script>
-  // One submenu open at a time; Esc or a click elsewhere closes it. On desktop with a mouse it also
-  // opens on hover (as a pop-out panel, see styles) and closes shortly after the pointer leaves.
-  const groups = [...document.querySelectorAll<HTMLDetailsElement>(".site-footer details.group")];
-  const hover = window.matchMedia("(min-width: 1024px) and (hover: hover)");
-  for (const d of groups) {
-    let timer: number | undefined;
-    let byHover = false;
-    d.addEventListener("toggle", () => { if (d.open) for (const o of groups) if (o !== d) o.open = false; });
-    // a click right after hover-opening keeps the menu open
-    d.querySelector("summary")!.addEventListener("click", (e) => { if (byHover) { e.preventDefault(); byHover = false; } });
-    d.addEventListener("pointerenter", (e) => {
-      if (e.pointerType !== "mouse" || !hover.matches) return;
-      clearTimeout(timer);
-      if (!d.open) { d.open = true; byHover = true; }
-    });
-    d.addEventListener("pointerleave", (e) => {
-      if (e.pointerType !== "mouse" || !hover.matches) return;
-      timer = window.setTimeout(() => { d.open = false; byHover = false; }, 160);
-    });
-    d.addEventListener("keydown", (e) => { if (e.key === "Escape" && d.open) { d.open = false; d.querySelector("summary")!.focus(); } });
+  const groups = [...document.querySelectorAll<HTMLDetailsElement>('.site-footer details.group')];
+  const desktop = window.matchMedia('(min-width: 1024px)');
+  function syncFooter() { for (const group of groups) group.open = desktop.matches; }
+  syncFooter();
+  desktop.addEventListener('change', syncFooter);
+  for (const group of groups) {
+    group.addEventListener('toggle', () => { if (!desktop.matches && group.open) for (const other of groups) if (other !== group) other.open = false; });
+    group.querySelector('summary')?.addEventListener('click', event => { if (desktop.matches) event.preventDefault(); });
+    group.addEventListener('keydown', event => { if (!desktop.matches && event.key === 'Escape') { group.open = false; group.querySelector('summary')?.focus(); } });
   }
-  document.addEventListener("click", (e) => { for (const d of groups) if (!d.contains(e.target as Node)) d.open = false; });
 </script>
 
 <style>
@@ -164,4 +152,18 @@ const plannedNote = `<span class="visually-hidden"> ${ui.nav.planned}</span>`;
   .copyright p { margin: 0; }
   @media (max-width: 1023px) { .cols { grid-template-columns: 1fr 1fr; } .aside { grid-column: 1 / -1; justify-items: start; } .aside.is-empty { display: none; } }
   @media (max-width: 767px) { .cols { grid-template-columns: 1fr; gap: var(--space-4); } .item { min-height: 44px; } }
+</style>
+
+<style>
+@media(min-width:1024px) {
+.cols { grid-template-columns: minmax(200px,1fr) minmax(0,3fr); gap: 48px; }
+.menu-list { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 20px; align-items: start; }
+details.group { width: auto; }
+.sub { position: static; display: block; padding: 8px 0 0; border: 0; box-shadow: none; min-width: 0; white-space: normal; }
+.sub::before { display: none; }
+:global(.site-footer .chev) { display: none; }
+.item { cursor: default; }
+.sub-item { font-size: 13px; line-height: 1.5; padding-block: 6px; }
+.aside { grid-column: 1/-1; justify-items: start; }
+}
 </style>

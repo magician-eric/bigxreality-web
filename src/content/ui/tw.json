@@ -448,5 +448,21 @@
     "research-technology": "研究與技術機構",
     "government-public-enterprises": "政府與公共事業",
     "industry-professional-associations": "產業與專業協會"
+  },
+  "newsListing": {
+    "intro": "展會活動、企業動態與模擬訓練的新進展。",
+    "all": "全部",
+    "allYears": "所有年份",
+    "categories": "新聞分類",
+    "years": "發布年份",
+    "undated": "日期待確認",
+    "categoryLabels": {
+      "event": "展會活動",
+      "exhibition": "展會活動",
+      "media": "媒體報導"
+    }
+  },
+  "homeSections": {
+    "products": "精選產品"
   }
 }

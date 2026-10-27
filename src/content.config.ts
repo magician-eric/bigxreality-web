@@ -327,6 +327,8 @@ const news = defineCollection({
       dateCandidate: text.optional(),
       dateSource: text.optional(),
       dateReviewNote: text.optional(),
+      featured: z.boolean().default(false),
+      featuredPriority: z.number().int().default(0),
       featuredInCSR: z.boolean().default(false),
       csrCategories: z.array(z.enum(["defense-education", "disaster-resilience", "technology-education", "community-engagement"])).default([]),
       articleId: slug.optional(),

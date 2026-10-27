@@ -239,6 +239,7 @@ const MAP = {
     data: clean({
       ...(await articleBase(d, body, file)),
       category: d.category,
+      featured: d.featured ?? false, featured_priority: d.featuredPriority ?? 0,
       featured_in_csr: d.featuredInCSR ?? false, csr_categories: d.csrCategories ?? [],
       event_name: d.event?.name, event_location: d.event?.location, event_start: day(d.event?.startDate), event_end: day(d.event?.endDate),
       source_name: d.source?.name, source_url: d.source?.url,

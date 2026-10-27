@@ -2,7 +2,7 @@
   {
     "file": "中華民國國防部.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "中華民國國防部",
       "en": "中華民國國防部",
@@ -18,7 +18,7 @@
   {
     "file": "中華民國海軍.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "中華民國海軍",
       "en": "中華民國海軍",
@@ -34,7 +34,7 @@
   {
     "file": "中華民國海軍陸戰隊.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "中華民國海軍陸戰隊",
       "en": "中華民國海軍陸戰隊",
@@ -50,7 +50,7 @@
   {
     "file": "陸軍步兵訓練指揮部.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "陸軍步兵訓練指揮部",
       "en": "陸軍步兵訓練指揮部",
@@ -66,7 +66,7 @@
   {
     "file": "內政部警政署.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "內政部警政署",
       "en": "內政部警政署",
@@ -82,7 +82,7 @@
   {
     "file": "刑事警察局.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "刑事警察局",
       "en": "刑事警察局",
@@ -98,7 +98,7 @@
   {
     "file": "保安警察第一總隊.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "保安警察第一總隊",
       "en": "保安警察第一總隊",
@@ -114,7 +114,7 @@
   {
     "file": "台灣縣市警察局.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣縣市警察局",
       "en": "台灣縣市警察局",
@@ -130,7 +130,7 @@
   {
     "file": "中央警察大學.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "中央警察大學",
       "en": "中央警察大學",
@@ -146,7 +146,7 @@
   {
     "file": "臺灣警察專科學校.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "臺灣警察專科學校",
       "en": "臺灣警察專科學校",
@@ -162,7 +162,7 @@
   {
     "file": "台北市政府消防局.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台北市政府消防局",
       "en": "台北市政府消防局",
@@ -178,7 +178,7 @@
   {
     "file": "國家中山科學研究院.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "國家中山科學研究院",
       "en": "國家中山科學研究院",
@@ -194,7 +194,7 @@
   {
     "file": "工業技術研究院.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "工業技術研究院",
       "en": "工業技術研究院",
@@ -210,7 +210,7 @@
   {
     "file": "國家災害防救科技中心.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "國家災害防救科技中心",
       "en": "國家災害防救科技中心",
@@ -226,7 +226,7 @@
   {
     "file": "中華民國交通部.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "中華民國交通部",
       "en": "中華民國交通部",
@@ -242,7 +242,7 @@
   {
     "file": "經濟部工業局.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "經濟部工業局",
       "en": "經濟部工業局",
@@ -258,7 +258,7 @@
   {
     "file": "勞動部勞動力發展署.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "勞動部勞動力發展署",
       "en": "勞動部勞動力發展署",
@@ -274,7 +274,7 @@
   {
     "file": "勞動部職業安全衛生署.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "勞動部職業安全衛生署",
       "en": "勞動部職業安全衛生署",
@@ -290,7 +290,7 @@
   {
     "file": "南部科學園區.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "南部科學園區",
       "en": "南部科學園區",
@@ -306,7 +306,7 @@
   {
     "file": "台灣中油股份有限公司.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣中油股份有限公司",
       "en": "台灣中油股份有限公司",
@@ -322,7 +322,7 @@
   {
     "file": "台灣電力公司.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣電力公司",
       "en": "台灣電力公司",
@@ -338,7 +338,7 @@
   {
     "file": "桃園國際機場股份有限公司.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "桃園國際機場股份有限公司",
       "en": "桃園國際機場股份有限公司",
@@ -354,7 +354,7 @@
   {
     "file": "台灣國家級新創品牌.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣國家級新創品牌",
       "en": "台灣國家級新創品牌",
@@ -370,7 +370,7 @@
   {
     "file": "台灣國防產業發展協會.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣國防產業發展協會",
       "en": "台灣國防產業發展協會",
@@ -386,7 +386,7 @@
   {
     "file": "台灣防災產業協會.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣防災產業協會",
       "en": "台灣防災產業協會",
@@ -402,7 +402,7 @@
   {
     "file": "台灣虛擬及擴增實境產業協會.png",
     "enabled": true,
-    "publicationReview": "pending-company-confirmation",
+    "publicationReview": "approved",
     "alt": {
       "tw": "台灣虛擬及擴增實境產業協會",
       "en": "台灣虛擬及擴增實境產業協會",

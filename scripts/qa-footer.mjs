@@ -65,7 +65,7 @@ try {
     if (!t.header.length && !t.footer.length) continue; // redirect stubs
     check(`${p}: Footer columns = Header menu`, JSON.stringify(t.header) === JSON.stringify(t.footer), `header ${JSON.stringify(t.header)}\n      footer ${JSON.stringify(t.footer)}`);
     reference[l] ??= t.footer;
-    check(`${p}: Footer submenus start collapsed`, t.openGroups === 0);
+    check(`${p}: Footer desktop columns start expanded`, t.openGroups === t.footer.filter(group => group.children.length).length);
     check(`${p}: same Footer as the other ${l} pages`, JSON.stringify(t.footer) === JSON.stringify(reference[l]));
     for (const a of t.links) {
       if (/^(tel:|mailto:|https?:)/.test(a.href)) continue;

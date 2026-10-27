@@ -1,3 +1,4 @@
+import { newsArchive } from "./news-listing";
 import { getEntry } from "astro:content";
 import { LANGS, segmentOf, type Lang } from "../i18n";
 import { ARTICLE_COLLECTIONS, getLocalized } from "./content";
@@ -51,7 +52,7 @@ async function collect(): Promise<IndexablePage[]> {
       const pageCount = new Map<Lang, number>();
       for (const l of LANGS) {
         const all = await getArticles(collection, l);
-        if (all.length && (await copyOk(collection, l))) pageCount.set(l, paginate(all, pageSize(collection)).length);
+        if (all.length && (await copyOk(collection, l))) pageCount.set(l, collection === "news" ? newsArchive(all).total : paginate(all, pageSize(collection)).length);
       }
       const maxPages = Math.max(0, ...pageCount.values());
       for (let n = 1; n <= maxPages; n++) {

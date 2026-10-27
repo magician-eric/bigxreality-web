@@ -5,6 +5,7 @@
  */
 import { getEntry } from "astro:content";
 import { LANGS, localePath, type Lang } from "../../../i18n";
+import { isEditorialPlaceholder as isPending } from "../../../lib/pending";
 import { getUi } from "../../../lib/ui";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageHero from "../../../components/PageHero.astro";
@@ -27,7 +28,7 @@ const breadcrumbs = [
   lang={lang} title={copy.seo.title} description={copy.seo.description} pathTemplate="/{lang}/company/" alternates={[...LANGS]}
   pendingTranslation={copy.translationStatus === "pending"} headerTheme="dark" current="company" currentCompany="about" breadcrumbs={breadcrumbs}
 >
-  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={isPending(copy.hero.title)?ui.nav.aboutUs:copy.hero.title} description={copy.hero.description && !isPending(copy.hero.description)?copy.hero.description:copy.seo.description} />
   {copy.closing && (
     <CtaBand id="company-slogan" title={copy.closing.title}>
       <a class="btn btn--primary" href={localePath(lang, "contact")}><Text value={ui.contact} /></a>
