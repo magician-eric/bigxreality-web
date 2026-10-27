@@ -34,7 +34,7 @@
   },
   "listing": {
     "pageSize": {
-      "news": 12,
+      "news": 10,
       "insights": 12,
       "case-studies": null
     }

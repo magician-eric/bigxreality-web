@@ -20,7 +20,7 @@ try{
   const stats=p.locator('[data-partner-statistics]');assert.deepEqual(await stats.locator('dd').allTextContents(),expected.map(String));
   assert.ok(await stats.evaluate(e=>e.getBoundingClientRect().width<=760));
   assert.equal(await stats.locator('dl').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),width>=768?4:2);
-  assert.ok(await p.evaluate(()=>{const m=document.querySelector('[data-partner-statistics]'),s=document.querySelector('#h-solutions').closest('section');return s.nextElementSibling===m;}));
+  assert.ok(await p.evaluate(()=>{const m=document.querySelector('[data-partner-statistics]'),s=document.querySelector('#h-solutions').closest('section');return s.nextElementSibling===m.closest("[data-home-partners]");}));
   assert.equal(await stats.locator('img, button, script').count(),0);
   await p.goto(`${server.base}/${lang}/company/`);assert.equal(await p.locator('[data-client-logos]').count(),0);
   await p.goto(`${server.base}/${lang}/company/partners/`);const wall=p.locator('[data-client-logos="partners"]');

@@ -29,7 +29,7 @@
   "home": "Home",
   "logoHome": "Big x Reality home",
   "breadcrumbLabel": "Breadcrumb",
-  "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
+  "translationPending": "Additional content is being prepared in this language.",
   "imagePending": "Product image",
   "solutionImagePending": "Solution image",
   "syntheticImage": "Composite illustration",
@@ -208,7 +208,7 @@
     "outcomes": "[待翻譯] 成果"
   },
   "listing": {
-    "empty": "[待翻譯] 目前還沒有內容。",
+    "empty": "No articles have been published yet.",
     "count": "{n} articles",
     "pagination": "Pagination",
     "previous": "Previous",
@@ -289,67 +289,67 @@
     "illustrationLabel": "Scenario illustration"
   },
   "contactPage": {
-    "topicLabel": "[待翻譯] 洽詢項目",
+    "topicLabel": "Inquiry topic",
     "topics": {
       "general": {
-        "title": "[待翻譯] 一般洽詢",
-        "subject": "[待翻譯] 一般洽詢"
+        "title": "General inquiry",
+        "subject": "General inquiry"
       },
       "demo": {
-        "title": "[待翻譯] 預約產品展示",
-        "subject": "[待翻譯] 預約產品展示"
+        "title": "Request a demonstration",
+        "subject": "Request a demonstration"
       },
       "info": {
-        "title": "[待翻譯] 索取產品資料",
-        "subject": "[待翻譯] 索取產品資料"
+        "title": "Request product information",
+        "subject": "Request product information"
       },
       "product": {
-        "title": "[待翻譯] 洽詢產品",
-        "subject": "[待翻譯] 產品洽詢"
+        "title": "Product inquiry",
+        "subject": "Product inquiry"
       },
       "solution": {
-        "title": "[待翻譯] 洽詢解決方案",
-        "subject": "[待翻譯] 解決方案洽詢"
+        "title": "Solution inquiry",
+        "subject": "Solution inquiry"
       },
       "solution-demo": {
-        "title": "[待翻譯] 預約展示",
-        "subject": "[待翻譯] 預約解決方案展示"
+        "title": "Request a solution demonstration",
+        "subject": "Request a solution demonstration"
       },
       "needs": {
-        "title": "[待翻譯] 討論訓練需求",
-        "subject": "[待翻譯] 訓練需求討論"
+        "title": "Discuss training requirements",
+        "subject": "Discuss training requirements"
       }
     },
-    "about": "[待翻譯] 關於",
+    "about": "About",
     "steps": {
       "eyebrow": "How to Reach Us",
-      "title": "[待翻譯] 以 Email 與我們聯繫",
+      "title": "Contact us by email",
       "items": [
         {
-          "title": "[待翻譯] 按下「寄送 Email」",
-          "description": "[待翻譯] 系統會開啟您的郵件軟體，主旨與信件格式已依洽詢項目填好。"
+          "title": "Select “Send email”",
+          "description": "Your email application opens with the subject and message template for your inquiry."
         },
         {
-          "title": "[待翻譯] 補上聯絡資料與需求",
-          "description": "[待翻譯] 請填寫姓名、單位、職稱、國家、電話，以及希望了解的內容。"
+          "title": "Add your contact details and requirements",
+          "description": "Include your name, organization, job title, country, phone number, and the information you need."
         },
         {
-          "title": "[待翻譯] 寄出後由業務聯繫",
-          "description": "[待翻譯] 我們收到來信後，將由業務人員與您聯繫，確認需求與後續安排。"
+          "title": "Our team will follow up",
+          "description": "After receiving your email, our sales team will contact you to discuss your requirements and next steps."
         }
       ]
     },
-    "sendEmail": "[待翻譯] 寄送 Email",
-    "orWrite": "[待翻譯] 或直接寄信至",
+    "sendEmail": "Send email",
+    "orWrite": "Or write directly to",
     "bodyFields": [
-      "[待翻譯] 姓名：",
-      "[待翻譯] 公司／單位：",
-      "[待翻譯] 職稱：",
-      "[待翻譯] 國家：",
-      "[待翻譯] 電話：",
-      "[待翻譯] 需求說明："
+      "Name:",
+      "Company / organization:",
+      "Job title:",
+      "Country:",
+      "Phone:",
+      "Requirements:"
     ],
-    "noEmail": "[待翻譯] 聯絡信箱尚未設定。"
+    "noEmail": "A contact email is not available."
   },
   "cases": {
     "filterLabel": "[待翻譯] 篩選成功案例",
@@ -361,9 +361,9 @@
     "count": "[待翻譯] 共 {n} 個案例",
     "filterResults": "[待翻譯] 共 {n} 個案例",
     "filterEmpty": "[待翻譯] 沒有符合條件的案例",
-    "empty": "[待翻譯] 成功案例整理中，目前尚無已發布的案例",
-    "emptyHint": "[待翻譯] 如需了解沉浸式模擬訓練如何配合您的任務需求，歡迎與我們聯絡",
-    "emptyCta": "[待翻譯] 聯絡我們",
+    "empty": "No approved case studies have been published yet.",
+    "emptyHint": "Contact us to discuss simulation training for your requirements.",
+    "emptyCta": "Contact Us",
     "client": "[待翻譯] 導入單位",
     "domains": "[待翻譯] 應用領域",
     "products": "[待翻譯] 關聯產品",
@@ -448,5 +448,21 @@
     "research-technology": "Research & Technology Institutions",
     "government-public-enterprises": "Government & Public Enterprises",
     "industry-professional-associations": "Industry & Professional Associations"
+  },
+  "newsListing": {
+    "intro": "Exhibitions, company updates, and developments in simulation training.",
+    "all": "All",
+    "allYears": "All years",
+    "categories": "News categories",
+    "years": "Publication year",
+    "undated": "Date unconfirmed",
+    "categoryLabels": {
+      "event": "Exhibitions & Events",
+      "exhibition": "Exhibitions",
+      "media": "Media Coverage"
+    }
+  },
+  "homeSections": {
+    "products": "Featured Products"
   }
 }

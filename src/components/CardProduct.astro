@@ -59,3 +59,5 @@ const H = `h${headingLevel}` as "h2" | "h3";
   .tags :global(li) { position: relative; z-index: 1; }
   .media:has(:global(.placeholder)) { aspect-ratio: auto; height: auto; }
 </style>
+
+<style>.body { display: flex; flex-direction: column; flex: 1; } .summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; } .more { margin-top: auto; padding-top: var(--space-2); }</style>

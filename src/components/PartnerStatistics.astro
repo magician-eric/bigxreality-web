@@ -2,12 +2,13 @@
 import { clientLogoGroups } from '../lib/client-logos';
 import { getUi } from '../lib/ui';
 import type { Lang } from '../i18n';
-interface Props { lang: Lang }
+interface Props { lang: Lang; showHeading?: boolean; embedded?: boolean }
+const { showHeading = true, embedded = false } = Astro.props;
 const groups = clientLogoGroups(Astro.props.lang);
 const title = getUi(Astro.props.lang).nav.partners;
 ---
-<section class="partner-statistics" data-partner-statistics aria-labelledby="partner-statistics-title">
-  <h2 id="partner-statistics-title" class="t-h3">{title}</h2>
+<section class:list={["partner-statistics",{embedded}]} data-partner-statistics aria-labelledby={showHeading?"partner-statistics-title":undefined} aria-label={!showHeading?title:undefined}>
+  {showHeading && <h2 id="partner-statistics-title" class="t-h3">{title}</h2>}
   <dl>{groups.map(group => <div><dt>{group.label}</dt><dd>{group.items.length}</dd></div>)}</dl>
 </section>
 <style>
@@ -19,3 +20,5 @@ dt { font-size: .875rem; line-height: 1.6; overflow-wrap: break-word; }
 dd { order: -1; margin: 0; font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.1; font-weight: 700; color: var(--ink); }
 @media(max-width: 767px) { dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } .partner-statistics { padding-block: 32px; } }
 </style>
+
+<style>.embedded { width: 100%; margin-inline: 0; padding-block: 0; }</style>

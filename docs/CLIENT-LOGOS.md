@@ -4,11 +4,11 @@
 
 分類顯示名稱放在既有 `src/content/ui/{tw,en,jp}.json` 的 clientCategories。四組順序固定為國防與公共安全（11）、研究與技術機構（3）、政府與公共事業（9）、產業與專業協會（3）。第一張為中華民國國防部；26 個 PNG 均使用，保留原檔。
 
-首頁：`PartnerStatistics.astro`，四大解決方案之後、案例之前，最大 760px；桌面四欄，手機 2×2，沒有 Logo、補充文字、動畫或客戶端 JavaScript。
+首頁：`HomePartners.astro` 提供靠左標題與內頁入口，內嵌 `PartnerStatistics.astro`；四大解決方案之後、最新消息之前，數字最大 760px，桌面四欄、手機 2×2，沒有 Logo、動畫或客戶端 JavaScript。合作夥伴內頁也保留數字作輔助資訊。
 
 既有 `/{lang}/company/partners/`：`ClientLogos.astro`，四個分類標題及靜態 4／2 欄網格，無可見單位名稱、數量、外部連結、動畫、輪播或額外媒體清單。關於 BXR 主頁不再放 Logo。既有 partners CMS 資料模型未刪除，但此頁依使用者本次指定統一展示共用素材清單。
 
-TW Alt 使用原檔名去除副檔名。EN／JP 在正式譯名確認前依使用者要求保留正式原名，不自行編造。`CLIENT-LOGO-REVIEW.csv` 記錄翻譯與公開授權待公司確認事項。
+TW Alt 使用原檔名去除副檔名。EN／JP 在正式譯名確認前依使用者要求保留正式原名，不自行編造。公司已於本次任務確認 26 張 Logo 全數可公開，publicationReview 均為 approved，不再要求確認授權。`CLIENT-LOGO-REVIEW.csv` 僅保留正式外語名稱審核狀態。依使用者最後修正，首頁不顯示任何 Logo，所有 Logo 僅在合作夥伴內頁展示。
 
 新增或移除：在 clients 目錄維護原檔，於單一 JSON 設定 category、order、enabled 與三語 alt。統計與網格會同步更新；本次驗收測試固定檢查使用者指定的 26 張及 11／3／9／3，未來經核准變更名單時也要更新對應驗收期望。
 

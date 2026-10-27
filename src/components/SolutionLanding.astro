@@ -16,6 +16,7 @@ import { isPending } from "../lib/pending";
 import { getUi } from "../lib/ui";
 import RelatedTechnologies from "./RelatedTechnologies.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { heroPresentation } from "../lib/hero-presentation";
 import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
 import LandingSections from "./LandingSections.astro";
@@ -85,13 +86,12 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
   search={{ type: "solutions" }}
 >
   <PageHero
+    variant={heroPresentation("solutions", slug, !!heroReady)}
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
     eyebrow={d.name === ui.domains[base.domain] ? ui.solution.eyebrow : `${ui.solution.eyebrow} · ${ui.domains[base.domain]}`}
-    kicker={d.name}
-    title={L.headline}
+    title={d.name}
     lead={L.subheadline}
-    description={L.intro}
     image={heroReady ? { src: hero!.src!, alt: hero!.alt! } : undefined}
     imageCaption={hero?.caption}
     imageBadge={hero?.illustration ? t.illustrationLabel : undefined}
@@ -99,6 +99,8 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
   >
     <CtaGroup slot="actions" actions={cta.hero} />
   </PageHero>
+
+  <section class="section landing-overview" aria-labelledby="landing-overview-title"><div class="container narrow"><h2 class="t-h2" id="landing-overview-title">{L.headline}</h2>{L.intro?.split(/\n\s*\n/).map(paragraph => <p>{paragraph}</p>)}</div></section>
 
   <LandingSections lang={lang} L={L} />
 
@@ -151,3 +153,5 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
   @media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 767px) { .cards { grid-template-columns: 1fr; } }
 </style>
+
+<style>.landing-overview .narrow { display: grid; gap: var(--space-3); } .landing-overview p { line-height: 1.8; }</style>

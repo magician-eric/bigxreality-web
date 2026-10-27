@@ -271,10 +271,10 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
   .news-sources a { overflow-wrap: anywhere; }
 
   .article-header { padding-block: var(--space-8) var(--space-6); background: var(--bxr-paper); border-bottom: 1px solid var(--bxr-line); }
-  .narrow > * { max-width: 48rem; }
+  .narrow > * { max-width: 100%; }
   .narrow { display: grid; gap: var(--space-3); }
   .meta { color: var(--ink-muted); margin-top: var(--space-3); }
-  .summary { font-size: var(--fs-h4); line-height: var(--lh-h4); color: var(--ink-muted); }
+  .summary { font-size: 18px; line-height: 1.75; color: var(--ink-muted); }
   .cover { margin-top: var(--space-6); margin-bottom: 0; }
   .cover :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
   .facts-wrap { padding-top: var(--space-6); }

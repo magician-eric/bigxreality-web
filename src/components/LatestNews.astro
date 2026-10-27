@@ -27,7 +27,7 @@ const placeholders = items.length === 0 && import.meta.env.DEV ? slots : 0;
 {(items.length > 0 || placeholders > 0) && (
   <section class:list={["section", "compact", { "section--alt": alt }]} aria-labelledby="h-latest-news" data-block="latest-news">
     <div class="container">
-      <SectionHead id="h-latest-news" eyebrow={copy.eyebrow} title={copy.title} description={copy.description} viewAll={items.length ? { href: viewAllHref, label: copy.viewAll } : undefined} />
+      <SectionHead id="h-latest-news" eyebrow={copy.eyebrow} title={ui.nav.news} description={copy.description} viewAll={items.length ? { href: viewAllHref, label: copy.viewAll } : undefined} />
       <ul role="list" class="grid">
         {items.map((a) => (
           <li>

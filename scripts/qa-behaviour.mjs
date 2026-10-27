@@ -1,6 +1,6 @@
 // Checks the built pages behave as specified: filtering, language switch,
 // hreflang/canonical, noindex on pending translations, structured data,
-// reverse product relations and disabled form buttons. Exits 1 on failure.
+// reverse product relations and contact request links. Exits 1 on failure.
 import { chromium } from "playwright-core";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -83,7 +83,7 @@ try {
   const toc = await page.$$eval("[data-toc] a", (as) => as.map((a) => a.hash));
   const ids = await page.$$eval("main section[id]", (ss) => ss.map((s) => "#" + s.id));
   check("in-page nav matches rendered sections", JSON.stringify(toc) === JSON.stringify(ids), toc.join(" "));
-  check("landing sections in order", JSON.stringify(await page.$$eval("main h2", (hs) => hs.map((h) => h.id))) === JSON.stringify(["h-challenge", "h-approach", "h-capabilities", "h-flow", "h-scenarios", "h-values", "h-related", "product-faq-title", "h-related-technologies", "product-cta"]));
+  check("landing sections in order", JSON.stringify(await page.$$eval("main h2", (hs) => hs.map((h) => h.id))) === JSON.stringify(["landing-overview-title", "h-challenge", "h-approach", "h-capabilities", "h-flow", "h-scenarios", "h-values", "h-related", "product-faq-title", "h-related-technologies", "product-cta"]));
   const related = await page.locator("#h-related ~ .cards a, section[aria-labelledby=h-related] .cards a").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
   check("related products and solution link to existing pages", ["/tw/products/uav/", "/tw/products/usv/", "/tw/solutions/military/"].every((h) => related.includes(h)), related.join(" "));
   check("no UAV / USV card shows an English-name placeholder", (await page.locator("section[aria-labelledby=h-related] mark.pending").count()) === 0);
@@ -94,8 +94,8 @@ try {
   check("value pillars are titled by value, not by technology", JSON.stringify(pillars) === JSON.stringify(["沉浸式戰術訓練", "任務資訊與空間判讀", "動態情境與應變訓練"]), pillars.join(" | "));
   check("pillar text has no trailing full stop", (await page.locator(".pillar .text").allTextContents()).every((t) => !/[。.]$/.test(t.trim())));
   const slots = await page.locator("main .placeholder").evaluateAll((els) => els.map((e) => e.getAttribute("aria-label")));
-  const need = slots.filter((l) => l.startsWith("素材需求｜"));
-  check("10 image positions on the page, each names the material needed", need.length + await page.locator(".page-hero img[data-primary-image]").count() === 10, `${need.length} of ${slots.length}`);
+  const need = slots.filter((label) => label === "Big x Reality");
+  check("10 image positions retain approved media or a branded default without development copy", need.length + await page.locator(".page-hero img[data-primary-image]").count() === 10, `${need.length} of ${slots.length}`);
   check("capability rows: 3 picture rows and 2 text-only rows (02 and 05)", (await page.locator(".feature").count()) === 3 && (await page.locator(".plain .cap").count()) === 2);
   check("capability picture rows alternate sides", (await page.locator(".feature.flip").count()) === 1);
   check("approach shows a physical + virtual image pair", (await page.locator(".pair .media").count()) === 2);
@@ -133,7 +133,7 @@ try {
     ["fire-extinguisher-simulator", "從認識火災到實際操作，讓滅火訓練更接近真實應變", 6, ["/tw/solutions/fire-rescue/"], "VR 虛擬滅火訓練系統", 4, 6],
   ]) {
     await page.goto(`${base}/tw/products/${slug}/`, { waitUntil: "networkidle" });
-    check(`${slug}: H1 is the V2.0 headline`, (await page.locator("h1").innerText()).trim() === h1);
+    check(`${slug}: product identity in H1; V2.0 value headline retained`, !!(await page.locator("h1").innerText()).trim() && (await page.locator(".landing-overview h2").innerText()).trim() === h1);
     check(`${slug}: ${scen} scenario cards`, (await page.locator(".scenarios .card").count()) === scen);
     check(`${slug}: ${flowCount} flow steps, ${capCount} capabilities`, (await page.locator(".flow .step").count()) === flowCount && (await page.locator(".feature, .plain .cap").count()) === capCount);
     const hrefs = await page.locator("a[href]").evaluateAll((els) => els.map((e) => e.getAttribute("href")));

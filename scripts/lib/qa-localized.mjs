@@ -62,7 +62,7 @@ export async function runLocalizedQa({ lang, port, foreign, nav, scope, htmlLang
       await tw.goto(`${base}/tw/${kind}/${slug}/`, { waitUntil: "networkidle" });
       await page.goto(base + url, { waitUntil: "networkidle" });
       const body = await page.locator("main").innerText();
-      check(`${url}: headline`, (await page.locator("h1").innerText()).trim() === d.landing.headline);
+      check(`${url}: product/solution identity in H1 and value headline retained`, (await page.locator("h1").innerText()).trim() === name && (await page.locator(".landing-overview h2").innerText()).trim() === d.landing.headline);
       check(`${url}: hero button label`, (await page.locator(".page-hero a.btn").first().innerText()).trim() === d.landing.ctaLabel);
       check(`${url}: approved SEO title (or name) in title`, (await page.title()).startsWith((d.seo?.title ?? name).replace(/\s*[|｜]\s*(?:Big\s*x\s*Reality|BXR)\s*$/i, "")));
       check(`${url}: no Chinese or placeholder text`, !foreign.test(body) && !body.includes("[待"), (body.match(foreign)?.[0] ?? "") + (body.includes("[待") ? " [待" : ""));

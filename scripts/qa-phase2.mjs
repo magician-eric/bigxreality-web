@@ -17,7 +17,7 @@ const check = (name, ok, detail = "") => {
 };
 
 // static output
-check("news page 1 has 12 cards", (html("tw/news").match(/class="card"/g) ?? []).length === 12);
+check("news page 1 has one spotlight plus ten rows", (html("tw/news").match(/data-news-id=/g) ?? []).length === 11 && html("tw/news").includes("data-news-featured"));
 check("news page 2 exists, no /page/1/", existsSync(path.join(DIST, "tw/news/page/2/index.html")) && !existsSync(path.join(DIST, "tw/news/page/1")));
 check("page 2 canonical points to itself", html("tw/news/page/2").includes('rel="canonical" href="https://www.bigxreality.com/tw/news/page/2/"'));
 check("page 2 hreflang only for languages with a page 2", !html("tw/news/page/2").includes('rel="alternate" hreflang="en"'));

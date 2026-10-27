@@ -15,7 +15,7 @@ csrCategories:
   - technology-education
 ```
 
-Allowed categories: `defense-education`, `disaster-resilience`, `technology-education`, `community-engagement`. Keep translations consistent; the TW entry controls relations for all languages. Only published, nonempty news is selected. A case can appear under multiple topics. Turning the flag off removes it from CSR and removes its CSR back links. No page code change is needed.
+Allowed categories: `defense-education`, `disaster-resilience`, `technology-education`, `community-engagement`. Keep translations consistent; the TW entry controls relations for all languages. Only published, nonempty news is selected. A case can carry multiple topics, but is displayed once, under its first topic; all topic tags remain on the card. Turning the flag off removes it from CSR and removes its CSR back links. No page code change is needed.
 
 Initial ARTICLE_IDs:
 - `news-23-songshan-school-2025`: defense education.

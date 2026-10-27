@@ -12,6 +12,7 @@ import Text from "./Text.astro";
 import { distinctLabel } from "../lib/eyebrow";
 
 interface Props {
+  variant?: "split" | "scene" | "equipment" | "interface";
   breadcrumbs: Crumb[];
   breadcrumbLabel: string;
   /** Short page-type label; left out when it repeats the kicker or H1. */
@@ -29,11 +30,11 @@ interface Props {
   /** Label drawn bottom-right on illustrations (情境示意圖). */
   imageBadge?: string;
 }
-const { breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending, imageBadge } = Astro.props;
+const { variant = "split", breadcrumbs, breadcrumbLabel, eyebrow, kicker, title, subtitle, lead, description, image, imageCaption, imagePending, imageBadge } = Astro.props;
 const label = distinctLabel(eyebrow, kicker, title);
 const sub = distinctLabel(subtitle, kicker, title);
 ---
-<section class="page-hero" data-theme="dark">
+<section class:list={["page-hero", `hero--${variant}`]} data-theme="dark" data-hero-variant={variant}>
   <div class:list={["container", "grid", { "no-media": !image && !imagePending }]}>
     <div class="copy">
       <Breadcrumb items={breadcrumbs} label={breadcrumbLabel} />
@@ -75,3 +76,19 @@ const sub = distinctLabel(subtitle, kicker, title);
   figcaption { position: absolute; right: var(--space-2); bottom: var(--space-1); color: var(--bxr-mist); }
   @media (max-width: 1023px) { .grid { grid-template-columns: 1fr; } .page-hero { padding-block: var(--section-py); } }
 </style>
+
+<style>
+.hero--equipment .grid,.hero--interface .grid { grid-template-columns: minmax(0,4fr) minmax(0,6fr); }
+.hero--equipment .media :global(img),.hero--interface .media :global(img) { aspect-ratio: auto; max-height: 480px; object-fit: contain !important; }
+.hero--interface .grid { grid-template-columns: minmax(0,3.5fr) minmax(0,6.5fr); }
+.hero--scene { min-height: 520px; position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: center; }
+.hero--scene .grid { display: block; }
+.hero--scene .copy { position: relative; z-index: 2; max-width: 46%; }
+.hero--scene .media { position: absolute; inset: 0 0 0 auto; width: 72%; z-index: 0; }
+.hero--scene .media :global(img) { height: 100%; width: 100%; object-fit: cover !important; object-position: 60% 50% !important; aspect-ratio: auto; }
+.hero--scene::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg,var(--bxr-black) 12%,rgb(10 12 16 / .94) 28%,rgb(10 12 16 / .7) 43%,transparent 72%); }
+@media(max-width:1023px) { .hero--equipment .grid,.hero--interface .grid { grid-template-columns: 1fr; } }
+@media(max-width:1023px) { .hero--scene { min-height: 0; padding-bottom: 0; } .hero--scene::before { display: none; } .hero--scene .grid { display: grid; } .hero--scene .copy { max-width: 100%; } .hero--scene .media { position: relative; inset: auto; width: 100%; } .hero--scene .media :global(img) { height: auto; aspect-ratio: 3/2; object-fit: contain !important; } }
+</style>
+
+<style>.no-media { grid-template-columns: 1fr; } .no-media .copy,.no-media .desc { max-width: var(--reading-width); }</style>
