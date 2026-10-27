@@ -27,6 +27,7 @@ jobs:
       - run: npm run qa:csr
       - run: npm run qa:news-import
       - run: npm run qa:ui-v1
+      - run: npm run qa:hero-framing
       - run: npm run qa:ui-v1-preview
       - run: npm run qa:client-logos
       - run: npm run qa:images

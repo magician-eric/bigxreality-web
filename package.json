@@ -50,7 +50,8 @@
     "qa:csr": "node scripts/qa-csr.mjs",
     "qa:client-logos": "node scripts/qa-client-logos.mjs",
     "qa:ui-v1": "node scripts/qa-ui-v1.mjs",
-    "qa:ui-v1-preview": "node scripts/preview/rebase.mjs && node scripts/qa-ui-v1-preview.mjs"
+    "qa:ui-v1-preview": "node scripts/preview/rebase.mjs && node scripts/qa-ui-v1-preview.mjs",
+    "qa:hero-framing": "node scripts/qa-hero-framing.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",
