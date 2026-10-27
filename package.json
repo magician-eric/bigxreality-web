@@ -47,7 +47,8 @@
     "preview:build": "BXR_PREVIEW=1 npm run build && node scripts/preview/rebase.mjs",
     "preview:check": "node scripts/preview/check.mjs",
     "qa:ui-language": "node scripts/qa-ui-language.mjs",
-    "qa:csr": "node scripts/qa-csr.mjs"
+    "qa:csr": "node scripts/qa-csr.mjs",
+    "qa:client-logos": "node scripts/qa-client-logos.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",

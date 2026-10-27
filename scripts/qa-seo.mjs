@@ -71,7 +71,7 @@ try {
       const body=visible(html);
       assert.equal((body.match(/<h1[\s>]/g)??[]).length,1,'exactly one h1');
       let prev=0;for(const level of [...body.matchAll(/<h([1-6])[\s>]/g)].map(x=>+x[1])){assert.ok(!prev||level<=prev+1,`heading h${prev} -> h${level}`);prev=level;}
-      for(const img of body.match(/<img\b[^>]*>/g)??[]){assert.match(img,/\salt=/,'img without alt');assert.match(img,/\swidth="\d+"[^>]*\sheight="\d+"|\sheight="\d+"[^>]*\swidth="\d+"/,'img without width/height');}
+      for(const img of body.match(/<img\b[^>]*>/g)??[]){assert.match(img,/\salt(?:=|\s|>)/,'img without alt');assert.match(img,/\swidth="\d+"[^>]*\sheight="\d+"|\sheight="\d+"[^>]*\swidth="\d+"/,'img without width/height');}
       assert.equal(listed.has(abs),!m.noindex,m.noindex?'noindex page in sitemap':'indexable page missing from sitemap');
       if(!m.noindex&&/\[待/.test(body))warnings.push(`${url}: visible placeholder text in page body`);
     }catch(error){errors.push(`${url}: ${error.message}`);}

@@ -1,0 +1,74 @@
+---
+import { clientLogos, clientLogoCopy } from '../lib/client-logos';
+import type { Lang } from '../i18n';
+interface Props { lang: Lang; mode: 'marquee' | 'grid' }
+const { lang, mode } = Astro.props;
+const logos = clientLogos(lang);
+const copy = clientLogoCopy[lang];
+// Both identical groups include trailing spacing, so half the track is precisely one loop.
+const distance = logos.reduce((sum, logo) => sum + 56 * logo.image.width / logo.image.height + 32, 0);
+---
+{logos.length > 0 && <section class:list={['client-logos', mode]} aria-labelledby={`client-logos-${mode}`} data-client-logos={mode} style={`--logo-duration:${distance / 30}s`}>
+  <div class:list={['heading', 'container']}>
+    <h2 id={`client-logos-${mode}`} class={mode === 'grid' ? 't-h2' : 't-small'}>{copy.title}</h2>
+    {mode === 'grid' && <p>{copy.description}</p>}
+    {mode === 'marquee' && <button type="button" data-logo-pause data-play={copy.play} data-pause={copy.pause} aria-label={copy.pause} aria-pressed="false" title={copy.pause}><span aria-hidden="true" data-logo-icon>Ⅱ</span></button>}
+  </div>
+  <div class:list={['viewport', {container: mode === 'grid'}]} tabindex={mode === 'marquee' ? '0' : undefined} role={mode === 'marquee' ? 'region' : undefined} aria-label={mode === 'marquee' ? copy.title : undefined}>
+    <div class="track">
+      {(mode === 'marquee' ? [false, true] : [false]).map(duplicate => <ul role="list" class="logo-group" aria-hidden={duplicate ? 'true' : undefined}>
+        {logos.map(logo => <li style={`--logo-ratio:${logo.image.width / logo.image.height}`}>
+          <img src={logo.image.src} width={logo.image.width} height={logo.image.height} alt={duplicate ? '' : logo.alt} loading={mode === 'grid' ? 'lazy' : 'eager'} decoding="async" />
+        </li>)}
+      </ul>)}
+    </div>
+  </div>
+</section>}
+<script>
+  function initLogoControls() {
+    document.querySelectorAll<HTMLButtonElement>('[data-logo-pause]').forEach(button => {
+      if (button.dataset.initialized) return;
+      button.dataset.initialized = 'true';
+      button.addEventListener('click', () => {
+        const paused = button.getAttribute('aria-pressed') !== 'true';
+        button.setAttribute('aria-pressed', String(paused));
+        const label = (paused ? button.dataset.play : button.dataset.pause)!;
+        button.setAttribute('aria-label', label);
+        button.title = label;
+        button.closest('[data-client-logos]')?.classList.toggle('is-paused', paused);
+        button.querySelector('[data-logo-icon]')!.textContent = paused ? '▷' : 'Ⅱ';
+      });
+    });
+  }
+  initLogoControls();
+  document.addEventListener('astro:page-load', initLogoControls);
+</script>
+<style>
+.client-logos { background: var(--surface, #fff); color: var(--ink); --logo-height: 56px; --logo-gap: 32px; }
+.heading h2, .heading p { margin: 0; }
+.marquee { padding-block: 12px 16px; border-block: 1px solid var(--divider); }
+.marquee .heading { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-bottom: 6px; gap: 12px; }
+.marquee h2 { color: var(--ink-muted); font-weight: 500; }
+.marquee button { width: 44px; height: 44px; flex-shrink: 0; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
+.viewport:focus-visible, button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.marquee .viewport { overflow: hidden; }
+.logo-group { margin: 0; padding: 0; list-style: none; }
+.marquee .track { display: flex; width: max-content; animation: client-drift var(--logo-duration) linear infinite; }
+.marquee .logo-group { display: flex; flex-shrink: 0; align-items: center; gap: var(--logo-gap); padding-right: var(--logo-gap); }
+.marquee li { flex: 0 0 auto; width: calc(var(--logo-height) * var(--logo-ratio)); height: var(--logo-height); }
+.client-logos img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.marquee:hover .track, .marquee:focus-within .track, .marquee.is-paused .track { animation-play-state: paused; }
+.grid { padding-block: var(--section-space, 56px); }
+.grid .heading { margin-bottom: var(--space-4); }
+.grid .heading p { margin-top: var(--space-2); max-width: 70ch; }
+.grid .logo-group { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gutter); }
+.grid li { height: 112px; min-width: 0; padding: 20px; background: #fff; }
+@keyframes client-drift { to { transform: translateX(-50%); } }
+@media(max-width: 1023px) { .grid .logo-group { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media(max-width: 767px) { .client-logos { --logo-height: 48px; } .grid { padding-block: 40px; } .grid .logo-group { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid li { height: 100px; padding: 16px; } }
+@media(prefers-reduced-motion: reduce) {
+  .marquee .track { animation: none; }
+  .marquee .viewport { overflow-x: auto; }
+  .marquee [aria-hidden="true"].logo-group, .marquee button { display: none; }
+}
+</style>
