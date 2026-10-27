@@ -1,6 +1,5 @@
-// About BXR pages. With the normal build (no data yet): every page opens, shows a plain empty
-// state, is noindex and stays out of the sitemap. With the TEST FIXTURE build (QA_DIST=
-// dist-fixtures/client): modules, partner authorisation and ordering behave as documented.
+// About BXR: empty CMS pages stay noindex; the partner page uses the shared logo catalogue.
+// Fixture builds also verify the existing timeline, team and investor modules.
 import { chromium } from "playwright-core";
 import { readFileSync, existsSync } from "node:fs";
 import path from "node:path";
@@ -28,7 +27,7 @@ try {
     await page.goto(`${base}/tw/company/${slug}/`, { waitUntil: "networkidle" });
     const text = await main();
     check(`${slug}: no placeholder text`, !LEAK.some((w) => text.includes(w)), LEAK.filter((w) => text.includes(w)).join(","));
-    if (!fixtures) {
+    if (!fixtures && slug !== "partners") {
       check(`${slug}: plain empty state, noindex, not in the sitemap`, (await page.locator("[data-company-empty]").isVisible()) && (await robots()) === "noindex" && !sm.includes(`/tw/company/${slug}/`));
       check(`${slug}: the contact page stays reachable from the empty state`, (await page.locator('[data-company-empty] a[href="/tw/contact/"]').count()) === 1);
     }
@@ -37,7 +36,7 @@ try {
     await page.goto(`${base}/tw/company/investors/`, { waitUntil: "networkidle" });
     check("investors: no module is offered without records", (await page.locator("[data-investor-modules]").count()) === 0);
     check("investors: no module pages are built", ["profile", "financials", "governance", "shareholders", "announcements", "briefings", "contact"].every((m) => !existsSync(path.join(DIST, `tw/company/investors/${m}`))));
-    check("sitemap has the about page only", sm.includes("/tw/company/") && !/company\/(history|team|partners|investors)/.test(sm));
+    check("sitemap has about and populated partners", sm.includes("/tw/company/") && sm.includes("/tw/company/partners/") && !/company\/(history|team|investors)/.test(sm));
   } else {
     await page.goto(`${base}/tw/company/history/`, { waitUntil: "networkidle" });
     const years = await page.$$eval(".timeline time", (ts) => ts.map((t) => t.textContent));
@@ -45,9 +44,9 @@ try {
     await page.goto(`${base}/tw/company/team/`, { waitUntil: "networkidle" });
     check("team: one published member", (await page.locator(".grid .card").count()) === 1);
     await page.goto(`${base}/tw/company/partners/`, { waitUntil: "networkidle" });
-    const heads = await page.$$eval(".group h2", (hs) => hs.map((h) => h.textContent.trim()));
+    const heads = await page.$$eval(".logo-category h2", (hs) => hs.map((h) => h.textContent.trim()));
     const text = await main();
-    check("partners: only groups with authorised partners", JSON.stringify(heads) === JSON.stringify(["技術合作", "國際通路合作"]), heads.join());
+    check("partners: shared client catalogue groups in the fixed order", JSON.stringify(heads) === JSON.stringify(["國防與公共安全", "研究與技術機構", "政府與公共事業", "產業與專業協會"]), heads.join());
     check("partners: an unauthorised partner is never shown", !text.includes("未授權夥伴") && !readFileSync(path.join(DIST, "tw/company/partners/index.html"), "utf8").includes("未授權夥伴"));
     await page.goto(`${base}/tw/company/investors/`, { waitUntil: "networkidle" });
     const cards = await page.$$eval("[data-investor-modules] h2", (hs) => hs.map((h) => h.textContent.trim()));

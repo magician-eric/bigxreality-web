@@ -442,5 +442,11 @@
   "backToProducts": "",
   "faq": {
     "title": "よくあるご質問"
+  },
+  "clientCategories": {
+    "defense-public-safety": "防衛・公共安全",
+    "research-technology": "研究・技術機関",
+    "government-public-enterprises": "政府機関・公共事業",
+    "industry-professional-associations": "産業・専門団体"
   }
 }

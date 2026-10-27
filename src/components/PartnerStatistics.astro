@@ -1,0 +1,17 @@
+---
+import { clientLogoGroups } from '../lib/client-logos';
+import type { Lang } from '../i18n';
+interface Props { lang: Lang }
+const groups = clientLogoGroups(Astro.props.lang);
+---
+<section class="partner-statistics" data-partner-statistics>
+  <dl>{groups.map(group => <div><dt>{group.label}</dt><dd>{group.items.length}</dd></div>)}</dl>
+</section>
+<style>
+.partner-statistics { max-width: 760px; width: calc(100% - 2 * var(--margin)); margin-inline: auto; padding-block: 40px; }
+dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 0; }
+dl > div { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; gap: 8px; }
+dt { font-size: .875rem; line-height: 1.6; overflow-wrap: break-word; }
+dd { order: -1; margin: 0; font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.1; font-weight: 700; color: var(--ink); }
+@media(max-width: 767px) { dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } .partner-statistics { padding-block: 32px; } }
+</style>
