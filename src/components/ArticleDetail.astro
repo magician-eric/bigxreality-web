@@ -5,6 +5,10 @@
  * case-study facts → body → tags → related products / solutions / articles → CTA.
  * The only red buttons are in the closing CTA band.
  */
+import { marked } from "marked";
+import { newsCover } from "../lib/news-images";
+import { isPending } from "../lib/pending";
+import ImagePlaceholder from "./ImagePlaceholder.astro";
 import { articleTechnologyLinks } from "../lib/technologies";
 import { Picture, getImage } from "astro:assets";
 import { getEntry } from "astro:content";
@@ -40,8 +44,11 @@ const author = collection === "insights" ? (d as typeof d & { author?: string })
 
 const fmt = (date: Date) => new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
 const iso = (date: Date) => date.toISOString().slice(0, 10);
-const cover = base.cover && { src: base.cover.src, alt: d.cover?.alt ?? base.cover.alt };
-const html = article.loc.rendered?.html ?? "";
+const newsImageId = collection === "news" ? (base as typeof base & { imageId?: string }).imageId : undefined;
+const cover = newsCover(newsImageId, lang) ?? (base.cover && { src: base.cover.src, alt: d.cover?.alt ?? base.cover.alt });
+// Imported TXT punctuation is authoritative: avoid Astro's automatic smart-quote substitutions.
+const historicalImport = collection === "news" && "articleId" in base && !!base.articleId;
+const html = historicalImport ? marked.parse(article.loc.body ?? "", { async: false }) : (article.loc.rendered?.html ?? "");
 const minutes = readingMinutes(article.loc.body ?? "");
 
 const technologyLinks = articleTechnologyLinks(article);
@@ -68,7 +75,7 @@ const articleLd: Record<string, unknown> = {
   "@type": collection === "news" ? "NewsArticle" : "Article",
   headline: clean(d.title),
   description: clean(d.seo?.description ?? d.summary),
-  datePublished: base.publishDate.toISOString(),
+  ...(base.publishDate ? { datePublished: base.publishDate.toISOString() } : {}),
   ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
   inLanguage: HTML_LANG[lang],
   url: new URL(articleHref(article), site.url).toString(),
@@ -104,7 +111,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
         <p class="t-tech meta">
           <Text value={ui.articleTypes[collection]} />
           {news && <> · <Text value={t.categories[newsBase!.category]} /></>}
-          {" · "}<span class="visually-hidden"><Text value={t.published} /> </span><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time>
+          {base.publishDate && <> · <span class="visually-hidden"><Text value={t.published} /> </span><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time></>}
           {base.updatedAt && <> · <Text value={t.updated} /> <time datetime={iso(base.updatedAt)}>{fmt(base.updatedAt)}</time></>}
         </p>
         <h1 class="t-h1"><Text value={d.title} /></h1>
@@ -114,14 +121,14 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
           <Text value={format(t.readingTime, { n: minutes })} />
         </p>
       </div>
-      {cover && (
+      {(cover || newsImageId) && (
         <figure class="container cover">
-          <Picture
+          {cover ? <Picture
             src={cover.src} alt={cover.alt} formats={["avif", "webp"]}
             widths={[640, 960, 1280, 1920].filter((w) => w <= cover.src.width)}
             sizes="(max-width: 1023px) calc(100vw - 2 * var(--margin)), 1200px"
             width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
-          />
+          /> : <ImagePlaceholder label={ui.coverPending} />}
         </figure>
       )}
     </header>
@@ -241,7 +248,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
     </section>
   )}
 
-  {copy?.cta && (
+  {copy?.cta && !isPending(copy.cta.title) && (
     <CtaBand id="article-cta" title={copy.cta.title} description={copy.cta.description}>
       <FormButton kind="demo" lang={lang} variant="primary" />
       <FormButton kind="brochure" lang={lang} variant="secondary" />

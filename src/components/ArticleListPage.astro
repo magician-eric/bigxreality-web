@@ -23,6 +23,7 @@ import FormButton from "./FormButton.astro";
 import FilterBar from "./FilterBar.astro";
 import Pagination from "./Pagination.astro";
 import EmptyState from "./EmptyState.astro";
+import { isPending } from "../lib/pending";
 import Text from "./Text.astro";
 
 interface Props { lang: Lang; collection: ArticleCollection; page: number }
@@ -69,7 +70,7 @@ const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: pa
   fallbackPath={`/{lang}/${segmentOf(collection)}/`} breadcrumbs={breadcrumbs}
   structuredData={all.length ? [collectionLd] : []}
 >
-  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={copy.hero.title} description={copy.hero.description} />
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={copy.hero.eyebrow} title={isPending(copy.hero.title) ? listName : copy.hero.title} description={isPending(copy.hero.description) ? undefined : copy.hero.description} />
   <section class="section">
     <div class="container">
       {all.length === 0 ? (
@@ -105,7 +106,7 @@ const title = page > 1 ? `${copy.seo.title} · ${format(ui.listing.page, { n: pa
       )}
     </div>
   </section>
-  {copy.cta && (
+  {copy.cta && !isPending(copy.cta.title) && (
     <CtaBand id="list-cta" title={copy.cta.title} description={copy.cta.description}>
       <FormButton kind="demo" lang={lang} variant="primary" />
       <FormButton kind="brochure" lang={lang} variant="secondary" />

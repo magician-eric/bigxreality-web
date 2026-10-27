@@ -21,14 +21,14 @@ export function technologyResources<T extends { slug: string; pendingTranslation
 /** Source-language tags own structure; published text must actually exist in the requested locale. */
 export function selectTechnologyArticles<T extends {
   collection: string; lang: Lang; pendingTranslation: boolean;
-  base: { data: { technologyTags?: readonly string[]; draft?: boolean; publishDate: Date } };
+  base: { data: { technologyTags?: readonly string[]; draft?: boolean; publishDate?: Date } };
   loc: { data: { draft?: boolean; translationStatus?: string }; body?: string };
 }>(articles: readonly T[], id: TechnologyId, lang: Lang, limit = 6, now = new Date()): T[] {
   return articles.filter((a) => a.collection === "insights" && a.lang === lang && !a.pendingTranslation
     && a.loc.data.translationStatus !== "pending" && a.loc.data.draft !== true && a.base.data.draft !== true
-    && a.base.data.publishDate.getTime() <= now.getTime() && !!a.loc.body?.trim()
+    && !!a.base.data.publishDate && a.base.data.publishDate.getTime() <= now.getTime() && !!a.loc.body?.trim()
     && (a.base.data.technologyTags ?? []).includes(id))
-    .sort((a, b) => b.base.data.publishDate.getTime() - a.base.data.publishDate.getTime()).slice(0, Math.max(0, limit));
+    .sort((a, b) => (b.base.data.publishDate?.getTime() ?? 0) - (a.base.data.publishDate?.getTime() ?? 0)).slice(0, Math.max(0, limit));
 }
 export async function getTechnologyArticles(id: TechnologyId, lang: Lang, limit = 6): Promise<Article[]> {
   const { getArticles } = await import("./articles");

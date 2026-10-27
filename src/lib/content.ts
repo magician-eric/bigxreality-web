@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry, type CollectionKey } from "astro:content";
+import { comparePublicationDates } from "./publication-date";
 import { LANGS, SOURCE_LANG, type Lang } from "../i18n";
 
 /*
@@ -69,7 +70,7 @@ async function load<C extends LocalizableKey>(collection: C, lang: Lang): Promis
     const ad = a.base.data as { order?: number; publishDate?: Date };
     const bd = b.base.data as { order?: number; publishDate?: Date };
     if (ad.order !== undefined && bd.order !== undefined) return ad.order - bd.order;
-    return (bd.publishDate?.getTime() ?? 0) - (ad.publishDate?.getTime() ?? 0);
+    return comparePublicationDates(ad.publishDate, bd.publishDate);
   });
 }
 

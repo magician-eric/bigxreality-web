@@ -33,6 +33,8 @@ const ui = getUi(lang as Lang);
 const c = ui.cases;
 const s = c.section;
 const base = caseBase(article);
+const published = base.publishDate;
+if (!published) throw new Error("Case studies require a confirmed publication date");
 const d = caseLoc(article);
 const client = clientLabel(article);
 const view = (await toViews([article], lang as Lang))[0];
@@ -74,7 +76,7 @@ const articleLd: Record<string, unknown> = {
   "@type": "Article",
   headline: clean(d.title),
   description: clean(d.seo?.description ?? d.summary),
-  datePublished: base.publishDate.toISOString(),
+  datePublished: published.toISOString(),
   ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
   inLanguage: HTML_LANG[lang],
   url: new URL(articleHref(article), site.url).toString(),
@@ -107,9 +109,9 @@ const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...r
   breadcrumbs={breadcrumbs}
   ogImage={base.seo?.ogImage ?? cover?.src}
   ogImageAlt={cover?.alt}
-  article={{ published: base.publishDate, modified: base.updatedAt, tags: tagLinks.map((x) => x.name) }}
+  article={{ published: published, modified: base.updatedAt, tags: tagLinks.map((x) => x.name) }}
   structuredData={[articleLd]}
-  search={{ type: "case-studies", date: base.publishDate }}
+  search={{ type: "case-studies", date: published }}
 >
   <article>
     <header class="case-header">
@@ -134,7 +136,7 @@ const galleryImages = [...sideImages.filter((x) => x && !shownSide.has(x)), ...r
         {view.domains.length > 0 && <div><dt><Text value={c.domains} /></dt><dd>{view.domains.map((x, i) => <>{i > 0 && "、"}<Text value={ui.domains[x]} /></>)}</dd></div>}
         {view.products.length > 0 && <div><dt><Text value={c.products} /></dt><dd>{view.products.map((p, i) => <>{i > 0 && "、"}<a href={p.href}><Text value={p.name} /></a></>)}</dd></div>}
         {view.solutions.length > 0 && <div><dt><Text value={c.solutions} /></dt><dd>{view.solutions.map((p, i) => <>{i > 0 && "、"}<a href={p.href}><Text value={p.name} /></a></>)}</dd></div>}
-        <div><dt class="visually-hidden"><Text value={ui.article.published} /></dt><dd><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time></dd></div>
+        <div><dt class="visually-hidden"><Text value={ui.article.published} /></dt><dd><time datetime={iso(published)}>{fmt(published)}</time></dd></div>
       </dl>
     </div>
 

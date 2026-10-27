@@ -4,6 +4,7 @@ import path from 'node:path';
 import { chromium } from 'playwright-core';
 import { CHROMIUM, DIST } from './lib/serve.mjs';
 const approved = JSON.parse(await fs.readFile(new URL('../tests/fixtures/seo-approved.json', import.meta.url), 'utf8'));
+const newsImages = JSON.parse(await fs.readFile(new URL('../src/data/news-images.json', import.meta.url), 'utf8'));
 const site = JSON.parse(await fs.readFile(new URL('../src/data/site.json', import.meta.url), 'utf8'));
 const browser = await chromium.launch({ executablePath: CHROMIUM });
 const pages = [], errors = [];
@@ -64,7 +65,7 @@ try {
       const blocks=[...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(x=>JSON.parse(x[1]));
       const nodes=blocks.flatMap(b=>b['@graph']??[b]);
       for(const node of nodes){assert.ok(node['@type'],'JSON-LD node without @type');if(node.inLanguage)assert.equal(node.inLanguage,HTML_LANG[l],'JSON-LD inLanguage');assert.ok(!/\[待|undefined/.test(JSON.stringify(node)),'placeholder in JSON-LD');}
-      for(const node of nodes)if(['Article','NewsArticle'].includes(node['@type']))for(const key of ['headline','datePublished','publisher','url'])assert.ok(node[key],'Article '+key);
+      for(const node of nodes)if(['Article','NewsArticle'].includes(node['@type'])){for(const key of ['headline','publisher','url'])assert.ok(node[key],'Article '+key);if(!node.datePublished){const id=url.match(/\/news\/([^/]+)\//)?.[1];assert.ok(id && newsImages[id]?.publicationDate===null,'Article missing confirmed date without source uncertainty');}else assert.ok(!Number.isNaN(Date.parse(node.datePublished)),'Article datePublished');}
       const crumbs=nodes.find(n=>n['@type']==='BreadcrumbList');
       if(!m.noindex){assert.ok(crumbs,'BreadcrumbList');assert.equal(crumbs.itemListElement.at(-1).item,abs,'BreadcrumbList ends at this page');}
       const body=visible(html);

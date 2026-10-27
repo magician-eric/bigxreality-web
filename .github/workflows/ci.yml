@@ -22,6 +22,7 @@ jobs:
       - name: Build
         run: npm run build
       - run: npm run qa:technologies
+      - run: npm run qa:news-import
       - run: npm run qa:images
       - run: npm run qa:seo
       - run: npm run check:sitemap

@@ -314,12 +314,20 @@ const articleBase = (ctx: SchemaContext) =>
     seo: seo(ctx),
   });
 
-export const NEWS_CATEGORIES = ["company", "exhibition", "award", "product-launch", "partnership", "media"] as const;
+export const NEWS_CATEGORIES = ["event", "company", "exhibition", "award", "product-launch", "partnership", "media"] as const;
 
 const news = defineCollection({
   loader: loader("news", "news"),
   schema: (ctx) =>
     articleBase(ctx).extend({
+      // Historical news may lack a known publication date; never coerce null to 1970.
+      publishDate: z.preprocess(value => value === null ? undefined : value, z.coerce.date().optional()),
+      dateUnconfirmed: z.boolean().default(false),
+      dateNote: text.optional(),
+      articleId: slug.optional(),
+      imageId: slug.optional(),
+      sourceCategory: text.optional(),
+      importNote: text.optional(),
       category: z.enum(NEWS_CATEGORIES),
       event: z.object({ name: text, location: text.optional(), startDate: z.coerce.date(), endDate: z.coerce.date().optional() }).optional(),
       source: z.object({ name: text, url: z.url() }).optional(),

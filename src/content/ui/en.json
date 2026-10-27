@@ -115,7 +115,7 @@
   },
   "articleTypes": {
     "insights": "[待翻譯] 技術文章",
-    "news": "[待翻譯] 消息",
+    "news": "News",
     "case-studies": "[待翻譯] 案例"
   },
   "footer": {
@@ -165,10 +165,10 @@
     "eyebrow": "Solution"
   },
   "article": {
-    "published": "[待翻譯] 發布",
-    "updated": "[待翻譯] 更新",
+    "published": "Published",
+    "updated": "Updated",
     "author": "[待翻譯] 作者",
-    "readingTime": "[待翻譯] 閱讀時間約 {n} 分鐘",
+    "readingTime": "{n} min read",
     "tags": "[待翻譯] 標籤",
     "related": {
       "eyebrow": "Related",
@@ -188,7 +188,8 @@
       "award": "[待翻譯] 獲獎",
       "product-launch": "[待翻譯] 產品發表",
       "partnership": "[待翻譯] 合作夥伴",
-      "media": "[待翻譯] 媒體報導"
+      "media": "Media",
+      "event": "Event"
     },
     "event": "[待翻譯] 活動",
     "location": "[待翻譯] 地點",
@@ -205,12 +206,12 @@
   },
   "listing": {
     "empty": "[待翻譯] 目前還沒有內容。",
-    "count": "[待翻譯] 共 {n} 篇",
-    "pagination": "[待翻譯] 分頁",
-    "previous": "[待翻譯] 上一頁",
-    "next": "[待翻譯] 下一頁",
-    "page": "[待翻譯] 第 {n} 頁",
-    "pageOf": "[待翻譯] 第 {n} 頁，共 {total} 頁",
+    "count": "{n} articles",
+    "pagination": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {n}",
+    "pageOf": "Page {n} of {total}",
     "filterEmpty": "[待翻譯] 沒有符合條件的案例。",
     "filterResults": "[待翻譯] 共 {n} 個案例",
     "filterSearchLabel": "[待翻譯] 搜尋案例",
