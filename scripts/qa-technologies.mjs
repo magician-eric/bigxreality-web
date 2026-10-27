@@ -92,7 +92,7 @@ try {
     if (lang === 'en') check(`${url}: English content image alternatives are localized`, await page.locator('main img').evaluateAll((imgs) => imgs.every((img) => !/[\u3400-\u9fff]/.test(img.alt))));
     check(`${url}: heading hierarchy never skips a level`, await page.locator('main').evaluate((main) => { let previous = 0; return [...main.querySelectorAll('h1,h2,h3,h4,h5,h6')].every((h) => { const level = Number(h.tagName[1]); const ok = level <= previous + 1; previous = level; return ok; }); }));
     check(`${url}: hero retains an accessible image position without a photograph`, await page.locator('.page-hero .placeholder[role="img"]').count() === 1);
-    check(`${url}: only image positions are retained; no content photograph is inserted`, await page.locator('main img:not(.sector-tag img)').count() === 0);
+    check(`${url}: technology slots remain placeholders; approved related-product cards may show images`, await page.locator('main img:not(.sector-tag img):not(.resources img)').count() === 0);
     check(`${url}: image positions have localized accessible labels`, await page.locator('main .placeholder[role="img"]').evaluateAll((els) => els.every((el) => el.getAttribute('aria-label')?.trim().length > 0)));
     if (slug) {
       const normalizedInitial = text(initial.main);

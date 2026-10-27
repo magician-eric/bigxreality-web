@@ -5,7 +5,8 @@
  * Home-only copy and the selection of items live in src/data/home.ts; names, images
  * and routes are read from the products / solutions collections and the technology data.
  */
-import { Picture } from "astro:assets";
+import ProductImage from '../../components/ProductImage.astro';
+import { primaryImage } from '../../data/primary-images';
 import { HTML_LANG, LANGS, localePath, type Lang } from "../../i18n";
 import { getLocalized } from "../../lib/content";
 import { getUi } from "../../lib/ui";
@@ -36,7 +37,7 @@ const products = homeConfig.featuredProducts.flatMap((slug) => {
   const p = allProducts.find((e) => e.slug === slug);
   if (!p) return [];
   const d = p.loc.data;
-  const img = p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: d.hero.image?.alt ?? p.base.data.hero.image.alt };
+  const img = primaryImage('products', p.slug, lang) ?? (p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: d.hero.image?.alt ?? p.base.data.hero.image.alt });
   return [{ slug, name: d.hero.name, href: localePath(lang, "products", slug), image: img, ...copy.products.items[slug] }];
 });
 const [lead, ...others] = products;
@@ -98,7 +99,7 @@ const website = {
             <article class="feature feature--lead">
               <div class="feature-media">
                 {lead.image
-                  ? <Picture src={lead.image.src} alt={lead.image.alt} formats={["avif", "webp"]} widths={[640, 960, 1280].filter((w) => w <= lead.image!.src.width)} sizes="(max-width: 1023px) 100vw, 760px" width={1280} height={720} fit="cover" />
+                  ? <ProductImage src={lead.image.src} alt={lead.image.alt} />
                   : <ImagePlaceholder label={ui.imagePending} />}
               </div>
               <div class="feature-body">
@@ -115,7 +116,7 @@ const website = {
                 <article class="feature feature--row">
                   <div class="feature-media">
                     {p.image
-                      ? <Picture src={p.image.src} alt={p.image.alt} formats={["avif", "webp"]} widths={[320, 640]} sizes="(max-width: 767px) 40vw, 240px" width={640} height={360} fit="cover" />
+                      ? <ProductImage src={p.image.src} alt={p.image.alt} />
                       : <ImagePlaceholder label={ui.imagePending} />}
                   </div>
                   <div class="feature-body">

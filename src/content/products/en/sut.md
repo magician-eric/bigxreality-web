@@ -10,7 +10,7 @@ hero:
   name: SUT Small Unit Tactical Training System
   tagline: A tactical training system that extends from basic operation to squad coordination and cross-system joint training
   image:
-    src: ../../../assets/images/products/sut-hero.jpg
+    src: ../../../assets/images/products/sut-squad-vr-tactical-training.jpg
     alt: Four trainees wearing VR headsets and tactical gear, holding training firearms, standing in front of a vehicle simulator
 summary: Designed mainly for small-unit tactical training of approximately 1 to 4 personnel.
 landing:

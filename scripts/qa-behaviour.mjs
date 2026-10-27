@@ -95,7 +95,7 @@ try {
   check("pillar text has no trailing full stop", (await page.locator(".pillar .text").allTextContents()).every((t) => !/[。.]$/.test(t.trim())));
   const slots = await page.locator("main .placeholder").evaluateAll((els) => els.map((e) => e.getAttribute("aria-label")));
   const need = slots.filter((l) => l.startsWith("素材需求｜"));
-  check("10 image positions on the page, each names the material needed", need.length === 10, `${need.length} of ${slots.length}`);
+  check("10 image positions on the page, each names the material needed", need.length + await page.locator(".page-hero img[data-primary-image]").count() === 10, `${need.length} of ${slots.length}`);
   check("capability rows: 3 picture rows and 2 text-only rows (02 and 05)", (await page.locator(".feature").count()) === 3 && (await page.locator(".plain .cap").count()) === 2);
   check("capability picture rows alternate sides", (await page.locator(".feature.flip").count()) === 1);
   check("approach shows a physical + virtual image pair", (await page.locator(".pair .media").count()) === 2);
@@ -140,7 +140,7 @@ try {
     check(`${slug}: related links`, related.every((h) => hrefs.includes(h)), related.filter((h) => !hrefs.includes(h)).join(" "));
     check(`${slug}: CTA goes to the contact page with the product code`, hrefs.some((h) => h.includes(`/tw/contact/?topic=product&${new URLSearchParams({ item: cta })}`)));
     check(`${slug}: no visible 待提供 text`, (await page.locator("main section:not(.cta-band):not(#related-products) mark.pending").count()) === 0);
-    check(`${slug}: hero image placeholder is designed`, (await page.locator(".page-hero [role=img]").count()) >= 1);
+    check(`${slug}: approved primary hero image loads`, await page.locator(".page-hero img[data-primary-image]").evaluate(img => img.complete && img.naturalWidth > 0));
     await page.setViewportSize({ width: 390, height: 844 });
     check(`${slug}: phone has no horizontal scroll`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     await page.setViewportSize({ width: 1440, height: 900 });
