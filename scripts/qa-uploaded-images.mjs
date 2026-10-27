@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright-core';
 import { startPreview, CHROMIUM } from './lib/serve.mjs';
 const products=['sut','uav','usv','wargaming-table','mortar-observation','sniper-simulator','machine-gun-simulator','hmmwv-simulator','tactical-boat-simulator','full-scale-police-training','police-box','fire-extinguisher-simulator'];
-const solutions=['military','police','smart-city'];
+const solutions=['military','police','fire-rescue','smart-city'];
 const source=fs.readFileSync(new URL('../src/data/primary-images.ts',import.meta.url),'utf8');
 const files=[...source.matchAll(/import image\d+ from '\.\.\/assets\/images\/products\/([^']+)'/g)].map(m=>m[1]);
 for(const file of files){const asset='src/assets/images/products/'+file;assert.equal(execFileSync('git',['hash-object',asset],{encoding:'utf8'}).trim(),execFileSync('git',['rev-parse',`HEAD:${asset}`],{encoding:'utf8'}).trim(),file+' source modified');}
@@ -21,7 +21,7 @@ try {
    assert.equal((await page.goto(server.base+url)).status(),200,url);
    if(products.some(s=>route==='products/'+s)||solutions.some(s=>route==='solutions/'+s))assert.equal(await page.locator('.page-hero img[data-primary-image]').count(),1,url);
    if(route==='products')assert.equal(await page.locator('#product-grid [data-primary-image]').count(),12);
-   if(route==='')assert.equal(await page.locator('[aria-labelledby="h-solutions"] [data-primary-image]').count(),3);
+   if(route==='')assert.equal(await page.locator('[aria-labelledby="h-solutions"] [data-primary-image]').count(),4);
    const images=page.locator('img[data-primary-image]');
    for(const image of await images.all()){
     await image.scrollIntoViewIfNeeded();

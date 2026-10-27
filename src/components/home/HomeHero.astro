@@ -13,7 +13,7 @@ import Text from "../Text.astro";
 
 interface Props { copy: HomeCopy["hero"]; primaryHref: string; secondaryHref: string }
 const { copy, primaryHref, secondaryHref } = Astro.props;
-const clips = ["/video/hero/hero-2", "/video/hero/hero-1"];
+const clips = ["/video/hero/hero-1", "/video/hero/hero-2"];
 ---
 <section class="hero" data-theme="dark" aria-labelledby="home-title" data-hero>
   <div class="media">
@@ -85,7 +85,7 @@ const clips = ["/video/hero/hero-2", "/video/hero/hero-1"];
   .hero { position: relative; isolation: isolate; overflow: hidden; background: var(--bxr-black); color: var(--bxr-white); display: flex; align-items: center; min-height: clamp(480px, 70vh, 600px); }
   .media, .media :global(picture), .media :global(img), .media video, .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
   .media { z-index: -1; }
-  .media :global(img), .media video { object-fit: cover; object-position: 60% center; }
+  .media :global(img), .media video { object-fit: cover; object-position: 50% 0%; }
   .media video { opacity: 0; transition: opacity 600ms var(--ease-precise); }
   .media video.is-on { opacity: 1; }
   .shade { background: linear-gradient(90deg, rgb(11 15 20 / 0.92) 0%, rgb(11 15 20 / 0.72) 45%, rgb(11 15 20 / 0.25) 100%); }
@@ -116,4 +116,17 @@ const clips = ["/video/hero/hero-2", "/video/hero/hero-1"];
     .title, :lang(zh) .title, :lang(ja) .title { font-size: var(--fs-h1); line-height: 1.25; }
     .shade { background: linear-gradient(180deg, rgb(11 15 20 / 0.6) 0%, rgb(11 15 20 / 0.88) 60%); }
   }
+</style>
+
+<style>
+/* Full landscape footage on smaller screens: no face cropping and no dark film over the video.
+   Copy stays readable in its own brand-colored area below the footage. */
+@media(max-width:1023px) {
+ .hero { display: block; min-height: 0; }
+ .media { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 16 / 9; z-index: 0; }
+ .media :global(img),.media video { object-fit: contain; object-position: 50% 0%; }
+ .shade { background: none; }
+ .inner { background: var(--bxr-black); padding-block: 28px 40px; }
+ .toggle { top: calc(56.25vw - 52px); bottom: auto; width: 44px; height: 44px; z-index: 2; }
+}
 </style>

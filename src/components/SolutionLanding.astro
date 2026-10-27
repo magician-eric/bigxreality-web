@@ -16,7 +16,7 @@ import { isPending } from "../lib/pending";
 import { getUi } from "../lib/ui";
 import RelatedTechnologies from "./RelatedTechnologies.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { heroPresentation, heroSceneFit } from "../lib/hero-presentation";
+import { heroPresentation, heroSceneFit, heroSceneHeadroom, heroScenePosition } from "../lib/hero-presentation";
 import PageHero from "./PageHero.astro";
 import SectionHead from "./SectionHead.astro";
 import LandingSections from "./LandingSections.astro";
@@ -41,11 +41,9 @@ const ui = getUi(lang);
 const t = ui.productLanding;
 const e = t.eyebrows;
 const cta = ctaSet(lang, { page: "solutionInquiry", name: d.name, label: L.ctaLabel });
-// Explicit Hero-only sources: fire uses VR extinguisher training; military sub-solutions
-// use their parent's training context, without changing cards or claiming system-specific photos.
-const uploadedHero = slug === 'fire-rescue'
-  ? primaryImage('products', 'fire-extinguisher-simulator', lang)
-  : primaryImage('solutions', slug, lang) ?? (base.parent ? primaryImage('solutions', base.parent, lang) : undefined);
+// Shared primary mapping keeps fire Hero, overview and home cards on the specified VR image.
+const uploadedHero = primaryImage('solutions', slug, lang)
+  ?? (!L.heroImage?.src && base.parent ? primaryImage('solutions', base.parent, lang) : undefined);
 const hero = uploadedHero ? { ...L.heroImage, ...uploadedHero } : L.heroImage;
 const heroReady = hero?.src && hero.alt;
 
@@ -92,6 +90,8 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
   <PageHero
     variant={heroPresentation("solutions", slug, !!heroReady)}
     sceneFit={heroSceneFit("solutions", slug)}
+    sceneHeadroom={heroSceneHeadroom("solutions", slug)}
+    scenePosition={heroScenePosition("solutions", slug)}
     breadcrumbs={breadcrumbs}
     breadcrumbLabel={ui.breadcrumbLabel}
     eyebrow={d.name === ui.domains[base.domain] ? ui.solution.eyebrow : `${ui.solution.eyebrow} · ${ui.domains[base.domain]}`}
