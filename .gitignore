@@ -15,7 +15,8 @@ public/icon-*.png
 .env
 .dev.vars
 src/assets/.emdash-media/
-public/media/
+public/media/*
+!public/media/news/
 src/data/.cms-site.json
 dist-fixtures/
 dist-preview/

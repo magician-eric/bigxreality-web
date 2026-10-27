@@ -11,7 +11,7 @@ import { seoTitle } from "../lib/seo-title";
 export interface Crumb { name: string; path: string }
 export interface ProductLd { name: string; description: string; code?: string; image?: string }
 /** Article metadata: og:type=article tags. */
-export interface ArticleMeta { published: Date; modified?: Date; tags: string[] }
+export interface ArticleMeta { published?: Date; modified?: Date; tags: string[] }
 
 interface Props {
   lang: Lang;
@@ -100,7 +100,7 @@ const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": grap
 {seoAlternates.map((l) => <link rel="alternate" hreflang={HREFLANG[l]} href={abs(pathFor(l))} />)}
 {seoAlternates.includes(DEFAULT_LANG) && <link rel="alternate" hreflang="x-default" href={abs(pathFor(DEFAULT_LANG))} />}
 <meta property="og:type" content={product ? "product" : article ? "article" : "website"} />
-{article && <meta property="article:published_time" content={article.published.toISOString()} />}
+{article?.published && <meta property="article:published_time" content={article.published.toISOString()} />}
 {article?.modified && <meta property="article:modified_time" content={article.modified.toISOString()} />}
 {article?.tags.map((t) => <meta property="article:tag" content={plain(t)} />)}
 <meta property="og:site_name" content={site.brand} />

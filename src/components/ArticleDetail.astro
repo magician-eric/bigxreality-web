@@ -5,6 +5,12 @@
  * case-study facts → body → tags → related products / solutions / articles → CTA.
  * The only red buttons are in the closing CTA band.
  */
+import { marked } from "marked";
+import { newsMedia } from "../lib/news-media";
+import NewsGallery from "./NewsGallery.astro";
+import NewsVideos from "./NewsVideos.astro";
+import { isPending } from "../lib/pending";
+import ImagePlaceholder from "./ImagePlaceholder.astro";
 import { articleTechnologyLinks } from "../lib/technologies";
 import { Picture, getImage } from "astro:assets";
 import { getEntry } from "astro:content";
@@ -40,8 +46,12 @@ const author = collection === "insights" ? (d as typeof d & { author?: string })
 
 const fmt = (date: Date) => new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
 const iso = (date: Date) => date.toISOString().slice(0, 10);
-const cover = base.cover && { src: base.cover.src, alt: d.cover?.alt ?? base.cover.alt };
-const html = article.loc.rendered?.html ?? "";
+const newsImageId = collection === "news" ? ((base as typeof base & { mediaId?: string; imageId?: string }).mediaId ?? (base as typeof base & { imageId?: string }).imageId) : undefined;
+const media = newsMedia(newsImageId, lang);
+const cover = media.cover ?? (base.cover && { src: base.cover.src, alt: d.cover?.alt ?? base.cover.alt });
+// Imported TXT punctuation is authoritative: avoid Astro's automatic smart-quote substitutions.
+const historicalImport = collection === "news" && "articleId" in base && !!base.articleId;
+const html = historicalImport ? marked.parse(article.loc.body ?? "", { async: false }) : (article.loc.rendered?.html ?? "");
 const minutes = readingMinutes(article.loc.body ?? "");
 
 const technologyLinks = articleTechnologyLinks(article);
@@ -65,10 +75,10 @@ const copy = (await getEntry("pages", `${lang}/${collection}`))?.data;
 const clean = (s: string | undefined) => (s && !s.includes("[待") ? plain(s) : undefined);
 const ldImage = cover ? new URL((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src, site.url).toString() : undefined;
 const articleLd: Record<string, unknown> = {
-  "@type": collection === "news" ? "NewsArticle" : "Article",
+  "@type": collection === "news" && news?.category !== "insight" ? "NewsArticle" : "Article",
   headline: clean(d.title),
   description: clean(d.seo?.description ?? d.summary),
-  datePublished: base.publishDate.toISOString(),
+  ...(base.publishDate ? { datePublished: base.publishDate.toISOString() } : {}),
   ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
   inLanguage: HTML_LANG[lang],
   url: new URL(articleHref(article), site.url).toString(),
@@ -97,14 +107,14 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
   structuredData={[articleLd]}
   search={{ type: collection, date: base.publishDate }}
 >
-  <article>
+  <article class:list={{"news-article": collection === "news"}}>
     <header class="article-header">
       <div class="container narrow">
         <Breadcrumb items={breadcrumbs} label={ui.breadcrumbLabel} />
         <p class="t-tech meta">
           <Text value={ui.articleTypes[collection]} />
           {news && <> · <Text value={t.categories[newsBase!.category]} /></>}
-          {" · "}<span class="visually-hidden"><Text value={t.published} /> </span><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time>
+          {base.publishDate && <> · <span class="visually-hidden"><Text value={t.published} /> </span><time datetime={iso(base.publishDate)}>{fmt(base.publishDate)}</time></>}
           {base.updatedAt && <> · <Text value={t.updated} /> <time datetime={iso(base.updatedAt)}>{fmt(base.updatedAt)}</time></>}
         </p>
         <h1 class="t-h1"><Text value={d.title} /></h1>
@@ -114,14 +124,14 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
           <Text value={format(t.readingTime, { n: minutes })} />
         </p>
       </div>
-      {cover && (
+      {(cover || newsImageId) && (
         <figure class="container cover">
-          <Picture
+          {cover ? <Picture
             src={cover.src} alt={cover.alt} formats={["avif", "webp"]}
             widths={[640, 960, 1280, 1920].filter((w) => w <= cover.src.width)}
             sizes="(max-width: 1023px) calc(100vw - 2 * var(--margin)), 1200px"
             width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
-          />
+          /> : <ImagePlaceholder label={ui.coverPending} />}
         </figure>
       )}
     </header>
@@ -168,6 +178,9 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
 
     <div class="container narrow body">
       <Prose html={html} />
+      {collection === "news" && <><NewsGallery lang={lang} images={media.gallery} /><NewsVideos lang={lang} videos={media.videos} />
+        {media.sourceLinks.length > 0 && <nav class="news-sources" aria-label={{tw:"相關來源",en:"Sources",jp:"関連ソース"}[lang]}><ul role="list">{media.sourceLinks.map(url=><li><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>)}</ul></nav>}
+      </>}
       {technologyLinks.length > 0 && (
         <nav class="tags technology-links" aria-label={technologyLabel}>
           <h2 class="t-h4">{technologyLabel}</h2>
@@ -241,7 +254,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
     </section>
   )}
 
-  {copy?.cta && (
+  {copy?.cta && !isPending(copy.cta.title) && (
     <CtaBand id="article-cta" title={copy.cta.title} description={copy.cta.description}>
       <FormButton kind="demo" lang={lang} variant="primary" />
       <FormButton kind="brochure" lang={lang} variant="secondary" />
@@ -249,6 +262,10 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
   )}
 </BaseLayout>
 <style>
+  .news-article .body { min-width: 0; }
+  .news-article .body :global(.prose), .news-sources { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+  .news-sources a { overflow-wrap: anywhere; }
+
   .article-header { padding-block: var(--space-8) var(--space-6); background: var(--bxr-paper); border-bottom: 1px solid var(--bxr-line); }
   .narrow > * { max-width: 48rem; }
   .narrow { display: grid; gap: var(--space-3); }
