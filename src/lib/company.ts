@@ -37,12 +37,8 @@ export async function enabledModules(lang: Lang): Promise<InvestorModule[]> {
 
 /** Which About BXR pages have content in this language (drives the sitemap and noindex). */
 export async function companyContent(lang: Lang) {
-  const [history, team, modules] = await Promise.all([
-    getLocalized("milestones", lang),
-    getLocalized("team", lang),
-    enabledModules(lang),
-  ]);
-  return { history: history.length > 0, team: team.length > 0, partners: clientLogos(lang).length > 0, investors: modules.length > 0, modules };
+  const modules = await enabledModules(lang);
+  return { history: false, team: true, partners: clientLogos(lang).length > 0, investors: modules.length > 0, modules };
 }
 
 export type Milestone = CollectionEntry<"milestones">;

@@ -48,7 +48,6 @@ export const NAVIGATION = [
     children: [
       { id: "about", label: "nav.aboutUs", route: ["company"], order: 10, enabled: true, status: "published" },
       { id: "csr", label: "nav.csr", route: ["company", "csr"], order: 15, enabled: true, status: "published" },
-      { id: "history", label: "nav.history", route: ["company", "history"], order: 20, enabled: true, status: "published" },
       { id: "team", label: "nav.team", route: ["company", "team"], order: 30, enabled: true, status: "published" },
       { id: "partners", label: "nav.partners", route: ["company", "partners"], order: 40, enabled: true, status: "published" },
       { id: "investors", label: "nav.investors", route: ["company", "investors"], order: 50, enabled: true, status: "published" },
@@ -77,7 +76,7 @@ export interface NavItem {
   children: NavItem[];
 }
 
-// Page files that exist, e.g. "/src/pages/[lang]/company/history/index.astro".
+// Page files that exist, e.g. "/src/pages/[lang]/company/team/index.astro".
 const PAGE_FILES = new Set(Object.keys(import.meta.glob("/src/pages/\\[lang\\]/**/index.astro", { query: "?raw" })));
 
 function lookup(ui: Ui, key: string): string {

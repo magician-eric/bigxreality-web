@@ -35,7 +35,7 @@ async function collect(): Promise<IndexablePage[]> {
     // About BXR sub-pages: only languages in which they have published content (otherwise noindex).
     const companyByLang = new Map<Lang, Awaited<ReturnType<typeof companyContent>>>();
     for (const l of LANGS) companyByLang.set(l, await companyContent(l));
-    for (const page of ["history", "team", "partners", "investors"] as const) {
+    for (const page of ["team", "partners", "investors"] as const) {
       add(`/{lang}/company/${page}/`, await filter(async (l) => companyByLang.get(l)![page] && (await copyOk(page, l))));
     }
     for (const m of INVESTOR_MODULES) add(`/{lang}/company/investors/${m}/`, await filter(async (l) => companyByLang.get(l)!.modules.includes(m) && (await copyOk("investors", l))));
