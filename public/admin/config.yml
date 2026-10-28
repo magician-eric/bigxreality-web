@@ -1,0 +1,20 @@
+# Sveltia CMS initial integration; isolated test collection only.
+# Do not point to existing production content until schema audit is complete.
+backend:
+  name: github
+  repo: magician-eric/bigxreality-web
+  branch: feature/sveltia-cms
+  auth_methods: [token]
+media_folder: /public/media/cms-test
+public_folder: /media/cms-test
+collections:
+  - name: cms-test
+    label: CMS 測試文章（不會顯示在正式官網）
+    folder: /cms-test-content
+    create: true
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - { label: 日期, name: date, widget: datetime }
+      - { label: 內文, name: body, widget: richtext }
