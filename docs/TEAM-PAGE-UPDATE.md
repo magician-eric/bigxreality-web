@@ -10,3 +10,5 @@
 - 回復方式：對本 PR 的提交執行 `git revert <commit>`。
 
 驗證：`npm run build`、`npm run check`、`node scripts/qa-team-page.mjs`、`npm run qa:company`、`npm run qa:header`、`npm run qa:seo`。
+
+版面修正：移除公開的「示意」標註與灰色大外框；能力架構採連接線與三欄領域，下方三項能力於桌面並列、平板及手機直列，英文副標另行呈現。
