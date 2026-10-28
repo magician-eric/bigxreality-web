@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { parse as parseYaml } from 'yaml';
 import { chromium } from 'playwright-core';
 import { CHROMIUM, DIST } from './lib/serve.mjs';
 const approved = JSON.parse(await fs.readFile(new URL('../tests/fixtures/seo-approved.json', import.meta.url), 'utf8'));
@@ -9,7 +10,7 @@ const site = JSON.parse(await fs.readFile(new URL('../src/data/site.json', impor
 const browser = await chromium.launch({ executablePath: CHROMIUM });
 const pages = [], errors = [];
 const normalize = title => { while (/\s*[|｜]\s*(?:Big\s*x\s*Reality|BXR)\s*$/i.test(title)) title = title.replace(/\s*[|｜]\s*(?:Big\s*x\s*Reality|BXR)\s*$/i, '').trim(); return title + ' | Big x Reality'; };
-async function walk(dir) { for (const item of await fs.readdir(dir, { withFileTypes:true })) { const file=path.join(dir,item.name); if(item.isDirectory()) { if(!['_astro','pagefind','fonts','media'].includes(item.name)) await walk(file); } else if(item.name==='index.html') { const html=await fs.readFile(file,'utf8'); if(!/http-equiv="refresh"/.test(html)) pages.push({url:'/'+path.relative(DIST,path.dirname(file)).split(path.sep).join('/')+'/',html,head:html.match(/<head[^>]*>([\s\S]*?)<\/head>/)?.[1]}); } } }
+async function walk(dir) { for (const item of await fs.readdir(dir, { withFileTypes:true })) { const file=path.join(dir,item.name); if(item.isDirectory()) { if(!['_astro','pagefind','fonts','media','admin'].includes(item.name)) await walk(file); } else if(item.name==='index.html') { const html=await fs.readFile(file,'utf8'); if(!/http-equiv="refresh"/.test(html)) pages.push({url:'/'+path.relative(DIST,path.dirname(file)).split(path.sep).join('/')+'/',html,head:html.match(/<head[^>]*>([\s\S]*?)<\/head>/)?.[1]}); } } }
 try {
   await walk(DIST);
   const page=await browser.newPage();
@@ -31,7 +32,14 @@ try {
       assert.ok(!/\[待|undefined|\bnull\b/.test([m.titles[0],m.descriptions[0],m.ogAlt].join(' ')));
       assert.equal(m.ogTitle,m.titles[0]);assert.equal(m.twitterTitle,m.titles[0]);assert.equal(m.ogDescription,m.descriptions[0]);assert.equal(m.twitterDescription,m.descriptions[0]);
       assert.equal(m.keywords,false);assert.ok(m.ogAlt);assert.ok(await fs.stat(path.join(DIST,new URL(m.ogImage).pathname)));
-      const copy=approved[url];if(copy){assert.equal(m.titles[0],normalize(copy.title));assert.equal(m.descriptions[0],copy.description);}
+      // CMS-authored SEO is checked against its current Git source, while legacy expectations remain the fallback.
+      let copy=approved[url];
+      const [lang, section, slug] = url.split('/').filter(Boolean);
+      const collection=({news:'news',insights:'insights',cases:'case-studies',products:'products',solutions:'solutions'})[section];
+      const pageSlug=section==='company'?(slug??'company'):(!slug?section:undefined);
+      const sourcePath=collection&&slug?`src/content/${collection}/${lang}/${slug}.md`:pageSlug?`src/content/pages/${lang}/${pageSlug}.md`:undefined;
+      if(sourcePath)try{const source=parseYaml((await fs.readFile(sourcePath,'utf8')).split(/^---\s*$/m)[1]);if(source.seo?.title&&source.seo?.description)copy=source.seo;}catch(error){if(error.code!=='ENOENT')throw error;}
+      if(copy){assert.equal(m.titles[0],normalize(copy.title));assert.equal(m.descriptions[0],copy.description);}
       const pattern=url.replace(/^\/(tw|en|jp)\//,'/{lang}/');
       const matching=pages.filter(p=>!p.meta.noindex && p.url.replace(/^\/(tw|en|jp)\//,'/{lang}/')===pattern);
       const expected=m.noindex?[]:matching.map(p=>[({tw:'zh-TW',en:'en',jp:'ja'})[p.url.split('/')[1]],new URL(p.url,site.url).href]);

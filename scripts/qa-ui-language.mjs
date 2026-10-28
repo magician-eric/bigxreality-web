@@ -66,7 +66,7 @@ const pages = [];
 async function walk(dir) {
   for (const item of await fs.readdir(dir, { withFileTypes: true })) {
     const file = path.join(dir, item.name);
-    if (item.isDirectory()) { if (!["_astro", "pagefind", "fonts", "media", "video"].includes(item.name)) await walk(file); }
+    if (item.isDirectory()) { if (!["_astro", "pagefind", "fonts", "media", "video", "admin"].includes(item.name)) await walk(file); }
     else if (item.name === "index.html" && !/http-equiv="refresh"/.test(await fs.readFile(file, "utf8"))) pages.push("/" + path.relative(DIST, path.dirname(file)).split(path.sep).join("/") + "/");
   }
 }

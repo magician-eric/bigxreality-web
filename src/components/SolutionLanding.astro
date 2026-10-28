@@ -44,7 +44,11 @@ const cta = ctaSet(lang, { page: "solutionInquiry", name: d.name, label: L.ctaLa
 // Shared primary mapping keeps fire Hero, overview and home cards on the specified VR image.
 const uploadedHero = primaryImage('solutions', slug, lang)
   ?? (!L.heroImage?.src && base.parent ? primaryImage('solutions', base.parent, lang) : undefined);
-const hero = uploadedHero ? { ...L.heroImage, ...uploadedHero } : L.heroImage;
+const assignedHero = base.landing?.heroImage?.src
+  ? { ...base.landing.heroImage, alt: L.heroImage?.alt ?? base.landing.heroImage.alt }
+  : base.image ? { ...L.heroImage, need: L.heroImage?.need, caption: L.heroImage?.caption, illustration: false, ...base.image, alt: d.image?.alt ?? base.image.alt }
+  : L.heroImage?.src ? L.heroImage : undefined;
+const hero = assignedHero ?? (uploadedHero ? { ...L.heroImage, ...uploadedHero } : L.heroImage);
 const heroReady = hero?.src && hero.alt;
 
 const allSolutions = await getLocalized("solutions", lang);

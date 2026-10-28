@@ -37,7 +37,7 @@ const products = homeConfig.featuredProducts.flatMap((slug) => {
   const p = allProducts.find((e) => e.slug === slug);
   if (!p) return [];
   const d = p.loc.data;
-  const img = primaryImage('products', p.slug, lang) ?? (p.base.data.hero.image && { src: p.base.data.hero.image.src, alt: d.hero.image?.alt ?? p.base.data.hero.image.alt });
+  const img = p.base.data.hero.image ? { src: p.base.data.hero.image.src, alt: d.hero.image?.alt ?? p.base.data.hero.image.alt } : primaryImage('products', p.slug, lang);
   return [{ slug, name: d.hero.name, href: localePath(lang, "products", slug), image: img, ...copy.products.items[slug] }];
 });
 const [lead, ...others] = products;

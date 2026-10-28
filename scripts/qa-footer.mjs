@@ -16,7 +16,7 @@ const check = (name, ok, detail = "") => {
 async function* htmlPages(dir) {
   for (const e of await readdir(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
-    if (e.isDirectory()) yield* htmlPages(p);
+    if (e.isDirectory() && e.name !== "admin") yield* htmlPages(p);
     else if (e.name === "index.html") yield "/" + path.relative(DIST, p).replace(/index\.html$/, "");
   }
 }

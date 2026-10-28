@@ -28,7 +28,7 @@ interface Props {
 }
 const { lang, href, name, summary, domains, domainLabels, image, headingLevel = 3 } = Astro.props;
 const ui = getUi(lang);
-const resolvedImage = primaryImage('products', href.match(/\/products\/([^/?#]+)/)?.[1] ?? '', lang) ?? image;
+const resolvedImage = image ?? primaryImage('products', href.match(/\/products\/([^/?#]+)/)?.[1] ?? '', lang);
 const H = `h${headingLevel}` as "h2" | "h3";
 ---
 <article data-interactive-card class="card">
