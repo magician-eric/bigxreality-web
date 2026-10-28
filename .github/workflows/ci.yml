@@ -41,6 +41,7 @@ jobs:
       - run: npm run qa:footer
       - run: npm run qa:solutions
       - run: npm run qa:company
+      - run: npm run qa:team
       - run: npm run qa:english
       - run: npm run qa:japanese
       - run: npm run qa:faq
