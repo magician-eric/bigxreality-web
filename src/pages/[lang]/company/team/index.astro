@@ -10,28 +10,51 @@ const entry = (await getEntry("pages", `${lang}/team`))!;
 const body = entry.body ?? "";
 const boundary = body.indexOf("\n## ");
 const intro = await marked.parse(boundary < 0 ? body : body.slice(0, boundary));
-const capabilities = await marked.parse(boundary < 0 ? "" : body.slice(boundary));
+const capabilities = await Promise.all((boundary < 0 ? [] : body.slice(boundary).trim().split(/\n(?=## )/)).map(async (section) => {
+  const [heading, ...paragraphs] = section.split("\n");
+  const [title, subtitle] = heading.replace(/^## /, "").split("｜");
+  return { title, subtitle, html: await marked.parse(paragraphs.join("\n")) };
+}));
 const labels = teamLabels[lang];
 ---
 <CompanyShell lang={lang} page="team" currentCompany="team" path="team" empty={false} alternates={[...LANGS]}>
-  <div class="team-intro" set:html={intro} />
-  <figure class="team-framework" aria-labelledby="team-framework-caption">
-    <figcaption id="team-framework-caption">{labels.diagram}</figcaption>
-    <div class="management">{labels.management}</div>
-    <ul role="list" class="areas">{labels.areas.map((area) => <li>{area}</li>)}</ul>
-  </figure>
-  <div class="capabilities" set:html={capabilities} />
+  <div class="team-content">
+    <div class="team-intro" set:html={intro} />
+    <div class="team-framework">
+      <div class="management">{labels.management}</div>
+      <ul role="list" class="areas">{labels.areas.map((area) => <li>{area}</li>)}</ul>
+    </div>
+    <div class="capabilities">
+      {capabilities.map((item) => <article class="capability">
+        <h2>{item.title}{item.subtitle && <span lang="en">{item.subtitle}</span>}</h2>
+        <div set:html={item.html} />
+      </article>)}
+    </div>
+  </div>
 </CompanyShell>
 <style>
+  .team-content { max-width: 1040px; margin-inline: auto; }
   .team-intro { max-width: 800px; }
   .team-intro :global(p) { line-height: 1.8; margin: 0 0 1em; }
-  .team-framework { margin: var(--space-5) 0; padding: var(--space-4); background: var(--bxr-paper); border: 1px solid var(--bxr-line); }
-  figcaption { text-align: center; color: var(--ink-muted); font-size: 14px; margin-bottom: var(--space-3); }
-  .management { width: fit-content; max-width: 100%; margin: auto; padding: 16px 24px; text-align: center; background: var(--bxr-ink, #0b0f14); color: white; font-weight: 700; border-top: 3px solid #D02753; }
-  .areas { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--gutter); padding: 24px 0 0; margin: 0; list-style: none; }
-  .areas li { padding: 18px 12px; text-align: center; font-weight: 700; border-top: 2px solid #D02753; background: var(--surface, white); }
-  .capabilities { max-width: 800px; }
-  .capabilities :global(h2) { font-size: clamp(20px,2vw,24px); line-height: 1.5; margin: 32px 0 12px; }
-  .capabilities :global(p) { line-height: 1.8; margin: 0; }
-  @media(max-width:767px) { .areas { grid-template-columns: 1fr; gap: 12px; } .team-framework { padding: 20px 16px; } }
+  .team-framework { margin: 40px 0 32px; }
+  .management { position: relative; width: fit-content; max-width: 100%; margin: auto; padding: 18px 32px; text-align: center; background: var(--bxr-ink, #0b0f14); color: white; font-size: 20px; font-weight: 700; border-top: 3px solid #D02753; }
+  .management::after { content: ""; position: absolute; height: 24px; width: 1px; background: var(--bxr-line); top: 100%; left: 50%; }
+  .areas { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; padding: 24px 0 0; margin: 0; list-style: none; }
+  .areas li { position: relative; padding: 22px 12px; text-align: center; font-size: 18px; font-weight: 700; background: var(--bxr-paper); border-top: 2px solid #D02753; }
+  .areas li::before { content: ""; position: absolute; top: -26px; height: 24px; width: 1px; left: 50%; background: var(--bxr-line); }
+  .areas::before { content: ""; position: absolute; left: calc(100% / 6); right: calc(100% / 6); top: 0; border-top: 1px solid var(--bxr-line); }
+  .areas { position: relative; margin-top: 24px; }
+  .capabilities { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+  .capability { border-top: 1px solid var(--bxr-line); padding-top: 24px; min-width: 0; }
+  .capability h2 { font-size: 22px; line-height: 1.5; margin: 0 0 16px; }
+  .capability h2 span { display: block; margin-top: 6px; font-size: 14px; font-weight: 400; color: var(--ink-muted); }
+  .capability :global(p) { font-size: 16px; line-height: 1.8; margin: 0; }
+  @media(max-width:1023px) { .capabilities { grid-template-columns: 1fr; gap: 28px; } }
+  @media(max-width:767px) {
+    .team-framework { margin: 32px 0; }
+    .areas { grid-template-columns: 1fr; gap: 12px; padding-top: 0; }
+    .areas::before, .areas li::before { display: none; }
+    .areas li { padding: 16px; }
+    .management { font-size: 18px; padding: 16px 24px; }
+  }
 </style>

@@ -16,6 +16,8 @@ try {
    await page.goto(`${server.base}/${lang}/company/team/`);
    assert.equal(await page.locator('main h1').count(),1);
    assert.equal(await page.locator('.areas li').count(),3);
+   assert.equal(await page.locator('main figcaption').count(),0);
+   assert.ok(!(await page.locator('main').innerText()).includes('架構示意'));
    assert.equal(await page.locator('.capabilities h2').count(),3);
    assert.equal(await page.locator('main img').count(),0);
    assert.equal(await page.locator('a[href*="/company/history/"]').count(),0);
