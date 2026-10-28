@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
 import { chromium } from 'playwright-core';
+import {csrNews,currentNews} from './lib/cms-content.mjs';
 import { startPreview, CHROMIUM } from './lib/serve.mjs';
-const slugs = ['news-23-songshan-school-2025', 'news-20-taipei-education-expo-2026'];
+const slugs = csrNews();
 const server = await startPreview(4371);
 const browser = await chromium.launch({ executablePath: CHROMIUM });
 let checked = 0;
@@ -17,8 +17,7 @@ try {
    await page.goto(`${server.base}/${lang}/company/csr/`);
    assert.equal(await page.locator('h1').count(),1);
    assert.equal(await page.locator('section.topic').count(),4);
-   assert.equal(await page.locator('.csr-cards .card').count(),2);
-   assert.equal(await page.locator('#disaster-resilience .card, #community-engagement .card').count(),0);
+   assert.equal(await page.locator('.csr-cards .card').count(),csrNews(lang).length);
    for (const slug of slugs) assert.ok(await page.locator(`.csr-cards a[href="/${lang}/news/${slug}/"]`).count());
    assert.equal(await page.locator('link[rel="alternate"][hreflang]').count(),4);
    assert.ok((await page.locator('link[rel="canonical"]').getAttribute('href')).endsWith(`/${lang}/company/csr/`));
@@ -34,10 +33,9 @@ try {
   }
   // The same news paragraphs remain intact; CSR adds metadata, never a second article body.
   for (const slug of slugs) {
-   const source = fs.readFileSync(`src/content/news/${lang}/${slug}.md`,'utf8');
-   assert.ok(source.includes('featuredInCSR: true'));
+   assert.equal(currentNews(slug).featuredInCSR,true);
   }
  }
  assert.deepEqual(errors,[]);
- console.log(`PASS: CSR and both original news pages across ${checked} language/viewport combinations; SEO, topics, bidirectional links, no overflow or failed requests.`);
+ console.log(`PASS: CSR and currently linked news pages across ${checked} language/viewport combinations; SEO, topics, bidirectional links, no overflow or failed requests.`);
 } finally { await browser.close(); server.stop(); }

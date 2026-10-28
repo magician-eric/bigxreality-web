@@ -6,12 +6,13 @@ import {parseHistoricalNews} from '../scripts/lib/historical-news.mjs';
 import {comparePublicationDates} from '../src/lib/publication-date.ts';
 const source=fs.readFileSync(new URL('../docs/sources/BXR_NEWS_TRILINGUAL_EXPANDED_V2_2026-10-27.txt',import.meta.url),'utf8');
 const records=parseHistoricalNews(source);
-test('all 90 news translations retain the supplied title, body, date and full-paragraph SEO',()=>{
+test('historical source has 90 complete translations and stable article IDs; Git copies remain editable',()=>{
  assert.equal(records.length,30);assert.equal(records.some(r=>r.id.startsWith('news-14')),false);
  for(const r of records)for(const[lang,copy]of Object.entries(r.languages)){
+  assert.ok(copy.title&&copy.body&&copy.summary);
   const text=fs.readFileSync(`src/content/news/${lang}/${r.id}.md`,'utf8'),end=text.indexOf('\n---',3),data=YAML.parse(text.slice(4,end));
-  assert.equal(text.slice(end+5).trim(),copy.body,r.id+'/'+lang);assert.equal(data.title,copy.title);assert.equal(data.summary,copy.summary);assert.equal(data.seo.title,copy.title);assert.equal(data.seo.description,copy.summary);assert.equal(data.imageId,r.id);assert.equal(data.mediaId,r.id);assert.equal(data.dateCandidate,r.dateCandidate);assert.equal(data.articleId,r.id);assert.equal(data.category,r.category);
-  if(r.date)assert.equal(data.publishDate,r.date);else{assert.equal(data.publishDate,undefined);assert.equal(data.dateUnconfirmed,true);assert.ok(data.dateNote.includes(r.dateNote));}
+  assert.equal(data.articleId,r.id);assert.ok(data.title&&data.summary&&text.slice(end+5).trim());
+  // Published rendering is checked against this Git copy by qa:news-import, not frozen TXT wording.
  }
 });
 test('unknown dates remain undated, sort last, and equal dates do not merge stories',()=>{
@@ -19,10 +20,12 @@ test('unknown dates remain undated, sort last, and equal dates do not merge stor
  assert.equal(comparePublicationDates(undefined,new Date('2025-01-01')),1);assert.equal(comparePublicationDates(new Date('2025-01-01'),undefined),-1);assert.equal(comparePublicationDates(undefined,undefined),0);
  assert.equal(records.find(r=>r.id==='news-05-tadte-2025')!.date,records.find(r=>r.id==='news-13-future-combat')!.date);
 });
-test('one candidate cover per article, no fabricated gallery entries or video URLs',()=>{
- const registry=JSON.parse(fs.readFileSync('src/data/news-media.json','utf8')) as Record<string,{cover:{filename:string;approved:boolean;alt?:Record<string,string>};gallery:unknown[];videos:{type:string;url:string}[]}>;
- const csv=fs.readFileSync('NEWS-MEDIA-MANIFEST.csv','utf8');assert.equal(Object.keys(registry).length,30);
- for(const r of records){const entry=registry[r.id];assert.ok(entry);assert.ok(csv.includes('"'+entry.cover.filename+'"'));assert.ok(/^\d{4}-[a-z0-9-]+\.(jpg|jpeg|png)$/.test(entry.cover.filename));
- for(const video of entry.videos)if(video.type!=='local')assert.ok(r.urls.includes(video.url));}
- for(const r of records)for(const url of r.urls.filter(url=>/youtu(?:be\.com|\.be)|facebook\.com/.test(url)))assert.ok(registry[r.id].videos.some(video=>video.url===url));
+test('media registry preserves original article IDs and accepts additional uploaded media',()=>{
+ const registry=JSON.parse(fs.readFileSync('src/data/news-media.json','utf8')) as Record<string,{cover?:{filename:string};gallery:unknown[];videos:{type:string;url:string}[]}>;
+ const csv=fs.readFileSync('NEWS-MEDIA-MANIFEST.csv','utf8');
+ for(const r of records){assert.ok(registry[r.id]);assert.ok(csv.includes(r.id));}
+ for(const entry of Object.values(registry)){
+  if(entry.cover)assert.ok(/^[a-z0-9-]+\.(jpg|jpeg|png)$/.test(entry.cover.filename));
+  for(const video of entry.videos??[])assert.ok(video.type==='local'?video.url.startsWith('/media/news/'):video.url.startsWith('https://'));
+ }
 });

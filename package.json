@@ -52,7 +52,10 @@
     "qa:client-logos": "node scripts/qa-client-logos.mjs",
     "qa:ui-v1": "node scripts/qa-ui-v1.mjs",
     "qa:ui-v1-preview": "node scripts/preview/rebase.mjs && node scripts/qa-ui-v1-preview.mjs",
-    "qa:hero-framing": "node scripts/qa-hero-framing.mjs"
+    "qa:hero-framing": "node scripts/qa-hero-framing.mjs",
+    "cms:sveltia:generate": "node scripts/sveltia/generate.mjs",
+    "cms:sveltia:check": "node scripts/sveltia/generate.mjs --check && node scripts/sveltia/check.mjs",
+    "qa:sveltia": "node scripts/sveltia/qa-browser.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {publishedNews,csrNews,newsPageCount} from './lib/cms-content.mjs';
 import {chromium} from 'playwright-core';
 import {startPreview,CHROMIUM} from './lib/serve.mjs';
 const server=await startPreview(4378),browser=await chromium.launch({executablePath:CHROMIUM});
@@ -21,7 +22,7 @@ try{
    if(route==='news/filter/event/all/')assert.ok(await p.locator('[data-news-category]').evaluateAll(es=>es.length>0&&es.every(e=>e.dataset.newsCategory==='event')));
    if(route==='news/filter/all/2025/')assert.ok(await p.locator('[data-news-year]').evaluateAll(es=>es.length>0&&es.every(e=>e.dataset.newsYear==='2025')));
    if(route.startsWith('news/filter/')){assert.equal(await p.locator('meta[name="robots"]').getAttribute('content'),'noindex');assert.ok((await p.locator('link[rel="canonical"]').getAttribute('href')).endsWith(url));}
-   if(route==='company/csr/'){const ids=await p.locator('.csr-cards .title a').evaluateAll(es=>es.map(e=>e.href));assert.equal(ids.length,2);assert.equal(new Set(ids).size,2);}
+   if(route==='company/csr/'){const ids=await p.locator('.csr-cards .title a').evaluateAll(es=>es.map(e=>e.href));assert.equal(ids.length,csrNews(lang).length);assert.equal(new Set(ids).size,ids.length);}
    if(route==='company/partners/')assert.equal(await p.locator('[data-client-logos] img').count(),26);
    if(width>=1024)assert.equal(await p.locator('.site-footer details:not([open])').count(),0);
    if(lang==='tw'&&[1440,390].includes(width)&&['','news/','products/sut/','products/police-box/','products/wargaming-table/','solutions/military/','company/csr/'].includes(route)){
@@ -33,9 +34,9 @@ try{
  }
  // Archives preserve each original URL exactly once across all unfiltered pages.
  for(const lang of ['tw','en','jp']){
-  const ids=[];for(const route of ['news/','news/page/2/','news/page/3/']){await p.goto(`${server.base}/${lang}/${route}`);ids.push(...await p.locator('[data-news-id]').evaluateAll(es=>es.map(e=>e.dataset.newsId)));}assert.equal(ids.length,30);assert.equal(new Set(ids).size,30);
+  const expected=publishedNews(lang);const ids=[];for(const route of Array.from({length:newsPageCount(expected.length)},(_,i)=>i?`news/page/${i+1}/`:'news/')){await p.goto(`${server.base}/${lang}/${route}`);ids.push(...await p.locator('[data-news-id]').evaluateAll(es=>es.map(e=>e.dataset.newsId)));}assert.equal(ids.length,expected.length);assert.deepEqual([...new Set(ids)].sort(),expected.sort());
   await p.goto(`${server.base}/${lang}/news/`);await p.locator('.category-filter a[href$="/filter/event/all/"]').click();assert.ok(p.url().endsWith('/news/filter/event/all/'));await p.reload();assert.ok(await p.locator('[data-news-category]').evaluateAll(es=>es.every(e=>e.dataset.newsCategory==='event')));
  }
  assert.deepEqual(errors,[]);assert.deepEqual([...new Set(placeholders)],[],'visible development copy');
- console.log(`PASS: ${checked} TW/EN/JP template/viewports at ${widths.join('/')}px, static filters/reload, exact 30-article archive, no duplicate CSR, no home logos, no overflow/errors/development copy. Screenshots: ${screenshots}`);
+ console.log(`PASS: ${checked} TW/EN/JP template/viewports at ${widths.join('/')}px, static filters/reload, complete current Git article archive, no duplicate CSR, no home logos, no overflow/errors/development copy. Screenshots: ${screenshots}`);
 }finally{await browser.close();server.stop();}
