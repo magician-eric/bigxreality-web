@@ -21,7 +21,7 @@ const { items, focusLabel, needPrefix, fallbackLabel, badge } = Astro.props;
 <ul role="list" class="scenarios" style={`--per: ${items.length === 4 ? 2 : 3}`}>
   {items.map((s) => (
     <li class="card">
-      {s.image && <MediaSlot media={s.image} ratio="16 / 9" fallbackLabel={fallbackLabel} needPrefix={needPrefix} badge={badge} sizes="(max-width: 767px) 100vw, 33vw" />}
+      {s.image?.src && <MediaSlot media={s.image} ratio="16 / 9" fallbackLabel={fallbackLabel} needPrefix={needPrefix} badge={badge} sizes="(max-width: 767px) 100vw, 33vw" />}
       <div class="body">
         <h3 class="t-h4"><Text value={s.title} /></h3>
         <p class="desc"><Text value={s.description} /></p>

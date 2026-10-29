@@ -7,6 +7,7 @@ import { getLocalized } from "../../../lib/content";
 import { getUi } from "../../../lib/ui";
 import { site } from "../../../lib/site";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { technologyMedia } from "../../../lib/technology-media";
 import PageHero from "../../../components/PageHero.astro";
 import TechnologySections from "../../../components/TechnologySections.astro";
 import RelatedTechnologyArticles from "../../../components/RelatedTechnologyArticles.astro";
@@ -36,7 +37,7 @@ const structuredData = [{ "@type": "WebPage", name: content.title, description: 
 ---
 <BaseLayout hidePendingFooter lang={lang} title={content.seo.title} description={content.seo.description} pathTemplate={`/{lang}/technologies/${slug}/`} alternates={[...LANGS]} headerTheme="dark" current="technologies" breadcrumbs={breadcrumbs} structuredData={structuredData}>
   <div class={`technology-page technology-${slug}`}>
-    <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={content.eyebrow} title={content.title} lead={content.lead} description={content.intro.join("\n\n")} imagePending={imageSlotLabel[lang]}>
+    <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={content.eyebrow} title={content.title} lead={content.lead} description={content.intro.join("\n\n")} image={technologyMedia(slug,lang)} imageBadge={technologyMedia(slug,lang)?.illustration ? ({tw:"概念視覺",en:"Concept visual",jp:"コンセプトビジュアル"}[lang]) : undefined}>
       <div slot="actions" class="technology-actions"><a class="btn btn--primary" href={localePath(lang, relations.primaryDestination)}>{content.primaryCta}</a><a class="btn btn--secondary" href={localePath(lang, "contact")}>{content.secondaryCta}</a></div>
     </PageHero>
     <TechnologySections sections={content.sections} variant={slug} />

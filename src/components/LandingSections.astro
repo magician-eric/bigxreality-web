@@ -27,7 +27,7 @@ const e = t.eyebrows;
 const need = t.mediaNeed;
 const badge = t.illustrationLabel;
 const pending = t.mediaPending;
-const images = L.approach?.images ?? [];
+const images = (L.approach?.images ?? []).filter((image: any) => image.src && image.alt);
 const paras = (s: string) => s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 // Featured items link to a solution page only when it exists in this language.
 const needsLinks = !!L.featured || (L.blocks ?? []).some((b: any) => b.kind === "featured");

@@ -5,6 +5,7 @@ import { TECHNOLOGY_IDS, LIVE_TECHNOLOGY_IDS } from "../../../lib/technologies";
 import { getUi } from "../../../lib/ui";
 import { site } from "../../../lib/site";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { technologyMedia } from "../../../lib/technology-media";
 import PageHero from "../../../components/PageHero.astro";
 export function getStaticPaths() { return LANGS.map((lang) => ({ params: { lang } })); }
 const lang = Astro.params.lang as Lang;
@@ -17,7 +18,7 @@ const breadcrumbs = [{ name: ui.home, path: localePath(lang) }, { name: content.
 const structuredData = [{ "@type": "CollectionPage", name: content.title, description: content.seo.description, url: new URL(localePath(lang, "technologies"), site.url).href, mainEntity: { "@type": "ItemList", itemListElement: TECHNOLOGY_IDS.map((id, index) => ({ "@type": "ListItem", position: index + 1, name: content.technologies[id].title, ...(live(id) ? { url: new URL(localePath(lang, "technologies", id), site.url).href } : {}) })) } }];
 ---
 <BaseLayout hidePendingFooter lang={lang} title={content.seo.title} description={content.seo.description} pathTemplate="/{lang}/technologies/" alternates={[...LANGS]} headerTheme="dark" current="technologies" breadcrumbs={breadcrumbs} structuredData={structuredData}>
-  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={content.eyebrow} title={content.title} lead={content.lead} description={content.intro.join("\n\n")} imagePending={imageSlotLabel[lang]} />
+  <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={content.eyebrow} title={content.title} lead={content.lead} description={content.intro.join("\n\n")} image={technologyMedia("overview",lang)} imageBadge={technologyMedia("overview",lang)?.illustration ? ({tw:"概念視覺",en:"Concept visual",jp:"コンセプトビジュアル"}[lang]) : undefined} />
   <section class="section technology-overview" aria-label={content.title}>
     <div class="container">
       <ol class="technology-list" role="list">

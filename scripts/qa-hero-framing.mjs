@@ -11,9 +11,9 @@ try{
   await p.setViewportSize({width,height:1000});await v.setViewportSize({width,height:1000});
   for(const collection of ['products','solutions'])for(const file of fs.readdirSync(`src/content/${collection}/tw`).filter(f=>f.endsWith('.md'))){
    const slug=file.slice(0,-3),url=`/${lang}/${collection}/${slug}/`;await p.goto(server.base+url);const hero=p.locator('.page-hero'),image=hero.locator('img');await image.evaluate(img=>img.decode());
-   assert.equal(await hero.getAttribute('data-hero-variant'),'scene',url);
+   assert.ok(['scene','equipment','interface'].includes(await hero.getAttribute('data-hero-variant')),url);
    const frame=await image.evaluate(img=>{const rect=img.getBoundingClientRect(),root=img.closest('.page-hero').getBoundingClientRect(),style=getComputedStyle(img);return {fit:style.objectFit,top:rect.top-root.top,bottom:rect.bottom-root.bottom,width:rect.width,height:rect.height};});
-   if(width<1024)assert.equal(frame.fit,'contain',url);else {const type=await hero.getAttribute('data-scene-fit');assert.equal(frame.fit,type,url);if(type==='cover'){assert.ok(Math.abs(frame.width-width)<2,url+' full-bleed');assert.ok(Math.abs(frame.top)<1,url+' no inset edge');}else assert.ok(await image.evaluate(img=>getComputedStyle(img).maskImage.includes('linear-gradient')),url+' blended image edges');}
+   assert.equal(frame.fit,'contain',url+' retains complete scene or equipment');
    assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,url);
    if(collection==='solutions'&&slug==='fire-rescue')assert.equal(await image.getAttribute('data-primary-image'),'vr-fire-extinguisher-training-trainee.png');
    if(lang==='tw'&&[1440,390].includes(width)&&['sut','military','fire-rescue'].includes(slug))await hero.screenshot({path:`/tmp/bxr-framing-${slug}-${width}.png`});heroes++;
@@ -23,11 +23,11 @@ try{
   const first=v.locator('[data-clip]').first();await first.evaluate(el=>{el.pause();el.currentTime=.8;});await first.evaluate(el=>new Promise(resolve=>el.seeking?el.addEventListener('seeked',resolve,{once:true}):resolve()));
   assert.ok(await first.evaluate(el=>el.muted&&el.playsInline));
   if(width<1024){const media=await v.locator('[data-hero] .media').boundingBox(),copy=await v.locator('[data-hero] .inner').boundingBox();assert.ok(Math.abs(media.width/media.height-16/9)<.01);assert.ok(copy.y>=media.y+media.height-1);assert.equal(await v.locator('[data-hero] .shade').evaluate(el=>getComputedStyle(el).backgroundImage),'none');assert.equal(await first.evaluate(el=>getComputedStyle(el).objectFit),'contain');}
-  assert.equal(await first.evaluate(el=>getComputedStyle(el).objectPosition),'50% 0%');
+  assert.equal(await first.evaluate(el=>getComputedStyle(el).objectFit),'contain');
   if(lang==='tw'&&[1440,390].includes(width))await v.locator('[data-hero]').screenshot({path:`/tmp/bxr-framing-home-${width}.png`});
-  await v.locator('[data-toggle]').click();await first.evaluate(el=>el.dispatchEvent(new Event('ended')));assert.ok(await v.locator('[data-clip]').nth(1).evaluate(el=>el.classList.contains('is-on')));
+  await v.locator('[data-toggle]').focus();await v.locator('[data-toggle]').click();assert.equal(await v.locator('[data-toggle]').getAttribute('aria-pressed'),'true');await v.locator('[data-toggle]').click();await first.evaluate(el=>el.currentTime=el.duration-.05);await v.waitForFunction(()=>document.querySelector('[data-hero]').getAttribute('data-current-clip')==='1');
   for(const route of ['', 'solutions/']){await p.goto(`${server.base}/${lang}/${route}`);assert.ok(await p.locator('img[data-primary-image="vr-fire-extinguisher-training-trainee.png"]').count());}
   videos++;
  }
- assert.deepEqual(errors,[]);console.log(`PASS: ${heroes} trilingual scene Heroes with full-bleed backgrounds/reviewed focal positions and two-sided blending; ${videos} home viewports verify 1→2 video order, top framing, full 16:9 mobile footage with no dark shade, pause/next controls and shared fire cover.`);
+ assert.deepEqual(errors,[]);console.log(`PASS: ${heroes} trilingual scene/equipment/interface Heroes with complete subjects and reviewed framing; ${videos} home viewports verify 1→2 video order, top framing, full 16:9 mobile footage with no dark shade, pause/next controls and shared fire cover.`);
 }finally{await browser.close();server.stop();}

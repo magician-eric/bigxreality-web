@@ -20,7 +20,7 @@ import image13 from '../assets/images/products/police-simulation-training.jpeg';
 import image14 from '../assets/images/products/smart-city-3d-digital-twin.jpeg';
 
 export const primaryImages = {
-  'products/sut': { src: image0, file: "sut-squad-vr-tactical-training.jpg", alt: {"tw":"SUT 小部隊 VR 戰術訓練","en":"SUT small-unit VR tactical training","jp":"SUT 小部隊 VR 戦術訓練"}, fit: 'contain', position: '50% 50%', illustration: false },
+  'products/sut': { src: image0, file: "sut-squad-vr-tactical-training.jpg", alt: {"tw":"SUT 小部隊 VR 戰術訓練","en":"SUT small-unit VR tactical training","jp":"SUT 小部隊 VR 戦術訓練"}, fit: 'cover', position: '50% 28%', illustration: false },
   'products/uav': { src: image1, file: "uav-drone-training-operator-simulation.jpg", alt: {"tw":"UAV 訓練系統代表畫面","en":"UAV training system representative image","jp":"UAV 訓練システムの紹介画像"}, fit: 'contain', position: '50% 50%', illustration: false },
   'products/usv': { src: image2, file: "usv-vr-training-operation.png", alt: {"tw":"USV 無人船訓練系統操作畫面","en":"USV training system operation","jp":"USV 訓練システムの操作画面"}, fit: 'contain', position: '50% 50%', illustration: false },
   'products/wargaming-table': { src: image3, file: "wargaming-table-team-planning-discussion.jpeg", alt: {"tw":"兵棋圖台訓練與規劃討論","en":"Wargaming table training and planning discussion","jp":"兵棋演習テーブルでの訓練と計画検討"}, fit: 'contain', position: '50% 50%', illustration: false },
@@ -33,7 +33,7 @@ export const primaryImages = {
   'products/police-box': { src: image10, file: "police-box-portable-training-unit-trainee.jpeg", alt: {"tw":"Police BOX 攜帶式警勤訓練設備","en":"Police BOX portable police training equipment","jp":"Police BOX 可搬型警察訓練機器"}, fit: 'cover', position: '50% 50%', illustration: false },
   'products/fire-extinguisher-simulator': { src: image11, file: "vr-fire-extinguisher-training-trainee.png", alt: {"tw":"VR 滅火器訓練代表畫面","en":"VR fire extinguisher training representative image","jp":"VR 消火器訓練の紹介画像"}, fit: 'cover', position: '50% 50%', illustration: false },
   'solutions/fire-rescue': { src: image11, file: "vr-fire-extinguisher-training-trainee.png", alt: {"tw":"VR 滅火器訓練代表畫面","en":"VR fire extinguisher training representative image","jp":"VR 消火器訓練の紹介画像"}, fit: 'cover', position: '50% 50%', illustration: false },
-  'solutions/military': { src: image12, file: "military-simulation-training.jpg", alt: {"tw":"軍事模擬訓練代表畫面","en":"Military simulation training","jp":"軍事シミュレーション訓練"}, fit: 'contain', position: '50% 50%', illustration: false },
+  'solutions/military': { src: image12, file: "military-simulation-training.jpg", alt: {"tw":"軍事模擬訓練代表畫面","en":"Military simulation training","jp":"軍事シミュレーション訓練"}, fit: 'cover', position: '50% 28%', illustration: false },
   'solutions/police': { src: image13, file: "police-simulation-training.jpeg", alt: {"tw":"警勤模擬訓練代表畫面","en":"Police simulation training","jp":"警察業務シミュレーション訓練"}, fit: 'cover', position: '50% 35%', illustration: false },
   'solutions/smart-city': { src: image14, file: "smart-city-3d-digital-twin.jpeg", alt: {"tw":"智慧城市三維數位場景示意","en":"Smart city 3D digital environment illustration","jp":"スマートシティの3D デジタル環境イメージ"}, fit: 'contain', position: '50% 50%', illustration: true },
 } as const;
@@ -42,5 +42,5 @@ export function primaryImage(collection: 'products' | 'solutions', slug: string,
   return entry ? { src: entry.src, alt: entry.alt[lang], illustration: entry.illustration } : undefined;
 }
 export function imagePresentation(src: ImageMetadata) {
-  return Object.values(primaryImages).find(entry => entry.src.src === src.src) ?? { fit: 'cover', position: '50% 50%', file: undefined };
+  return Object.values(primaryImages).find(entry => entry.src.src === src.src) ?? { fit: 'contain', position: '50% 50%', file: undefined, illustration: false };
 }

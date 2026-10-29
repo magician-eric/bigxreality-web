@@ -3,15 +3,15 @@
 translationStatus: translated
 seo:
   title: "XR シミュレーション訓練製品・専門訓練機器"
-  description: "Big x Reality の XR 訓練製品をご紹介します。SUT 小部隊戦術訓練、UAV・USV シミュレーター、兵棋演習テーブル、軍用車両、警察訓練、VR 消火器訓練システムを掲載しています。"
+  description: "Big x Reality の XR 訓練製品をご紹介します。SUT 小部隊戦術訓練、UAV・USV
+    シミュレーター、兵棋演習テーブル、軍用車両、警察訓練、VR 消火器訓練システムを掲載しています。"
 hero:
   eyebrow: 製品情報
   title: 製品情報
   description: "[待提供]"
   image:
-    src: ../../../../design-source/06_KeyVisuals/BXR_KV_CORP_DIGITAL_TWIN_v3.2.jpg
-    alt: 点群で表現した屋内訓練施設のデジタルモデル
-  imageCaption: 合成イメージ
+    src: ../../../assets/images/products/military-simulation-training.jpg
+    alt: シミュレーション訓練施設の訓練参加者と機器
 cta:
   title: "[待提供]"
   description: "[待提供]"

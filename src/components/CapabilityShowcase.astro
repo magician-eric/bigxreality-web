@@ -21,7 +21,7 @@ const rows: Row[] = [];
 let flip = false;
 items.forEach((item, i) => {
   const entry = { item, n: i + 1 };
-  if (item.image) {
+  if (item.image?.src) {
     rows.push({ kind: "feature", entry, flip });
     flip = !flip;
   } else {

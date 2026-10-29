@@ -26,7 +26,7 @@ const ICONS = ["target", "team", "variation", "review"] as const;
       <span class="node"><FlowIcon name={s.icon ?? ICONS[i % ICONS.length]} /></span>
       <div class="body">
         <p class="t-label label"><Text value={stepLabel} /> {String(i + 1).padStart(2, "0")}</p>
-        {s.image && <MediaSlot media={s.image} ratio="16 / 9" fallbackLabel={fallbackLabel} needPrefix={needPrefix} badge={badge} sizes="(max-width: 1023px) 80vw, 25vw" />}
+        {s.image?.src && <MediaSlot media={s.image} ratio="16 / 9" fallbackLabel={fallbackLabel} needPrefix={needPrefix} badge={badge} sizes="(max-width: 1023px) 80vw, 25vw" />}
         <h3 class="t-h4"><Text value={s.title} /></h3>
         <p class="t-muted"><Text value={s.description} /></p>
       </div>
