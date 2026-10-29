@@ -1,5 +1,5 @@
 import fs from 'node:fs';import {execFileSync} from 'node:child_process';import ts from 'typescript';import YAML from 'yaml';
-const base='origin/main',out='docs/reviews/visual-copy';fs.mkdirSync(out,{recursive:true});
+const base=process.env.BXR_REVIEW_BASE??'3c6e9ac',out='docs/reviews/visual-copy';fs.mkdirSync(out,{recursive:true});
 const pattern=/我們|你們|他們|您的|您|私たち|当社|弊社|あなた|彼ら|彼女|但是|可是|然而|不過|無法|不能|不會|沒有|並非|不是|未能|不只|不應|不等同|不代表|不一定|不需|難以|尚無|尚未|できません|ありません|しかし|ただし|\b(?:we|our|us|you|your|he|she|they|their|not|no|cannot|without|however|but|unable|never)\b/i;
 function flatten(value,prefix='',out={}){if(typeof value==='string')out[prefix]=value;else if(Array.isArray(value))value.forEach((v,i)=>flatten(v,`${prefix}.${i}`,out));else if(value&&typeof value==='object')for(const[k,v]of Object.entries(value))flatten(v,prefix?`${prefix}.${k}`:k,out);return out;}
 function values(file,source){
@@ -28,5 +28,5 @@ for(const file of tracked){
 const csv=(rows,keys)=>[keys,...rows.map(r=>keys.map(k=>r[k]))].map(row=>row.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n')+'\n';
 fs.writeFileSync(`${out}/COPY-CHANGES.csv`,csv(revisions,['file','field','before','after','review']));
 fs.writeFileSync(`${out}/COPY-REVIEW-EXCEPTIONS.csv`,csv(exceptions,['file','field','text','reason','status']));
-fs.writeFileSync(`${out}/COPY-AUDIT.json`,JSON.stringify({inspectedTextFields:inspected,changedTextFields:revisions.length,exceptions:exceptions.length,historicalExceptions:exceptions.filter(r=>r.file.includes('/news/')).length,remainingTechnicalReview:exceptions.filter(r=>!r.file.includes('/news/')).length,policy:'Historical quotations and necessary limitations remain review exceptions; no automatic word substitution is used in production.'},null,2));
+fs.writeFileSync(`${out}/COPY-AUDIT.json`,JSON.stringify({comparisonBase:base,inspectedTextFields:inspected,changedTextFields:revisions.length,exceptions:exceptions.length,historicalExceptions:exceptions.filter(r=>r.file.includes('/news/')).length,remainingTechnicalReview:exceptions.filter(r=>!r.file.includes('/news/')).length,policy:'Historical quotations and necessary limitations remain review exceptions; no automatic word substitution is used in production.'},null,2));
 console.log(`Audited ${inspected} string fields, ${revisions.length} revisions, ${exceptions.length} individually listed review exceptions.`);
