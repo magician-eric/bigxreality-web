@@ -58,9 +58,9 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     value: {
       eyebrow: "為什麼需要模擬訓練",
-      title: "真實任務無法預演，但專業能力可以反覆鍛鍊。",
+      title: "以反覆演練，累積專業應變能力。",
       paragraphs: [
-        "面對複雜環境、突發狀況與高風險任務，專業訓練不只需要熟悉設備操作，更需要持續練習觀察、判斷與應變。",
+        "面對複雜環境、突發狀況與高風險任務，專業訓練結合設備操作熟悉與持續的觀察、判斷及應變練習。",
         "透過模擬技術與實體操作設備的結合，讓原本受到場地、資源或安全條件限制的訓練，擁有更多實施與練習的可能。",
       ],
       points: [
@@ -71,8 +71,8 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     products: {
       eyebrow: "精選產品",
-      title: "不只是模擬場景，更是可以實際參與的訓練。",
-      description: "從戰術行動、警勤應變到無人系統與消防操作，BXR 將模擬環境與實體互動結合，讓訓練不只停留在觀看，而能進一步延伸至操作、判斷與任務練習。",
+      title: "結合模擬情境與實體互動的專業訓練。",
+      description: "從戰術行動、警勤應變到無人系統與消防操作，BXR 結合模擬環境與實體互動，提供操作、判斷與任務練習。",
       viewAll: "探索所有產品",
       more: "了解產品",
       items: {
@@ -84,7 +84,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     technologies: {
       eyebrow: "核心技術",
-      title: "技術的價值，不只在於呈現，而在於實際應用。",
+      title: "讓技術在實際應用中創造價值。",
       paragraphs: [
         "沉浸式畫面只是開始。",
         "從虛擬環境的建構、實體設備的互動，到訓練流程與系統資訊的整合，BXR 以不同技術能力相互配合，協助專業單位建立符合實際需求的模擬訓練應用。",
@@ -126,7 +126,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     cta: {
       title: "下一次訓練，可以從更好的規劃開始。",
       description: "無論是單一設備訓練、專業情境模擬，或跨系統整合需求，BXR 都能從實際應用目標出發，共同評估適合的規劃方向。",
-      primary: "與我們聯繫",
+      primary: "聯絡 BXR",
       secondary: "探索解決方案",
     },
   },
@@ -149,9 +149,9 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     value: {
       eyebrow: "Why Simulation",
-      title: "Real missions can't be rehearsed in advance, but professional skills can be trained again and again.",
+      title: "Build professional response skills through repeated practice.",
       paragraphs: [
-        "When facing complex environments, sudden incidents and high-risk missions, professional training requires more than familiarity with equipment. It requires continuous practice in observation, judgment and response.",
+        "Professional training for complex environments, sudden incidents and high-risk missions combines equipment familiarity with continuous practice in observation, judgment and response.",
         "By combining simulation technology with physical training equipment, training that was once limited by venue, resources or safety conditions gains more ways to be carried out and practiced.",
       ],
       points: [
@@ -162,7 +162,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     products: {
       eyebrow: "Featured Products",
-      title: "More than simulated scenes: training you can actually take part in.",
+      title: "Immersive simulation for hands-on training.",
       description: "From tactical operations and police response to unmanned systems and firefighting, BXR combines simulated environments with physical interaction, so training goes beyond watching and extends into operation, judgment and mission practice.",
       viewAll: "Explore All Products",
       more: "View product",
@@ -175,7 +175,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     technologies: {
       eyebrow: "Core Technologies",
-      title: "The value of technology lies not in display, but in real-world application.",
+      title: "Technology creates value through practical application.",
       paragraphs: [
         "Immersive visuals are only the beginning.",
         "From building virtual environments and interacting with physical equipment to integrating training workflows and system information, BXR brings different technical capabilities together to help professional organizations build simulation training applications that meet actual needs.",
@@ -203,7 +203,7 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     cases: {
       eyebrow: "Case Studies",
       title: "Starting from real needs, bringing technology into the field.",
-      description: "Every professional training and digital application begins with its own mission needs. Through actual projects and application experience, we continue to explore what simulation technology can do in different settings.",
+      description: "Professional training and digital applications begin with mission requirements. BXR draws on project and application experience to explore simulation technology across different settings.",
       viewAll: "View All Case Studies",
       placeholder: "[DEV PLACEHOLDER] No case studies yet. This card is not shown on the public site.",
     },
@@ -215,9 +215,9 @@ export const homeCopy: Record<Lang, HomeCopy> = {
       placeholder: "[DEV PLACEHOLDER] No news yet. This card is not shown on the public site.",
     },
     cta: {
-      title: "Your next training can start with better planning.",
-      description: "Whether you need single-device training, professional scenario simulation or cross-system integration, BXR starts from your actual application goals to evaluate the right planning direction with you.",
-      primary: "Contact Us",
+      title: "Effective training starts with considered planning.",
+      description: "BXR evaluates single-device training, professional scenario simulation and cross-system integration around confirmed application goals and project requirements.",
+      primary: "Contact BXR",
       secondary: "Explore Solutions",
     },
   },
@@ -240,9 +240,9 @@ export const homeCopy: Record<Lang, HomeCopy> = {
     },
     value: {
       eyebrow: "シミュレーション訓練の意義",
-      title: "実際の任務は予行演習できない。しかし、専門能力は繰り返し鍛えられる。",
+      title: "繰り返しの演習で、専門的な対応力を育成。",
       paragraphs: [
-        "複雑な環境、突発的な事態、高リスクな任務に向き合う専門訓練には、機器操作に慣れるだけでなく、観察・判断・対応を継続して練習することが求められます。",
+        "複雑な環境、突発的な事態、高リスクな任務に向き合う専門訓練では、機器操作の習熟と観察・判断・対応の継続的な練習を組み合わせます。",
         "シミュレーション技術と実機操作機器を組み合わせることで、これまで場所、資源、安全条件に制約されていた訓練に、より多くの実施と練習の可能性をもたらします。",
       ],
       points: [

@@ -55,7 +55,9 @@
     "qa:hero-framing": "node scripts/qa-hero-framing.mjs",
     "cms:sveltia:generate": "node scripts/sveltia/generate.mjs",
     "cms:sveltia:check": "node scripts/sveltia/generate.mjs --check && node scripts/sveltia/check.mjs",
-    "qa:sveltia": "node scripts/sveltia/qa-browser.mjs"
+    "qa:sveltia": "node scripts/sveltia/qa-browser.mjs",
+    "qa:media-composition": "node scripts/qa-media-composition.mjs",
+    "qa:visual-review": "node scripts/qa-visual-review.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",
