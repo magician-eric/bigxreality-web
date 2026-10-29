@@ -16,3 +16,12 @@
 已附 `screenshots/before/` 與 `screenshots/after/`：13 種頁面於 1440／390px 的同尺寸對照，以及全部產品／解決方案 Hero 接觸表、消防六項能力與場景區塊。after 來自第二批獨立工作樹，尚未包含第三批文案修改。
 
 獨立 Astro build、TypeScript 已通過（0 errors／0 warnings）。完整 Hero／圖片與新聞回歸測試結果補充於後續紀錄。
+
+第二批獨立回歸已通過：
+
+- Astro build；Astro check 0 errors／0 warnings。
+- 324 組三語產品／解決方案 Hero，另含 18 組首頁影片視窗檢查。
+- 342 組版型／寬度檢查，涵蓋新聞篩選、重新整理、CSR 去重及首頁沒有 Logo。
+- qa:behaviour、qa:solutions、qa:news-import（90 份三語新聞與原始來源一致）。
+
+完整七寬度矩陣另通過 1,062 組、4,767 次圖片 decode 與 21 組影片測試；這份矩陣使用包含第三批文案的整合版本，沒有冒稱是第二批隔離版本。實際 GitHub CI 與手機實機仍以遠端執行／人工審核為準。
