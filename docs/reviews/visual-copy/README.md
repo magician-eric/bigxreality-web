@@ -1,6 +1,6 @@
 # BXR 全站視覺與三語文案審核
 
-基準：`origin/main` 的 `29019fe`；分批交付：首頁影片 `codex/home-hero-video`（使用者已合併 PR #47）、圖片 `codex/image-composition`、三語文案及此報告 `codex/positive-corporate-copy`。後兩批等待人工審核，不自行合併正式站。
+基準：`origin/main` 的 `29019fe`；分批交付：首頁影片 `codex/home-hero-video`（使用者已合併 PR #47）、圖片 `codex/image-composition`、三語文案及此報告 `codex/copy-review-main`（原 #49 僅合併工作分支）。後兩批等待人工審核，不自行合併正式站。
 
 ## 主要調整
 
