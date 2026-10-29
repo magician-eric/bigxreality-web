@@ -20,7 +20,7 @@ try{
    assert.equal((await page.goto(server.base+route)).status(),200);
    const pageLinks=await page.locator('#article-grid .title a').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
    links.push(...pageLinks);
-   assert.equal(await page.locator('#article-grid .placeholder').count(),pageLinks.filter(href=>!ready(href.split('/').filter(Boolean).at(-1),lang)).length);
+   assert.equal(await page.locator('#article-grid .editorial-cover').count(),pageLinks.filter(href=>!ready(href.split('/').filter(Boolean).at(-1),lang)).length);
    assert.ok(!(await page.locator('main').innerText()).includes('[待翻譯]'));
    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),'https://www.bigxreality.com'+route);
   }
@@ -32,7 +32,7 @@ try{
    assert.equal(await page.locator('h1').innerText(),copy.title);
    const body=await page.locator('.prose').innerText(),norm=s=>s.replace(/\s+/g,' ').trim();assert.equal(norm(body),norm(await page.evaluate(html=>new DOMParser().parseFromString(html,'text/html').body.textContent,await marked.parse(copy.body))),url);
    assert.equal(await page.locator('meta[name="description"]').getAttribute('content'),copy.seo?.description??copy.summary);
-   assert.equal(await page.locator('.article-header .cover .placeholder').count(),ready(r.id,lang)?0:1);assert.equal(await page.locator('.article-header .cover img').count(),ready(r.id,lang)?1:0);
+   assert.equal(await page.locator('.article-header .cover .placeholder').count(),0);assert.equal(await page.locator('.article-header .cover img').count(),ready(r.id,lang)?1:0);
    if(ready(r.id,lang))await page.locator('.article-header .cover img').evaluate(img=>img.decode());
    const graph=await page.locator('script[type="application/ld+json"]').evaluate(el=>JSON.parse(el.textContent)['@graph']),article=graph.find(n=>n['@type']===(base.category==='insight'?'Article':'NewsArticle'));
    assert.ok(article);assert.equal(article.datePublished,base.publishDate?new Date(base.publishDate).toISOString():undefined);

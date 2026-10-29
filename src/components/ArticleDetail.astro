@@ -11,6 +11,7 @@ import { newsMedia } from "../lib/news-media";
 import NewsGallery from "./NewsGallery.astro";
 import NewsVideos from "./NewsVideos.astro";
 import { isPending } from "../lib/pending";
+import ProductImage from "./ProductImage.astro";
 import ImagePlaceholder from "./ImagePlaceholder.astro";
 import { articleTechnologyLinks } from "../lib/technologies";
 import { Picture, getImage } from "astro:assets";
@@ -128,14 +129,9 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
           <Text value={format(t.readingTime, { n: minutes })} />
         </p>
       </div>
-      {(cover || newsImageId) && (
+      {cover && (
         <figure class="container cover">
-          {cover ? <Picture
-            src={cover.src} alt={cover.alt} formats={["avif", "webp"]}
-            widths={[640, 960, 1280, 1920].filter((w) => w <= cover.src.width)}
-            sizes="(max-width: 1023px) calc(100vw - 2 * var(--margin)), 1200px"
-            width={1280} height={720} fit="cover" loading="eager" fetchpriority="high"
-          /> : <ImagePlaceholder label={ui.coverPending} />}
+          <ProductImage src={cover.src} alt={cover.alt} loading="eager" priority />
         </figure>
       )}
     </header>

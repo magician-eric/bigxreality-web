@@ -12,7 +12,7 @@ interface Props { lang: Lang; href: string; domain: Domain; name: string; summar
 const { lang, href, domain, name, summary, image, label, headline, headingLevel = 3 } = Astro.props;
 const H = `h${headingLevel}` as "h2" | "h3";
 const ui = getUi(lang);
-const resolvedImage = image ?? primaryImage('solutions', href.match(/\/solutions\/([^/?#]+)/)?.[1] ?? '', lang);
+const resolvedImage = image ?? primaryImage('solutions', href.match(/\/solutions\/([^/?#]+)/)?.[1] ?? '', lang) ?? primaryImage('solutions', domain, lang);
 // One name per card, in the page language: the English name and the domain code only repeated it.
 // The sector colour is carried by the left border (approved card design).
 const subtitle = headline;

@@ -60,7 +60,7 @@ try {
   check("mum-t: related SUT, UAV, USV and its parent solution", ["/tw/products/sut/", "/tw/products/uav/", "/tw/products/usv/", "/tw/solutions/military/"].every((h) => mumt.includes(h)), mumt.join(","));
   check("mum-t: breadcrumb goes through Military Simulation", (await page.locator(".breadcrumb a[href='/tw/solutions/military/'], nav a[href='/tw/solutions/military/']").count()) > 0);
   await page.goto(`${base}/tw/solutions/nova/`, { waitUntil: "networkidle" });
-  check("nova: concept images are illustrations (labelled when a picture exists)", (await page.locator("main [role=img]").count()) >= 6);
+  check("nova: approved context Hero and text-led sections replace missing concept pictures", (await page.locator(".page-hero img").count()) === 1 && (await page.locator("main .brand-default:visible").count()) === 0);
   // police / fire / smart city products
   await page.goto(`${base}/tw/solutions/police/`, { waitUntil: "networkidle" });
   const pol = await page.$$eval("section[aria-labelledby=h-related] a[href^='/tw/products/']", (as) => as.map((a) => a.getAttribute("href")));

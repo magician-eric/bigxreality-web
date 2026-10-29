@@ -5,7 +5,8 @@ import { newsMedia } from '../lib/news-media';
 import { newsCategory } from '../lib/news-listing';
 import { getUi } from '../lib/ui';
 import { INTL_LOCALE } from '../i18n';
-import ImagePlaceholder from './ImagePlaceholder.astro';
+import EditorialCover from './EditorialCover.astro';
+import ProductImage from './ProductImage.astro';
 interface Props { article: Article; featured?: boolean }
 const { article:a, featured = false } = Astro.props;
 const ui = getUi(a.lang), base = a.base.data;
@@ -16,7 +17,7 @@ const category = newsCategory(a);
 const read = {tw:'閱讀完整內容',en:'Read the story',jp:'記事を読む'}[a.lang];
 ---
 <article data-news-id={a.slug} data-news-category={category} data-news-year={date?.getUTCFullYear() ?? "undated"} class:list={['news-card','card',{featured}]}>
- <div class="media">{cover ? <img src={cover.src.src} alt={cover.alt} width={cover.src.width} height={cover.src.height} loading={featured?'eager':'lazy'} decoding="async" /> : <ImagePlaceholder label="Big x Reality" />}</div>
+ <div class="media">{cover ? <ProductImage src={cover.src} alt={cover.alt} loading={featured?'eager':'lazy'} /> : <EditorialCover title={a.loc.data.title} category={ui.newsListing.categoryLabels[category as keyof typeof ui.newsListing.categoryLabels] ?? ui.article.categories[category]} date={date} />}</div>
  <div class="body">
   <p class="meta t-caption">{date && <time datetime={date.toISOString().slice(0,10)}>{new Intl.DateTimeFormat(INTL_LOCALE[a.lang],{year:'numeric',month:'2-digit',day:'2-digit'}).format(date)}</time>}<span>{ui.newsListing.categoryLabels[category as keyof typeof ui.newsListing.categoryLabels] ?? ui.article.categories[category]}</span></p>
   <h2 class="title"><a href={articleHref(a)}>{a.loc.data.title}</a></h2>
@@ -39,7 +40,7 @@ const read = {tw:'閱讀完整內容',en:'Read the story',jp:'記事を読む'}[
 .news-card:hover .title a { color: var(--bxr-text-red); }
 .summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ink-muted); line-height: 1.7; }
 .read { color: var(--link); margin-top: auto; padding-top: 4px; }
-.featured { grid-template-columns: 3fr 2fr; align-items: center; padding-top: 0; padding-bottom: 40px; gap: 40px; }
+.featured { grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); align-items: center; padding-top: 0; padding-bottom: 40px; gap: 40px; }
 .featured .media { align-self: center; }
 .featured .title { font-size: clamp(24px,2.4vw,34px); }
 .featured .summary { -webkit-line-clamp: 3; }

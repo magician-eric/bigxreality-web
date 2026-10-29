@@ -1,14 +1,33 @@
 ---
-/** Native asset URL from Astro's local import; no source rewriting or extra image conversion.
- * Fixed parent frames own the display ratio; contain is reserved for subjects that cannot be cropped.
- */
 import type { ImageMetadata } from 'astro';
 import { imagePresentation } from '../data/primary-images';
-interface Props { src: ImageMetadata; alt: string; loading?: 'eager' | 'lazy'; priority?: boolean }
-const { src, alt, loading = 'lazy', priority = false } = Astro.props;
-const presentation = imagePresentation(src);
+interface Props { src:ImageMetadata;alt:string;loading?:'eager'|'lazy';priority?:boolean;showType?:boolean }
+const {src,alt,loading='lazy',priority=false,showType=true}=Astro.props;
+const presentation=imagePresentation(src);
+const typeLabel=({tw:"概念視覺",en:"Concept visual",jp:"コンセプトビジュアル"} as Record<string,string>)[Astro.params.lang??"en"]??"Concept visual";
 ---
-<img src={src.src} alt={alt} width={src.width} height={src.height} loading={loading} decoding="async"
-  fetchpriority={priority ? 'high' : undefined}
-  style={`object-fit:${presentation.fit};object-position:${presentation.position}`}
-  data-primary-image={presentation.file} />
+<span class="asset-frame">
+ <img src={src.src} alt={alt} width={src.width} height={src.height} loading={loading} decoding="async" fetchpriority={priority?'high':undefined}
+  style={`object-fit:${presentation.fit};object-position:${presentation.position}`} data-primary-image={presentation.file} />
+ {showType && presentation.illustration && <span class="asset-kind">{typeLabel}</span>}
+</span>
+<style>
+.asset-frame { display:block;position:relative;isolation:isolate;width:100%;height:100%;overflow:hidden;background:#0b0f14; }
+.asset-frame::before { content:'';position:absolute;inset:-20px;z-index:-1;background-image:var(--asset-backdrop);background-size:cover;background-position:center;filter:blur(18px);opacity:.3; }
+.asset-kind { position:absolute;right:8px;bottom:8px;z-index:2;padding:3px 7px;font-size:11px;line-height:1.5;color:white;background:rgb(11 15 20 / .8); }
+img { display:block;width:100%;height:100%;position:relative; }
+</style>
+
+<script>
+  // Reuse the decoded, browser-cached image for its extension; preserve native lazy loading.
+  function initializeImageBackgrounds() {
+    document.querySelectorAll<HTMLImageElement>('.asset-frame > img').forEach(img => {
+      if(img.dataset.backdropReady)return;
+      img.dataset.backdropReady='true';
+      const setBackground=()=>img.parentElement?.style.setProperty('--asset-backdrop',`url("${img.currentSrc||img.src}")`);
+      if(img.complete&&img.naturalWidth)setBackground();else img.addEventListener('load',setBackground,{once:true});
+    });
+  }
+  initializeImageBackgrounds();
+  document.addEventListener('astro:page-load',initializeImageBackgrounds);
+</script>

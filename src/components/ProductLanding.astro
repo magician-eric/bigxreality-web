@@ -178,3 +178,7 @@ const faqStructured = faq ? [faqLd(faq, `${site.url}${localePath(lang, "products
 </style>
 
 <style>.landing-overview .narrow { display: grid; gap: var(--space-3); } .landing-overview p { line-height: 1.8; }</style>
+
+<style>
+.cards:has(> :only-child) { grid-template-columns:minmax(0,640px);justify-content:center; }
+</style>

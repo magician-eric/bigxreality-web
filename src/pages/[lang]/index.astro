@@ -280,3 +280,19 @@ const website = {
 .feature-body .t-muted { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .feature-body h3 { order: -1; font-size: 22px; }
 </style>
+
+<style>
+.feature--row .feature-media { flex:0 0 42%; aspect-ratio:16/9;align-self:center; }
+.feature-media { background:#101722; }
+.tech .muted-dark,.tech-copy .eyebrow { color:#dce3ec; }
+@media(max-width:767px) {
+ .feature--row { flex-direction:column; }
+ .feature--row .feature-media { width:100%; flex:0 0 auto;aspect-ratio:16/9; }
+ .feature--row .feature-body { padding:20px; }
+ .feature--row .desc { display:block; }
+}
+</style>
+<style>
+.feature-media { position:relative;min-height:0;flex-shrink:0; }
+.feature-media :global(.asset-frame) { position:absolute;inset:0; }
+</style>

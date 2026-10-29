@@ -11,3 +11,5 @@
 驗證命令：`npm run build`、`npm run check`、`node scripts/qa-home-video.mjs`。測試在此分支的獨立工作樹執行，避免其他未提交修改影響結果。
 
 截圖位於本資料夾；before 為 main 原版，after 為本批。兩支影片桌面／手機均實際播放截圖；原始影格另外檢視 0.3／1.2／2.5 秒的人物與設備。手機屬 Chromium 模擬，實機 Safari／Android 仍待人工確認。
+
+第一批獨立驗證完成：Astro build 通過；Astro check 0 errors／0 warnings（22 hints）；21 組三語 × 七寬度真實影片結束與循環、完整構圖、鍵盤控制及 reduced-motion 測試全部通過。

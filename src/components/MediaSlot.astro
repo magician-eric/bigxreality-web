@@ -27,7 +27,7 @@ const useRatio = media?.ratio ?? ratio;
 const ready = media?.src && media.alt;
 const label = media?.need ? `${needPrefix}${media.need}` : fallbackLabel;
 ---
-<figure class="media" style={`--ratio: ${useRatio}`}>
+<figure hidden={!ready} class="media" style={`--ratio: ${useRatio}`}>
   {ready ? (
     <div class="frame">
     <Picture
