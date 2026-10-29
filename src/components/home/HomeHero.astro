@@ -10,18 +10,19 @@ import { Picture } from "astro:assets";
 import poster from "../../assets/images/home/hero-poster.jpg";
 import type { HomeCopy } from "../../data/home";
 import Text from "../Text.astro";
+import { heroClips } from "../../data/hero-clips";
 
 interface Props { copy: HomeCopy["hero"]; primaryHref: string; secondaryHref: string }
 const { copy, primaryHref, secondaryHref } = Astro.props;
-const clips = ["/video/hero/hero-1", "/video/hero/hero-2"];
+const clips = heroClips;
 ---
 <section class="hero" data-theme="dark" aria-labelledby="home-title" data-hero>
-  <div class="media">
+  <div class="media" style={`--poster-backdrop:url('${poster.src}')`}>
     <Picture src={poster} alt={copy.posterAlt} formats={["avif", "webp"]} widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="poster" />
     {clips.map((c) => (
-      <video muted playsinline preload="none" aria-label={copy.videoLabel} data-clip hidden>
-        <source data-src={`${c}.webm`} type="video/webm" />
-        <source data-src={`${c}.mp4`} type="video/mp4" />
+      <video muted playsinline preload="none" aria-label={copy.videoLabel} data-clip hidden style={`--clip-desktop:${c.desktopPosition};--clip-mobile:${c.mobilePosition}`}>
+        <source data-src={`${c.src}.webm`} type="video/webm" />
+        <source data-src={`${c.src}.mp4`} type="video/mp4" />
       </video>
     ))}
     <div class="shade" aria-hidden="true"></div>
@@ -36,49 +37,83 @@ const clips = ["/video/hero/hero-1", "/video/hero/hero-2"];
       <a class="btn btn--secondary" href={secondaryHref}><Text value={copy.secondary} /></a>
     </div>
   </div>
-  <button type="button" class="toggle" data-toggle hidden aria-pressed="false" data-pause={copy.pause} data-play={copy.play} aria-label={copy.pause}>
+  <button type="button" class="toggle keyboard-control" data-toggle hidden aria-pressed="false" data-pause={copy.pause} data-play={copy.play} aria-label={copy.pause}>
     <svg class="i-pause" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 2h3v12H4zM9 2h3v12H9z" fill="currentColor" /></svg>
     <svg class="i-play" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 2l10 6-10 6z" fill="currentColor" /></svg>
   </button>
 </section>
 
 <script>
-  const root = document.querySelector<HTMLElement>("[data-hero]");
-  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches || conn?.saveData;
-  if (root && !still) {
+  function initializeHero() {
+    const root = document.querySelector<HTMLElement>("[data-hero]");
+    if (!root || root.dataset.initialized) return;
+    root.dataset.initialized = "true";
     const clips = [...root.querySelectorAll<HTMLVideoElement>("[data-clip]")];
     const toggle = root.querySelector<HTMLButtonElement>("[data-toggle]")!;
-    const load = (v: HTMLVideoElement) => {
-      if (v.dataset.loaded) return;
-      v.querySelectorAll<HTMLSourceElement>("source").forEach((s) => { s.src = s.dataset.src!; });
-      v.load();
-      v.dataset.loaded = "1";
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const controller = new AbortController(), options = { signal: controller.signal };
+    let current = 0, paused = false, switching = false;
+    const load = (video: HTMLVideoElement) => {
+      if (video.dataset.loaded) return;
+      video.querySelectorAll<HTMLSourceElement>("source").forEach(source => { source.src = source.dataset.src!; });
+      video.load(); video.dataset.loaded = "1";
     };
-    let current = 0;
-    let paused = false;
-    const show = (i: number) => {
-      current = i;
-      clips.forEach((v, j) => v.classList.toggle("is-on", j === i));
-      const v = clips[i];
-      v.currentTime = 0;
-      if (!paused) v.play().catch(() => {});
-    };
-    clips.forEach((v, i) => {
-      v.hidden = false;
-      v.addEventListener("ended", () => show((i + 1) % clips.length));
-    });
-    clips[0].addEventListener("playing", () => { clips.slice(1).forEach(load); toggle.hidden = false; }, { once: true });
-    load(clips[0]);
-    show(0);
-    toggle.addEventListener("click", () => {
-      paused = !paused;
-      const v = clips[current];
-      if (paused) v.pause(); else v.play().catch(() => {});
+    const updateControl = () => {
       toggle.setAttribute("aria-pressed", String(paused));
       toggle.setAttribute("aria-label", (paused ? toggle.dataset.play : toggle.dataset.pause)!);
+    };
+    const show = async (index: number) => {
+      if (switching || paused || motion.matches || saveData || document.hidden) return;
+      switching = true;
+      const next = clips[index]; load(next);
+      next.currentTime = 0;
+      // Keep the previous last frame/poster until the next decoded frame actually plays.
+      let resolvePlaying: () => void, rejectPlaying: () => void;
+      const playing = new Promise<void>((resolve,reject) => { resolvePlaying=resolve;rejectPlaying=reject; });
+      const onPlaying=()=>resolvePlaying(),onError=()=>rejectPlaying();
+      next.addEventListener('playing',onPlaying,{once:true,signal:controller.signal});
+      next.addEventListener('error',onError,{once:true,signal:controller.signal});
+      try {
+        await next.play(); await playing;
+        if (paused || motion.matches) { next.pause(); return; }
+        const previous = clips[current]; current = index;
+        clips.forEach((video,i) => video.classList.toggle('is-on',i===index));
+        root.dataset.currentClip = String(index);
+        if (previous !== next) previous.pause();
+        load(clips[(index+1)%clips.length]);
+      } catch { /* The poster/previous decoded frame remains available. */ }
+      finally {
+        next.removeEventListener('playing',onPlaying);next.removeEventListener('error',onError);
+        switching = false;
+      }
+    };
+    clips.forEach((video,index) => {
+      video.hidden = false; video.muted = true;
+      video.addEventListener('ended',()=>{ if(index===current) void show((index+1)%clips.length); },options);
     });
+    toggle.hidden = false;
+    toggle.addEventListener('click',()=>{
+      paused = !paused; updateControl();
+      if(paused) clips.forEach(video=>video.pause());
+      else { if(motion.matches || saveData) { paused=true;updateControl(); } else if(clips[current].ended) void show((current+1)%clips.length); else {load(clips[current]);clips[current].play().catch(()=>{});} }
+    },options);
+    const applyPreference = () => {
+      if(motion.matches || saveData){clips.forEach(video=>video.pause());paused=true;updateControl();}
+      else {paused=false;updateControl();void show(current);}
+    };
+    motion.addEventListener('change',applyPreference,options);
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden) clips.forEach(video=>video.pause());
+      else if(!paused&&!motion.matches&&!saveData) { if(clips[current].ended)void show((current+1)%clips.length);else clips[current].play().catch(()=>{}); }
+    },options);
+    window.addEventListener('pagehide',()=>clips.forEach(video=>video.pause()),options);
+    window.addEventListener('pageshow',event=>{if(event.persisted&&!paused&&!motion.matches&&!saveData)clips[current].play().catch(()=>{});},options);
+    document.addEventListener('astro:before-swap',()=>{controller.abort();clips.forEach(video=>video.pause());},{once:true,signal:controller.signal});
+    applyPreference();
   }
+  initializeHero();
+  document.addEventListener('astro:page-load',initializeHero);
 </script>
 
 <style>
@@ -129,4 +164,50 @@ const clips = ["/video/hero/hero-1", "/video/hero/hero-2"];
  .inner { background: var(--bxr-black); padding-block: 28px 40px; }
  .toggle { top: calc(56.25vw - 52px); bottom: auto; width: 44px; height: 44px; z-index: 2; }
 }
+</style>
+
+<style>
+/* The whole landscape frame sits on a subdued extension of the approved poster. */
+@media(min-width:1024px) {
+ .hero { min-height:clamp(520px,43vw,640px); }
+ .media :global(.poster) { object-fit:contain; object-position:100% 50%; }
+ .hero[data-current-clip] .media :global(.poster) { object-fit:cover;filter:blur(20px);opacity:.3; }
+ .media video { object-fit:contain; object-position:var(--clip-desktop); }
+ .shade { background:linear-gradient(90deg,#0b0f14 0%,rgb(11 15 20 / .96) 18%,rgb(11 15 20 / .87) 33%,rgb(11 15 20 / .25) 50%,transparent 70%,rgb(11 15 20 / .22)); }
+ .inner > * { max-width:34rem; }
+ .inner > .title { max-width:38rem; }
+ .title { font-size:clamp(36px,3.8vw,52px); }
+}
+.desc,.eyebrow { color:#e4e8ed; }
+.keyboard-control { left:var(--margin); right:auto; top:12px; bottom:auto; width:auto; height:auto; padding:12px; border-radius:4px; opacity:0; pointer-events:none; transform:translateY(-160%); }
+.keyboard-control:focus-visible { opacity:1; pointer-events:auto; transform:none; outline:3px solid white; outline-offset:3px; z-index:5; }
+@media(max-width:1023px) {
+ .media video { object-fit:contain;object-position:var(--clip-mobile); }
+ .keyboard-control { top:12px;bottom:auto; }
+}
+@media(prefers-reduced-motion:reduce) { .media video { transition:none; } }
+</style>
+
+<style>
+@media(min-width:1024px) and (max-width:1199px) {
+ .hero { display:block;min-height:0; }
+ .media { position:relative;inset:auto;aspect-ratio:16/9;height:auto;z-index:0; }
+ .media video,.media :global(.poster) { object-fit:contain;object-position:var(--clip-mobile,50% 50%); }
+ .shade { background:none; }
+ .inner { background:var(--bxr-black);padding-block:28px 40px; }
+ .inner > *, .inner > .title { max-width:48rem; }
+}
+</style>
+<style>
+@media(min-width:1200px) {
+ .inner > *, .inner > .title { max-width:min(32vw,34rem); }
+ .media video,.media :global(img.poster) { width:70%;left:auto;right:0;object-fit:contain;object-position:var(--clip-desktop,100% 50%); }
+ .hero[data-current-clip] .media :global(img.poster) { width:100%;left:0;object-fit:cover; }
+}
+</style>
+<style>
+@media(min-width:1200px) {
+ .media video { mask-image:linear-gradient(90deg,transparent,black 8%,black 96%,transparent),linear-gradient(180deg,transparent,black 12%,black 88%,transparent);mask-composite:intersect; }
+}
+@media(max-width:1199px) { .media video { filter:brightness(1.08); } }
 </style>
