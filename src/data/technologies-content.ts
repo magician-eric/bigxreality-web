@@ -52,7 +52,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       "sections": [
         {
           "id": "concept",
-          "title": "XR 不只是一副頭戴式顯示器",
+          "title": "整合顯示、互動與情境的 XR 技術",
           "paragraphs": [
             "XR（Extended Reality，延展實境）是涵蓋虛擬實境 VR、擴增實境 AR 與混合實境 MR 的技術概念。",
             "不同形式的 XR，能依照訓練目標提供不同程度的沉浸感、真實環境資訊與互動方式。"
@@ -171,11 +171,11 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "BXR uses XR technology to develop different forms of simulation training systems, making virtual scenarios an extension of professional training."
       ],
       "primaryCta": "Explore XR simulation training products",
-      "secondaryCta": "Discuss your application requirements",
+      "secondaryCta": "Discuss Application Requirements",
       "sections": [
         {
           "id": "concept",
-          "title": "XR is more than a head-mounted display",
+          "title": "XR Combines Displays, Interaction and Scenarios",
           "paragraphs": [
             "XR (Extended Reality) is an umbrella concept encompassing virtual reality (VR), augmented reality (AR), and mixed reality (MR).",
             "Different forms of XR can provide different degrees of immersion, information about the real environment, and modes of interaction according to the training objectives."
@@ -298,7 +298,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       "sections": [
         {
           "id": "concept",
-          "title": "XR はヘッドマウントディスプレイだけではありません",
+          "title": "表示・インタラクション・シナリオを統合するXR技術",
           "paragraphs": [
             "XR（Extended Reality、エクステンデッド・リアリティ）は、VR（仮想現実）、AR（拡張現実）、MR（複合現実）を包含する技術概念です。",
             "XR の形式によって、訓練目標に応じたさまざまな没入感、実環境の情報、インタラクションの方法を提供できます。"
@@ -412,7 +412,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
     "tw": {
       "eyebrow": "核心技術",
       "title": "模擬訓練設計",
-      "lead": "好的模擬訓練，不是讓畫面更像遊戲，而是讓每一次操作都有訓練目的",
+      "lead": "以明確訓練目的，規劃每一次模擬操作",
       "intro": [
         "專業訓練系統的價值，不只取決於畫面是否逼真，更取決於模擬內容能否對應實際訓練目標。",
         "從任務情境、操作流程到互動事件，模擬訓練需要將專業需求轉換為可理解、可操作且能反覆練習的訓練內容。",
@@ -560,12 +560,12 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       "title": "Simulation-Based Training Design",
       "lead": "Effective simulation training gives every action a training purpose, rather than simply making the visuals more game-like",
       "intro": [
-        "The value of a professional training system depends not only on visual realism, but also on whether the simulation content addresses actual training objectives.",
+        "The value of a professional training system comes from visual realism and simulation content aligned with actual training objectives.",
         "From mission scenarios and operating procedures to interactive events, simulation training must translate professional requirements into content that is understandable, actionable, and suitable for repeated practice.",
         "BXR combines XR technology, scenario design, and serious games principles to make digital interaction a tool for professional training, rather than simply an entertainment experience."
       ],
       "primaryCta": "Explore simulation training products",
-      "secondaryCta": "Discuss your training design requirements",
+      "secondaryCta": "Discuss Training Design Requirements",
       "sections": [
         {
           "id": "concept",
@@ -865,7 +865,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
           "id": "concept",
           "title": "技術開發之前，先理解訓練要解決什麼問題",
           "paragraphs": [
-            "不同領域的專業訓練，並不能只靠替換虛擬場景就完成。",
+            "各領域的專業訓練需要整合情境、操作程序與任務目標。",
             "即使採用相同的 XR 或模擬技術，軍事單位、警察機關與消防單位的訓練對象、任務流程、操作方式及安全要求仍可能有明顯差異。",
             "因此，專業訓練領域知識的價值，在於協助開發團隊理解使用情境，並將需求轉換為合適的系統設計方向。"
           ],
@@ -928,7 +928,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
           "id": "translation",
           "title": "從專業需求到模擬系統，建立技術與應用之間的連結",
           "paragraphs": [
-            "專業單位提出的訓練需求，通常不是單純的軟體功能清單。",
+            "專業單位的訓練需求涵蓋任務目標、操作程序與系統功能。",
             "在實際專案中，可能需要先理解訓練對象、操作環境、使用流程及情境目的，再評估適合的模擬方式與系統配置。",
             "BXR 結合技術開發、專案經驗與使用單位的需求交流，將相關資訊轉換為產品設計、互動流程及應用規劃的參考。",
             "這項能力不取決於單一人員的背景，而是需要透過專案執行、跨領域溝通及持續改善逐步累積。"
@@ -936,7 +936,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         },
         {
           "id": "value",
-          "title": "讓模擬系統不只做得出來，也更貼近使用目的",
+          "title": "讓模擬系統的技術設計貼近使用目的",
           "paragraphs": [
             "專業訓練領域知識的作用，是讓技術開發能夠與實際應用建立關係。",
             "從需求討論到系統設計，對訓練情境的理解有助於釐清產品應該呈現哪些內容、支援哪些操作，以及如何安排適合的互動方式。"
@@ -993,13 +993,13 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         "Through product and project development in different professional fields, BXR continues to accumulate experience in training scenario design and requirements translation, bringing technology development closer to its practical purpose."
       ],
       "primaryCta": "Explore professional training solutions",
-      "secondaryCta": "Discuss your training application requirements",
+      "secondaryCta": "Discuss Training Application Requirements",
       "sections": [
         {
           "id": "concept",
           "title": "Understand the problem training needs to solve before developing technology",
           "paragraphs": [
-            "Professional training in different fields cannot be delivered simply by swapping virtual scenes.",
+            "Professional training across fields combines scenarios, operating procedures, and mission objectives.",
             "Even when the same XR or simulation technology is used, military organisations, police agencies, and fire services may differ significantly in their trainees, mission workflows, operating methods, and safety requirements.",
             "The value of domain expertise in professional training therefore lies in helping development teams understand usage scenarios and translate requirements into appropriate directions for system design."
           ],
@@ -1070,7 +1070,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
         },
         {
           "id": "value",
-          "title": "Build simulation systems that more closely serve their intended use",
+          "title": "Build Simulation Systems around Intended Applications",
           "paragraphs": [
             "Domain expertise in professional training helps connect technology development with practical applications.",
             "From requirements discussions to system design, an understanding of training scenarios helps clarify which content a product should present, which operations it should support, and how suitable modes of interaction should be arranged."
@@ -1110,7 +1110,7 @@ const firstBatchContent: Record<"xr" | "training-design" | "domain-expertise", R
       "closing": {
         "title": "Start with an understanding of requirements to plan suitable professional training applications",
         "body": "Different missions require different training methods. Through technology development and requirements discussions, BXR continues to explore simulation training solutions that serve the intended use in each field.",
-        "cta": "Discuss your professional training requirements"
+        "cta": "Discuss Professional Training Requirements"
       },
       "seo": {
         "title": "Professional Training Expertise｜Military, Police & Fire",
@@ -1306,7 +1306,7 @@ export const overviewContent: Record<"tw" | "en" | "jp", TechnologyOverviewConte
     "title": "Core Technologies",
     "lead": "From virtual scenarios to practical training: technology that responds to professional requirements",
     "intro": [
-      "The value of professional simulation training comes not only from realistic virtual imagery, but also from the alignment between training objectives, operational interaction, scenario design, and system integration.",
+      "Professional simulation training brings together realistic virtual imagery, training objectives, operational interaction, scenario design, and system integration.",
       "Big x Reality (BXR) combines extended reality (XR), digital simulation, interaction design, and experience across application domains to continue developing simulation training systems for fields such as military, police, and fire and disaster response.",
       "By bringing technology and training requirements together, BXR helps professional organisations build safe, repeatable training environments suited to their intended applications."
     ],

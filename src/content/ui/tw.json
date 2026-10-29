@@ -12,7 +12,7 @@
     "insights": "技術專欄",
     "caseStudies": "成功案例",
     "resourcesMenu": "資源選單",
-    "aboutUs": "關於我們",
+    "aboutUs": "公司簡介",
     "history": "發展歷程",
     "team": "經營團隊",
     "partners": "合作夥伴",
@@ -21,7 +21,7 @@
     "planned": "（即將推出）",
     "csr": "企業社會責任"
   },
-  "contact": "聯絡我們",
+  "contact": "聯絡 BXR",
   "search": "搜尋",
   "menuOpen": "開啟選單",
   "menuClose": "關閉選單",
@@ -29,7 +29,7 @@
   "home": "首頁",
   "logoHome": "Big x Reality 首頁",
   "breadcrumbLabel": "麵包屑",
-  "translationPending": "[待翻譯] 本頁尚未完成翻譯。",
+  "translationPending": "語言版本資訊請洽 BXR。",
   "imagePending": "產品圖片",
   "solutionImagePending": "解決方案圖片",
   "syntheticImage": "合成示意",
@@ -47,7 +47,7 @@
     "searchLabel": "搜尋產品",
     "searchPlaceholder": "輸入產品名稱或關鍵字",
     "results": "共 {n} 項產品",
-    "empty": "沒有符合條件的產品。",
+    "empty": "調整分類條件，探索產品資訊。",
     "reset": "清除篩選"
   },
   "domains": {
@@ -208,14 +208,14 @@
     "outcomes": "成果"
   },
   "listing": {
-    "empty": "目前還沒有內容。",
+    "empty": "相關資訊請洽 BXR。",
     "count": "共 {n} 篇",
     "pagination": "分頁",
     "previous": "上一頁",
     "next": "下一頁",
     "page": "第 {n} 頁",
     "pageOf": "第 {n} 頁，共 {total} 頁",
-    "filterEmpty": "沒有符合條件的案例。",
+    "filterEmpty": "調整篩選條件，探索相關案例。",
     "filterResults": "共 {n} 個案例",
     "filterSearchLabel": "搜尋案例",
     "filterSearchPlaceholder": "輸入客戶、產品或關鍵字"
@@ -243,7 +243,7 @@
     "empty": "找不到符合「{q}」的結果。",
     "hint": "請輸入至少兩個字。",
     "noscript": "搜尋功能需要啟用 JavaScript。",
-    "error": "搜尋暫時無法使用，請稍後再試。"
+    "error": "請重新搜尋，或透過聯絡頁洽詢。"
   },
   "cta": {
     "exploreProducts": "探索產品",
@@ -272,7 +272,7 @@
     },
     "eyebrows": {
       "challenge": "訓練挑戰",
-      "approach": "我們的做法",
+      "approach": "整合做法",
       "capabilities": "核心能力",
       "flow": "訓練流程",
       "scenarios": "應用情境",
@@ -286,7 +286,7 @@
     "stepLabel": "步驟",
     "mediaNeed": "素材需求｜",
     "mediaPending": "圖片",
-    "illustrationLabel": "情境示意圖"
+    "illustrationLabel": "概念視覺"
   },
   "contactPage": {
     "topicLabel": "洽詢項目",
@@ -323,11 +323,11 @@
     "about": "關於",
     "steps": {
       "eyebrow": "聯絡方式",
-      "title": "以 Email 與我們聯繫",
+      "title": "以 Email 聯絡 BXR",
       "items": [
         {
           "title": "按下「寄送 Email」",
-          "description": "系統會開啟您的郵件軟體，主旨與信件格式已依洽詢項目填好。"
+          "description": "郵件軟體將開啟洽詢信件，並帶入主旨與信件格式。"
         },
         {
           "title": "補上聯絡資料與需求",
@@ -335,7 +335,7 @@
         },
         {
           "title": "寄出後由業務聯繫",
-          "description": "我們收到來信後，將由業務人員與您聯繫，確認需求與後續安排。"
+          "description": "BXR 業務團隊收到來信後，將聯繫洽詢單位，確認需求與後續安排。"
         }
       ]
     },
@@ -349,7 +349,7 @@
       "電話：",
       "需求說明："
     ],
-    "noEmail": "聯絡信箱尚未設定。"
+    "noEmail": "聯絡方式請洽 BXR 服務窗口。"
   },
   "cases": {
     "filterLabel": "篩選成功案例",
@@ -360,10 +360,10 @@
     "learnMore": "了解完整案例",
     "count": "共 {n} 個案例",
     "filterResults": "共 {n} 個案例",
-    "filterEmpty": "沒有符合條件的案例",
-    "empty": "成功案例整理中，目前尚無已發布的案例",
-    "emptyHint": "如需了解沉浸式模擬訓練如何配合您的任務需求，歡迎與我們聯絡",
-    "emptyCta": "聯絡我們",
+    "filterEmpty": "調整篩選條件，探索相關案例",
+    "empty": "導入案例資訊請洽 BXR。",
+    "emptyHint": "BXR 提供沉浸式模擬訓練需求洽詢。",
+    "emptyCta": "聯絡 BXR",
     "client": "導入單位",
     "domains": "應用領域",
     "products": "關聯產品",
@@ -389,15 +389,15 @@
       "learnMore": "了解完整案例"
     },
     "cta": {
-      "title": "與我們討論您的訓練需求",
+      "title": "訓練需求洽詢",
       "description": "歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
-      "button": "聯絡我們"
+      "button": "聯絡 BXR"
     }
   },
   "companyPages": {
-    "empty": "資料整理中，目前尚無已公開的內容",
-    "hint": "如需進一步了解，歡迎與我們聯絡",
-    "cta": "聯絡我們",
+    "empty": "相關資訊請洽 BXR。",
+    "hint": "進一步資訊請洽 BXR。",
+    "cta": "聯絡 BXR",
     "download": "下載",
     "date": "日期",
     "category": "分類",
