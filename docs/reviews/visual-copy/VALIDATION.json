@@ -1,5 +1,5 @@
 {
-  "status": "Final QA in progress; completed checks are listed individually",
+  "status": "Completed listed local QA passed; human copy/material review, real devices, remote GitHub CI and live GitHub publishing remain pending",
   "checks": {
     "qa:technologies": {
       "exitCode": 0,
@@ -124,6 +124,42 @@
     "fixtureAccessibility": {
       "verifiedPassMarker": true,
       "scope": "bxr-final-fixture-a11y.log"
+    },
+    "qa:motion": {
+      "exitCode": 0,
+      "scope": "final"
+    },
+    "qa:density-navigation": {
+      "exitCode": 0,
+      "scope": "final"
+    },
+    "qa:links": {
+      "exitCode": 0,
+      "scope": "final"
+    },
+    "check:sitemap": {
+      "exitCode": 0,
+      "scope": "final"
+    },
+    "qa:ui-v1-preview": {
+      "exitCode": 0,
+      "scope": "final"
+    },
+    "imageTechnologyIsolated": {
+      "verifiedPassMarker": true,
+      "scope": "independent image worktree"
+    },
+    "imageBehaviourIsolated": {
+      "verifiedPassMarker": true,
+      "scope": "independent image worktree"
+    },
+    "imageSolutionsIsolated": {
+      "verifiedPassMarker": true,
+      "scope": "independent image worktree"
+    },
+    "imageNewsIsolated": {
+      "verifiedPassMarker": true,
+      "scope": "independent image worktree"
     }
   },
   "responsive": {
@@ -151,5 +187,9 @@
     "GitHub real-user authorization and production publishing remain untested",
     "Chromium viewport emulation; real mobile Safari/Android review pending",
     "Historical wording and necessary limitations individually listed for human review"
+  ],
+  "unexecutedOptionalChecks": [
+    "Lighthouse performance score",
+    "qa:ui-language broad keyword scan; semantic CSV audit used instead"
   ]
 }

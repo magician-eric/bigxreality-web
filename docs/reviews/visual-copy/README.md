@@ -49,3 +49,9 @@ SEO：保留既有 slug、canonical／hreflang／schema 產生方式。部分頁
 效能：沒有新增套件；CSS opacity／transform 交接，圖片同源背景在原圖載入後設定以保留 lazy loading。預載下一支既有短片；離開頁面及背景分頁暫停，頁面切換清理監聽，減少動態效果預設不載入影片。
 
 回復：合併前直接關閉 PR 即可；合併後可 revert 本 PR 的合併提交，原始媒體無須還原。
+
+### 最終本機結果
+
+已列出的本機檢查全部通過，詳見 VALIDATION.json 與 TEST-RESULTS.txt。包含 Build、TypeScript、單元測試、SEO／sitemap／內部連結、圖片、新聞匯入／圖集影片、互動、密度導覽、三語、Header／Footer／公司／團隊／CSR、Sveltia 及 fixture 搜尋／無障礙。GitHub Pages 子路徑檢查通過 293 個 HTML、23,758 個站內引用與 42 個三語桌面／手機頁面。
+
+沒有取得遠端 GitHub CI 狀態，沒有執行真實管理者登入發布、手機實機或 Lighthouse 評分。文案清單仍有 79 處歷史原文及 283 處技術／功能條件待人工確認；這些保留項目明列在 CSV，不視為已完成改寫。
