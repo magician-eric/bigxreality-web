@@ -6,7 +6,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
     "tw": {
       "eyebrow": "核心技術",
       "title": "AI 智慧模擬",
-      "lead": "讓模擬情境不只呈現任務，也能探索更具變化的互動方式",
+      "lead": "依照訓練目的，探索多元模擬互動",
       "intro": [
         "專業訓練經常需要面對不同的任務條件、情境變化與互動對象。固定的模擬流程可以協助建立操作熟悉度，但部分訓練需求也可能需要更具變化的情境設計。",
         "人工智慧（AI）為模擬系統提供新的技術應用方向，包括虛擬角色行為、情境互動及資訊處理等。",
@@ -52,13 +52,13 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "simulation-methods",
-          "title": "不是所有智慧互動，都需要人工智慧",
+          "title": "依照訓練需求，選擇合適的互動技術",
           "paragraphs": [
             "專業模擬訓練需要的不只是情境變化，更需要能夠對應訓練目標的互動設計。",
             "預先設定的腳本、規則式邏輯與 AI 技術各有不同的適用情境。",
             "對於需要明確操作程序、固定訓練條件或可重複比較的任務，規則式設計可能更容易控制與驗證。",
             "對於需要探索較多互動變化的應用，AI 則可能提供額外的技術選擇。",
-            "BXR 重視的是技術是否符合訓練目的，而不是為了使用 AI 而使用 AI。"
+            "BXR 依照訓練目的評估 AI 技術，重視實際應用的適切性。"
           ]
         },
         {
@@ -72,7 +72,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
             {
               "title": "訓練目標",
               "paragraphs": [
-                "AI 功能是否有助於特定訓練內容，而不是增加無關的複雜度。"
+                "評估 AI 功能對特定訓練內容的實際助益與系統複雜度。"
               ]
             },
             {
@@ -103,7 +103,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "value",
-          "title": "讓智慧技術服務訓練目標，而不是取代訓練設計",
+          "title": "讓智慧技術與訓練設計共同服務專業目標",
           "paragraphs": [
             "AI 在模擬訓練中的價值，取決於它是否能解決具體的訓練問題。",
             "當 AI 與情境設計、操作互動及專業需求相互配合時，可以為特定應用提供新的設計方向。",
@@ -201,7 +201,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "simulation-methods",
-          "title": "Intelligent interaction does not always require artificial intelligence",
+          "title": "Selecting Interaction Technologies for Training Objectives",
           "paragraphs": [
             "Professional simulation training requires more than changing scenarios: it also requires interaction design that corresponds to training objectives.",
             "Predefined scripts, rule-based logic, and AI technologies each have their own appropriate applications.",
@@ -466,7 +466,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
       "sections": [
         {
           "id": "concept",
-          "title": "數位場景不只是視覺背景，更是訓練情境的一部分",
+          "title": "讓數位場景成為訓練情境的重要環節",
           "paragraphs": [
             "在一般視覺展示中，三維場景主要用於呈現空間與外觀。",
             "但在模擬訓練中，場景還需要配合任務目標、使用者視角、操作方式與互動事件，才能形成適合訓練的數位環境。",
@@ -543,7 +543,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "digital-twins",
-          "title": "數位孿生與三維模擬，不應混為一談",
+          "title": "釐清數位孿生與三維模擬的應用定位",
           "paragraphs": [
             "三維模擬場景可以呈現特定空間、設備與操作情境，但不代表它必然是數位孿生系統。",
             "數位孿生（Digital Twin）通常強調數位模型與實際對象之間的資料關聯，並依應用需求進行狀態反映、分析或其他形式的資訊互動。",
@@ -553,7 +553,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "value",
-          "title": "讓難以頻繁安排的場域與情境，成為可重複使用的訓練資源",
+          "title": "以數位場景建立可重複使用的訓練資源",
           "paragraphs": [
             "實際場域可能受到使用時間、地理位置、設備條件及安全要求限制，無法隨時提供相同的訓練環境。",
             "透過數位場景與模擬建構，可以將適合的空間與任務條件轉換為可重複使用的模擬內容，作為既有訓練方式的補充。",
@@ -616,7 +616,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
       "sections": [
         {
           "id": "concept",
-          "title": "A digital environment is not just a visual backdrop: it is part of the training scenario",
+          "title": "Digital Environments as an Integral Part of Training Scenarios",
           "paragraphs": [
             "In conventional visual presentations, 3D environments are primarily used to show spaces and appearances.",
             "In simulation training, however, an environment must also work with mission objectives, user perspectives, operating methods, and interactive events to form a digital environment suitable for training.",
@@ -693,7 +693,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "digital-twins",
-          "title": "Digital twins and 3D simulation should not be treated as the same thing",
+          "title": "Distinct Roles of Digital Twins and 3D Simulation",
           "paragraphs": [
             "A 3D simulation environment can represent specific spaces, equipment, and operating scenarios, but that does not necessarily make it a digital twin system.",
             "A digital twin generally emphasizes data relationships between a digital model and its physical counterpart, using them to reflect states, perform analysis, or support other forms of information interaction according to application needs.",
@@ -843,7 +843,7 @@ export const batchTwoA: Record<"ai-simulation" | "digital-simulation", Record<"t
         },
         {
           "id": "digital-twins",
-          "title": "デジタルツインと三次元シミュレーションは、同じものではない",
+          "title": "デジタルツインと三次元シミュレーション、それぞれの応用分野",
           "paragraphs": [
             "三次元の模擬環境では、特定の空間、機器、操作シナリオを表現できますが、それだけで必ずデジタルツインシステムになるわけではありません。",
             "デジタルツイン（Digital Twin）は一般に、デジタルモデルと実際の対象とのデータ上の関連性を重視し、活用要件に応じて、状態の反映、分析、その他の情報のやり取りを行うものです。",

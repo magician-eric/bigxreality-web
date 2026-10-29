@@ -47,7 +47,7 @@
     "searchLabel": "製品を検索",
     "searchPlaceholder": "製品名またはキーワードを入力",
     "results": "{n} 件の製品",
-    "empty": "条件に一致する製品はありません。",
+    "empty": "条件を変更して、製品情報をご確認ください。",
     "reset": "絞り込みを解除"
   },
   "domains": {
@@ -208,14 +208,14 @@
     "outcomes": "[待翻譯] 成果"
   },
   "listing": {
-    "empty": "公開済みの記事はまだありません。",
+    "empty": "関連情報はBXRへお問い合わせください。",
     "count": "{n} 件の記事",
     "pagination": "ページ切り替え",
     "previous": "前へ",
     "next": "次へ",
     "page": "{n} ページ",
     "pageOf": "全{total}ページ中 {n}ページ",
-    "filterEmpty": "[待翻譯] 沒有符合條件的案例。",
+    "filterEmpty": "条件を変更して、関連する導入事例をご確認ください。",
     "filterResults": "[待翻譯] 共 {n} 個案例",
     "filterSearchLabel": "[待翻譯] 搜尋案例",
     "filterSearchPlaceholder": "[待翻譯] 輸入客戶、產品或關鍵字"
@@ -243,7 +243,7 @@
     "empty": "「{q}」に一致する結果は見つかりませんでした。",
     "hint": "2 文字以上入力してください。",
     "noscript": "検索機能には JavaScript が必要です。",
-    "error": "検索を利用できません。しばらくしてからもう一度お試しください。"
+    "error": "再検索、またはお問い合わせページをご利用ください。"
   },
   "cta": {
     "exploreProducts": "製品を見る",
@@ -286,7 +286,7 @@
     "stepLabel": "ステップ",
     "mediaNeed": "画像素材｜",
     "mediaPending": "画像",
-    "illustrationLabel": "シナリオのイメージ図"
+    "illustrationLabel": "コンセプトビジュアル"
   },
   "contactPage": {
     "topicLabel": "お問い合わせ内容",
@@ -360,8 +360,8 @@
     "learnMore": "[待翻譯] 了解完整案例",
     "count": "[待翻譯] 共 {n} 個案例",
     "filterResults": "[待翻譯] 共 {n} 個案例",
-    "filterEmpty": "[待翻譯] 沒有符合條件的案例",
-    "empty": "公開承認済みの導入事例はまだありません。",
+    "filterEmpty": "条件を変更して、関連する導入事例をご確認ください。",
+    "empty": "導入事例に関する情報はBXRへお問い合わせください。",
     "emptyHint": "ご要望に応じたシミュレーション訓練について、お気軽にお問い合わせください。",
     "emptyCta": "お問い合わせ",
     "client": "[待翻譯] 導入單位",
@@ -389,15 +389,15 @@
       "learnMore": "詳細を見る"
     },
     "cta": {
-      "title": "[待翻譯] 與我們討論您的訓練需求",
+      "title": "訓練要件のご相談",
       "description": "[待翻譯] 歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
-      "button": "[待翻譯] 聯絡我們"
+      "button": "お問い合わせ"
     }
   },
   "companyPages": {
-    "empty": "[待翻譯] 資料整理中，目前尚無已公開的內容",
-    "hint": "[待翻譯] 如需進一步了解，歡迎與我們聯絡",
-    "cta": "[待翻譯] 聯絡我們",
+    "empty": "関連情報はBXRへお問い合わせください。",
+    "hint": "詳細はBXRへお問い合わせください。",
+    "cta": "お問い合わせ",
     "download": "[待翻譯] 下載",
     "date": "[待翻譯] 日期",
     "category": "[待翻譯] 分類",

@@ -17,7 +17,7 @@ export const batchTwoB = {
       "sections": [
         {
           "id": "concept",
-          "title": "系統整合，不等於把所有設備接在一起",
+          "title": "依照任務與資訊需求規劃系統整合",
           "paragraphs": [
             "不同訓練設備具有各自的操作方式、資料格式與系統限制。",
             "即使兩套設備都能傳輸資訊，也不代表它們可以直接交換資料或共同運作。",
@@ -156,7 +156,7 @@ export const batchTwoB = {
         "BXR evaluates equipment interfacing, information transfer, and system configurations according to product capabilities and project requirements, enabling different technical components to serve their purpose within a suitable training architecture."
       ],
       "primaryCta": "Explore related solutions",
-      "secondaryCta": "Discuss your system integration requirements",
+      "secondaryCta": "Discuss System Integration Requirements",
       "sections": [
         {
           "id": "concept",
@@ -280,9 +280,9 @@ export const batchTwoB = {
         }
       ],
       "closing": {
-        "title": "Start with the information links you need to plan appropriate system integration",
+        "title": "Plan System Integration around Required Information Links",
         "body": "Different devices and simulation systems have different technical conditions. BXR can discuss feasible interfaces and integration applications according to training requirements.",
-        "cta": "Discuss your system integration requirements"
+        "cta": "Discuss System Integration Requirements"
       },
       "seo": {
         "title": "Communication & System Integration｜XR Training",
@@ -303,7 +303,7 @@ export const batchTwoB = {
       "sections": [
         {
           "id": "concept",
-          "title": "システム統合は、すべての機器を接続することではありません",
+          "title": "任務と情報要件に基づくシステム統合",
           "paragraphs": [
             "訓練機器ごとに、操作方法、データ形式、システム上の制約は異なります。",
             "二つのシステムがそれぞれ情報を送信できても、直接データを交換したり、連携して動作したりできるとは限りません。",
@@ -448,7 +448,7 @@ export const batchTwoB = {
       "sections": [
         {
           "id": "concept",
-          "title": "資訊視覺化的目的，是協助理解任務，而不是增加畫面複雜度",
+          "title": "以清晰的資訊視覺化，協助理解任務",
           "paragraphs": [
             "專業訓練中的資訊可能涉及地形、空間、位置、任務配置或情境變化。",
             "若資訊只以文字或分散的資料呈現，使用者可能需要額外時間整理彼此的關係。",
@@ -682,7 +682,7 @@ export const batchTwoB = {
       "sections": [
         {
           "id": "concept",
-          "title": "情報可視化の目的は、画面を複雑にすることではなく、任務の理解を支えることです",
+          "title": "明確な情報可視化で任務の理解を支援",
           "paragraphs": [
             "専門訓練で扱う情報には、地形、空間、位置、任務の配置、シナリオの変化などが含まれる場合があります。",
             "情報が文章だけ、あるいは分散したデータとして提示されると、利用者はその相互関係を整理するために追加の時間を必要とする場合があります。",

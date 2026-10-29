@@ -47,13 +47,12 @@ landing:
     ratio: 16 / 9
   ctaLabel: Enquire About the VR Fire Extinguisher Training System
   challenge:
-    title: Real Fire Extinguisher Training Is More Than Memorising the Steps
+    title: Combining Procedural Knowledge and Practical Fire Extinguisher Training
     cards:
-      - title: Understanding the Steps Is Not the Same as Being Familiar with the
-          Actions
-        description: Even when trainees know the basic use of a fire extinguisher, they
-          still need to practise holding, squeezing the lever, aiming and
-          sweeping to become familiar with the procedure step by step
+      - title: Connecting Procedural Knowledge with Operating Proficiency
+        description: Fire extinguisher training combines basic knowledge with
+          progressive practice in holding, squeezing the lever, aiming and
+          sweeping
       - title: Live-Fire Training Is Limited by Sites and Consumables
         description: Exercises with real fire require specific sites, safety measures
           and consumables, and are difficult to arrange often in every
@@ -63,9 +62,8 @@ landing:
           operation, trainees also need to understand fire classification and
           which common extinguishers apply
       - title: Learning Outcomes Need Concrete Feedback
-        description: Without information on operating results after training, it is
-          harder for trainees to review their performance and keep correcting
-          their actions
+        description: Operating results support performance review and help trainees
+          refine subsequent practice
   approach:
     title: Combining Realistic Operating Equipment with a Virtual Fire Scene for a
       Complete Fire Extinguisher Training Experience
@@ -85,10 +83,9 @@ landing:
           distribution of a real fire extinguisher, with a physical handle and
           hose nozzle, lets trainees practise in a way closer to real operation
       - title: Dual-Controller Motion Tracking
-        description: Two VIVE controllers are integrated into the cylinder handle and
-          the nozzle; with 6DOF spatial tracking and motion mapping they
-          correspond to holding, squeezing the lever, spray direction and sweep
-          angle
+        description: Two VIVE controllers integrated into the cylinder handle and nozzle
+          use 6DOF spatial tracking and motion mapping to represent holding,
+          lever operation, spray direction and sweep angle
       - title: Immersive Fire Scene Interaction
         description: A VR simulated fire scene presents the fire source, fire intensity
           and surroundings, so the trainee's extinguishing actions produce
@@ -155,8 +152,8 @@ landing:
           test, displays the completion time and operating result
         icon: target
       - title: Results Review | Repeated Practice and Correction
-        description: Trainees can review their own performance based on the test results
-          and return to the training modes to practise again
+        description: Test results support individual performance review and further
+          practice in the training modes
         icon: review
     note: Learn about fires and equipment → Learn the operating steps → Choose a
       fire scene for testing → Review the training results → Practise again
@@ -226,9 +223,8 @@ landing:
           realistic fire extinguisher and related accessories together, making
           equipment easier to manage and move
       - title: Concrete Operating Results
-        description: After the test, the operating result and completion time are
-          displayed so trainees can keep correcting their actions based on the
-          feedback
+        description: The operating result and completion time provide feedback for
+          reviewing and refining subsequent practice
   related:
     title: Extending to More Fire Safety and Disaster Prevention Training
   closing:

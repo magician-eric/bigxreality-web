@@ -12,7 +12,7 @@
     "insights": "Insights",
     "caseStudies": "Case Studies",
     "resourcesMenu": "Resources menu",
-    "aboutUs": "About Us",
+    "aboutUs": "Company Profile",
     "history": "History",
     "team": "Management Team",
     "partners": "Partners",
@@ -21,7 +21,7 @@
     "planned": "(coming soon)",
     "csr": "Corporate Social Responsibility"
   },
-  "contact": "Contact Us",
+  "contact": "Contact BXR",
   "search": "Search",
   "menuOpen": "Open menu",
   "menuClose": "Close menu",
@@ -47,7 +47,7 @@
     "searchLabel": "Search products",
     "searchPlaceholder": "Enter a product name or keyword",
     "results": "{n} products",
-    "empty": "No products match the selected filters.",
+    "empty": "Adjust the filters to explore product information.",
     "reset": "Clear filters"
   },
   "domains": {
@@ -208,14 +208,14 @@
     "outcomes": "[待翻譯] 成果"
   },
   "listing": {
-    "empty": "No articles have been published yet.",
+    "empty": "Contact BXR for article information.",
     "count": "{n} articles",
     "pagination": "Pagination",
     "previous": "Previous",
     "next": "Next",
     "page": "Page {n}",
     "pageOf": "Page {n} of {total}",
-    "filterEmpty": "[待翻譯] 沒有符合條件的案例。",
+    "filterEmpty": "Adjust the filters to explore relevant case studies.",
     "filterResults": "[待翻譯] 共 {n} 個案例",
     "filterSearchLabel": "[待翻譯] 搜尋案例",
     "filterSearchPlaceholder": "[待翻譯] 輸入客戶、產品或關鍵字"
@@ -243,7 +243,7 @@
     "empty": "[待翻譯] 找不到符合「{q}」的結果。",
     "hint": "[待翻譯] 請輸入至少兩個字。",
     "noscript": "[待翻譯] 搜尋功能需要啟用 JavaScript。",
-    "error": "[待翻譯] 搜尋暫時無法使用，請稍後再試。"
+    "error": "Try the search again or contact BXR for assistance."
   },
   "cta": {
     "exploreProducts": "Explore Products",
@@ -255,7 +255,7 @@
     "productInquiry": "Product Enquiry",
     "solutionInquiry": "Solution Enquiry",
     "solutionDemo": "Book a Demo",
-    "discussNeeds": "Discuss Your Needs",
+    "discussNeeds": "Discuss Training Requirements",
     "learnMore": "Learn More"
   },
   "productLanding": {
@@ -272,7 +272,7 @@
     },
     "eyebrows": {
       "challenge": "Training Challenge",
-      "approach": "Our Approach",
+      "approach": "Solution Approach",
       "capabilities": "Key Capabilities",
       "flow": "Training Flow",
       "scenarios": "Applications",
@@ -286,7 +286,7 @@
     "stepLabel": "STEP",
     "mediaNeed": "Image needed | ",
     "mediaPending": "Image",
-    "illustrationLabel": "Scenario illustration"
+    "illustrationLabel": "Concept visual"
   },
   "contactPage": {
     "topicLabel": "Inquiry topic",
@@ -322,20 +322,20 @@
     },
     "about": "About",
     "steps": {
-      "eyebrow": "How to Reach Us",
-      "title": "Contact us by email",
+      "eyebrow": "BXR Contact Information",
+      "title": "Contact BXR by email",
       "items": [
         {
           "title": "Select “Send email”",
-          "description": "Your email application opens with the subject and message template for your inquiry."
+          "description": "The email application opens with an inquiry subject and message template."
         },
         {
-          "title": "Add your contact details and requirements",
-          "description": "Include your name, organization, job title, country, phone number, and the information you need."
+          "title": "Add contact details and requirements",
+          "description": "Include the contact name, organization, job title, country, phone number, and requested information."
         },
         {
-          "title": "Our team will follow up",
-          "description": "After receiving your email, our sales team will contact you to discuss your requirements and next steps."
+          "title": "BXR follow-up",
+          "description": "The BXR sales team follows up on incoming inquiries to confirm requirements and next steps."
         }
       ]
     },
@@ -349,7 +349,7 @@
       "Phone:",
       "Requirements:"
     ],
-    "noEmail": "A contact email is not available."
+    "noEmail": "Contact information is listed on the contact page."
   },
   "cases": {
     "filterLabel": "[待翻譯] 篩選成功案例",
@@ -360,10 +360,10 @@
     "learnMore": "[待翻譯] 了解完整案例",
     "count": "[待翻譯] 共 {n} 個案例",
     "filterResults": "[待翻譯] 共 {n} 個案例",
-    "filterEmpty": "[待翻譯] 沒有符合條件的案例",
-    "empty": "No approved case studies have been published yet.",
-    "emptyHint": "Contact us to discuss simulation training for your requirements.",
-    "emptyCta": "Contact Us",
+    "filterEmpty": "Adjust the filters to explore relevant case studies.",
+    "empty": "Contact BXR for case study information.",
+    "emptyHint": "BXR provides consultation on simulation training requirements.",
+    "emptyCta": "Contact BXR",
     "client": "[待翻譯] 導入單位",
     "domains": "[待翻譯] 應用領域",
     "products": "[待翻譯] 關聯產品",
@@ -389,15 +389,15 @@
       "learnMore": "[待翻譯] 了解完整案例"
     },
     "cta": {
-      "title": "[待翻譯] 與我們討論您的訓練需求",
+      "title": "Training Requirement Consultation",
       "description": "[待翻譯] 歡迎洽詢，了解 Big x Reality 如何依據實際任務需求規劃訓練應用",
-      "button": "[待翻譯] 聯絡我們"
+      "button": "Contact BXR"
     }
   },
   "companyPages": {
-    "empty": "[待翻譯] 資料整理中，目前尚無已公開的內容",
-    "hint": "[待翻譯] 如需進一步了解，歡迎與我們聯絡",
-    "cta": "[待翻譯] 聯絡我們",
+    "empty": "Contact BXR for further information.",
+    "hint": "Contact BXR for further information.",
+    "cta": "Contact BXR",
     "download": "[待翻譯] 下載",
     "date": "[待翻譯] 日期",
     "category": "[待翻譯] 分類",

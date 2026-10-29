@@ -1,14 +1,14 @@
 {
   "tw": {
     "title": "企業社會責任",
-    "lead": "讓科技不只創造價值，更成為守護社會的力量。",
+    "lead": "讓科技創造價值，成為守護社會的力量。",
     "heading": "CSR 核心理念",
     "read": "閱讀完整內容",
     "back": "返回企業社會責任",
     "principles": [
-      "全球動力科技（Big x Reality）相信，科技的價值不僅在於提升產業效率與技術能力，更在於如何回應社會需求，為下一代創造更安全、更具韌性的未來。",
-      "我們以 AI、XR 與沉浸式模擬技術為核心，持續探索科技在全民國防、防災教育、校園學習及社會安全領域的應用，讓原本受到場地、設備與風險限制的訓練，轉化為更安全、可重複且具有互動性的學習體驗。",
-      "從校園中的全民國防情境課程，到教育展會的沉浸式體驗，我們希望讓科技走出專業訓練場域，成為更多人理解風險、建立判斷力與提升應變能力的工具。"
+      "全球動力科技（Big x Reality）重視科技在產業效率、技術能力與社會需求上的價值，致力於為下一代創造更安全、更具韌性的未來。",
+      "BXR 以 AI、XR 與沉浸式模擬技術為核心，持續探索全民國防、防災教育、校園學習及社會安全領域的應用，透過受控情境提供安全、可重複且具有互動性的學習體驗。",
+      "從校園中的全民國防情境課程，到教育展會的沉浸式體驗，BXR 期望將科技應用拓展至更多學習場域，協助社會大眾理解風險、建立判斷力與提升應變能力。"
     ],
     "topics": [
       "全民國防與教育推廣",
@@ -26,13 +26,13 @@
   "en": {
     "title": "Corporate Social Responsibility",
     "lead": "Technology that creates value and contributes to a safer, more resilient society.",
-    "heading": "Our CSR Philosophy",
+    "heading": "BXR CSR Philosophy",
     "read": "Read the full story",
     "back": "Back to Corporate Social Responsibility",
     "principles": [
-      "At Big x Reality, we believe the value of technology goes beyond operational efficiency and technical advancement. It also lies in responding to societal needs and helping build a safer, more resilient future for the next generation.",
-      "Through AI, XR, and immersive simulation technologies, we explore applications in national defense awareness, disaster preparedness, school education, and public safety. Our goal is to make scenario-based learning safer, more repeatable, and more accessible, even when conventional training is constrained by facilities, equipment, or operational risks.",
-      "From immersive learning activities in schools to public education exhibitions, we aim to extend simulation technologies beyond specialized training environments and help more people develop risk awareness, judgment, and response capabilities."
+      "Big x Reality values the role of technology in operational efficiency, technical advancement and societal needs, and seeks to help build a safer, more resilient future for the next generation.",
+      "Through AI, XR, and immersive simulation technologies, BXR explores applications in national defense awareness, disaster preparedness, school education, and public safety. Controlled scenarios support safe, repeatable and accessible learning experiences.",
+      "From immersive learning activities in schools to public education exhibitions, BXR aims to bring simulation technologies to a wider range of learning environments and help people develop risk awareness, judgment, and response capabilities."
     ],
     "topics": [
       "National Defense Awareness & Education",
@@ -54,8 +54,8 @@
     "read": "記事全文を読む",
     "back": "企業の社会的責任に戻る",
     "principles": [
-      "Big x Realityは、技術の価値は産業の効率化や技術力の向上だけでなく、社会の課題に応え、次世代のためにより安全で強靭な未来を築くことにもあると考えています。",
-      "私たちはAI、XR、没入型シミュレーション技術を活用し、国防意識の啓発、防災教育、学校教育、公共安全などの分野における応用を推進しています。施設や設備、訓練時のリスクによる制約を軽減し、安全で繰り返し学べる体験型の教育環境を目指しています。",
+      "Big x Realityは、産業の効率化、技術力の向上、社会の課題への対応における技術の価値を重視し、次世代のためにより安全で強靭な未来の実現を目指しています。",
+      "BXRはAI、XR、没入型シミュレーション技術を活用し、国防意識の啓発、防災教育、学校教育、公共安全などの分野における応用を推進しています。管理されたシナリオを通じて、安全で繰り返し学べる体験型の教育環境を目指しています。",
       "学校での体験型学習から教育展示会での技術紹介まで、専門的な訓練施設にとどまらず、より多くの人々がリスクを理解し、判断力と対応力を身につけられるよう取り組んでいます。"
     ],
     "topics": [

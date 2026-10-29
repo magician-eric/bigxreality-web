@@ -11,13 +11,13 @@
   }
 }
 ---
-Big x Reality (BXR) brings together a multidisciplinary team with expertise in technology research, product development, project delivery, and market applications. We turn XR, simulation training, and intelligent interaction technologies into solutions that address practical needs.
+Big x Reality (BXR) brings together a multidisciplinary team with expertise in technology research, product development, project delivery, and market applications. The team turns XR, simulation training, and intelligent interaction technologies into solutions that address practical needs.
 
-From requirements analysis and technology integration to system deployment and application outreach, our team combines specialized expertise with close collaboration to provide comprehensive technology and service support for defense, policing, firefighting, education, and other industries.
+From requirements analysis and technology integration to system deployment and application outreach, the BXR team combines specialized expertise with close collaboration to provide comprehensive technology and service support for defense, policing, firefighting, education, and other industries.
 
 ## Technology & R&D
 
-We combine expertise in XR, simulation training, intelligent interaction, and hardware and software development. Through research, system integration, and continuous improvement, we develop innovative technical solutions for different application scenarios.
+BXR combines expertise in XR, simulation training, intelligent interaction, and hardware and software development. Research, system integration, and continuous improvement support innovative technical solutions for different application scenarios.
 
 ## Products & Projects
 
@@ -25,4 +25,4 @@ From requirements analysis, product planning, and system design to project execu
 
 ## Market & Business
 
-We develop a deep understanding of the needs of defense, policing, firefighting, education, and industrial markets. Market analysis, customer communication, and domestic and international business development support technology adoption, industry collaboration, and market growth.
+BXR develops a deep understanding of the needs of defense, policing, firefighting, education, and industrial markets. Market analysis, customer communication, and domestic and international business development support technology adoption, industry collaboration, and market growth.
