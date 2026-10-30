@@ -10,10 +10,11 @@ const typeLabel=({tw:"概念視覺",en:"Concept visual",jp:"コンセプトビ�
 // avif/webp sources; the original format stays the <img> fallback. No width above the original is generated.
 const widths=[320,480,640,800,1024,1280,1600].filter(w=>w<src.width).concat(src.width);
 const fallbackFormat=src.format==='jpg'?'jpeg':src.format;
-// The backdrop is blurred 18px: a 64px webp written into the HTML is enough and needs no client script.
-const backdrop=await getImage({src,width:Math.min(64,src.width),format:'webp'});
+// The blurred backdrop only shows around 'contain' images (opaque 'cover' images hide it). Under an 18px blur
+// a 64px webp written into the HTML is enough and needs no client script.
+const backdrop=presentation.fit==='contain'?await getImage({src,width:Math.min(64,src.width),format:'webp'}):undefined;
 ---
-<span class="asset-frame" style={`--asset-backdrop:url('${backdrop.src}')`}>
+<span class="asset-frame" style={backdrop&&`--asset-backdrop:url('${backdrop.src}')`}>
  <Picture src={src} alt={alt} formats={['avif','webp']} fallbackFormat={fallbackFormat} widths={widths} sizes={sizes} width={src.width} height={src.height}
   loading={loading} decoding="async" fetchpriority={priority?'high':undefined}
   style={`object-fit:${presentation.fit};object-position:${presentation.position}`} data-primary-image={presentation.file} />
