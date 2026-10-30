@@ -109,7 +109,7 @@ const ogImage = base.seo?.ogImage ?? (heroReady ? hero!.src : undefined);
     <CtaGroup slot="actions" actions={cta.hero} />
   </PageHero>
 
-  <section class="section landing-overview" aria-labelledby="landing-overview-title"><div class="container narrow"><h2 class="t-h2" id="landing-overview-title">{L.headline}</h2>{L.intro?.split(/\n\s*\n/).map(paragraph => <p>{paragraph}</p>)}</div></section>
+  <section class="section landing-overview" aria-labelledby="landing-overview-title"><div class="container narrow"><h2 class="t-h2" id="landing-overview-title"><Text value={L.headline} /></h2>{L.intro?.split(/\n\s*\n/).map(paragraph => <p><Text value={paragraph} /></p>)}</div></section>
 
   <LandingSections lang={lang} L={L} />
 

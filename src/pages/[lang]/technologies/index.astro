@@ -1,4 +1,5 @@
 ---
+import Text from '../../../components/Text.astro';
 import { LANGS, localePath, type Lang } from "../../../i18n";
 import { overviewContent } from "../../../data/technologies-content";
 import { TECHNOLOGY_IDS, LIVE_TECHNOLOGY_IDS } from "../../../lib/technologies";
@@ -24,7 +25,7 @@ const structuredData = [{ "@type": "CollectionPage", name: content.title, descri
       <ol class="technology-list" role="list">
         {TECHNOLOGY_IDS.map((id, index) => <li class:list={["technology", { live: live(id) }]} data-technology-id={id} id={id}>
           <span class="index t-tech" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-          <div class="copy"><h2 class="t-h2">{live(id) ? <a href={localePath(lang, "technologies", id)}>{content.technologies[id].title}</a> : content.technologies[id].title}</h2><p>{content.technologies[id].description}</p></div>
+          <div class="copy"><h2 class="t-h2">{live(id) ? <a href={localePath(lang, "technologies", id)}><Text value={content.technologies[id].title} /></a> : <Text value={content.technologies[id].title} />}</h2><p><Text value={content.technologies[id].description} /></p></div>
           {live(id) && <a class="explore" href={localePath(lang, "technologies", id)} aria-label={`${labels[lang]} · ${content.technologies[id].title}`}>{labels[lang]} <span aria-hidden="true">↗</span></a>}
         </li>)}
       </ol>

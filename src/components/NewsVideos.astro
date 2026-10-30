@@ -1,4 +1,5 @@
 ---
+import Text from './Text.astro';
 import type {Lang} from '../i18n';
 import type {newsMedia} from '../lib/news-media';
 interface Props {lang:Lang;videos:ReturnType<typeof newsMedia>['videos']}
@@ -6,9 +7,9 @@ const {lang,videos}=Astro.props;
 const t={tw:{heading:'相關影片',load:'載入播放器',link:'開啟影片連結'},en:{heading:'Videos',load:'Load player',link:'Open video link'},jp:{heading:'関連動画',load:'プレーヤーを読み込む',link:'動画リンクを開く'}}[lang];
 ---
 <section class="news-videos" data-news-videos hidden={videos.length===0} aria-label={t.heading}>
-<h2 class="t-h2">{t.heading}</h2>
+<h2 class="t-h2"><Text value={t.heading} /></h2>
 {videos.map(video=><div class="video-item">
-  {video.title?.[lang]&&<h3 class="t-h3">{video.title[lang]}</h3>}
+  {video.title?.[lang]&&<h3 class="t-h3"><Text value={video.title[lang]} /></h3>}
   {video.type==='local'?<video controls playsinline preload="metadata" poster={video.poster} aria-label={video.title?.[lang]??t.heading}><source src={video.url} type={video.url.endsWith('.webm')?'video/webm':'video/mp4'} /><a href={video.url}>{t.link}</a></video>:<>
     {video.embed&&<div class="player"><button type="button" data-video-player={video.embed} data-video-title={video.title?.[lang]??`${video.type} ${t.heading}`}>{t.load}</button></div>}
     <a href={video.url} target="_blank" rel="noopener noreferrer">{t.link} ({video.type==='youtube'?'YouTube':'Facebook'}) ↗</a>

@@ -41,7 +41,9 @@ jobs:
         if: always()
         with:
           name: visual-copy-review
-          path: docs/reviews/visual-copy/
+          path: |
+            docs/reviews/visual-copy/
+            docs/reviews/typography/
           retention-days: 14
       - run: npm run qa:ui-v1-preview
       - run: npm run qa:client-logos
