@@ -133,7 +133,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
       </div>
       {cover && (
         <figure class="container cover">
-          <ProductImage src={cover.src} alt={cover.alt} loading="eager" priority />
+          <ProductImage src={cover.src} alt={cover.alt} loading="eager" priority sizes="(max-width: 1279px) calc(100vw - 32px), 1200px" />
         </figure>
       )}
     </header>

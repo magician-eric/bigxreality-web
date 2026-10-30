@@ -17,7 +17,7 @@ const { copy, primaryHref, secondaryHref } = Astro.props;
 const clips = heroClips;
 ---
 <section class="hero" data-theme="dark" aria-labelledby="home-title" data-hero>
-  <div class="media" style={`--poster-backdrop:url('${poster.src}')`}>
+  <div class="media">
     <Picture src={poster} alt={copy.posterAlt} formats={["avif", "webp"]} widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="poster" />
     {clips.map((c) => (
       <video muted playsinline preload="none" aria-label={copy.videoLabel} data-clip hidden style={`--clip-desktop:${c.desktopPosition};--clip-mobile:${c.mobilePosition}`}>

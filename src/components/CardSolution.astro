@@ -20,7 +20,7 @@ const subtitle = headline;
 <article data-interactive-card class={`card sector--${domain}`}>
   <div class="media">
     {resolvedImage
-      ? <ProductImage src={resolvedImage.src} alt={resolvedImage.alt} />
+      ? <ProductImage src={resolvedImage.src} alt={resolvedImage.alt} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 50vw, 584px" />
       : <ImagePlaceholder label={ui.solutionImagePending} />}
   </div>
   <div class="body">

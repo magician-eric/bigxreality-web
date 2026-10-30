@@ -20,7 +20,7 @@ const shown = date && new Intl.DateTimeFormat(INTL_LOCALE[lang], { year: "numeri
 <article data-interactive-card class="card">
   <div class="media">
     {resolvedCover
-      ? <ProductImage src={resolvedCover.src} alt={resolvedCover.alt} />
+      ? <ProductImage src={resolvedCover.src} alt={resolvedCover.alt} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 50vw, 590px" />
       : <EditorialCover title={title} category={type} date={date} />}
   </div>
   <div class="body">

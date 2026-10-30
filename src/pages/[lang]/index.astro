@@ -101,7 +101,7 @@ const website = {
             <article class="feature feature--lead">
               <div class="feature-media">
                 {lead.image
-                  ? <ProductImage src={lead.image.src} alt={lead.image.alt} />
+                  ? <ProductImage src={lead.image.src} alt={lead.image.alt} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 48vw, 684px" />
                   : <ImagePlaceholder label={ui.imagePending} />}
               </div>
               <div class="feature-body">
@@ -118,7 +118,7 @@ const website = {
                 <article class="feature feature--row">
                   <div class="feature-media">
                     {p.image
-                      ? <ProductImage src={p.image.src} alt={p.image.alt} />
+                      ? <ProductImage src={p.image.src} alt={p.image.alt} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 38vw, 205px" />
                       : <ImagePlaceholder label={ui.imagePending} />}
                   </div>
                   <div class="feature-body">
