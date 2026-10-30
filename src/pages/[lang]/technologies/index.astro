@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../../../lib/public-url.ts';
+
 import Text from '../../../components/Text.astro';
 import { LANGS, localePath, type Lang } from "../../../i18n";
 import { overviewContent } from "../../../data/technologies-content";
@@ -16,7 +18,7 @@ const live = (id: string) => (LIVE_TECHNOLOGY_IDS as readonly string[]).includes
 const labels = { tw: "探索技術", en: "Explore Technology", jp: "技術を詳しく見る" };
 const imageSlotLabel = { tw: "核心技術圖片位置", en: "Core technologies image", jp: "コア技術イメージの掲載位置" };
 const breadcrumbs = [{ name: ui.home, path: localePath(lang) }, { name: content.title, path: localePath(lang, "technologies") }];
-const structuredData = [{ "@type": "CollectionPage", name: content.title, description: content.seo.description, url: new URL(localePath(lang, "technologies"), site.url).href, mainEntity: { "@type": "ItemList", itemListElement: TECHNOLOGY_IDS.map((id, index) => ({ "@type": "ListItem", position: index + 1, name: content.technologies[id].title, ...(live(id) ? { url: new URL(localePath(lang, "technologies", id), site.url).href } : {}) })) } }];
+const structuredData = [{ "@type": "CollectionPage", name: content.title, description: content.seo.description, url: publicUrl(localePath(lang, "technologies")).href, mainEntity: { "@type": "ItemList", itemListElement: TECHNOLOGY_IDS.map((id, index) => ({ "@type": "ListItem", position: index + 1, name: content.technologies[id].title, ...(live(id) ? { url: publicUrl(localePath(lang, "technologies", id)).href } : {}) })) } }];
 ---
 <BaseLayout hidePendingFooter lang={lang} title={content.seo.title} description={content.seo.description} pathTemplate="/{lang}/technologies/" alternates={[...LANGS]} headerTheme="dark" current="technologies" breadcrumbs={breadcrumbs} structuredData={structuredData}>
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} eyebrow={content.eyebrow} title={content.title} lead={content.lead} description={content.intro.join("\n\n")} image={technologyMedia("overview",lang)} imageBadge={technologyMedia("overview",lang)?.illustration ? ({tw:"概念視覺",en:"Concept visual",jp:"コンセプトビジュアル"}[lang]) : undefined} />

@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../lib/public-url.ts';
+
 import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { DEFAULT_LANG, HREFLANG, LANGS, OG_LOCALE, HTML_LANG, type Lang } from "../i18n";
@@ -32,7 +34,7 @@ interface Props {
 }
 
 const { lang, title, description, pathTemplate, alternates, noindex = false, ogImage, ogImageAlt, breadcrumbs, product, article, structuredData = [] } = Astro.props;
-const abs = (path: string) => new URL(path, site.url).toString();
+const abs = (path: string) => publicUrl(path).toString();
 const pathFor = (l: Lang) => pathTemplate.replace("{lang}", l);
 const canonical = abs(pathFor(lang));
 const fullTitle = seoTitle(title);

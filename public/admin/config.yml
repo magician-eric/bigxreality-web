@@ -2,7 +2,7 @@
 backend:
   name: github
   repo: magician-eric/bigxreality-web
-  branch: feature/sveltia-cms
+  branch: main
   auth_methods:
     - token
 publish_mode: editorial_workflow
@@ -40,7 +40,7 @@ collections:
     label: 最新消息 · 繁體中文（TW）
     folder: src/content/news/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -64,6 +64,7 @@ collections:
         required: false
         default: true
         widget: boolean
+        hint: TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。
       - &a3
         name: publishDate
         label: 發布日期（未知請留空）
@@ -398,7 +399,7 @@ collections:
     label: 最新消息 · English（EN）
     folder: src/content/news/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -448,7 +449,7 @@ collections:
     label: 最新消息 · 日本語（JP）
     folder: src/content/news/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -498,7 +499,7 @@ collections:
     label: 技術專欄 · 繁體中文（TW）
     folder: src/content/insights/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -522,6 +523,7 @@ collections:
         required: false
         default: true
         widget: boolean
+        hint: TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。
       - &a35
         name: publishDate
         label: 發布日期（未知請留空）
@@ -722,7 +724,7 @@ collections:
     label: 技術專欄 · English（EN）
     folder: src/content/insights/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -757,7 +759,7 @@ collections:
     label: 技術專欄 · 日本語（JP）
     folder: src/content/insights/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -792,7 +794,7 @@ collections:
     label: 產品介紹 · 繁體中文（TW）
     folder: src/content/products/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: hero.name
@@ -816,6 +818,7 @@ collections:
         required: false
         default: true
         widget: boolean
+        hint: TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。
       - &a52
         name: publishDate
         label: 發布日期（未知請留空）
@@ -1885,7 +1888,7 @@ collections:
     label: 產品介紹 · English（EN）
     folder: src/content/products/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: hero.name
@@ -1924,7 +1927,7 @@ collections:
     label: 產品介紹 · 日本語（JP）
     folder: src/content/products/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: hero.name
@@ -1963,7 +1966,7 @@ collections:
     label: 解決方案 · 繁體中文（TW）
     folder: src/content/solutions/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: name
@@ -1987,6 +1990,7 @@ collections:
         required: false
         default: true
         widget: boolean
+        hint: TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。
       - &a73
         name: order
         label: 排序
@@ -2905,7 +2909,7 @@ collections:
     label: 解決方案 · English（EN）
     folder: src/content/solutions/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: name
@@ -2944,7 +2948,7 @@ collections:
     label: 解決方案 · 日本語（JP）
     folder: src/content/solutions/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: name
@@ -2983,7 +2987,7 @@ collections:
     label: 案例研究 · 繁體中文（TW）
     folder: src/content/case-studies/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -3007,6 +3011,7 @@ collections:
         required: false
         default: true
         widget: boolean
+        hint: TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。
       - &a94
         name: publishDate
         label: 發布日期（未知請留空）
@@ -3296,7 +3301,7 @@ collections:
     label: 案例研究 · English（EN）
     folder: src/content/case-studies/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -3339,7 +3344,7 @@ collections:
     label: 案例研究 · 日本語（JP）
     folder: src/content/case-studies/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -4096,7 +4101,7 @@ collections:
     label: 文章標籤 · 繁體中文（TW）
     folder: src/content/tags/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: name
@@ -4136,7 +4141,7 @@ collections:
     label: 文章標籤 · English（EN）
     folder: src/content/tags/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: name
@@ -4158,7 +4163,7 @@ collections:
     label: 文章標籤 · 日本語（JP）
     folder: src/content/tags/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: name
@@ -4180,7 +4185,7 @@ collections:
     label: 投資人資訊 · 繁體中文（TW）
     folder: src/content/investor-items/tw
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -4204,6 +4209,7 @@ collections:
         required: false
         default: true
         widget: boolean
+        hint: TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。
       - &a130
         name: publishDate
         label: 發布日期（未知請留空）
@@ -4277,7 +4283,7 @@ collections:
     label: 投資人資訊 · English（EN）
     folder: src/content/investor-items/en
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title
@@ -4305,7 +4311,7 @@ collections:
     label: 投資人資訊 · 日本語（JP）
     folder: src/content/investor-items/jp
     create: true
-    delete: false
+    delete: true
     extension: md
     format: frontmatter
     identifier_field: title

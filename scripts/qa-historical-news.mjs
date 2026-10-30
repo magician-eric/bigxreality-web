@@ -22,7 +22,7 @@ try{
    links.push(...pageLinks);
    assert.equal(await page.locator('#article-grid .editorial-cover').count(),pageLinks.filter(href=>!ready(href.split('/').filter(Boolean).at(-1),lang)).length);
    assert.ok(!(await page.locator('main').innerText()).includes('[待翻譯]'));
-   assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),'https://www.bigxreality.com'+route);
+   assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),'https://magician-eric.github.io/bigxreality-web'+route);
   }
   assert.equal(new Set(links).size,published.filter(id=>fs.existsSync(`src/content/news/${lang}/${id}.md`)).length);
   for(const r of records){

@@ -1,15 +1,15 @@
 # bigxreality-web
 
-Big x Reality 官網 2.0（Astro 7.3.8，純靜態輸出）。規劃與決定紀錄見 [`docs/PLAN.md`](docs/PLAN.md)。
+Big x Reality 官網：Astro＋GitHub main＋Sveltia CMS＋GitHub Actions＋GitHub Pages。唯一架構規範：[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。舊 EmDash／Cloudflare 不是正式 CMS 或部署；仍有待清理的建置耦合，詳移除計畫。
 
 ## 本機執行
 
-需要 Node 22.12 以上。
+使用 `.node-version` 的 Node 22 系列；本機建議至少 22.18，以支援現有原生 TypeScript 腳本。
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321/tw/products/
-npm run build      # 輸出到 dist/（會先產生字型與 favicon）
+npm run pages:build # Git 內容建置、封裝 dist-pages、正式 Pages 檢查
 ```
 
 ## 品質檢查
@@ -31,7 +31,7 @@ npm run build      # 輸出到 dist/（會先產生字型與 favicon）
 
 ## 內容
 
-- 內容在 `src/content/<collection>/<tw|en|jp>/<slug>.md`（Decap CMS `multiple_folders` 結構）。
+- 內容在 `src/content/<collection>/<tw|en|jp>/<slug>.md`（Sveltia 三語明確集合，共用原 slug）。
 - 排序、領域、關聯、日期、草稿這些結構欄位只讀 `tw` 檔。
 - 沒有填的欄位：整個區塊不顯示；填 `[待提供]`：區塊照常顯示並標出缺什麼。
 - 介面文字在 `src/content/ui/<lang>.json`，站點設定在 `src/data/site.json`。

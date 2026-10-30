@@ -1,3 +1,4 @@
+import { publicUrl, artifactPath } from '../src/lib/public-url.ts';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -21,17 +22,17 @@ try {
       return {titles:[...doc.querySelectorAll('title')].map(x=>x.textContent),descriptions:[...doc.querySelectorAll('meta[name="description"]')].map(x=>x.content),canonical:[...doc.querySelectorAll('link[rel="canonical"]')].map(x=>x.getAttribute('href')),noindex:!!doc.querySelector('meta[name="robots"][content*="noindex"]'),alternates:[...doc.querySelectorAll('link[rel="alternate"][hreflang]')].map(x=>[x.getAttribute('hreflang'),x.getAttribute('href')]),ogTitle:value('meta[property="og:title"]'),ogDescription:value('meta[property="og:description"]'),twitterTitle:value('meta[name="twitter:title"]'),twitterDescription:value('meta[name="twitter:description"]'),ogImage:value('meta[property="og:image"]'),ogAlt:value('meta[property="og:image:alt"]'),keywords:!!doc.querySelector('meta[name="keywords"]'),graph:JSON.parse(doc.querySelector('script[type="application/ld+json"]').textContent)['@graph']};
     },item.head);
   }
-  const byUrl=new Map(pages.map(p=>[new URL(p.url,site.url).href,p]));
+  const byUrl=new Map(pages.map(p=>[publicUrl(p.url).href,p]));
   for(const {url,meta:m} of pages) {
     try {
       assert.equal(m.titles.length,1);assert.equal(m.descriptions.length,1);assert.equal(m.canonical.length,1);
-      assert.equal(m.canonical[0],new URL(url,site.url).href);
+      assert.equal(m.canonical[0],publicUrl(url).href);
       assert.ok(m.titles[0].endsWith(' | Big x Reality'));
       assert.ok(!/[|｜]\s*(?:BXR|Big x Reality)\s*[|｜]/i.test(m.titles[0]));
       assert.ok(m.descriptions[0].trim());
       assert.ok(!/\[待|undefined|\bnull\b/.test([m.titles[0],m.descriptions[0],m.ogAlt].join(' ')));
       assert.equal(m.ogTitle,m.titles[0]);assert.equal(m.twitterTitle,m.titles[0]);assert.equal(m.ogDescription,m.descriptions[0]);assert.equal(m.twitterDescription,m.descriptions[0]);
-      assert.equal(m.keywords,false);assert.ok(m.ogAlt);assert.ok(await fs.stat(path.join(DIST,new URL(m.ogImage).pathname)));
+      assert.equal(m.keywords,false);assert.ok(m.ogAlt);assert.ok(await fs.stat(path.join(DIST,artifactPath(m.ogImage))));
       // CMS-authored SEO is checked against its current Git source, while legacy expectations remain the fallback.
       let copy=approved[url];
       const [lang, section, slug] = url.split('/').filter(Boolean);
@@ -42,9 +43,9 @@ try {
       if(copy){assert.equal(m.titles[0],normalize(copy.title));assert.equal(m.descriptions[0],copy.description);}
       const pattern=url.replace(/^\/(tw|en|jp)\//,'/{lang}/');
       const matching=pages.filter(p=>!p.meta.noindex && p.url.replace(/^\/(tw|en|jp)\//,'/{lang}/')===pattern);
-      const expected=m.noindex?[]:matching.map(p=>[({tw:'zh-TW',en:'en',jp:'ja'})[p.url.split('/')[1]],new URL(p.url,site.url).href]);
+      const expected=m.noindex?[]:matching.map(p=>[({tw:'zh-TW',en:'en',jp:'ja'})[p.url.split('/')[1]],publicUrl(p.url).href]);
       const defaultPage=matching.find(p=>p.url.startsWith('/en/'));
-      if(!m.noindex && defaultPage)expected.push(['x-default',new URL(defaultPage.url,site.url).href]);
+      if(!m.noindex && defaultPage)expected.push(['x-default',publicUrl(defaultPage.url).href]);
       assert.deepEqual([...m.alternates].sort(),expected.sort());
       const principal=m.graph.filter(n=>['WebPage','CollectionPage','Product','Article','NewsArticle'].includes(n['@type']));assert.equal(principal.length,1);
       for(const node of m.graph)if(node['@type']==='BreadcrumbList')for(const item of node.itemListElement)assert.ok(byUrl.has(item.item),item.item);
@@ -62,7 +63,7 @@ try {
   const visible=html=>html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g,'');
   const warnings=[];
   for(const {url,html,meta:m} of pages) {
-    const l=url.split('/')[1], abs=new URL(url,site.url).href;
+    const l=url.split('/')[1], abs=publicUrl(url).href;
     try {
       assert.equal(html.match(/<html lang="([^"]+)"/)?.[1],HTML_LANG[l],'html lang');
       assert.equal(html.match(/property="og:locale" content="([^"]+)"/)?.[1],OG_LOCALE[l],'og:locale');

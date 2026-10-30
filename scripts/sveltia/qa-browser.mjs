@@ -21,7 +21,7 @@ const server=createServer(async(req,res)=>{
 });
 await new Promise(r=>server.listen(4398,'127.0.0.1',r));
 const browser=await chromium.launch({executablePath:CHROMIUM});
-const originals={'.git/HEAD':'ref: refs/heads/feature/sveltia-cms\n','src/data/news-media.json':await readFile(path.join(repo,'src/data/news-media.json'),'utf8')};
+const originals={'.git/HEAD':'ref: refs/heads/main\n','src/data/news-media.json':await readFile(path.join(repo,'src/data/news-media.json'),'utf8')};
 async function collect(folder){for(const item of await readdir(path.join(repo,folder),{withFileTypes:true})){const file=folder+'/'+item.name;if(item.isDirectory())await collect(file);else if(file.endsWith('.md'))originals[file]=await readFile(path.join(repo,file),'utf8');}}
 if(existsSync(path.join(repo,'src/data/typography.json')))originals['src/data/typography.json']=await readFile(path.join(repo,'src/data/typography.json'),'utf8');
 await collect('src/content');
@@ -158,11 +158,20 @@ try{
   for(const lang of ['tw','en','jp']) { assert.deepEqual(saved[lang].terms,before[lang].terms);assert.deepEqual(saved[lang].headings??[],before[lang].headings??[]); }
  }
  await page.screenshot({path:path.join(cache,'news-desktop.png')});
+ // Deletion is confined to the newly created, non-public isolated test entry.
+ await page.getByRole('treeitem',{name:'隔離測試文章（不會顯示於官網）',exact:true}).click();
+ await page.getByRole('row').filter({hasText:'bxr-cms-browser-qa'}).first().click();
+ await page.getByRole('button',{name:'Show Editor Options'}).click();
+ await page.getByRole('menuitem',{name:/Delete/}).first().click();
+ const deletion=page.getByRole('alertdialog',{name:'Delete Entry'});
+ await deletion.getByRole('button',{name:/Delete/}).click();
+ await page.getByRole('row').filter({hasText:'bxr-cms-browser-qa'}).waitFor({state:'hidden'});
+ assert.equal((await readClone())['cms-test-content/bxr-cms-browser-qa.md'],undefined);
  assert.deepEqual(errors,[]);
  // Sign out before checking the phone viewport; never reload a remembered OPFS handle.
  await page.getByRole('button',{name:'Show Account Menu'}).click();await page.getByRole('menuitem',{name:'Sign Out',exact:true}).click();
  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Sign In Using Access Token'}).waitFor();
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.screenshot({path:path.join(cache,'login-mobile.png')});
- console.log('PASS: real pinned CMS config loads at /admin/ and Pages subpath; token form; local-clone create/edit/image-byte upload; existing article save plus three new draft news siblings, correct optional fields, unchanged translations and lossless media JSON save; typography JSON edit with unchanged language lists; mobile login. Live GitHub auth/write not tested.');
+ console.log('PASS: real pinned CMS config loads at /admin/ and Pages subpath; token form; local-clone create/edit/image-byte upload; existing article save plus three new draft news siblings, correct optional fields, unchanged translations and lossless media JSON save; typography JSON edit with unchanged language lists; isolated deletion; mobile login. Live GitHub auth/write not tested.');
 }finally{await browser.close();server.close();}

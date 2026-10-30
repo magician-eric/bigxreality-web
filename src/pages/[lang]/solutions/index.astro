@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../../../lib/public-url.ts';
+
 /** /[lang]/solutions/ — the four market domains (docs/PHASE-2-PLAN.md §4). */
 import { getEntry } from "astro:content";
 import { LANGS, localePath, type Lang } from "../../../i18n";
@@ -32,10 +34,10 @@ const breadcrumbs = [
 const itemList = {
   "@type": "CollectionPage",
   name: plain(page.hero.title),
-  url: new URL(localePath(lang, "solutions"), site.url).toString(),
+  url: publicUrl(localePath(lang, "solutions")).toString(),
   mainEntity: {
     "@type": "ItemList",
-    itemListElement: solutions.map((s, i) => ({ "@type": "ListItem", position: i + 1, url: new URL(localePath(lang, "solutions", s.slug), site.url).toString() })),
+    itemListElement: solutions.map((s, i) => ({ "@type": "ListItem", position: i + 1, url: publicUrl(localePath(lang, "solutions", s.slug)).toString() })),
   },
 };
 ---

@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../lib/public-url.ts';
+
 /**
  * Article page shared by news, insights and case studies (docs/PHASE-2-PLAN.md §4):
  * light header (breadcrumb, type · date, H1, summary, cover) → news event/source or
@@ -77,7 +79,7 @@ const copy = (await getEntry("pages", `${lang}/${collection}`))?.data;
 
 // JSON-LD never carries placeholder text.
 const clean = (s: string | undefined) => (s && !s.includes("[待") ? plain(s) : undefined);
-const ldImage = cover ? new URL((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src, site.url).toString() : undefined;
+const ldImage = cover ? publicUrl((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src).toString() : undefined;
 const articleLd: Record<string, unknown> = {
   "@type": collection === "news" && news?.category !== "insight" ? "NewsArticle" : "Article",
   headline: clean(d.title),
@@ -85,7 +87,7 @@ const articleLd: Record<string, unknown> = {
   ...(base.publishDate ? { datePublished: base.publishDate.toISOString() } : {}),
   ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
   inLanguage: HTML_LANG[lang],
-  url: new URL(articleHref(article), site.url).toString(),
+  url: publicUrl(articleHref(article)).toString(),
   publisher: { "@id": `${site.url}/#organization` },
   ...(ldImage ? { image: ldImage } : {}),
   ...(clean(author) ? { author: { "@type": "Person", name: clean(author) } } : { author: { "@id": `${site.url}/#organization` } }),

@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../lib/public-url.ts';
+
 /**
  * News / Insights / Case Studies list (docs/PHASE-2-PLAN.md §4, §11.4).
  * One template for all three: `listing.pageSize` in site.json decides whether the
@@ -50,7 +52,7 @@ const breadcrumbs = [
   { name: listName, path: localePath(lang, collection) },
   ...(page > 1 ? [{ name: format(ui.listing.page, { n: page }), path: localePath(lang, collection, "page", String(page)) }] : []),
 ];
-const abs = (p: string) => new URL(p, site.url).toString();
+const abs = (p: string) => publicUrl(p).toString();
 const collectionLd = {
   "@type": "CollectionPage",
   name: plain(copy.hero.title),

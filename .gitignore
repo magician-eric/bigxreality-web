@@ -20,3 +20,6 @@ public/media/*
 src/data/.cms-site.json
 dist-fixtures/
 dist-preview/
+
+# Official GitHub Pages artifact (legacy adapter client output is packaged once)
+dist-pages/

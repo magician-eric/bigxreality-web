@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../../../lib/public-url.ts';
+
 import Text from '../../../components/Text.astro';
 import { LANGS, HTML_LANG, localePath, type Lang } from "../../../i18n";
 import { technologyRelations, technologyRelationNotes } from "../../../data/technology-relations";
@@ -34,7 +36,7 @@ const imageSlotLabel = { tw: "技術應用圖片位置", en: "Technology applica
 const breadcrumbs = [{ name: ui.home, path: localePath(lang) }, { name: ui.nav.technologies, path: localePath(lang, "technologies") }, { name: content.title, path: localePath(lang, "technologies", slug) }];
 const faqTitle = { tw: "常見問題", en: "Frequently Asked Questions", jp: "よくある質問" };
 // BXR is not a government/health authority: omit FAQPage rich-result markup, retain full visible FAQ HTML.
-const structuredData = [{ "@type": "WebPage", name: content.title, description: content.seo.description, inLanguage: HTML_LANG[lang], url: new URL(localePath(lang, "technologies", slug), site.url).href, about: { "@type": "Thing", name: content.title }, isPartOf: { "@type": "CollectionPage", url: new URL(localePath(lang, "technologies"), site.url).href } }];
+const structuredData = [{ "@type": "WebPage", name: content.title, description: content.seo.description, inLanguage: HTML_LANG[lang], url: publicUrl(localePath(lang, "technologies", slug)).href, about: { "@type": "Thing", name: content.title }, isPartOf: { "@type": "CollectionPage", url: publicUrl(localePath(lang, "technologies")).href } }];
 ---
 <BaseLayout hidePendingFooter lang={lang} title={content.seo.title} description={content.seo.description} pathTemplate={`/{lang}/technologies/${slug}/`} alternates={[...LANGS]} headerTheme="dark" current="technologies" breadcrumbs={breadcrumbs} structuredData={structuredData}>
   <div class={`technology-page technology-${slug}`}>

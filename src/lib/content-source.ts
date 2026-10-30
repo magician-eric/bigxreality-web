@@ -1,6 +1,6 @@
 /**
  * Where content comes from at build time (BXR_CONTENT_SOURCE):
- * - "emdash"     production: published entries from the EmDash CMS (Cloudflare D1/R2)
+ * - "emdash"     historical/recovery only: published entries from the EmDash CMS (Cloudflare D1/R2)
  * - "bootstrap"  first deployment only: the Markdown in src/content, so the Worker (and with it
  *                the EmDash admin) can go live before the CMS has any content. Every page is
  *                noindex and robots.txt blocks crawlers. scripts/cms/check-source.mjs refuses
@@ -8,7 +8,7 @@
  * - "markdown"   src/content Markdown, the phase 1 files kept as a backup; default for local builds
  * - "fixtures"   TEST FIXTURE content in tests/fixtures/content (falls back to src/content per
  *                collection); every page is noindex and nothing is listed in the sitemap
- * Workers Builds (WORKERS_CI=1) accepts only "emdash" and "bootstrap", so test content and
+ * Legacy Workers Builds (WORKERS_CI=1) accepts only "emdash" and "bootstrap", so test content and
  * the Markdown backup can never become the production site.
  */
 export type ContentSource = "emdash" | "bootstrap" | "markdown" | "fixtures";
@@ -24,7 +24,7 @@ export function resolveContentSource(value: string | undefined, ci: boolean): Co
   const v = value ?? "markdown";
   if (!SOURCES.includes(v)) throw new Error(`BXR_CONTENT_SOURCE must be emdash, bootstrap, markdown or fixtures (got "${v}")`);
   if (ci && !PRODUCTION_SOURCES.includes(v)) {
-    throw new Error(`Production builds must read content from EmDash (BXR_CONTENT_SOURCE=emdash; bootstrap only for the first deployment), got "${v}"`);
+    throw new Error(`Legacy Workers builds require their historical EmDash source (BXR_CONTENT_SOURCE=emdash; bootstrap only for the first deployment), got "${v}"`);
   }
   return v as ContentSource;
 }
@@ -35,7 +35,7 @@ export function contentSource(): ContentSource {
   return resolveContentSource(v, ci);
 }
 
-/** BXR_PREVIEW=1: the GitHub Pages review site (docs/PREVIEW.md), never indexed. */
+/** BXR_PREVIEW=1 is a historical non-production profile; official Pages must set 0. */
 export const isPreviewBuild = () => (typeof __BXR_PREVIEW__ === "boolean" ? __BXR_PREVIEW__ : process.env.BXR_PREVIEW === "1");
 /** Builds that must never be indexed: test fixtures, the temporary bootstrap site and the preview site. */
 export const isNoIndexBuild = () => isPreviewBuild() || ["fixtures", "bootstrap"].includes(contentSource());
