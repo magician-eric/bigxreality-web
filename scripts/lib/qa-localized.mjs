@@ -1,3 +1,4 @@
+import {publicUrl} from '../../src/lib/public-url.ts';
 // Shared checks for the English and Japanese product and solution pages (qa-english.mjs, qa-japanese.mjs).
 // The Traditional Chinese pages are the master: every localized page must render its own content file
 // (headline, hero button, name), keep the same sections and item counts as the Chinese page, carry the
@@ -70,7 +71,7 @@ export async function runLocalizedQa({ lang, port, foreign, nav, scope, htmlLang
       check(`${url}: same sections and items as the Chinese page`, JSON.stringify(o) === JSON.stringify(t), `${JSON.stringify(o)} vs ${JSON.stringify(t)}`);
       check(`${url}: no back link (the Chinese page has none)`, (await page.locator(".back a").count()) === 0);
       const raw = html(`${lang}/${kind}/${slug}`);
-      check(`${url}: indexable, canonical and hreflang`, !/name="robots" content="noindex"/.test(raw) && raw.includes(`rel="canonical" href="https://www.bigxreality.com${url}"`) && raw.includes('hreflang="zh-TW"') && !raw.includes("translation-banner"));
+      check(`${url}: indexable, canonical and hreflang`, !/name="robots" content="noindex"/.test(raw) && raw.includes(`rel="canonical" href="${publicUrl(url).href}"`) && raw.includes('hreflang="zh-TW"') && !raw.includes("translation-banner"));
       const empties = await page.locator("main section").evaluateAll((ss) => ss.filter((s) => !s.innerText.trim()).length);
       check(`${url}: no empty sections`, empties === 0);
       if (kind === "products") {
