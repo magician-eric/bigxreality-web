@@ -1,6 +1,6 @@
 # 詢問表單第一階段驗收
 
-日期：2026-10-30（台北）；基準 main：04358562f97ef7cfffeb96f6c8ba42a0820035d0。分支：feature/customer-inquiry-gas。
+日期：2026-10-30（台北）；初始基準 main：04358562f97ef7cfffeb96f6c8ba42a0820035d0；同步最新 main：1426d63dd3204f01ca7927d523915fd8e0717918（已合併的圖片壓縮 PR，本分支保留其結果）。分支：feature/customer-inquiry-gas。
 
 ## 已通過（本機）
 
