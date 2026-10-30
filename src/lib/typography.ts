@@ -12,7 +12,7 @@ export function typographyParts(text:string, lang:string, custom?:TypographyRule
  if(!terms.length)return [{text,keep:false}];
  const alternatives=terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|');
  // Keep closing punctuation with its phrase, and opening punctuation with what follows.
- const pattern=new RegExp('[（「『【《〈〔〖〘〚(]*(?:'+alternatives+')[，。、；：！？）」』】》〉〕〗〙〛,.!?;:%)]*','gu');
+ const pattern=new RegExp('[（「『【《〈〔〖〘〚(]*(?:'+alternatives+')[．，。、；：！？）」』】》〉〕〗〙〛・·,.!?;:%)]*','gu');
  const result:Array<{text:string;keep:boolean;group?:boolean}>=[];let start=0;
  for(const match of text.matchAll(pattern)){if(match.index>start)result.push({text:text.slice(start,match.index),keep:false});result.push({text:match[0],keep:true});start=match.index+match[0].length;}
  if(start<text.length)result.push({text:text.slice(start),keep:false});return result;

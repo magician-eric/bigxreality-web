@@ -21,3 +21,7 @@ test('language dictionaries stay isolated and unknown locales leave grouping unc
 test('closing and opening CJK punctuation stay with the protected phrase',()=>{
  assert.deepEqual(typographyParts('（環境判讀），模擬訓練。','tw').map(p=>p.text),['（環境判讀），','模擬訓練。']);
 });
+
+test('brand separators remain with the preceding phrase',()=>{
+ assert.ok(typographyParts('真實應變．守護未來','tw').some(p=>p.text==='真實應變．'));
+});

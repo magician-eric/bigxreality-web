@@ -17,7 +17,7 @@ for(const width of[320,375,390,430,768,1024,1440]){await p.setViewportSize({widt
   return{excess,overflow,pageOverflow:document.documentElement.scrollWidth>innerWidth+1,hs,splits,phrases:phraseElements.length};
  });
  assert.equal(result.pageOverflow,false,`${route} @${width} horizontal overflow`);assert.deepEqual(result.overflow,[],`${route} @${width} text overflow`);assert.deepEqual(result.excess,[],`${route} @${width} empty heading space`);assert.deepEqual(result.splits,[],`${route} @${width} protected term split`);
- for(const h of result.hs){const final=h.lines.at(-1);if(h.lines.length>1&&(/^[\u3400-\u9fff\u3040-\u30ff]$/u.test(final)||h.lines.some(line=>/^[，。、；：！？）」』】》]/u.test(line))))reviews.push({route,width,title:h.text,lines:h.lines,reason:'末行單字或標點，建議人工檢視'});}
+ for(const h of result.hs){const final=h.lines.at(-1);if(h.lines.length>1&&(/^[\u3400-\u9fff\u3040-\u30ff]$/u.test(final)||h.lines.some(line=>/^[．，。、；：！？）」』】》・·]/u.test(line))))reviews.push({route,width,title:h.text,lines:h.lines,reason:'末行單字或標點，建議人工檢視'});}
  checked++;headings+=result.hs.length;phrases+=result.phrases;
  }console.log(`checked ${width}: ${checked} page/viewports`);}
 assert.deepEqual(errors,[]);
