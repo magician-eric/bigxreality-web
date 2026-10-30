@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
-// Minimal static server for dist/client/ (the Worker's static assets) (directory index + 404 status), so QA scripts
-// test exactly the files Cloudflare Pages will serve. Run `npm run build` first.
+// Static QA server for the Astro client output (directory index + real 404 status).
+// Project-base publication is separately checked against dist-pages. Run npm run build first.
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";

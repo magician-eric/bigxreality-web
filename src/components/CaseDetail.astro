@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../lib/public-url.ts';
+
 /**
  * Case page, one template for every published case (docs/EDITOR-GUIDE.md "成功案例").
  * Hero → facts → background → challenge → solution → application → results → gallery →
@@ -71,7 +73,7 @@ const breadcrumbs = [
   { name: d.title, path: articleHref(article) },
 ];
 const clean = (v: string | undefined) => (v && !v.includes("[待") ? plain(v) : undefined);
-const ldImage = cover ? new URL((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src, site.url).toString() : undefined;
+const ldImage = cover ? publicUrl((await getImage({ src: cover.src, width: 1280, format: "jpg" })).src).toString() : undefined;
 const articleLd: Record<string, unknown> = {
   "@type": "Article",
   headline: clean(d.title),
@@ -79,7 +81,7 @@ const articleLd: Record<string, unknown> = {
   datePublished: published.toISOString(),
   ...(base.updatedAt ? { dateModified: base.updatedAt.toISOString() } : {}),
   inLanguage: HTML_LANG[lang],
-  url: new URL(articleHref(article), site.url).toString(),
+  url: publicUrl(articleHref(article)).toString(),
   publisher: { "@id": `${site.url}/#organization` },
   author: { "@id": `${site.url}/#organization` },
   ...(ldImage ? { image: ldImage } : {}),

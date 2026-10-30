@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../lib/public-url.ts';
+
 import { getEntry } from 'astro:content';
 import { LANGS, localePath, type Lang } from '../i18n';
 import { site } from '../lib/site';
@@ -28,8 +30,8 @@ const breadcrumbs=[{name:ui.home,path:localePath(lang)},{name:ui.nav.news,path:l
 const linkCategory=(category?:string)=>newsListPath(lang,{category,year:filter.year&&selectNews(all,{category,year:filter.year}).length?filter.year:undefined});
 const base=filtered?`news/filter/${filter.category??'all'}/${filter.year??'all'}`:'news';
 const listingLd={
- '@type':'CollectionPage', name:ui.nav.news, url:new URL(newsListPath(lang,filter,page),site.url).toString(),
- mainEntity:{'@type':'ItemList',itemListElement:[...(archive.featured?[archive.featured]:[]),...archive.items].map((a,i)=>({'@type':'ListItem',position:i+1,url:new URL(articleHref(a),site.url).toString()}))},
+ '@type':'CollectionPage', name:ui.nav.news, url:publicUrl(newsListPath(lang,filter,page)).toString(),
+ mainEntity:{'@type':'ItemList',itemListElement:[...(archive.featured?[archive.featured]:[]),...archive.items].map((a,i)=>({'@type':'ListItem',position:i+1,url:publicUrl(articleHref(a)).toString()}))},
 };
 ---
 <BaseLayout lang={lang} title={title} description={suffix?`${copy.seo.description} ${suffix}`:copy.seo.description} pathTemplate={path} alternates={alternates} fallbackPath="/{lang}/news/" noindex={filtered||own.length===0} pendingTranslation={copy.translationStatus==='pending'} current="resources" currentResource="news" headerTheme="dark" breadcrumbs={breadcrumbs} structuredData={own.length?[listingLd]:[]}>

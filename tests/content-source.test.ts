@@ -9,12 +9,12 @@ import { resolveContentSource, bootstrapDecision } from "../src/lib/content-sour
 const run = promisify(execFile);
 const SCRIPT = path.resolve(import.meta.dirname, "../scripts/cms/check-source.mjs");
 
-test("production (Workers Builds) accepts emdash and bootstrap only", () => {
+test("historical Workers Builds accepts emdash and bootstrap only", () => {
   assert.equal(resolveContentSource("emdash", true), "emdash");
   assert.equal(resolveContentSource("bootstrap", true), "bootstrap");
-  assert.throws(() => resolveContentSource("markdown", true), /Production builds/);
-  assert.throws(() => resolveContentSource("fixtures", true), /Production builds/);
-  assert.throws(() => resolveContentSource(undefined, true), /Production builds/);
+  assert.throws(() => resolveContentSource("markdown", true), /Legacy Workers builds/);
+  assert.throws(() => resolveContentSource("fixtures", true), /Legacy Workers builds/);
+  assert.throws(() => resolveContentSource(undefined, true), /Legacy Workers builds/);
   assert.throws(() => resolveContentSource("draft", false), /must be/);
   assert.equal(resolveContentSource(undefined, false), "markdown");
 });
@@ -56,11 +56,11 @@ test("bootstrap gate: set-up or protected CMS is refused", async () => {
   assert.equal(await gate((res) => res.writeHead(302, { location: "https://x.cloudflareaccess.com" }).end()), false, "Access login redirect");
 });
 
-test("bootstrap gate needs EMDASH_URL in production; other sources pass through", async () => {
+test("bootstrap gate needs EMDASH_URL in the legacy Workers profile; other sources pass through", async () => {
   const noUrl = await run(process.execPath, [SCRIPT], { env: { ...process.env, WORKERS_CI: "1", BXR_CONTENT_SOURCE: "bootstrap", EMDASH_URL: "" } }).then(() => true, () => false);
   assert.equal(noUrl, false);
   const markdown = await run(process.execPath, [SCRIPT], { env: { ...process.env, WORKERS_CI: "1", BXR_CONTENT_SOURCE: "markdown" } }).then(() => true, () => false);
-  assert.equal(markdown, false, "markdown still refused in production");
+  assert.equal(markdown, false, "markdown still refused in the legacy Workers profile");
   const emdash = await run(process.execPath, [SCRIPT], { env: { ...process.env, WORKERS_CI: "1", BXR_CONTENT_SOURCE: "emdash" } }).then(() => true, () => false);
   assert.equal(emdash, true);
 });

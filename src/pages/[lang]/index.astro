@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../../lib/public-url.ts';
+
 /**
  * /[lang]/ — home page. AIDA order: Hero → why simulation → featured products →
  * core technologies → four solutions → case studies → latest news → contact CTA.
@@ -51,9 +53,9 @@ const news = await latestNews(lang);
 const breadcrumbs = [{ name: ui.home, path: localePath(lang) }];
 const website = {
   "@type": "WebSite",
-  "@id": `${new URL(localePath(lang), site.url)}#website`,
+  "@id": `${publicUrl(localePath(lang))}#website`,
   name: site.brand,
-  url: new URL(localePath(lang), site.url).toString(),
+  url: publicUrl(localePath(lang)).toString(),
   inLanguage: HTML_LANG[lang],
   publisher: { "@id": `${site.url}/#organization` },
 };

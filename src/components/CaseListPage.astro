@@ -1,4 +1,6 @@
 ---
+import { publicUrl } from '../lib/public-url.ts';
+
 /**
  * /[lang]/cases/ — the success-case overview. Cards come from the published, client-approved
  * case studies; the filters are built from what those cases use. With no published case the
@@ -31,7 +33,7 @@ const breadcrumbs = [
   { name: ui.home, path: localePath(lang) },
   { name: ui.nav.caseStudies, path: localePath(lang, "case-studies") },
 ];
-const abs = (p: string) => new URL(p, site.url).toString();
+const abs = (p: string) => publicUrl(p).toString();
 const collectionLd = {
   "@type": "CollectionPage",
   name: plain(copy.hero.title),

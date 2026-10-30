@@ -28,14 +28,14 @@ function field(name,input,path='') {
  else throw new Error(`Unsupported Astro field ${path}.${name}: ${d.type}`);
  if(d.type==='string' && !schema.description){const rule=z.toJSONSchema(schema);if(rule.pattern)f.pattern=[rule.pattern,'請依照欄位要求的格式填寫'];}
  if(name==='translationStatus')Object.assign(f,{default:'source'});
- if(name==='draft')f.default=true;
+ if(name==='draft'){f.default=true;f.hint='TW 控制前台公開：勾選表示下架／未公開。CMS 的 Save Draft 只儲存審核分支；Publish 合併 main 後，仍需取消此勾選並完成三語及 CI 才會在官網顯示。';}
  // No invented date when an editor creates an undated historical story.
  if(d.type==='date')delete f.default;
  return f;
 }
 const titleFields={products:'hero.name',solutions:'name',pages:'hero.title',tags:'name'};
 const names={news:'最新消息',insights:'技術專欄',products:'產品介紹',solutions:'解決方案','case-studies':'案例研究',pages:'固定頁面',tags:'文章標籤','investor-items':'投資人資訊'};
-const collections=Object.keys(names).map(name=>({name,label:names[name],folder:`src/content/${name}`,create:name!=='pages',delete:false,extension:'md',format:'frontmatter',
+const collections=Object.keys(names).map(name=>({name,label:names[name],folder:`src/content/${name}`,create:name!=='pages',delete:name!=='pages',extension:'md',format:'frontmatter',
  i18n:true,identifier_field:titleFields[name]??'title',slug:'{{slug}}',
  summary:name==='products'?'{{hero.name}}':name==='solutions'?'{{name}}':name==='pages'?'{{hero.title}}':'{{title}}',
  ...(name==='pages'?{filter:{field:'hero.eyebrow',pattern:'^(?!發展歷程$|History$|沿革$).*$'}}:{}),
@@ -65,7 +65,7 @@ const localizedCollections=collections.flatMap(collection=>{
   return c;
  });
 });
-const config={backend:{name:'github',repo:'magician-eric/bigxreality-web',branch:'feature/sveltia-cms',auth_methods:['token']},
+const config={backend:{name:'github',repo:'magician-eric/bigxreality-web',branch:'main',auth_methods:['token']},
  publish_mode:'editorial_workflow',output:{omit_empty_optional_fields:true},site_url:'https://magician-eric.github.io/bigxreality-web/',display_url:'https://magician-eric.github.io/bigxreality-web/',
  media_folder:'src/assets/images/news',public_folder:'/src/assets/images/news',
  asset_collections:[{name:'news-images',label:'新聞圖片',media_folder:'src/assets/images/news',public_folder:'/src/assets/images/news'},{name:'product-images',label:'產品與解決方案圖片',media_folder:'src/assets/images/products',public_folder:'/src/assets/images/products'},{name:'content-images',label:'一般內容圖片',media_folder:'src/assets/images/content',public_folder:'/src/assets/images/content'},{name:'news-videos',label:'新聞本地影片',media_folder:'public/media/news',public_folder:'/media/news'}],

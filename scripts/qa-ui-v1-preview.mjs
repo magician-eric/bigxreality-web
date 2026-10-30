@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {chromium} from 'playwright-core';
 import {CHROMIUM} from './lib/serve.mjs';
-const root=path.resolve('dist-preview'),base='/bigxreality-web/';
+const root=path.resolve('dist-pages'),base='/bigxreality-web/';
 const pages=[];function walk(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(entry.name==='index.html')pages.push(file);}}walk(root);
 let references=0;
 for(const file of pages)for(const [,url]of fs.readFileSync(file,'utf8').matchAll(/\b(?:href|src|poster)="(\/[^"\s]+)"/g)){

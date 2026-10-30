@@ -31,8 +31,8 @@ const schema = z.object({
   }),
 });
 
-// In EmDash builds scripts/cms/pull-site.mjs writes the CMS values to .cms-site.json;
-// otherwise the committed site.json (backup) is used.
+// Git site.json is the official authority. The following override is historical
+// EmDash recovery support only; official Pages builds reject that source profile.
 const fromCms = Object.values(import.meta.glob<{ default: unknown }>("../data/.cms-site.json", { eager: true }))[0]?.default;
 export const site = schema.parse(contentSource() === "emdash" && fromCms ? fromCms : backup);
 export type FormKind = keyof typeof site.forms;

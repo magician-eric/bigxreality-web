@@ -1,7 +1,9 @@
 // @ts-check
-// Hybrid site (docs/PHASE-2-PLAN.md §14): public pages are prerendered to static files;
-// the EmDash admin (/_emdash/*) and its API run on demand in the same Cloudflare Worker.
+// Official site: GitHub Pages static artifact, Git content and Sveltia only.
+// The adapter/EmDash integration below are legacy build coupling, pending the
+// separate removal plan; no Worker server artifact is published to GitHub Pages.
 import { defineConfig } from "astro/config";
+import siteMetadata from "./src/data/site.json" with { type: "json" };
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import emdash from "emdash/astro";
@@ -10,7 +12,7 @@ import { bxrCmsPlugin } from "bxr-cms";
 import i18nCoverage from "./src/integrations/i18n-coverage.mjs";
 
 export default defineConfig({
-  site: "https://www.bigxreality.com",
+  site: new URL(siteMetadata.url).origin,
   // Public URLs keep their trailing slash (all links and the sitemap use it);
   // "always" would make the EmDash API answer 404.
   trailingSlash: "ignore",

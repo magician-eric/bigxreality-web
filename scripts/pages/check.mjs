@@ -1,15 +1,16 @@
 #!/usr/bin/env node
-// Checks dist-preview/ the way GitHub Pages serves it (under /bigxreality-web/):
-// every internal link and asset resolves, every page is noindex, robots blocks
-// crawlers, the sitemap is empty, no TEST FIXTURE content, and search works.
+// Checks dist-pages/ the way GitHub Pages serves it (under /bigxreality-web/):
+// every internal link and asset resolves, public canonical URLs use the official mount, robots allows crawling,
+// the sitemap is present, no TEST FIXTURE content is published, and search works.
 import { readFile, readdir, stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
 import { chromium } from "playwright-core";
 import { CHROMIUM } from "../lib/serve.mjs";
+import { publicSiteRoot, publicBasePath } from "../../src/lib/public-url.ts";
 
-const base = (process.argv[2] ?? "/bigxreality-web/").replace(/\/?$/, "/");
-const ROOT = path.resolve(import.meta.dirname, "../../dist-preview");
+const base = (process.argv[2] ?? publicBasePath).replace(/\/?$/, "/");
+const ROOT = path.resolve(import.meta.dirname, "../../dist-pages");
 let failed = 0;
 const check = (name, ok, detail = "") => {
   if (!ok) failed++;
@@ -39,23 +40,31 @@ let indexable = 0, fixtures = 0;
 for (const f of pages) {
   const html = await readFile(f, "utf8");
   if (!/<meta name="robots" content="noindex"/.test(html)) indexable++;
-  if (html.includes("TEST FIXTURE")) fixtures++;
+  if ((html.includes("TEST FIXTURE") || html.includes("BXR CMS ISOLATED QA"))) fixtures++;
   for (const m of html.matchAll(/\b(?:href|src|action)="(\/[^"]*)"|\bsrcset="([^"]*)"/g)) {
     const urls = m[1] ? [m[1]] : m[2].split(",").map((s) => s.trim().split(/\s+/)[0]);
     for (const u of urls) if (u.startsWith("/") && !(await resolve(u))) broken.add(u);
   }
 }
-check(`${pages.length} HTML pages, all noindex`, indexable === 0, `${indexable} indexable`);
+check(`${pages.length} HTML pages, public site has indexable content`, indexable>0, `${indexable} indexable`);
+const info=JSON.parse(await readFile(path.join(ROOT,'build-info.json'),'utf8'));
+check('artifact provenance uses main CMS and Git source',info.cmsBranch==='main'&&info.source==='git-markdown'&&/^[0-9a-f]{40}$/.test(info.commit)&&info.site===publicSiteRoot);
+for(const lang of ['tw','en','jp']) {
+ const home=await readFile(path.join(ROOT,lang,'index.html'),'utf8');
+ check(`${lang} home canonical and indexing`,home.includes(`rel="canonical" href="${publicSiteRoot}/${lang}/"`)&&!home.includes('name="robots" content="noindex"'));
+}
+const badSeoUrls=[];
+for(const f of pages){const html=await readFile(f,'utf8');if(!/\/(tw|en|jp)\//.test(f.replaceAll(path.sep,'/')))continue;
+ for(const match of html.matchAll(/<(?:link[^>]*rel="(?:canonical|alternate)"[^>]*href|meta[^>]*property="og:url"[^>]*content)="([^"]+)"/g))if(!match[1].startsWith(publicSiteRoot+'/'))badSeoUrls.push(match[1]);
+}
+check('public SEO URLs stay on the Pages site',badSeoUrls.length===0,badSeoUrls.slice(0,5).join(' '));
 check("no TEST FIXTURE content", fixtures === 0, `${fixtures} page(s)`);
-// Pages that are planned but not built yet (home, technologies, company, contact, privacy):
-// listed, not failed — `npm run qa:links` reports the same list for the normal build.
-const NOT_YET = /^\/(en|tw|jp)\/((technologies|company|contact|privacy)\/)?$/;
-const unbuilt = [...broken].filter((u) => NOT_YET.test(u.slice(base.length - 1)));
-const realBroken = [...broken].filter((u) => !unbuilt.includes(u));
-check("every internal link and asset resolves under the base path", realBroken.length === 0, realBroken.slice(0, 10).join(" "));
-if (unbuilt.length) console.log(`info pages not built yet: ${unbuilt.join(" ")}`);
-check("robots.txt blocks crawlers", (await readFile(path.join(ROOT, "robots.txt"), "utf8")).includes("Disallow: /"));
-check("sitemap is empty", !(await readFile(path.join(ROOT, "sitemap.xml"), "utf8")).includes("<loc>"));
+check("every internal link and asset resolves under the base path", broken.size===0,[...broken].slice(0,10).join(" "));
+const robots=await readFile(path.join(ROOT,'robots.txt'),'utf8');
+check('robots permits the official website',!/^Disallow:\s*\/\s*$/m.test(robots)&&robots.includes(`Sitemap: ${publicSiteRoot}/sitemap.xml`));
+const sitemap=await readFile(path.join(ROOT,'sitemap.xml'),'utf8'),locations=[...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
+check('sitemap lists official URLs',locations.length>0&&locations.every(url=>url.startsWith(publicSiteRoot+'/')));
+check('CMS stays noindex',/name="robots" content="noindex"/.test(await readFile(path.join(ROOT,'admin/index.html'),'utf8')));
 check("all three languages built", ["en", "tw", "jp"].every((l) => pages.some((p) => p.includes(`${path.sep}${l}${path.sep}products${path.sep}`))));
 
 // browser checks
@@ -83,11 +92,11 @@ try {
   await page.goto(`${origin}${base}tw/products/sut/`, { waitUntil: "networkidle" });
   check("CIS fonts load", await page.evaluate(async () => { await document.fonts.ready; return [...document.fonts].some((f) => f.status === "loaded"); }));
   await page.click('.langs a[hreflang="en"]');
-  check("language switch stays inside the preview", page.url().startsWith(`${origin}${base}en/`), page.url());
+  check("language switch stays inside the official site", page.url().startsWith(`${origin}${base}en/`), page.url());
   await page.goto(`${origin}${base}tw/search/?q=${encodeURIComponent("警勤模擬")}`, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.querySelector("[data-status]")?.textContent !== "", null, { timeout: 10000 }).catch(() => {});
   const hrefs = await page.$$eval(".result a", (as) => as.map((a) => a.getAttribute("href")));
-  check("search works and links stay inside the preview", hrefs.includes(`${base}tw/solutions/police/`), JSON.stringify(hrefs));
+  check("search works and links stay inside the official site", hrefs.includes(`${base}tw/solutions/police/`), JSON.stringify(hrefs));
 } finally {
   await browser.close();
   server.close();

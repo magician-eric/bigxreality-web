@@ -16,7 +16,7 @@ import { emdashLoader } from "./lib/emdash/loader";
  * entry only; see docs/PLAN.md §2.1. Relations store bare slugs and are checked at
  * build time in src/lib/content.ts (unknown slugs fail the build).
  *
- * Content comes from EmDash in production, or from Markdown files (backup / local);
+ * Official content comes from Git Markdown. EmDash is a legacy recovery path only;
  * see src/lib/content-source.ts. Both produce exactly the same entry shapes.
  */
 

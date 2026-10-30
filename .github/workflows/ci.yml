@@ -2,10 +2,19 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, feature/sveltia-cms]
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      BXR_CONTENT_SOURCE: markdown
+      BXR_PREVIEW: "0"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,7 +33,7 @@ jobs:
         run: npm test
       - name: Type check
         run: npx astro check
-      # Markdown backup content (production builds read EmDash in Workers Builds)
+      # Git main is the only official content source. No remote CMS is queried.
       - name: Build
         run: npm run build
       - run: npm run qa:technologies
@@ -70,3 +79,29 @@ jobs:
       - run: QA_DIST=dist-fixtures/client npm run qa:company
       - run: npm run qa:search
       - run: QA_DIST=dist-fixtures/client npm run qa:a11y -- /tw/solutions/police/ /tw/news/ /tw/news/fixture-news-02/ /tw/cases/fixture-case-1/ /tw/tags/xr-training/ /tw/search/
+      - name: Package the verified Pages artifact
+        run: npm run pages:package && npm run pages:check
+      - name: Publish build summary
+        if: always()
+        run: |
+          echo "## BXR website" >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit: $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          echo "CMS target: main; source: Git Markdown; hosting: GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          echo "Pages publication requires every build-and-test step to pass." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: dist-pages
+  deploy-pages:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
