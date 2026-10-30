@@ -131,3 +131,9 @@ Astro config 仍有 Cloudflare adapter／EmDash integration，與部分舊腳本
 - 驗證 build／TypeScript、schema／三語、產品／解決方案／新聞／資源頁、媒體、SEO／canonical／hreflang／sitemap、桌面／手機。
 - 用隔離副本驗證新增／修改／上傳／刪除，不修改正式文章測試。真人登入、GitHub 審核合併、Actions、線上 Pages 未實測時一律標記尚未驗證。
 - 任何卸載必須先拆呼叫鏈、通過 Git-only build，再重建 lock；不能只刪套件。回復以 Git revert 與已備份的外部設定／資料為依據；Git revert 不能復原已刪資料庫。
+
+## 10. 客戶詢問：開發中的 GAS 可行性驗證
+
+已授權的評估方向為 Astro 共用三語表單 → Google Apps Script → Google Sheets；不用 Google Forms 原生介面、Workers／D1／R2、第二 CMS 或長期 Node 後端。
+
+目前只建立隔離 POC，Google Web App 尚未部署、跨來源成功／失敗回應及實際 Sheet 寫入尚未驗證，正式聯絡頁仍為 Email。先依 [GAS POC 設定](inquiry/GAS-POC-SETUP.md) 完成 Pages-origin 端到端驗證，再開發正式表單。不得用 no-cors 不透明回應或 iframe load 事件表示成功；直接串接不成立時先提同一 GAS 的最小替代方案供確認，不自行加新服務。
