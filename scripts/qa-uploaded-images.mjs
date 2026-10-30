@@ -28,7 +28,10 @@ try {
     await image.evaluate(img=>img.decode());
     const m=await image.evaluate(img=>({file:img.dataset.primaryImage,src:img.currentSrc,alt:img.alt,fit:getComputedStyle(img).objectFit,w:img.width,h:img.height,natural:img.naturalWidth,loading:img.loading}));
     assert.ok(m.natural>0&&m.w>0&&m.h>0,m.file);assert.ok(m.alt.trim());assert.ok(['cover','contain'].includes(m.fit));
-    const previous=sources.get(m.file);if(previous)assert.equal(m.src,previous);else sources.set(m.file,m.src);
+    // Responsive candidates differ by slot and viewport; the source asset (name.hash before Astro's _transform suffix) must not.
+    const asset=decodeURIComponent(new URL(m.src).pathname.split('/').pop()).replace(/_[^_.]+\.[a-z]+$/,'');
+    assert.ok(asset.startsWith(m.file.replace(/\.[^.]+$/,'')+'.'),`${m.file} rendered from ${asset}`);
+    const previous=sources.get(m.file);if(previous)assert.equal(asset,previous);else sources.set(m.file,asset);
     if(lang==='en')assert.ok(!/[\u3400-\u9fff]/.test(m.alt));
    }
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,url+' overflow');
