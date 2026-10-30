@@ -53,7 +53,7 @@ const sub = distinctLabel(subtitle, kicker, title);
     </div>
     {(image) && <figure class="media">
       {image ? (
-        <ProductImage src={image.src} alt={image.alt} loading="eager" priority showType={false} />
+        <ProductImage src={image.src} alt={image.alt} loading="eager" priority showType={false} sizes="(max-width: 1023px) calc(100vw - 32px), (max-width: 1439px) 70vw, 940px" />
       ) : imagePending && <ImagePlaceholder label={imagePending} />}
       {image && conceptBadge && <span class="badge t-caption">{conceptBadge}</span>}
       {image && imageCaption && <figcaption class="t-tech"><Text value={imageCaption} /></figcaption>}
