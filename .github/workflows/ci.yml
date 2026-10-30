@@ -29,6 +29,8 @@ jobs:
         run: npm run cms:sveltia:check
       - name: Sveltia real-browser isolated editing
         run: npm run qa:sveltia
+      - name: Inquiry transport harness (mock only, not Google acceptance)
+        run: npm run qa:inquiry-poc
       - name: Unit tests
         run: npm test
       - name: Type check

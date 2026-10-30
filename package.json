@@ -60,7 +60,8 @@
     "pages:build": "BXR_CONTENT_SOURCE=markdown BXR_PREVIEW=0 npm run build && npm run pages:package && npm run pages:check",
     "pages:package": "node scripts/pages/package.mjs",
     "pages:check": "node scripts/pages/check.mjs",
-    "qa:cms-publication": "node scripts/qa-cms-publication.mjs"
+    "qa:cms-publication": "node scripts/qa-cms-publication.mjs",
+    "qa:inquiry-poc": "node scripts/qa-inquiry-poc.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.4",
