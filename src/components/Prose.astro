@@ -1,10 +1,10 @@
 ---
 /** Rich text from the CMS or Markdown (already HTML; `[待…]` markers highlighted). Max 6 columns wide (DS P.11). */
-import { markPendingHtml } from "../lib/text";
+import { markPendingHtml, typesetHtml } from "../lib/text";
 interface Props { html: string; class?: string }
 const { html, class: cls } = Astro.props;
 ---
-<div class:list={["prose", cls]} set:html={markPendingHtml(html)} />
+<div class:list={["prose", cls]} set:html={typesetHtml(markPendingHtml(html), Astro.params.lang ?? "en")} />
 <style>
   .prose { display: grid; gap: var(--space-3); line-height: 1.8; max-width: var(--reading-width); }
   .prose :global(h2) { font-size: var(--fs-h3); line-height: var(--lh-h3); font-weight: 500; margin-top: var(--space-4); }

@@ -1,0 +1,19 @@
+import rules from '../data/typography.json' with { type: 'json' };
+export type TypographyLang = 'tw'|'en'|'jp';
+export interface HeadingGroup { text:string; groups:string[] }
+export interface TypographyRule { terms:string[]; headings?:HeadingGroup[] }
+export function typographyParts(text:string, lang:string, custom?:TypographyRule):Array<{text:string;keep:boolean;group?:boolean}> {
+ const rule=custom??rules[lang as TypographyLang];
+ if(!rule)return [{text,keep:false}];
+ // Grouping is presentation only: concatenation must reproduce the original title exactly.
+ const heading=(rule.headings??[]).find(h=>h?.text===text&&Array.isArray(h.groups)&&h.groups.length>1&&h.groups.every(g=>typeof g==='string'&&g.length>0)&&h.groups.join('')===text);
+ if(heading)return heading.groups.map(text=>({text,keep:true,group:true}));
+ const terms=[...new Set((rule.terms??[]).filter(t=>typeof t==='string'&&t.length>0))].sort((a,b)=>b.length-a.length);
+ if(!terms.length)return [{text,keep:false}];
+ const alternatives=terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|');
+ // Keep closing punctuation with its phrase, and opening punctuation with what follows.
+ const pattern=new RegExp('[（「『【《〈〔〖〘〚(]*(?:'+alternatives+')[，。、；：！？）」』】》〉〕〗〙〛,.!?;:%)]*','gu');
+ const result:Array<{text:string;keep:boolean;group?:boolean}>=[];let start=0;
+ for(const match of text.matchAll(pattern)){if(match.index>start)result.push({text:text.slice(start,match.index),keep:false});result.push({text:match[0],keep:true});start=match.index+match[0].length;}
+ if(start<text.length)result.push({text:text.slice(start),keep:false});return result;
+}
