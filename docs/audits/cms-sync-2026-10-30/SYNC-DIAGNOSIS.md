@@ -13,6 +13,20 @@
 - 沒有取得 refs/heads/cms/* 草稿分支。這不能證明瀏覽器沒有未儲存內容，也不能替代 GitHub PR／CMS 狀態查詢。
 - Pages workflow 目前強制 BXR_PREVIEW=1，全站 noindex；canonical 的基準仍是 www.bigxreality.com。這與指定的 Pages 正式網址不符。
 
+## 修正前設定所形成的分流
+
+此圖是程式與設定可證實的流程；不是遠端部署成功紀錄。
+
+```mermaid
+flowchart LR
+  CMS[Sveltia 編輯與 Publish] --> Old[feature/sveltia-cms]
+  Old --> Stop[沒有 Pages 觸發器]
+  Main[Git main] --> Workflow[preview.yml：BXR_PREVIEW=1]
+  Workflow --> Pages[GitHub Pages artifact：noindex]
+  Main --> GitData[前台使用 Git Markdown]
+  Legacy[EmDash／Cloudflare integration] -.-> Build[仍耦合 Astro build；移除需拆依賴]
+```
+
 ## 無法驗證
 
 GitHub Pages、admin、robots、sitemap 的 HTTPS CONNECT 被執行環境 proxy 403 阻擋；環境外重試仍相同。這不是確認網站回傳 403。GitHub Pages／Actions API 同樣 Forbidden。因此尚未核實目前線上部署 SHA、真人登入、實際 Publish 與遠端 CI 狀態，不會宣稱它們通過。

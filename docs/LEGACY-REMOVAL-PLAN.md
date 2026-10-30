@@ -2,6 +2,8 @@
 
 本文件只定義清理依賴與順序，不是第二套架構。唯一架構見 ARCHITECTURE.md。本次不刪任何外部資源；無法讀取 Cloudflare 帳戶或真人 GitHub 發布時，不宣稱完成外部退役。
 
+修正前逐檔與套件分類： [盤點快照](audits/architecture-baseline-2026-10-30/README.md)。快照固定在 main 7c9602b，不代表本 PR 後仍保留 preview.yml；下列依賴先決條件優先。
+
 ## 目前已確認的呼叫鏈
 
 - astro.config.mjs 無條件載入 @astrojs/cloudflare、EmDash、D1／R2 adapter、bxr-cms plugin，所以即使 Pages 讀 Git，直接卸載仍會讓 build 失敗。
