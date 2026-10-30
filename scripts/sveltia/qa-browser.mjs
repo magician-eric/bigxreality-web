@@ -23,6 +23,7 @@ await new Promise(r=>server.listen(4398,'127.0.0.1',r));
 const browser=await chromium.launch({executablePath:CHROMIUM});
 const originals={'.git/HEAD':'ref: refs/heads/feature/sveltia-cms\n','src/data/news-media.json':await readFile(path.join(repo,'src/data/news-media.json'),'utf8')};
 async function collect(folder){for(const item of await readdir(path.join(repo,folder),{withFileTypes:true})){const file=folder+'/'+item.name;if(item.isDirectory())await collect(file);else if(file.endsWith('.md'))originals[file]=await readFile(path.join(repo,file),'utf8');}}
+if(existsSync(path.join(repo,'src/data/typography.json')))originals['src/data/typography.json']=await readFile(path.join(repo,'src/data/typography.json'),'utf8');
 await collect('src/content');
 const imageNames=(await readdir(path.join(repo,'src/assets/images/clients'))).filter(n=>n.endsWith('.png'));
 const image=await readFile(path.join(repo,'src/assets/images/clients',imageNames[0]));
@@ -142,6 +143,20 @@ try{
  await page.getByRole('button',{name:'Save',exact:true}).click();
  await page.getByRole('row').filter({hasText:'新聞媒體資料'}).first().waitFor();
  clone=await readClone();assert.deepEqual(JSON.parse(textOf(clone,'src/data/news-media.json')),mediaMap);
+ if(originals['src/data/typography.json']) {
+  await page.getByRole('treeitem',{name:'多語文字換行',exact:true}).click();
+  await page.getByRole('row').filter({hasText:'關鍵詞與標題分組'}).first().click();
+  await page.getByRole('group',{name:'Content Editor'}).waitFor();
+  await page.getByRole('textbox',{name:'term',exact:true}).first().waitFor();
+  const textboxes=await page.getByRole('textbox').all();let updated=false;
+  for(const input of textboxes) { if(await input.inputValue()==='全球動力科技'){await input.fill('全球動力科技 QA');updated=true;break;} }
+  if(!updated)throw new Error('Typography term editor not found: '+JSON.stringify(await page.getByRole('textbox').evaluateAll(es=>es.map(e=>({label:e.getAttribute('aria-label'),value:e.value})))));
+  await page.getByRole('button',{name:'Save',exact:true}).click();
+  await page.getByRole('row').filter({hasText:'關鍵詞與標題分組'}).first().waitFor();
+  const saved=JSON.parse(textOf(await readClone(),'src/data/typography.json'));
+  const before=JSON.parse(originals['src/data/typography.json']);before.tw.terms[0]='全球動力科技 QA';
+  for(const lang of ['tw','en','jp']) { assert.deepEqual(saved[lang].terms,before[lang].terms);assert.deepEqual(saved[lang].headings??[],before[lang].headings??[]); }
+ }
  await page.screenshot({path:path.join(cache,'news-desktop.png')});
  assert.deepEqual(errors,[]);
  // Sign out before checking the phone viewport; never reload a remembered OPFS handle.
@@ -149,5 +164,5 @@ try{
  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Sign In Using Access Token'}).waitFor();
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.screenshot({path:path.join(cache,'login-mobile.png')});
- console.log('PASS: real pinned CMS config loads at /admin/ and Pages subpath; token form; local-clone create/edit/image-byte upload; existing article save plus three new draft news siblings, correct optional fields, unchanged translations and lossless media JSON save; mobile login. Live GitHub auth/write not tested.');
+ console.log('PASS: real pinned CMS config loads at /admin/ and Pages subpath; token form; local-clone create/edit/image-byte upload; existing article save plus three new draft news siblings, correct optional fields, unchanged translations and lossless media JSON save; typography JSON edit with unchanged language lists; mobile login. Live GitHub auth/write not tested.');
 }finally{await browser.close();server.close();}

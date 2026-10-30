@@ -1,4 +1,5 @@
 ---
+import Text from './Text.astro';
 import type { Article } from '../lib/articles';
 import { articleHref } from '../lib/articles';
 import { newsMedia } from '../lib/news-media';
@@ -20,8 +21,8 @@ const read = {tw:'閱讀完整內容',en:'Read the story',jp:'記事を読む'}[
  <div class="media">{cover ? <ProductImage src={cover.src} alt={cover.alt} loading={featured?'eager':'lazy'} /> : <EditorialCover title={a.loc.data.title} category={ui.newsListing.categoryLabels[category as keyof typeof ui.newsListing.categoryLabels] ?? ui.article.categories[category]} date={date} />}</div>
  <div class="body">
   <p class="meta t-caption">{date && <time datetime={date.toISOString().slice(0,10)}>{new Intl.DateTimeFormat(INTL_LOCALE[a.lang],{year:'numeric',month:'2-digit',day:'2-digit'}).format(date)}</time>}<span>{ui.newsListing.categoryLabels[category as keyof typeof ui.newsListing.categoryLabels] ?? ui.article.categories[category]}</span></p>
-  <h2 class="title"><a href={articleHref(a)}>{a.loc.data.title}</a></h2>
-  <p class="summary">{a.loc.data.summary}</p>
+  <h2 class="title"><a href={articleHref(a)}><Text value={a.loc.data.title} /></a></h2>
+  <p class="summary"><Text value={a.loc.data.summary} /></p>
   <span class="read t-small" aria-hidden="true">{read} →</span>
  </div>
 </article>

@@ -1,4 +1,5 @@
 ---
+import Text from './Text.astro';
 import { clientLogoGroups } from '../lib/client-logos';
 import { getUi } from '../lib/ui';
 import type { Lang } from '../i18n';
@@ -8,7 +9,7 @@ const groups = clientLogoGroups(Astro.props.lang);
 const title = getUi(Astro.props.lang).nav.partners;
 ---
 <section class:list={["partner-statistics",{embedded}]} data-partner-statistics aria-labelledby={showHeading?"partner-statistics-title":undefined} aria-label={!showHeading?title:undefined}>
-  {showHeading && <h2 id="partner-statistics-title" class="t-h3">{title}</h2>}
+  {showHeading && <h2 id="partner-statistics-title" class="t-h3"><Text value={title} /></h2>}
   <dl>{groups.map(group => <div><dt>{group.label}</dt><dd>{group.items.length}</dd></div>)}</dl>
 </section>
 <style>

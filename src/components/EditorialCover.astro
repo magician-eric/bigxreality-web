@@ -1,11 +1,12 @@
 ---
+import Text from './Text.astro';
 /** A text-led cover, not a substitute photo. Uses only the article's confirmed metadata. */
 interface Props { title:string; category:string; date?:Date }
 const {title,category,date}=Astro.props;
 ---
 <div class="editorial-cover" aria-hidden="true">
  <span class="category">{category}</span>
- <span class="headline">{title}</span>
+ <span class="headline"><Text value={title} /></span>
  <span class="year">{date?.getUTCFullYear()}</span>
 </div>
 <style>

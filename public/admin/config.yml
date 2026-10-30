@@ -4408,6 +4408,92 @@ collections:
                       pattern: ^https://
                 additionalProperties: false
             hint: 完整沿用現有 mediaId→媒體物件。圖檔在 src/assets/images/news/，filename 只填檔名；approved=true 且三語 alt 完整才顯示。
+  - name: typography
+    label: 多語文字換行
+    files:
+      - name: rules
+        label: 關鍵詞與標題分組
+        file: src/data/typography.json
+        format: json
+        fields:
+          - name: tw
+            label: 繁體中文
+            widget: object
+            fields:
+              - name: terms
+                label: 完整保留的關鍵詞
+                widget: list
+                field:
+                  name: term
+                  widget: string
+                hint: 短詞組為主；避免整句加入詞庫。
+              - name: headings
+                label: 個別標題分組（選用）
+                widget: list
+                required: false
+                fields:
+                  - name: text
+                    label: 完整原標題（完全一致）
+                    widget: string
+                  - name: groups
+                    label: 依語意分組
+                    widget: list
+                    field:
+                      name: group
+                      widget: string
+                    hint: 所有分組依序串接必須等於原標題，包含空格和標點。長組在窄螢幕可安全換行。
+          - name: en
+            label: English
+            widget: object
+            fields:
+              - name: terms
+                label: 完整保留的關鍵詞
+                widget: list
+                field:
+                  name: term
+                  widget: string
+                hint: 短詞組為主；避免整句加入詞庫。
+              - name: headings
+                label: 個別標題分組（選用）
+                widget: list
+                required: false
+                fields:
+                  - name: text
+                    label: 完整原標題（完全一致）
+                    widget: string
+                  - name: groups
+                    label: 依語意分組
+                    widget: list
+                    field:
+                      name: group
+                      widget: string
+                    hint: 所有分組依序串接必須等於原標題，包含空格和標點。長組在窄螢幕可安全換行。
+          - name: jp
+            label: 日本語
+            widget: object
+            fields:
+              - name: terms
+                label: 完整保留的關鍵詞
+                widget: list
+                field:
+                  name: term
+                  widget: string
+                hint: 短詞組為主；避免整句加入詞庫。
+              - name: headings
+                label: 個別標題分組（選用）
+                widget: list
+                required: false
+                fields:
+                  - name: text
+                    label: 完整原標題（完全一致）
+                    widget: string
+                  - name: groups
+                    label: 依語意分組
+                    widget: list
+                    field:
+                      name: group
+                      widget: string
+                    hint: 所有分組依序串接必須等於原標題，包含空格和標點。長組在窄螢幕可安全換行。
   - name: cms-test
     label: 隔離測試文章（不會顯示於官網）
     folder: cms-test-content

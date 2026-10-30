@@ -34,13 +34,16 @@ jobs:
       - run: npm run qa:news-import
       - run: npm run qa:ui-v1
       - run: npm run qa:hero-framing
+      - run: npm run qa:typography
       - run: npm run qa:media-composition
       - name: Visual review artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: visual-copy-review
-          path: docs/reviews/visual-copy/
+          path: |
+            docs/reviews/visual-copy/
+            docs/reviews/typography/
           retention-days: 14
       - run: npm run qa:ui-v1-preview
       - run: npm run qa:client-logos

@@ -1,4 +1,5 @@
 ---
+import Text from '../../../components/Text.astro';
 import { LANGS, HTML_LANG, localePath, type Lang } from "../../../i18n";
 import { technologyRelations, technologyRelationNotes } from "../../../data/technology-relations";
 import { technologyContent } from "../../../data/technologies-content";
@@ -43,7 +44,7 @@ const structuredData = [{ "@type": "WebPage", name: content.title, description: 
     <TechnologySections sections={content.sections} variant={slug} />
     <section class="section related-resources" id="related-resources" aria-labelledby="h-related-resources">
       <div class="container">
-        <h2 class="t-h2" id="h-related-resources">{content.relatedTitle}</h2>
+        <h2 class="t-h2" id="h-related-resources"><Text value={content.relatedTitle} /></h2>
         {relationNotes.length > 0 && <div class="relation-notes">{relationNotes.map((note) => <p>{note}</p>)}</div>}
         {products.length > 0 && solutions.length > 0 && <p class="t-label resource-heading">{relatedLabels[lang].products}</p>}
         {products.length > 0 && <ul class="resources" role="list" data-related-products>{products.map((product) => <li><CardProduct lang={lang} href={localePath(lang, "products", product.slug)} name={product.loc.data.hero.name} summary={product.loc.data.summary ?? product.loc.data.hero.tagline} domains={product.base.data.domains} /></li>)}</ul>}

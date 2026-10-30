@@ -183,7 +183,7 @@ for (const k of Object.keys(articleLd)) if (articleLd[k] === undefined) delete a
       </>}
       {technologyLinks.length > 0 && (
         <nav class="tags technology-links" aria-label={technologyLabel}>
-          <h2 class="t-h4">{technologyLabel}</h2>
+          <h2 class="t-h4"><Text value={technologyLabel} /></h2>
           <ul role="list">{technologyLinks.map((x) => <li><a href={x.href}>{x.name}</a></li>)}</ul>
         </nav>
       )}

@@ -1,4 +1,5 @@
 ---
+import Text from '../../../../components/Text.astro';
 import { LANGS, localePath, type Lang } from '../../../../i18n';
 import { getArticles, articleHref } from '../../../../lib/articles';
 import { CSR_CATEGORIES, csrCopy, csrCategories, csrLabel } from '../../../../lib/csr';
@@ -15,11 +16,11 @@ const breadcrumbs = [{ name: ui.home, path: localePath(lang) }, { name: ui.nav.a
 ---
 <BaseLayout lang={lang} title={copy.title} description={copy.lead} pathTemplate="/{lang}/company/csr/" alternates={[...LANGS]} current="company" currentCompany="csr" headerTheme="dark" breadcrumbs={breadcrumbs}>
   <PageHero breadcrumbs={breadcrumbs} breadcrumbLabel={ui.breadcrumbLabel} title={copy.title} lead={copy.lead} />
-  <section class="section"><div class="container narrow"><h2 class="t-h2">{copy.heading}</h2>{copy.principles.map(p => <p class="principle">{p}</p>)}</div></section>
+  <section class="section"><div class="container narrow"><h2 class="t-h2"><Text value={copy.heading} /></h2>{copy.principles.map(p => <p class="principle"><Text value={p} /></p>)}</div></section>
   {CSR_CATEGORIES.map((category, index) => (
     <section class="section topic" id={category}><div class="container">
-      <h2 class="t-h2">{copy.topics[index]}</h2>
-      <p class="description">{copy.descriptions[index]}</p>
+      <h2 class="t-h2"><Text value={copy.topics[index]} /></h2>
+      <p class="description"><Text value={copy.descriptions[index]} /></p>
       <ul role="list" class="csr-cards">{articles.filter(a => csrCategories(a.base.data)[0] === category).map(a => <li>
         <CardArticle lang={lang} href={articleHref(a)} type={copy.title} date={a.base.data.publishDate} title={a.loc.data.title} summary={a.loc.data.summary} tags={csrCategories(a.base.data).map(c => csrLabel(c, lang))} cover={a.base.data.cover && {src: a.base.data.cover.src, alt: a.loc.data.cover?.alt ?? a.base.data.cover.alt}} />
         <a class="read" href={articleHref(a)}>{copy.read}<span class="visually-hidden"> — {a.loc.data.title}</span></a>
