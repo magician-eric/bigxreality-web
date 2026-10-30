@@ -31,7 +31,7 @@ try {
     // Responsive candidates differ by slot and viewport; the source asset (name.hash before Astro's _transform suffix) must not.
     const asset=decodeURIComponent(new URL(m.src).pathname.split('/').pop()).replace(/_[^_.]+\.[a-z]+$/,'');
     assert.ok(asset.startsWith(m.file.replace(/\.[^.]+$/,'')+'.'),`${m.file} rendered from ${asset}`);
-    const previous=sources.get(m.file);if(previous)assert.equal(asset,previous);else sources.set(m.file,asset);
+    const previous=sources.get(m.file);if(previous)assert.equal(previous.asset,asset);else sources.set(m.file,{asset,url:m.src});
     if(lang==='en')assert.ok(!/[\u3400-\u9fff]/.test(m.alt));
    }
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,url+' overflow');
@@ -43,6 +43,7 @@ try {
   }
  }
  assert.equal(sources.size,15);assert.deepEqual(failures,[]);
- for(const [file,url]of sources)assert.deepEqual(Buffer.from(await (await fetch(url)).arrayBuffer()),fs.readFileSync('src/assets/images/products/'+file),file+' served bytes changed');
- console.log(`PASS: ${files.length} unchanged original assets, ${cases} routes/viewports, shared three-language sources, image decode/404/alt/fit checks`);
+ // Originals are pinned by the git hash check above; what is served is a resized derivative and must be lighter than its original.
+ for(const [file,{url}]of sources){const response=await fetch(url);assert.equal(response.status,200,url);assert.ok((await response.arrayBuffer()).byteLength<fs.statSync('src/assets/images/products/'+file).size,file+' served candidate is not smaller than the original');}
+ console.log(`PASS: ${files.length} unchanged original assets (served as smaller responsive derivatives), ${cases} routes/viewports, shared three-language sources, image decode/404/alt/fit checks`);
 }finally{await browser.close();server.stop();}
