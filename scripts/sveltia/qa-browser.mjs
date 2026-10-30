@@ -166,7 +166,11 @@ try{
  const deletion=page.getByRole('alertdialog',{name:'Delete Entry'});
  await deletion.getByRole('button',{name:/Delete/}).click();
  await page.getByRole('row').filter({hasText:'bxr-cms-browser-qa'}).waitFor({state:'hidden'});
- assert.equal((await readClone())['cms-test-content/bxr-cms-browser-qa.md'],undefined);
+ await page.waitForFunction(async()=>{
+  const root=await(await navigator.storage.getDirectory()).getDirectoryHandle('bxr-isolated-cms-qa');
+  const folder=await root.getDirectoryHandle('cms-test-content');
+  try{await folder.getFileHandle('bxr-cms-browser-qa.md');return false;}catch(error){if(error.name==='NotFoundError')return true;throw error;}
+ });
  assert.deepEqual(errors,[]);
  // Sign out before checking the phone viewport; never reload a remembered OPFS handle.
  await page.getByRole('button',{name:'Show Account Menu'}).click();await page.getByRole('menuitem',{name:'Sign Out',exact:true}).click();
